@@ -78,6 +78,7 @@ class App extends Component {
                             <Route exact path="/logs" component={Logs}/>
                             <Route exact path="/files" component={Files}/>
                             <Route exact path="/files/:id" component={File}/>
+                            <Route exact path="/units/:id" component={Unit}/>
                         </div>
                         <div style={{
                             display: activeItemsVisible ? 'block' : 'none',
