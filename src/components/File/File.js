@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import filesize from 'filesize';
+import { Link } from 'react-router-dom';
 import { Table } from 'semantic-ui-react';
 import apiClient from '../../helpers/apiClient';
 
@@ -37,6 +38,8 @@ const transformValues = (key, value) => {
     switch (key) {
         case 'size':
             return filesize(value);
+        case 'content_unit_id':
+            return <Link to={`/units/${value}`}>{value}</Link>;
         default:
             return value;
     }
