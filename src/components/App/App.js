@@ -3,7 +3,7 @@ import './App.css';
 import Logs from '../Logs/Logs';
 import Files from '../Files/Files';
 import File from '../File/File';
-import Unit from '../Unit/Unit';
+import ContentUnit from '../ContentUnit/ContentUnit';
 import Welcome from '../Welcome/Welcome';
 import { Button, Icon, Menu } from 'semantic-ui-react'
 import { Router, NavLink, Route } from 'react-router-dom'
@@ -79,7 +79,7 @@ class App extends Component {
                             <Route exact path="/logs" component={Logs}/>
                             <Route exact path="/files" component={Files}/>
                             <Route exact path="/files/:id" component={File}/>
-                            <Route exact path="/units/:id" component={Unit}/>
+                            <Route exact path="/content_units/:id" component={ContentUnit}/>
                         </div>
                         <div style={{
                             display: activeItemsVisible ? 'block' : 'none',

@@ -41,7 +41,7 @@ const transformValues = (key, value) => {
     }
 }
 
-export default class Unit extends Component {
+export default class ContentUnit extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
@@ -62,7 +62,7 @@ export default class Unit extends Component {
     }
 
     getUnit = (id) => {
-        apiClient.get(`/rest/units/${id}`)
+        apiClient.get(`/content_unit/${id}`)
             .then(response => 
                 this.setState({
                     unit: response.data.unit

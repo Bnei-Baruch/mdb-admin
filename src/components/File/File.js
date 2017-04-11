@@ -39,7 +39,7 @@ const transformValues = (key, value) => {
         case 'size':
             return filesize(value);
         case 'content_unit_id':
-            return <Link to={`/units/${value}`}>{value}</Link>;
+            return <Link to={`/content_units/${value}`}>{value}</Link>;
         default:
             return value;
     }
@@ -69,7 +69,7 @@ export default class File extends Component {
         apiClient.get(`/rest/files/${id}`)
             .then(response => 
                 this.setState({
-                    file: response.data.file
+                    file: response.data.data
                 })
             ).catch(error => {
                 throw Error('Error loading files, ' + error);
