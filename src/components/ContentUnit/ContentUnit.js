@@ -1,45 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'semantic-ui-react';
+import InfoTable from '../InfoTable/InfoTable';
 import apiClient from '../../helpers/apiClient';
-
-
-const ObjectTable = ({ object }) => {
-    if (!object) {
-        return null;
-    }
-
-    return (
-        <Table celled striped>
-            <Table.Body>
-                {
-                    Object.keys(object).map(key => 
-                        <Table.Row key={key}>
-                            <Table.Cell collapsing>
-                                <div>{ key }</div>
-                            </Table.Cell>
-                            <Table.Cell>
-                                <div>{ object[key] }</div>
-                            </Table.Cell>
-                        </Table.Row>
-                    )
-                }
-            </Table.Body>
-        </Table>
-    );
-};
-ObjectTable.propTypes = {
-    object: PropTypes.object
-};
-
-const transformValues = (key, value) => {
-    switch (key) {
-        // case 'size':
-        //     return filesize(value);
-        default:
-            return value;
-    }
-}
 
 export default class ContentUnit extends Component {
 
@@ -50,6 +12,11 @@ export default class ContentUnit extends Component {
     state = {
         unit: null
     };
+
+    cells = [
+        'key',
+        'value'
+    ];
 
     componentDidMount() {
         this.getUnit(this.props.match.params.id);
@@ -62,10 +29,10 @@ export default class ContentUnit extends Component {
     }
 
     getUnit = (id) => {
-        apiClient.get(`/content_unit/${id}`)
-            .then(response => 
+        apiClient.get(`/rest/content_units/${id}`)
+            .then(response =>
                 this.setState({
-                    unit: response.data.unit
+                    unit: response.data.data
                 })
             ).catch(error => {
                 throw Error('Error loading units, ' + error);
@@ -79,32 +46,11 @@ export default class ContentUnit extends Component {
         }
 
         return (
-            <Table celled striped>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell colSpan='2'>Unit info</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {
-                        Object.keys(unit).map(key => 
-                            <Table.Row key={key}>
-                                <Table.Cell collapsing>
-                                    <div>{ key }</div>
-                                </Table.Cell>
-                                <Table.Cell>
-                                    {
-                                        key === 'properties' 
-                                            ? <ObjectTable object={unit[key]} />
-                                            : <div>{ transformValues(key, unit[key]) }</div>
-                                    }
-                                </Table.Cell>
-                            </Table.Row>
-                        )
-                    }
-                </Table.Body> 
-            </Table>
+            <InfoTable
+                header="Unit Info"
+                source={unit}
+                cells={this.cells}
+            />
         );
     }
-
 }

@@ -2,54 +2,31 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
-import { Table } from 'semantic-ui-react';
+import InfoTable from '../InfoTable/InfoTable';
+import SimpleObjectTable from '../SimpleObjectTable/SimpleObjectTable';
 import apiClient from '../../helpers/apiClient';
-
-
-const ObjectTable = ({ object }) => {
-    if (!object) {
-        return null;
-    }
-
-    return (
-        <Table celled striped>
-            <Table.Body>
-                {
-                    Object.keys(object).map(key => 
-                        <Table.Row key={key}>
-                            <Table.Cell collapsing>
-                                <div>{ key }</div>
-                            </Table.Cell>
-                            <Table.Cell>
-                                <div>{ object[key] }</div>
-                            </Table.Cell>
-                        </Table.Row>
-                    )
-                }
-            </Table.Body>
-        </Table>
-    );
-};
-ObjectTable.propTypes = {
-    object: PropTypes.object
-};
-
-const transformValues = (key, value) => {
-    switch (key) {
-        case 'size':
-            return filesize(value);
-        case 'content_unit_id':
-            return <Link to={`/content_units/${value}`}>{value}</Link>;
-        default:
-            return value;
-    }
-}
 
 export default class File extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
     }
+
+    cells = [
+        'key',
+        (key, value) => {
+            switch (key) {
+                case 'size':
+                    return filesize(value);
+                case 'properties':
+                    return <SimpleObjectTable object={value} />
+                case 'content_unit_id':
+                    return <Link to={`/content_units/${value}`}>{value}</Link>;
+                default:
+                    return value;
+            }
+        }
+    ];
 
     state = {
         file: null
@@ -67,7 +44,7 @@ export default class File extends Component {
 
     getFile = (id) => {
         apiClient.get(`/rest/files/${id}`)
-            .then(response => 
+            .then(response =>
                 this.setState({
                     file: response.data.data
                 })
@@ -83,32 +60,11 @@ export default class File extends Component {
         }
 
         return (
-            <Table celled striped>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell colSpan='2'>File info</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {
-                        Object.keys(file).map(key => 
-                            <Table.Row key={key}>
-                                <Table.Cell collapsing>
-                                    <div>{ key }</div>
-                                </Table.Cell>
-                                <Table.Cell>
-                                    {
-                                        key === 'properties' 
-                                            ? <ObjectTable object={file[key]} />
-                                            : <div>{ transformValues(key, file[key]) }</div>
-                                    }
-                                </Table.Cell>
-                            </Table.Row>
-                        )
-                    }
-                </Table.Body> 
-            </Table>
+            <InfoTable
+                source={file}
+                header="File Info"
+                cells={this.cells}
+            />
         );
     }
-
 }
