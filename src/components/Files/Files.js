@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Spinner from '../Spinner/Spinner';
-import './Files.css';
-import { AutoSizer, Column, InfiniteLoader, Table } from 'react-virtualized';
-import 'react-virtualized/styles.css';
 import { Link } from 'react-router-dom';
+import { AutoSizer, Column, InfiniteLoader, Table } from 'react-virtualized';
 import apiClient from '../../helpers/apiClient';
+import Spinner from '../Spinner/Spinner';
+
+import 'react-virtualized/styles.css';
+import './Files.css';
 
 const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
     if(!rowData || !rowData.id) {
@@ -38,18 +39,54 @@ const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
 const LinkToFileCellRenderer = ({ cellData, dataKey }) =>
     <Link to={`/files/${cellData}`}>{cellData}</Link>;
 
-class Files extends Component {
-    constructor(props) {
-        super(props);
+const Header = (props) => {
+    const removeIconStyle = props.showRemoveIcon ? {} : { visibility: 'hidden' };
 
-        this.firstLimit = 100;
-    }
+    return (
+        <div className='ui fluid search'
+             style={{
+                 display: 'flex',
+                 flexDirection: 'row',
+                 justifyContent: 'space-between',
+                 paddingLeft: 10,
+                 paddingRight: 10}} >
+            <div>
+                <div className='ui icon input'>
+                    <input className='prompt'
+                           type='text'
+                           placeholder='Search files...'
+                           value={props.searchText}
+                           onChange={props.handleSearchChange} />
+                    <i className='search icon' />
+                </div>
+                <i className='remove icon'
+                   onClick={props.handleSearchCancel}
+                   style={removeIconStyle} />
+            </div>
+            <div className='flex-space-between-center'>
+                {
+                    props.loadingFiles &&
+                    <span className='flex-space-between-center'>
+                            <Spinner/>
+                            <span style={{marginLeft: '10px'}}>Searching...</span>
+                        </span>
+                }
+                {!!props.error && <span style={{color: 'red', marginLeft: '10px'}}>{props.error}</span>}
+            </div>
+            <div className='flex-space-between-center'>
+                <span>Total: {props.total}</span>
+            </div>
+        </div>
+    );
+};
+
+class Files extends Component {
+    firstLimit = 100;
 
     state = {
         // Should be eventually props.
         files: [],
         resetFiles: false,
-        matching: 0,
         total: 0,
 
         loadingFiles: false,
@@ -62,19 +99,18 @@ class Files extends Component {
 
     componentDidMount = () => {
         this.searchFiles('', 0, this.firstLimit);
-    }
+    };
 
     handleSearchChange = (e) => {
         this.searchFiles(e.target.value, 0, this.firstLimit);
-    }
+    };
 
     handleSearchCancel = () => {
         this.searchFiles('', 0, this.firstLimit);
-    }
+    };
 
     searchFiles = (searchText, startIndex, stopIndex) => {
         console.log('Search text:', searchText, 'Fetching start: ' + startIndex + ' stop: ' + stopIndex);
-        const limit = stopIndex - startIndex + 1;
         this.setState((prevState) => {
             const newState = {
                 loadingFiles: true,
@@ -87,17 +123,17 @@ class Files extends Component {
             }
             return newState;
         }, () => {
-            apiClient.get('/rest/files', {
+            apiClient.get('/rest/files/', {
                 params: {
-                    offset: startIndex,
-                    limit,
+                    start_index: startIndex,
+                    stop_index: stopIndex,
                     query: searchText
                 }
             }).then(response => {
-                const { files, matching, total } = response.data;
+                const {total, data} = response.data;
                 this.setState((prevState) => {
                     const newFiles = prevState.resetFiles ? [] : prevState.files;
-                    files.forEach((f, i) => {
+                    data.forEach((f, i) => {
                         newFiles[i + startIndex] = f;
                         f.index = i + startIndex;
                     });
@@ -105,20 +141,16 @@ class Files extends Component {
                         loadingFiles: false,
                         resetFiles: false,
                         files: newFiles,
-                        matching,
                         total,
                         error: '',
                     };
                 });
             }).catch((e) => {
                 console.log(e);
-                this.setState({
-                    loadingFiles: false,
-                    error: 'Error loading files: ' + e
-                });
+                this.setState({loadingFiles: false, error: 'Error loading files: ' + e});
             })
         });
-    }
+    };
 
     isRowLoaded = ({ index }) => {
         const item = this.state.files[index];
@@ -132,14 +164,7 @@ class Files extends Component {
         this.searchFiles(this.state.searchText, startIndex, stopIndex);
 
     render() {
-        const {
-            showRemoveIcon,
-            searchText,
-            loadingFiles,
-            error,
-            matching,
-            total
-        } = this.state;
+        const { showRemoveIcon, searchText, loadingFiles, error, total } = this.state;
 
         return (
             <div style={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column'}}>
@@ -150,7 +175,6 @@ class Files extends Component {
                     handleSearchCancel={this.handleSearchCancel}
                     loadingFiles={loadingFiles}
                     error={error}
-                    matching={matching}
                     total={total}
                 />
                 <div style={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column'}}>
@@ -159,50 +183,38 @@ class Files extends Component {
                         isRowLoaded={this.isRowLoaded}
                         threshold={100}
                         loadMoreRows={this.loadMoreRows}
-                        rowCount={matching}
-                    >
+                        rowCount={total} >
                         {({ onRowsRendered, registerChild }) => (
                             <AutoSizer>
                                 {({ width, height }) => (
-                                    <Table
-                                        headerHeight={50}
-                                        height={height}
-                                        width={width}
-                                        rowCount={matching}
-                                        ref={registerChild}
-                                        onRowsRendered={onRowsRendered}
-                                        rowRenderer={RowRenderer}
-                                        rowGetter={this.rowGetter}
-                                        rowHeight={50}
-                                    >
-                                        <Column
-                                            label='Index'
-                                            cellDataGetter={({ rowData }) => rowData.index}
-                                            dataKey='index'
-                                            width={60}
-                                        />
-                                        <Column
-                                            label='ID'
-                                            dataKey='id'
-                                            cellRenderer={LinkToFileCellRenderer}
-                                            width={80}
-                                        />
-                                        <Column
-                                            label='UID'
-                                            dataKey='uid'
-                                            width={80}
-                                        />
-                                        <Column
-                                            label='Name'
-                                            dataKey='name'
-                                            width={160} flexGrow={1}
-                                        />
-                                        <Column
-                                            label='Created at'
-                                            dataKey='file_created_at'
-                                            width={80}
-                                            flexGrow={1}
-                                        />
+                                    <Table headerHeight={50}
+                                           height={height}
+                                           width={width}
+                                           rowCount={total}
+                                           ref={registerChild}
+                                           onRowsRendered={onRowsRendered}
+                                           rowRenderer={RowRenderer}
+                                           rowGetter={this.rowGetter}
+                                           rowHeight={50} >
+                                        <Column label='Index'
+                                                cellDataGetter={({rowData}) => rowData.index}
+                                                dataKey='index'
+                                                width={60} />
+                                        <Column label='ID'
+                                                dataKey='id'
+                                                cellRenderer={LinkToFileCellRenderer}
+                                                width={80} />
+                                        <Column label='UID'
+                                                dataKey='uid'
+                                                width={80} />
+                                        <Column label='Name'
+                                                dataKey='name'
+                                                width={160}
+                                                flexGrow={1} />
+                                        <Column label='Created at'
+                                                dataKey='file_created_at'
+                                                width={80}
+                                                flexGrow={1} />
                                     </Table>
                                 )}
                             </AutoSizer>
@@ -212,59 +224,6 @@ class Files extends Component {
             </div>
         );
     }
-
-}
-
-const Header = (props) => {
-    const removeIconStyle = props.showRemoveIcon ? {} : { visibility: 'hidden' };
-
-    return (
-        <div
-            className='ui fluid search'
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingLeft: 10,
-                paddingRight: 10
-            }}
-        >
-            <div>
-                <div className='ui icon input'>
-                    <input
-                        className='prompt'
-                        type='text'
-                        placeholder='Search files...'
-                        value={props.searchText}
-                        onChange={props.handleSearchChange}
-                    />
-                    <i className='search icon' />
-                </div>
-                <i
-                    className='remove icon'
-                    onClick={props.handleSearchCancel}
-                    style={removeIconStyle}
-                />
-            </div>
-            <div className='flex-space-between-center'>
-                {
-                    props.loadingFiles &&
-                        <span className='flex-space-between-center'>
-                            <Spinner/>
-                            <span style={{marginLeft: '10px'}}>Searching...</span>
-                        </span>
-                }
-                {!!props.error && <span style={{color: 'red', marginLeft: '10px'}}>{props.error}</span>}
-            </div>
-            <div className='flex-space-between-center'>
-                {
-                    props.matching >= 0 && props.total >= 0 &&
-                        <span>Matched {props.matching} of {props.total}</span>
-
-                }
-            </div>
-        </div>
-    );
 }
 
 export default Files;

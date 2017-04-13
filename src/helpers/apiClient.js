@@ -1,10 +1,9 @@
-import axios from 'axios';
-import config from '../config';
+import axios from "axios";
 
-const { protocol, apiHost, apiPort, apiPathPrefix } = config;
-console.log(`${protocol}://${apiHost}:${apiPort}/${apiPathPrefix}`);
-const client = axios.create({
-    baseURL: `${protocol}://${apiHost}:${apiPort}/${apiPathPrefix}`
-});
+const API_BACKEND = process.env.NODE_ENV !== 'production' ?
+    process.env.REACT_APP_MDB_URL :
+    'http://app.mdb.bbdomain.org/';
+
+const client = axios.create({baseURL: API_BACKEND});
 
 export default client;

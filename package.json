@@ -1,8 +1,8 @@
 {
-  "name": "admin-ui",
+  "name": "mdb-admin",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./build",
+  "homepage": "http://app.mdb.bbdomain.org/admin/",
   "devDependencies": {
     "react-scripts": "0.8.5"
   },
@@ -25,6 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && scp -r build/* archive@app.mdb.bbdomain.org:/sites/admin"
   }
 }

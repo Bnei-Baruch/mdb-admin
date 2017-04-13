@@ -1,29 +1,31 @@
 import React, { Component } from 'react';
-import './App.css';
-import Logs from '../Logs/Logs';
+import { Button, Icon, Menu } from 'semantic-ui-react'
+import { Router, NavLink, Route } from 'react-router-dom'
+import createBrowserHistory from 'history/createBrowserHistory';
 import Files from '../Files/Files';
 import File from '../File/File';
 import ContentUnit from '../ContentUnit/ContentUnit';
 import Welcome from '../Welcome/Welcome';
-import { Button, Icon, Menu } from 'semantic-ui-react'
-import { Router, NavLink, Route } from 'react-router-dom'
+import './App.css';
 
-import createBrowserHistory from 'history/createBrowserHistory'
-
-const history = createBrowserHistory()
+const history = createBrowserHistory({
+    basename: process.env.NODE_ENV === 'production' ? '/admin/' : ''
+});
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            activeItemsVisible: false,
-            activeItems: [],
-        };
-        history.listen(this.historyChanged)
-    }
+
+    state = {
+        activeItemsVisible: false,
+        activeItems: []
+    };
 
     componentDidMount() {
+        this._unlistenHistoryChanged = history.listen(this.historyChanged);
         this.historyChanged(history.location);
+    }
+
+    componentWillUnmount() {
+        this._unlistenHistoryChanged();
     }
 
     historyChanged = (location) => {
@@ -52,7 +54,7 @@ class App extends Component {
                 activeItemsVisible: !!newActiveItems.length,
             });
         }
-    }
+    };
 
     toggleActiveItems = () => this.setState({ activeItemsVisible: !this.state.activeItemsVisible });
 
@@ -63,7 +65,6 @@ class App extends Component {
                 <div style={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
                     <Menu pointing>
                       <Menu.Item as={NavLink} to="/" exact>Welcome</Menu.Item>
-                      <Menu.Item as={NavLink} to="/logs">Logs</Menu.Item>
                       <Menu.Item as={NavLink} to="/files">Files</Menu.Item>
                       <Menu.Menu position='right'>
                           <Button icon size='mini'
@@ -76,7 +77,6 @@ class App extends Component {
                     <div style={{display: 'flex', flexDirection: 'row', flex: '1 0 auto'}}>
                         <div style={{display: 'flex', flexDirection: 'column', flex: '1 0 auto'}}>
                             <Route exact path="/" component={Welcome}/>
-                            <Route exact path="/logs" component={Logs}/>
                             <Route exact path="/files" component={Files}/>
                             <Route exact path="/files/:id" component={File}/>
                             <Route exact path="/content_units/:id" component={ContentUnit}/>
@@ -87,13 +87,10 @@ class App extends Component {
                         }}>
                              <Menu fluid vertical tabular='right'>
                                  {
-                                     this.state.activeItems.map(i => 
+                                     this.state.activeItems.map(i =>
                                         <Menu.Item as={NavLink} key={i} to={i}>
                                             File #{this.activeItemText(i)}
-                                            <i 
-                                                className='remove icon'
-                                                onClick={() => this.removeActiveItem(i)}
-                                            />
+                                            <i className='remove icon' onClick={() => this.removeActiveItem(i)}/>
                                         </Menu.Item>
                                  )}
                              </Menu>

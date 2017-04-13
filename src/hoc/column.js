@@ -31,8 +31,7 @@ export default function column(CellComponent) {
                 <component
                     cellKey={cellKey}
                     cellValue={cellValue}
-                    {...rest}
-                />
+                    {...rest} />
             );
         }
     };
