@@ -16,8 +16,8 @@ const basicCell = (transformName) => {
     }
 };
 
-export default function column(CellComponent) {
-    return class Column extends PureComponent {
+export default function columnCell(CellComponent) {
+    return class ColumnCell extends PureComponent {
         static propTypes = {
             cellKey: PropTypes.any.isRequired,
             cellValue: PropTypes.any.isRequired,

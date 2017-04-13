@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ObjectTable from '../ObjectTable/ObjectTable';
-import column from '../../hoc/column';
+import columnCell from '../../hoc/columnCell';
 import apiClient from '../../helpers/apiClient';
 
 export default class ContentUnit extends Component {
@@ -15,8 +15,8 @@ export default class ContentUnit extends Component {
     };
 
     columns = [
-        column('key'),
-        column('value')
+        columnCell('key'),
+        columnCell('value')
     ];
 
     componentDidMount() {

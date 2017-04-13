@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
-import column from '../../hoc/column';
+import columnCell from '../../hoc/columnCell';
 
 export default class ObjectTable extends PureComponent {
 
@@ -14,8 +14,8 @@ export default class ObjectTable extends PureComponent {
     static defaultProps = {
         header: '',
         columns: [
-            column('key'),
-            column('value')
+            columnCell('key'),
+            columnCell('value')
         ]
     };
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import filesize from 'filesize';
 import ObjectTable from '../ObjectTable/ObjectTable';
-import column from '../../hoc/column';
+import columnCell from '../../hoc/columnCell';
 import apiClient from '../../helpers/apiClient';
 
 export default class File extends Component {
@@ -17,8 +17,8 @@ export default class File extends Component {
     };
 
     columns = [
-        column('key'),
-        column(class extends PureComponent {
+        columnCell('key'),
+        columnCell(class extends PureComponent {
             render() {
                 const { cellKey, cellValue } = this.props;
                 switch (cellKey) {
