@@ -47,8 +47,7 @@ export default class ObjectTable extends PureComponent {
                                                         cellKey={key}
                                                         cellValue={value}
                                                         rowIndex={rowIndex}
-                                                        columnIndex={columnIndex}
-                                                    />
+                                                        columnIndex={columnIndex} />
                                                 </Table.Cell>
                                             );
                                         })
