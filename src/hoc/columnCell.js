@@ -20,15 +20,15 @@ export default function columnCell(CellComponent) {
     return class ColumnCell extends PureComponent {
         static propTypes = {
             cellKey: PropTypes.any.isRequired,
-            cellValue: PropTypes.any.isRequired,
+            cellValue: PropTypes.any,
         };
 
         render() {
             const { cellKey, cellValue, ...rest } = this.props;
-            const component = isString(CellComponent) ? basicCell(CellComponent) : CellComponent;
+            const Component = isString(CellComponent) ? basicCell(CellComponent) : CellComponent;
 
             return (
-                <component
+                <Component
                     cellKey={cellKey}
                     cellValue={cellValue}
                     {...rest} />

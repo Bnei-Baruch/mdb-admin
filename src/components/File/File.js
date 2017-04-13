@@ -23,13 +23,13 @@ export default class File extends Component {
                 const { cellKey, cellValue } = this.props;
                 switch (cellKey) {
                     case 'size':
-                        return filesize(cellValue);
+                        return <div>{filesize(cellValue)}</div>;
                     case 'properties':
                         return <ObjectTable source={cellValue} />
                     case 'content_unit_id':
                         return <Link to={`/content_units/${cellValue}`}>{cellValue}</Link>;
                     default:
-                        return cellValue;
+                        return <div>{cellValue}</div>;
                 }
             }
         })
@@ -40,12 +40,14 @@ export default class File extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.getFile(nextProps.match.params.id);
+        if (nextProps.match.params.id !== this.props.match.params.id) {
+            this.getFile(nextProps.match.params.id);
+        }
     }
 
     getFile = (id) => {
-        apiClient.get(`/rest/files/${id}/`)
-            .then(response => this.setState({ file: response.data }))
+        apiClient.get(`/rest/files/${id}`)
+            .then(response => this.setState({ file: response.data.data }))
             .catch(error => {
                 throw Error('Error loading files, ' + error);
             });

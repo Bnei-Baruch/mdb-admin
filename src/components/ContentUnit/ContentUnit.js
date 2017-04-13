@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import filesize from 'filesize';
 import ObjectTable from '../ObjectTable/ObjectTable';
 import columnCell from '../../hoc/columnCell';
 import apiClient from '../../helpers/apiClient';
@@ -16,7 +17,21 @@ export default class ContentUnit extends Component {
 
     columns = [
         columnCell('key'),
-        columnCell('value')
+        columnCell(class extends PureComponent {
+            render() {
+                const { cellKey, cellValue } = this.props;
+                switch (cellKey) {
+                    case 'size':
+                        return <div>{filesize(cellValue)}</div>;
+                    case 'properties':
+                        return <ObjectTable source={cellValue} />
+                    // case 'content_unit_id':
+                    //     return <Link to={`/content_units/${cellValue}`}>{cellValue}</Link>;
+                    default:
+                        return <div>{cellValue}</div>;
+                }
+            }
+        })
     ];
 
     componentDidMount() {

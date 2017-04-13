@@ -25,7 +25,7 @@ export default class ObjectTable extends PureComponent {
         return (
             <Table celled striped>
                 {
-                    header && <Table.Header>
+                    !!header && <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell colSpan={columns.length}>{header}</Table.HeaderCell>
                         </Table.Row>
