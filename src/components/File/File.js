@@ -1,31 +1,34 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
-import InfoTable from '../InfoTable/InfoTable';
-import SimpleObjectTable from '../SimpleObjectTable/SimpleObjectTable';
+import ObjectTable from '../ObjectTable/ObjectTable';
+import column from '../../hoc/column';
 import apiClient from '../../helpers/apiClient';
 
 export default class File extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
-    }
+    };
 
-    cells = [
-        'key',
-        (key, value) => {
-            switch (key) {
-                case 'size':
-                    return filesize(value);
-                case 'properties':
-                    return <SimpleObjectTable object={value} />
-                case 'content_unit_id':
-                    return <Link to={`/content_units/${value}`}>{value}</Link>;
-                default:
-                    return value;
+    columns = [
+        column('key'),
+        column(class extends PureComponent {
+            render() {
+                const { cellKey, cellValue } = this.props;
+                switch (cellKey) {
+                    case 'size':
+                        return filesize(cellValue);
+                    case 'properties':
+                        return <ObjectTable source={cellValue} />
+                    case 'content_unit_id':
+                        return <Link to={`/content_units/${cellValue}`}>{cellValue}</Link>;
+                    default:
+                        return cellValue;
+                }
             }
-        }
+        })
     ];
 
     state = {
@@ -60,10 +63,10 @@ export default class File extends Component {
         }
 
         return (
-            <InfoTable
+            <ObjectTable
                 source={file}
                 header="File Info"
-                cells={this.cells}
+                columns={this.columns}
             />
         );
     }

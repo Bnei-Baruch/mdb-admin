@@ -9,12 +9,12 @@ import apiClient from '../../helpers/apiClient';
 const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
     if(!rowData || !rowData.id) {
         return (
-            <div 
+            <div
                 className={className}
                 key={key}
                 style={style}
             >
-                 <div 
+                 <div
                     className="flex-center-center"
                     style={{height: '100%', width: '100%'}}
                 >
@@ -91,7 +91,7 @@ class Files extends Component {
                 params: {
                     offset: startIndex,
                     limit,
-                    query: searchText    
+                    query: searchText
                 }
             }).then(response => {
                 const { files, matching, total } = response.data;
@@ -125,25 +125,25 @@ class Files extends Component {
         return item && typeof item.id !== 'undefined';
     };
 
-    rowGetter = ({ index }) => 
+    rowGetter = ({ index }) =>
         this.isRowLoaded({ index }) ? this.state.files[index] : {};
 
-    loadMoreRows = ({ startIndex, stopIndex }) => 
+    loadMoreRows = ({ startIndex, stopIndex }) =>
         this.searchFiles(this.state.searchText, startIndex, stopIndex);
 
     render() {
-        const { 
-            showRemoveIcon, 
-            searchText, 
-            loadingFiles, 
-            error, 
-            matching, 
-            total 
+        const {
+            showRemoveIcon,
+            searchText,
+            loadingFiles,
+            error,
+            matching,
+            total
         } = this.state;
 
         return (
             <div style={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column'}}>
-                <Header 
+                <Header
                     showRemoveIcon={showRemoveIcon}
                     searchText={searchText}
                     handleSearchChange={this.handleSearchChange}
@@ -151,10 +151,10 @@ class Files extends Component {
                     loadingFiles={loadingFiles}
                     error={error}
                     matching={matching}
-                    total={total} 
+                    total={total}
                 />
                 <div style={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column'}}>
-                    <InfiniteLoader 
+                    <InfiniteLoader
                         ref="inf"
                         isRowLoaded={this.isRowLoaded}
                         threshold={100}
@@ -164,7 +164,7 @@ class Files extends Component {
                         {({ onRowsRendered, registerChild }) => (
                             <AutoSizer>
                                 {({ width, height }) => (
-                                    <Table 
+                                    <Table
                                         headerHeight={50}
                                         height={height}
                                         width={width}
@@ -175,33 +175,33 @@ class Files extends Component {
                                         rowGetter={this.rowGetter}
                                         rowHeight={50}
                                     >
-                                        <Column 
+                                        <Column
                                             label='Index'
                                             cellDataGetter={({ rowData }) => rowData.index}
                                             dataKey='index'
-                                            width={60} 
+                                            width={60}
                                         />
-                                        <Column 
+                                        <Column
                                             label='ID'
                                             dataKey='id'
                                             cellRenderer={LinkToFileCellRenderer}
-                                            width={80} 
+                                            width={80}
                                         />
-                                        <Column 
+                                        <Column
                                             label='UID'
                                             dataKey='uid'
-                                            width={80} 
+                                            width={80}
                                         />
-                                        <Column 
+                                        <Column
                                             label='Name'
                                             dataKey='name'
                                             width={160} flexGrow={1}
                                         />
-                                        <Column 
+                                        <Column
                                             label='Created at'
                                             dataKey='file_created_at'
                                             width={80}
-                                            flexGrow={1} 
+                                            flexGrow={1}
                                         />
                                     </Table>
                                 )}
@@ -219,31 +219,31 @@ const Header = (props) => {
     const removeIconStyle = props.showRemoveIcon ? {} : { visibility: 'hidden' };
 
     return (
-        <div 
+        <div
             className='ui fluid search'
-            style={{ 
+            style={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingLeft: 10,
-                paddingRight: 10 
+                paddingRight: 10
             }}
         >
             <div>
                 <div className='ui icon input'>
-                    <input 
+                    <input
                         className='prompt'
                         type='text'
                         placeholder='Search files...'
                         value={props.searchText}
-                        onChange={props.handleSearchChange} 
+                        onChange={props.handleSearchChange}
                     />
                     <i className='search icon' />
                 </div>
-                <i 
+                <i
                     className='remove icon'
                     onClick={props.handleSearchCancel}
-                    style={removeIconStyle} 
+                    style={removeIconStyle}
                 />
             </div>
             <div className='flex-space-between-center'>
@@ -258,9 +258,9 @@ const Header = (props) => {
             </div>
             <div className='flex-space-between-center'>
                 {
-                    props.matching >= 0 && props.total >= 0 && 
+                    props.matching >= 0 && props.total >= 0 &&
                         <span>Matched {props.matching} of {props.total}</span>
-                    
+
                 }
             </div>
         </div>

@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import InfoTable from '../InfoTable/InfoTable';
+import ObjectTable from '../ObjectTable/ObjectTable';
+import column from '../../hoc/column';
 import apiClient from '../../helpers/apiClient';
 
 export default class ContentUnit extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
-    }
+    };
 
     state = {
         unit: null
     };
 
-    cells = [
-        'key',
-        'value'
+    columns = [
+        column('key'),
+        column('value')
     ];
 
     componentDidMount() {
@@ -30,7 +31,7 @@ export default class ContentUnit extends Component {
 
     getUnit = (id) => {
         apiClient.get(`/rest/content_units/${id}`)
-            .then(response =>
+             .then(response =>
                 this.setState({
                     unit: response.data.data
                 })
@@ -46,10 +47,10 @@ export default class ContentUnit extends Component {
         }
 
         return (
-            <InfoTable
+            <ObjectTable
                 header="Unit Info"
                 source={unit}
-                cells={this.cells}
+                columns={this.columns}
             />
         );
     }
