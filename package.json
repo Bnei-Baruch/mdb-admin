@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "http://app.mdb.bbdomain.org/admin/",
   "devDependencies": {
-    "react-scripts": "0.8.5"
+    "react-scripts": "0.9.5"
   },
   "dependencies": {
     "axios": "^0.16.0",
@@ -16,10 +16,10 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
-    "react-router-dom": "^4.0.0-beta.6",
+    "react-router-dom": "^4.1.1",
     "react-virtualized": "^9.4.1",
     "redux": "^3.6.0",
-    "semantic-ui-react": "^0.64.8"
+    "semantic-ui-react": "^0.67.2"
   },
   "scripts": {
     "start": "react-scripts start",
