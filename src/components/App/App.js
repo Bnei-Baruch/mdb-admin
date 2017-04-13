@@ -8,7 +8,9 @@ import Welcome from '../Welcome/Welcome.js';
 
 import './App.css';
 
-const history = createBrowserHistory();
+const history = createBrowserHistory({
+    basename: process.env.NODE_ENV === 'production' ? '/admin/' : ''
+});
 
 class App extends Component {
 
