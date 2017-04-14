@@ -68,4 +68,3 @@ export default class File extends Component {
         );
     }
 }
-

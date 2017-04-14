@@ -1,9 +1,21 @@
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import filesize from 'filesize';
 import ObjectTable from '../ObjectTable/ObjectTable';
 import columnCell from '../../hoc/columnCell';
 import apiClient from '../../helpers/apiClient';
+
+
+const i18Columns = [
+    columnCell('key'),
+    columnCell(class extends PureComponent {
+        ignoredKeys = ['content_unit_id', 'language'];
+
+        render() {
+            const { cellValue } = this.props;
+            return <ObjectTable source={cellValue} ignoreKeys={this.ignoredKeys} />
+        }
+    })
+];
 
 export default class ContentUnit extends Component {
 
@@ -21,12 +33,10 @@ export default class ContentUnit extends Component {
             render() {
                 const { cellKey, cellValue } = this.props;
                 switch (cellKey) {
-                    case 'size':
-                        return <div>{filesize(cellValue)}</div>;
                     case 'properties':
                         return <ObjectTable source={cellValue} />;
-                    // case 'content_unit_id':
-                    //     return <Link to={`/content_units/${cellValue}`}>{cellValue}</Link>;
+                    case 'i18n':
+                        return <ObjectTable source={cellValue} columns={i18Columns} />;
                     default:
                         return <div>{cellValue}</div>;
                 }

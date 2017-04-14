@@ -8,7 +8,8 @@ export default class ObjectTable extends PureComponent {
     static propTypes = {
         source: PropTypes.object.isRequired,
         columns: PropTypes.array,
-        header: PropTypes.string
+        header: PropTypes.string,
+        ignoreKeys: PropTypes.array
     };
 
     static defaultProps = {
@@ -16,14 +17,17 @@ export default class ObjectTable extends PureComponent {
         columns: [
             columnCell('key'),
             columnCell('value')
-        ]
+        ],
+        ignoreKeys: []
     };
+
+    isKeyIgnored = (key) => ~this.props.ignoreKeys.indexOf(key);
 
     render() {
         const { columns, source, header } = this.props;
 
         return (
-            <Table celled striped>
+            <Table definition structured striped>
                 {
                     !!header && <Table.Header>
                         <Table.Row>
@@ -33,7 +37,7 @@ export default class ObjectTable extends PureComponent {
                 }
                 <Table.Body>
                     {
-                        Object.keys(source).map((key, rowIndex) => {
+                        Object.keys(source).filter(key => !this.isKeyIgnored(key)).map((key, rowIndex) => {
                             const id = source.id;
                             const value = source[key];
                             return (
@@ -42,7 +46,7 @@ export default class ObjectTable extends PureComponent {
                                         columns.map((CellComponent, columnIndex) => {
                                             const columnKey = `${id}_${key}_${columnIndex}`;
                                             return (
-                                                <Table.Cell collapsing key={columnKey}>
+                                                <Table.Cell collapsing={false} verticalAlign="top" key={columnKey}>
                                                     <CellComponent
                                                         cellKey={key}
                                                         cellValue={value}
