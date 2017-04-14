@@ -46,8 +46,8 @@ export default class File extends Component {
     }
 
     getFile = (id) => {
-        apiClient.get(`/rest/files/${id}`)
-            .then(response => this.setState({ file: response.data.data }))
+        apiClient.get(`/rest/files/${id}/`)
+            .then(response => this.setState({ file: response.data }))
             .catch(error => {
                 throw Error('Error loading files, ' + error);
             });
@@ -68,3 +68,4 @@ export default class File extends Component {
         );
     }
 }
+

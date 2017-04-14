@@ -24,7 +24,7 @@ export default class ContentUnit extends Component {
                     case 'size':
                         return <div>{filesize(cellValue)}</div>;
                     case 'properties':
-                        return <ObjectTable source={cellValue} />
+                        return <ObjectTable source={cellValue} />;
                     // case 'content_unit_id':
                     //     return <Link to={`/content_units/${cellValue}`}>{cellValue}</Link>;
                     default:
@@ -45,10 +45,10 @@ export default class ContentUnit extends Component {
     }
 
     getUnit = (id) => {
-        apiClient.get(`/rest/content_units/${id}`)
+        apiClient.get(`/rest/content_units/${id}/`)
              .then(response =>
                 this.setState({
-                    unit: response.data.data
+                    unit: response.data
                 })
             ).catch(error => {
                 throw Error('Error loading units, ' + error);

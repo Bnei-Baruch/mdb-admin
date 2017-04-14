@@ -123,7 +123,7 @@ class Files extends Component {
             }
             return newState;
         }, () => {
-            apiClient.get('/rest/files', {
+            apiClient.get('/rest/files/', {
                 params: {
                     start_index: startIndex,
                     stop_index: stopIndex,
