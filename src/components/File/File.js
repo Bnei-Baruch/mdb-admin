@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import filesize from 'filesize';
 import { Table } from 'semantic-ui-react';
+import filesize from 'filesize';
 import apiClient from '../../helpers/apiClient';
 
 
@@ -29,6 +29,7 @@ const ObjectTable = ({ object }) => {
         </Table>
     );
 };
+
 ObjectTable.propTypes = {
     object: PropTypes.object
 };
@@ -40,17 +41,20 @@ const transformValues = (key, value) => {
         default:
             return value;
     }
-}
+};
 
 export default class File extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
-    }
-
-    state = {
-        file: null
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            file: null
+        };
+    }
 
     componentDidMount() {
         this.getFile(this.props.match.params.id);
@@ -63,18 +67,17 @@ export default class File extends Component {
     }
 
     getFile = (id) => {
-        apiClient.get(`/rest/files/${id}`)
+        apiClient.get(`/rest/files/${id}/`)
             .then(response => 
-                this.setState({
-                    file: response.data.file
-                })
+                this.setState({file: response.data})
             ).catch(error => {
                 throw Error('Error loading files, ' + error);
             });
     };
 
     render() {
-        const { file } = this.state;
+        const file = this.state.file;
+
         if (!file) {
             return null;
         }
@@ -107,5 +110,4 @@ export default class File extends Component {
             </Table>
         );
     }
-
 }
