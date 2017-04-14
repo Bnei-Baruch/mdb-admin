@@ -10,12 +10,12 @@ import './Files.css';
 const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
     if(!rowData || !rowData.id) {
         return (
-            <div 
+            <div
                 className={className}
                 key={key}
                 style={style}
             >
-                 <div 
+                 <div
                     className="flex-center-center"
                     style={{height: '100%', width: '100%'}}
                 >
@@ -81,24 +81,21 @@ const Header = (props) => {
 };
 
 class Files extends Component {
+    firstLimit = 100;
 
-    constructor(props) {
-        super(props);
-        this.firstLimit = 100;
-        this.state = {
-            // Should be eventually props.
-            files: [],
-            resetFiles: false,
-            total: 0,
+    state = {
+        // Should be eventually props.
+        files: [],
+        resetFiles: false,
+        total: 0,
 
-            loadingFiles: false,
-            error: '',
+        loadingFiles: false,
+        error: '',
 
-            // Should be eventually state.
-            showRemoveIcon: false,
-            searchText: '',
-        };
-    }
+        // Should be eventually state.
+        showRemoveIcon: false,
+        searchText: '',
+    };
 
     componentDidMount = () => {
         this.searchFiles('', 0, this.firstLimit);
@@ -126,11 +123,11 @@ class Files extends Component {
             }
             return newState;
         }, () => {
-            apiClient.get('/rest/files/', {
+            apiClient.get('/rest/files', {
                 params: {
                     start_index: startIndex,
                     stop_index: stopIndex,
-                    query: searchText    
+                    query: searchText
                 }
             }).then(response => {
                 const {total, data} = response.data;
@@ -160,18 +157,18 @@ class Files extends Component {
         return item && typeof item.id !== 'undefined';
     };
 
-    rowGetter = ({ index }) => 
+    rowGetter = ({ index }) =>
         this.isRowLoaded({ index }) ? this.state.files[index] : {};
 
-    loadMoreRows = ({ startIndex, stopIndex }) => 
+    loadMoreRows = ({ startIndex, stopIndex }) =>
         this.searchFiles(this.state.searchText, startIndex, stopIndex);
 
     render() {
-        const {showRemoveIcon, searchText, loadingFiles, error, total} = this.state;
+        const { showRemoveIcon, searchText, loadingFiles, error, total } = this.state;
 
         return (
             <div style={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column'}}>
-                <Header 
+                <Header
                     showRemoveIcon={showRemoveIcon}
                     searchText={searchText}
                     handleSearchChange={this.handleSearchChange}
@@ -181,11 +178,12 @@ class Files extends Component {
                     total={total}
                 />
                 <div style={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column'}}>
-                    <InfiniteLoader ref="inf"
-                                    isRowLoaded={this.isRowLoaded}
-                                    threshold={100}
-                                    loadMoreRows={this.loadMoreRows}
-                                    rowCount={total} >
+                    <InfiniteLoader
+                        ref="inf"
+                        isRowLoaded={this.isRowLoaded}
+                        threshold={100}
+                        loadMoreRows={this.loadMoreRows}
+                        rowCount={total} >
                         {({ onRowsRendered, registerChild }) => (
                             <AutoSizer>
                                 {({ width, height }) => (

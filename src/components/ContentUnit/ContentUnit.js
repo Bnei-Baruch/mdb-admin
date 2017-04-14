@@ -1,19 +1,18 @@
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import filesize from 'filesize';
 import ObjectTable from '../ObjectTable/ObjectTable';
 import columnCell from '../../hoc/columnCell';
 import apiClient from '../../helpers/apiClient';
 
-export default class File extends Component {
+export default class ContentUnit extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
     };
 
     state = {
-        file: null
+        unit: null
     };
 
     columns = [
@@ -26,8 +25,8 @@ export default class File extends Component {
                         return <div>{filesize(cellValue)}</div>;
                     case 'properties':
                         return <ObjectTable source={cellValue} />
-                    case 'content_unit_id':
-                        return <Link to={`/content_units/${cellValue}`}>{cellValue}</Link>;
+                    // case 'content_unit_id':
+                    //     return <Link to={`/content_units/${cellValue}`}>{cellValue}</Link>;
                     default:
                         return <div>{cellValue}</div>;
                 }
@@ -36,35 +35,38 @@ export default class File extends Component {
     ];
 
     componentDidMount() {
-        this.getFile(this.props.match.params.id);
+        this.getUnit(this.props.match.params.id);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.match.params.id !== this.props.match.params.id) {
-            this.getFile(nextProps.match.params.id);
+        if (this.props.match.params.id !== nextProps.match.params.id) {
+            this.getUnit(nextProps.match.params.id);
         }
     }
 
-    getFile = (id) => {
-        apiClient.get(`/rest/files/${id}`)
-            .then(response => this.setState({ file: response.data.data }))
-            .catch(error => {
-                throw Error('Error loading files, ' + error);
+    getUnit = (id) => {
+        apiClient.get(`/rest/content_units/${id}`)
+             .then(response =>
+                this.setState({
+                    unit: response.data.data
+                })
+            ).catch(error => {
+                throw Error('Error loading units, ' + error);
             });
     };
 
     render() {
-        const file = this.state.file;
-
-        if (!file) {
+        const { unit } = this.state;
+        if (!unit) {
             return null;
         }
 
         return (
             <ObjectTable
-                source={file}
-                header="File Info"
-                columns={this.columns} />
+                header="Unit Info"
+                source={unit}
+                columns={this.columns}
+            />
         );
     }
 }
