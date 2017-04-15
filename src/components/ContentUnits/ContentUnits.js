@@ -39,6 +39,23 @@ const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
 const LinkToFileCellRenderer = ({ cellData, dataKey }) =>
     <Link to={`/content_units/${cellData}`}>{cellData}</Link>;
 
+const HebNameRenderer = ({ cellData }) => {
+    const lang = cellData.he;
+    return !!lang && lang.name;
+};
+
+const EnNameRenderer = ({ cellData }) => {
+    const lang = cellData.en;
+    return !!lang && lang.name;
+};
+
+const RuNameRenderer = ({ cellData }) => {
+    const lang = cellData.ru;
+    return !!lang && lang.name;
+};
+
+const FilmDateRenderer = ({ cellData }) => cellData.film_date;
+
 const Header = (props) => {
     const removeIconStyle = props.showRemoveIcon ? {} : { visibility: 'hidden' };
 
@@ -207,12 +224,24 @@ class ContentUnits extends Component {
                                         <Column label='UID'
                                                 dataKey='uid'
                                                 width={80} />
-                                        <Column label='Name'
-                                                dataKey='name'
-                                                width={160}
+                                        <Column label='Heb Name'
+                                                dataKey='i18n'
+                                                width={80}
+                                                cellRenderer={HebNameRenderer}
                                                 flexGrow={1} />
-                                        <Column label='Created at'
-                                                dataKey='file_created_at'
+                                        <Column label='En Name'
+                                                dataKey='i18n'
+                                                width={80}
+                                                cellRenderer={EnNameRenderer}
+                                                flexGrow={1} />
+                                        <Column label='Ru Name'
+                                                dataKey='i18n'
+                                                width={80}
+                                                cellRenderer={RuNameRenderer}
+                                                flexGrow={1} />
+                                        <Column label='Film Date'
+                                                dataKey='properties'
+                                                cellRenderer={FilmDateRenderer}
                                                 width={80}
                                                 flexGrow={1} />
                                     </Table>
