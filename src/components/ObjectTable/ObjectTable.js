@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
-import columnCell from '../../hoc/columnCell';
+import ObjectTableCell from '../ObjectTableCell/ObjectTableCell';
 
 export default class ObjectTable extends PureComponent {
 
@@ -15,19 +15,16 @@ export default class ObjectTable extends PureComponent {
     static defaultProps = {
         header: '',
         columns: [
-            columnCell('key'),
-            columnCell('value')
+            objectKey => ({ content: objectKey, collapsing: true }),
+            (objectKey, objectValue) => ({ content: objectValue }),
         ],
         ignoreKeys: []
     };
 
-    isKeyIgnored = (key) => ~this.props.ignoreKeys.indexOf(key);
-
     render() {
-        const { columns, source, header } = this.props;
-
+        const { columns, source, header, ignoreKeys, ...rest } = this.props;
         return (
-            <Table definition structured striped>
+            <Table celled striped {...rest}>
                 {
                     !!header && <Table.Header>
                         <Table.Row>
@@ -37,22 +34,21 @@ export default class ObjectTable extends PureComponent {
                 }
                 <Table.Body>
                     {
-                        Object.keys(source).filter(key => !this.isKeyIgnored(key)).map((key, rowIndex) => {
+                        Object.keys(source).filter(key => !ignoreKeys.includes(key)).map((key, rowIndex) => {
                             const id = source.id;
                             const value = source[key];
                             return (
                                 <Table.Row key={`${id}_${key}_${rowIndex}`}>
                                     {
-                                        columns.map((CellComponent, columnIndex) => {
+                                        columns.map((cellDefinition, columnIndex) => {
                                             const columnKey = `${id}_${key}_${columnIndex}`;
                                             return (
-                                                <Table.Cell collapsing={false} verticalAlign="top" key={columnKey}>
-                                                    <CellComponent
-                                                        cellKey={key}
-                                                        cellValue={value}
-                                                        rowIndex={rowIndex}
-                                                        columnIndex={columnIndex} />
-                                                </Table.Cell>
+                                                <ObjectTableCell key={columnKey}
+                                                                 objectKey={key}
+                                                                 objectValue={value}
+                                                                 rowIndex={rowIndex}
+                                                                 columnIndex={columnIndex}
+                                                                 definition={cellDefinition} />
                                             );
                                         })
                                     }

@@ -1,9 +1,8 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import filesize from 'filesize';
 import ObjectTable from '../ObjectTable/ObjectTable';
-import columnCell from '../../hoc/columnCell';
 import apiClient from '../../helpers/apiClient';
 
 export default class File extends Component {
@@ -17,22 +16,25 @@ export default class File extends Component {
     };
 
     columns = [
-        columnCell('key'),
-        columnCell(class extends PureComponent {
-            render() {
-                const { cellKey, cellValue } = this.props;
-                switch (cellKey) {
-                    case 'size':
-                        return <div>{filesize(cellValue)}</div>;
-                    case 'properties':
-                        return <ObjectTable source={cellValue} />
-                    case 'content_unit_id':
-                        return <Link to={`/content_units/${cellValue}`}>{cellValue}</Link>;
-                    default:
-                        return <div>{cellValue}</div>;
-                }
+        objectKey => ({ content: objectKey }),
+        (objectKey, objectValue) => {
+            let content;
+            switch (objectKey) {
+                case 'size':
+                    content = filesize(objectValue);
+                    break;
+                case 'properties':
+                    content = <ObjectTable source={objectValue} />;
+                    break;
+                case 'content_unit_id':
+                    content = <Link to={`/content_units/${objectValue}`}>{objectValue}</Link>;
+                    break;
+                default:
+                    content = objectValue;
             }
-        })
+
+            return { content };
+        }
     ];
 
     componentDidMount() {
