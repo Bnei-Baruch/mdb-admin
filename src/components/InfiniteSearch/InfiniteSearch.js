@@ -33,7 +33,7 @@ const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
 
 export default class InfiniteSearch extends Component {
     static propTypes = {
-        items: PropTypes.array.isRequired,
+        resultItems: PropTypes.array.isRequired,
         error: PropTypes.any,
         search: PropTypes.func.isRequired,
         params: PropTypes.object.isRequired,
@@ -60,12 +60,12 @@ export default class InfiniteSearch extends Component {
     resetInfiniteLoaderCache = () => this.infLoader.resetLoadMoreRowsCache();
 
     isRowLoaded = ({ index }) => {
-        const item = this.props.items[index];
+        const item = this.props.resultItems[index];
         return item && typeof item.id !== 'undefined';
     };
 
     rowGetter = ({ index }) =>
-        this.isRowLoaded({ index }) ? this.props.items[index] : {};
+        this.isRowLoaded({ index }) ? this.props.resultItems[index] : {};
 
     loadMoreRows = ({ startIndex, stopIndex }) =>
         this.search({ query: this.props.params.query }, false, startIndex, stopIndex);
