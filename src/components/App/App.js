@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Button, Icon, Menu } from 'semantic-ui-react'
 import { Router, NavLink, Route } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory';
-import Files from '../Files/Files.js';
-import File from '../File/File.js';
-import Welcome from '../Welcome/Welcome.js';
-
+import Files from '../Files/Files';
+import File from '../File/File';
+import ContentUnit from '../ContentUnit/ContentUnit';
+import Welcome from '../Welcome/Welcome';
 import './App.css';
 
 const history = createBrowserHistory({
@@ -14,17 +14,18 @@ const history = createBrowserHistory({
 
 class App extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            activeItemsVisible: false,
-            activeItems: [],
-        };
-        history.listen(this.historyChanged);
-    }
+    state = {
+        activeItemsVisible: false,
+        activeItems: []
+    };
 
     componentDidMount() {
+        this._unlistenHistoryChanged = history.listen(this.historyChanged);
         this.historyChanged(history.location);
+    }
+
+    componentWillUnmount() {
+        this._unlistenHistoryChanged();
     }
 
     historyChanged = (location) => {
@@ -78,6 +79,7 @@ class App extends Component {
                             <Route exact path="/" component={Welcome}/>
                             <Route exact path="/files" component={Files}/>
                             <Route exact path="/files/:id" component={File}/>
+                            <Route exact path="/content_units/:id" component={ContentUnit}/>
                         </div>
                         <div style={{
                             display: activeItemsVisible ? 'block' : 'none',
@@ -85,7 +87,7 @@ class App extends Component {
                         }}>
                              <Menu fluid vertical tabular='right'>
                                  {
-                                     this.state.activeItems.map(i => 
+                                     this.state.activeItems.map(i =>
                                         <Menu.Item as={NavLink} key={i} to={i}>
                                             File #{this.activeItemText(i)}
                                             <i className='remove icon' onClick={() => this.removeActiveItem(i)}/>
