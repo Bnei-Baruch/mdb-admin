@@ -1,0 +1,22 @@
+
+.SearchHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10;
+    padding-right: 10;
+}
+
+.SearchHeader__error {
+    margin-left: 10px;
+    color: red;
+}
+
+.SearchHeader__removeIcon--hidden {
+    visibility: hidden;
+}
+
+.SearchHeader__searchText {
+    margin-left: 10px;
+}

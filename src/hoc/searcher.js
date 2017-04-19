@@ -1,0 +1,89 @@
+import React, { Component } from 'react';
+import invariant from 'invariant';
+import noop from 'lodash/noop';
+import isFunction from 'lodash/isFunction';
+
+const searcher = (options) => (WrappedComponent) => {
+    invariant(
+        isFunction(options.request),
+        'options.request must be a function'
+    );
+
+    const defaultOptions = {
+        onSearching: noop,
+        onSuccess: noop,
+        onError: noop,
+        searchOnMount: false,
+    };
+
+    const { onSearching, onSuccess, onError, searchOnMount, request } = {
+        ...defaultOptions,
+        ...options
+    };
+
+    const DEFAULT_STOP_INDEX = 100;
+
+    return class Searcher extends Component {
+
+        state = {
+            searching: false,
+            items: [],
+            params: {},
+            total: 0,
+            error: null
+        };
+
+        componentDidMount() {
+            if (searchOnMount) {
+                this.search();
+            }
+        }
+
+        search = (params = {}, isNewSearch = false, startIndex = 0, stopIndex = DEFAULT_STOP_INDEX) => {
+            onSearching();
+            this.setState({
+                searching: true,
+                params: {}
+            }, () => {
+                request(params).then(response => {
+                    onSuccess(response);
+                    const { data, total } = response.data;
+                    this.setState(prevState => {
+                        const items = isNewSearch ? [] : prevState.items;
+                        data.forEach((item, index) => {
+                            items[index + startIndex] = item;
+                        });
+
+                        return {
+                            total,
+                            items,
+                            searching: false,
+                            error: null
+                        };
+                    });
+                }).catch(error => {
+                    onError(error);
+                    this.setState({
+                        searching: false,
+                        error: error
+                    });
+                });
+            });
+        };
+
+        render() {
+            return (
+                <WrappedComponent search={this.search}
+                                  searching={this.state.searching}
+                                  resultItems={this.state.items}
+                                  params={this.state.params}
+                                  searchError={this.state.error}
+                                  {...this.props} />
+            );
+        }
+    };
+
+    // TODO (yaniv): change displayName
+};
+
+export default searcher;
