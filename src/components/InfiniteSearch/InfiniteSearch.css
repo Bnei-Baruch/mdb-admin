@@ -1,0 +1,18 @@
+.InfiniteSearch {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+.InfiniteSearch__loader {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+.placeholder {
+    display: inline-block;
+    height: 80%;
+    width: 97%;
+    background-color: #DDD;
+}

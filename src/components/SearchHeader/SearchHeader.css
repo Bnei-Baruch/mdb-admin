@@ -1,0 +1,28 @@
+
+.SearchHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.SearchHeader__spinnerContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.SearchHeader__error {
+    margin-left: 10px;
+    color: red;
+}
+
+.SearchHeader__removeIcon--hidden {
+    visibility: hidden;
+}
+
+.SearchHeader__searchText {
+    margin-left: 10px;
+}

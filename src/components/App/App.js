@@ -5,6 +5,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import Files from '../Files/Files';
 import File from '../File/File';
 import ContentUnit from '../ContentUnit/ContentUnit';
+import ContentUnits from '../ContentUnits/ContentUnits';
 import Welcome from '../Welcome/Welcome';
 import './App.css';
 
@@ -66,6 +67,7 @@ class App extends Component {
                     <Menu pointing>
                       <Menu.Item as={NavLink} to="/" exact>Welcome</Menu.Item>
                       <Menu.Item as={NavLink} to="/files">Files</Menu.Item>
+                      <Menu.Item as={NavLink} to="/content_units">Content Units</Menu.Item>
                       <Menu.Menu position='right'>
                           <Button icon size='mini'
                                   style={{margin: 5}}
@@ -79,6 +81,7 @@ class App extends Component {
                             <Route exact path="/" component={Welcome}/>
                             <Route exact path="/files" component={Files}/>
                             <Route exact path="/files/:id" component={File}/>
+                            <Route exact path="/content_units" component={ContentUnits}/>
                             <Route exact path="/content_units/:id" component={ContentUnit}/>
                         </div>
                         <div style={{
