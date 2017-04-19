@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import noop from 'lodash/noop';
 import Spinner from '../Spinner/Spinner';
+import './SearchHeader.css';
 
 function SearchHeader(props) {
     const {
@@ -35,7 +36,7 @@ function SearchHeader(props) {
             </div>
             {
                 searching &&
-                <div>
+                <div className="SearchHeader__spinnerContainer">
                     <Spinner/>
                     <span className="SearchHeader__searchText">Searching...</span>
                 </div>
