@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { AutoSizer, InfiniteLoader, Table } from 'react-virtualized';
 import SearchHeader from '../SearchHeader/SearchHeader';
+import './InfiniteSearch.css';
 
 import 'react-virtualized/styles.css';
 
@@ -49,12 +50,12 @@ export default class InfiniteSearch extends Component {
             this.resetInfiniteLoaderCache();
         }
 
-        this.search({ query: value }, isNewSearch);
+        this.props.search({ query: value }, isNewSearch);
     };
 
     handleSearchCancel = () => {
         this.resetInfiniteLoaderCache();
-        this.search({ query: '' }, true);
+        this.props.search({ query: '' }, true);
     };
 
     resetInfiniteLoaderCache = () => this.infLoader.resetLoadMoreRowsCache();
@@ -64,14 +65,17 @@ export default class InfiniteSearch extends Component {
         return item && typeof item.id !== 'undefined';
     };
 
-    rowGetter = ({ index }) =>
-        this.isRowLoaded({ index }) ? this.props.resultItems[index] : {};
+    rowGetter = ({ index }) => {
+        return this.isRowLoaded({ index }) ? this.props.resultItems[index] : {};
+    };
 
     loadMoreRows = ({ startIndex, stopIndex }) =>
-        this.search({ query: this.props.params.query }, false, startIndex, stopIndex);
+        this.props.search({ query: this.props.params.query }, false, startIndex, stopIndex);
 
     render() {
         const { params, searching, error, total, searchPlaceholder, columns } = this.props;
+
+        console.log(params);
 
         return (
             <div className="InfiniteSearch">

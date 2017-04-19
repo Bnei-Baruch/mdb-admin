@@ -43,7 +43,7 @@ const searcher = (options) => (WrappedComponent) => {
             onSearching();
             this.setState({
                 searching: true,
-                params: {}
+                params
             }, () => {
                 request(params).then(response => {
                     onSuccess(response);
@@ -78,6 +78,7 @@ const searcher = (options) => (WrappedComponent) => {
                                   resultItems={this.state.items}
                                   params={this.state.params}
                                   searchError={this.state.error}
+                                  total={this.state.total}
                                   {...this.props} />
             );
         }

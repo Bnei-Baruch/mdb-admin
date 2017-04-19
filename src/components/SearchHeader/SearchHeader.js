@@ -18,7 +18,7 @@ function SearchHeader(props) {
 
     const removeIconClass = classNames(
         'remove icon',
-        { 'SearchHeader__removeIcon--hidden': searchText !== ''}
+        { 'SearchHeader__removeIcon--hidden': searchText === ''}
     );
 
     return (
