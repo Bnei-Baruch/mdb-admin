@@ -4,7 +4,10 @@
   "private": true,
   "homepage": "http://app.mdb.bbdomain.org/admin/",
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "enzyme": "^2.8.2",
+    "jest-enzyme": "^2.1.2",
+    "react-scripts": "0.9.5",
+    "react-test-renderer": "^15.5.4"
   },
   "dependencies": {
     "axios": "^0.16.0",
