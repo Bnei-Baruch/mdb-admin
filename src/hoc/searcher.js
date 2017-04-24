@@ -40,32 +40,34 @@ const searcher = (options) => (WrappedComponent) => {
         }
 
         search = (params = {}, isNewSearch = false, startIndex = 0, stopIndex = DEFAULT_STOP_INDEX) => {
-            onSearching();
-            this.setState({
-                searching: true,
-                params
-            }, () => {
-                request(params).then(response => {
-                    onSuccess(response);
-                    const { data, total } = response.data;
-                    this.setState(prevState => {
-                        const items = isNewSearch ? [] : prevState.items;
-                        data.forEach((item, index) => {
-                            items[index + startIndex] = item;
-                        });
+            return new Promise((resolve, reject) => {
+                onSearching();
+                this.setState({
+                    searching: true,
+                    params
+                }, () => {
+                    request({ ...params, start_index: startIndex, stop_index: stopIndex }).then(response => {
+                        onSuccess(response);
+                        const { data, total } = response.data;
+                        this.setState(prevState => {
+                            const items = isNewSearch ? [] : prevState.items;
+                            data.forEach((item, index) => {
+                                items[index + startIndex] = item;
+                            });
 
-                        return {
-                            total,
-                            items,
+                            return {
+                                total,
+                                items,
+                                searching: false,
+                                error: null
+                            };
+                        }, () => resolve());
+                    }).catch(error => {
+                        onError(error);
+                        this.setState({
                             searching: false,
-                            error: null
-                        };
-                    });
-                }).catch(error => {
-                    onError(error);
-                    this.setState({
-                        searching: false,
-                        error: error
+                            error: error
+                        }, () => reject());
                     });
                 });
             });

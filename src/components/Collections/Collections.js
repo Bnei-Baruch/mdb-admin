@@ -14,7 +14,13 @@ const InfiniteCollectionSearcher = searcher({
 const LinkToFileCellRenderer = ({ cellData, dataKey }) =>
     <Link to={`/collections/${cellData}`}>{cellData}</Link>;
 
-const FilmDateRenderer = ({ cellData }) => cellData.film_date;
+const FilmDateRenderer = ({ cellData }) => {
+    // This renders even when cellData is undefined (not fetched yet).
+    if (!cellData) {
+        return '';
+    }
+    return cellData.film_date;
+};
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
 

@@ -44,6 +44,6 @@ const columns = [
 
 export default class Files extends Component {
     render() {
-        return <InfiniteFileSearcher columns={columns} searchPlacerholder="Search files..." />;
+        return <InfiniteFileSearcher columns={columns} searchPlaceholder="Search files..." />;
     }
 }

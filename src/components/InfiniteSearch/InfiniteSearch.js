@@ -22,12 +22,10 @@ const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
     );
 
     return (
-        <div
-            className={className}
-            key={key}
-            style={style}
-        >
-             { (rowData && rowData.id) ? columns : placeholderElement }
+        <div className={className}
+             key={key}
+             style={style}>
+            { (rowData && typeof rowData.id !== 'undefined') ? columns : placeholderElement }
         </div>
     );
 };
@@ -62,15 +60,16 @@ export default class InfiniteSearch extends Component {
 
     isRowLoaded = ({ index }) => {
         const item = this.props.resultItems[index];
-        return item && typeof item.id !== 'undefined';
+        return !!item && typeof item.id !== 'undefined';
     };
 
     rowGetter = ({ index }) => {
         return this.isRowLoaded({ index }) ? this.props.resultItems[index] : {};
     };
 
-    loadMoreRows = ({ startIndex, stopIndex }) =>
-        this.props.search({ query: this.props.params.query }, false, startIndex, stopIndex);
+    loadMoreRows = ({ startIndex, stopIndex }) => {
+        return this.props.search({ query: this.props.params.query }, false, startIndex, stopIndex);
+    };
 
     render() {
         const { params, searching, error, total, searchPlaceholder, columns } = this.props;
