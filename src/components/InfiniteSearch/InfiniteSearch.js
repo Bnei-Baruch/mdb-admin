@@ -75,8 +75,6 @@ export default class InfiniteSearch extends Component {
     render() {
         const { params, searching, error, total, searchPlaceholder, columns } = this.props;
 
-        console.log(params);
-
         return (
             <div className="InfiniteSearch">
                 <SearchHeader
