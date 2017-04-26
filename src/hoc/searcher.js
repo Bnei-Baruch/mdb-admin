@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import noop from 'lodash/noop';
 import isFunction from 'lodash/isFunction';
@@ -25,6 +26,14 @@ const searcher = (options) => (WrappedComponent) => {
 
     return class Searcher extends Component {
 
+        static propTypes = {
+            urlParams: PropTypes.object
+        };
+
+        static defaultProps = {
+            urlParams: {}
+        };
+
         state = {
             searching: false,
             items: [],
@@ -46,7 +55,7 @@ const searcher = (options) => (WrappedComponent) => {
                     searching: true,
                     params
                 }, () => {
-                    request({ ...params, start_index: startIndex, stop_index: stopIndex }).then(response => {
+                    request({ ...params, start_index: startIndex, stop_index: stopIndex }, this.props.urlParams).then(response => {
                         onSuccess(response);
                         const { data, total } = response.data;
                         this.setState(prevState => {
