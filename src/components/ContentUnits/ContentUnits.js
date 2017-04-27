@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
+import { CONTENT_TYPE_BY_ID, LANG_HEBREW, LANG_ENGLISH, LANG_RUSSIAN } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
 
 const InfiniteContentUnitSearcher = searcher({
@@ -11,25 +12,14 @@ const InfiniteContentUnitSearcher = searcher({
 })(InfiniteSearch);
 
 
-const LinkToFileCellRenderer = ({ cellData, dataKey }) =>
+const ItemLinkRenderer = ({ cellData, dataKey }) =>
     <Link to={`/content_units/${cellData}`}>{cellData}</Link>;
 
-const HebNameRenderer = ({ cellData }) => {
-    const lang = cellData.he;
-    return !!lang && lang.name;
-};
-
-const EnNameRenderer = ({ cellData }) => {
-    const lang = cellData.en;
-    return !!lang && lang.name;
-};
-
-const RuNameRenderer = ({ cellData }) => {
-    const lang = cellData.ru;
-    return !!lang && lang.name;
-};
+const NameRenderer = (lang) => ({ cellData }) => !!cellData[lang] && cellData[lang].name;
 
 const FilmDateRenderer = ({ cellData }) => cellData.film_date;
+
+const ContentTypeRenderer = ({ cellData }) => CONTENT_TYPE_BY_ID[cellData];
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
 
@@ -42,29 +32,35 @@ const columns = [
     <Column key="id"
             label='ID'
             dataKey='id'
-            cellRenderer={LinkToFileCellRenderer}
+            cellRenderer={ItemLinkRenderer}
             width={80} />,
     <Column key="uid"
             label='UID'
             dataKey='uid'
             width={80} />,
+    <Column key="type"
+            label='Type'
+            dataKey='type_id'
+            cellRenderer={ContentTypeRenderer}
+            width={160} />,
     <Column key="hebName"
             label='Heb Name'
             dataKey='i18n'
             width={80}
-            cellRenderer={HebNameRenderer}
-            flexGrow={1} />,
+            cellRenderer={NameRenderer(LANG_HEBREW)}
+            flexGrow={1}
+            className="rtl-dir"/>,
     <Column key="enName"
             label='En Name'
             dataKey='i18n'
             width={80}
-            cellRenderer={EnNameRenderer}
+            cellRenderer={NameRenderer(LANG_ENGLISH)}
             flexGrow={1} />,
     <Column key="ruName"
             label='Ru Name'
             dataKey='i18n'
             width={80}
-            cellRenderer={RuNameRenderer}
+            cellRenderer={NameRenderer(LANG_RUSSIAN)}
             flexGrow={1} />,
     <Column key="filmDate"
             label='Film Date'

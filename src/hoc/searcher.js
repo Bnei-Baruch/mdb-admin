@@ -64,6 +64,7 @@ const searcher = (options) => (WrappedComponent) => {
                         }, () => resolve());
                     }).catch(error => {
                         onError(error);
+                        console.error(error);
                         this.setState({
                             searching: false,
                             error: error

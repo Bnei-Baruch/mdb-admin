@@ -2,26 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ObjectTable from '../ObjectTable/ObjectTable';
 import apiClient from '../../helpers/apiClient';
+import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 
 
-const i18Columns = [
-    objectKey => ({ content: objectKey }),
-    (objectKeys, objectValue) => {
-        const ignoredKeys = ['content_unit_id', 'language'];
-        return {
-            content: <ObjectTable source={objectValue} ignoreKeys={ignoredKeys} />
-        };
-    }
-];
-
-export default class ContentUnit extends Component {
+export default class Operation extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
     };
 
     state = {
-        unit: null
+        operation: null
     };
 
     columns = [
@@ -30,10 +21,10 @@ export default class ContentUnit extends Component {
             let content;
             switch (objectKey) {
                 case 'properties':
-                    content = <ObjectTable source={objectValue} />;
+                    content = !!objectValue ? <ObjectTable source={objectValue} /> : null;
                     break;
-                case 'i18n':
-                    content = <ObjectTable source={objectValue} columns={i18Columns} />;
+                case 'type_id':
+                    content = `${OPERATION_TYPE_BY_ID[objectValue]} [${objectValue}]`;
                     break;
                 default:
                     content = objectValue;
@@ -44,36 +35,36 @@ export default class ContentUnit extends Component {
     ];
 
     componentDidMount() {
-        this.getUnit(this.props.match.params.id);
+        this.getOperation(this.props.match.params.id);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.match.params.id !== nextProps.match.params.id) {
-            this.getUnit(nextProps.match.params.id);
+            this.getOperation(nextProps.match.params.id);
         }
     }
 
-    getUnit = (id) => {
-        apiClient.get(`/rest/content_units/${id}/`)
+    getOperation = (id) => {
+        apiClient.get(`/rest/operations/${id}/`)
              .then(response =>
                 this.setState({
-                    unit: response.data
+                    operation: response.data
                 })
             ).catch(error => {
-                throw Error('Error loading content unit, ' + error);
+                throw Error('Error loading operation, ' + error);
             });
     };
 
     render() {
-        const { unit } = this.state;
-        if (!unit) {
+        const { operation } = this.state;
+        if (!operation) {
             return null;
         }
 
         return (
             <ObjectTable
-                header="Unit Info"
-                source={unit}
+                header="Operation Info"
+                source={operation}
                 columns={this.columns}
             />
         );
