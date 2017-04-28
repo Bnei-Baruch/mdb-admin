@@ -77,8 +77,8 @@ const columns = [
 ];
 
 const ContentUnitSearcher = searcher({
-    request: (params, urlParams) => {
-        return apiClient.get(`/rest/collections/${urlParams.id}/content_units/`, { params })
+    request: (params) => {
+        return apiClient.get(`/rest/collections/${params.id}/content_units/`, { params })
             // patch response for infinite search
             .then(response => {
                 if (Array.isArray(response.data) && response.data.length) {
@@ -110,7 +110,7 @@ class Collection extends Component {
     };
 
     render() {
-        const urlParams = {
+        const defaultParams = {
             id: this.props.match.params.id
         };
 
@@ -123,7 +123,7 @@ class Collection extends Component {
                 <CollectionInfo id={this.props.match.params.id} />
                 <Header attached="top">Collection's Content Units</Header>
                 <Segment attached style={{ display: 'flex', flex: 1 }}>
-                    <ContentUnitSearcher urlParams={urlParams}
+                    <ContentUnitSearcher defaultParams={defaultParams}
                                          columns={columns}
                                         searchPlaceholder="Search..." />
                 </Segment>

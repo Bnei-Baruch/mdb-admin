@@ -27,11 +27,11 @@ const searcher = (options) => (WrappedComponent) => {
     return class Searcher extends Component {
 
         static propTypes = {
-            urlParams: PropTypes.object
+            defaultParams: PropTypes.object
         };
 
         static defaultProps = {
-            urlParams: {}
+            defaultParams: {}
         };
 
         state = {
@@ -55,7 +55,7 @@ const searcher = (options) => (WrappedComponent) => {
                     searching: true,
                     params
                 }, () => {
-                    request({ ...params, start_index: startIndex, stop_index: stopIndex }, this.props.urlParams).then(response => {
+                    request({ ...this.props.defaultParams, ...params, start_index: startIndex, stop_index: stopIndex }).then(response => {
                         onSuccess(response);
                         const { data, total } = response.data;
                         this.setState(prevState => {
