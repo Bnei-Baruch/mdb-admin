@@ -4,10 +4,11 @@ import ObjectTable from '../../ObjectTable/ObjectTable';
 import apiClient from '../../../helpers/apiClient';
 import dataLoader from '../../../hoc/dataLoader';
 
+
 const i18Columns = [
-    objectKey => ({ content: objectKey }),
+    objectKey => ({ content: objectKey, collapsing: true }),
     (objectKeys, objectValue) => {
-        const ignoredKeys = ['content_collection_id', 'language'];
+        const ignoredKeys = ['content_unit_id', 'language'];
         return {
             content: <ObjectTable source={objectValue} ignoreKeys={ignoredKeys} />
         };
@@ -15,7 +16,7 @@ const i18Columns = [
 ];
 
 const infoColumns = [
-    objectKey => ({ content: objectKey }),
+    objectKey => ({ content: objectKey, collapsing: true }),
     (objectKey, objectValue) => {
         let content;
         switch (objectKey) {
@@ -33,8 +34,7 @@ const infoColumns = [
     }
 ];
 
-
-class CollectionInfo extends Component {
+class ContentUnitInfo extends Component {
 
     static propTypes = {
         id: PropTypes.oneOfType([
@@ -49,7 +49,7 @@ class CollectionInfo extends Component {
 
         return (
             !!data && <ObjectTable
-                header="Collection Info"
+                header="Content Unit Info"
                 source={data}
                 columns={infoColumns}
             />
@@ -58,9 +58,9 @@ class CollectionInfo extends Component {
 }
 
 export default dataLoader(({ id }) => {
-    return apiClient.get(`/rest/collections/${id}/`)
+    return apiClient.get(`/rest/content_units/${id}/`)
         .catch(error => {
-            console.error('Error loading collections, ' + error);
+            console.error('Error loading content unit, ' + error);
             throw new Error(error);
         })
-})(CollectionInfo);
+})(ContentUnitInfo);

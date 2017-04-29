@@ -1,29 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ObjectTable from '../../ObjectTable/ObjectTable';
-import apiClient from '../../../helpers/apiClient';
+import { Link } from 'react-router-dom';
+import filesize from 'filesize';
+import ObjectTable from '../ObjectTable/ObjectTable';
+import apiClient from '../../helpers/apiClient';
 import dataLoader from '../../../hoc/dataLoader';
 
-const i18Columns = [
-    objectKey => ({ content: objectKey }),
-    (objectKeys, objectValue) => {
-        const ignoredKeys = ['content_collection_id', 'language'];
-        return {
-            content: <ObjectTable source={objectValue} ignoreKeys={ignoredKeys} />
-        };
-    }
-];
-
-const infoColumns = [
+const infoColumn = [
     objectKey => ({ content: objectKey }),
     (objectKey, objectValue) => {
         let content;
         switch (objectKey) {
+            case 'size':
+                content = filesize(objectValue);
+                break;
             case 'properties':
                 content = <ObjectTable source={objectValue} />;
                 break;
-            case 'i18n':
-                content = <ObjectTable source={objectValue} columns={i18Columns} />;
+            case 'content_unit_id':
+                content = <Link to={`/content_units/${objectValue}`}>{objectValue}</Link>;
                 break;
             default:
                 content = objectValue;
@@ -33,8 +28,7 @@ const infoColumns = [
     }
 ];
 
-
-class CollectionInfo extends Component {
+class FileInfo extends Component {
 
     static propTypes = {
         id: PropTypes.oneOfType([
@@ -49,18 +43,18 @@ class CollectionInfo extends Component {
 
         return (
             !!data && <ObjectTable
-                header="Collection Info"
-                source={data}
-                columns={infoColumns}
-            />
+                source={file}
+                header="File Info"
+                columns={infoColumn} />
         );
     }
 }
 
 export default dataLoader(({ id }) => {
-    return apiClient.get(`/rest/collections/${id}/`)
+    return apiClient.get(`/rest/files/${id}/`)
         .catch(error => {
-            console.error('Error loading collections, ' + error);
+            console.error('Error loading content files, ' + error);
             throw new Error(error);
         })
-})(CollectionInfo);
+})(FileInfo);
+

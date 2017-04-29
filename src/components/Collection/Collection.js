@@ -125,7 +125,7 @@ class Collection extends Component {
                 <Segment attached style={{ display: 'flex', flex: 1 }}>
                     <ContentUnitSearcher defaultParams={defaultParams}
                                          columns={columns}
-                                        searchPlaceholder="Search..." />
+                                         searchPlaceholder="Search..." />
                 </Segment>
             </div>
         );
