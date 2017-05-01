@@ -1,81 +1,77 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ObjectTable from '../ObjectTable/ObjectTable';
+import { Header, Segment } from 'semantic-ui-react';
+import { Column } from 'react-virtualized';
+import ContentUnitInfo from './ContentUnitInfo/ContentUnitInfo';
+import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
+import { relationshipResponseToPaginated } from '../../helpers/apiResponseTransforms';
+import searcher from '../../hoc/searcher';
+import { columns as collectionColumns } from '../Collections/Collections';
+import { columns as fileColumns } from '../Files/Files';
 
-
-const i18Columns = [
-    objectKey => ({ content: objectKey }),
-    (objectKeys, objectValue) => {
-        const ignoredKeys = ['content_unit_id', 'language'];
-        return {
-            content: <ObjectTable source={objectValue} ignoreKeys={ignoredKeys} />
-        };
-    }
+const collectionRelationshipColumns = [
+    collectionColumns[0],
+    <Column key="relationshipName"
+            label="Relationship"
+            dataKey="relationshipName"
+            width={120} />,
+    collectionColumns.slice(1)
 ];
 
-export default class ContentUnit extends Component {
+const CollectionSearcher = searcher({
+    request: (params) => {
+        return apiClient.get(`/rest/content_units/${params.id}/collections/`, { params })
+            // patch response for infinite search
+            .then(response => relationshipResponseToPaginated(response, 'collection'))
+    },
+    searchOnMount: true
+})(InfiniteSearch);
+
+const FileSearcher = searcher({
+    request: (params) => {
+        return apiClient.get(`/rest/content_units/${params.id}/files/`, { params })
+            // patch response for infinite search
+            .then(response => relationshipResponseToPaginated(response))
+    },
+    searchOnMount: true
+})(InfiniteSearch);
+
+class ContentUnit extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
-    };
-
-    state = {
-        unit: null
-    };
-
-    columns = [
-        objectKey => ({ content: objectKey }),
-        (objectKey, objectValue) => {
-            let content;
-            switch (objectKey) {
-                case 'properties':
-                    content = <ObjectTable source={objectValue} />;
-                    break;
-                case 'i18n':
-                    content = <ObjectTable source={objectValue} columns={i18Columns} />;
-                    break;
-                default:
-                    content = objectValue;
-            }
-
-            return { content };
-        }
-    ];
-
-    componentDidMount() {
-        this.getUnit(this.props.match.params.id);
     }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.match.params.id !== nextProps.match.params.id) {
-            this.getUnit(nextProps.match.params.id);
-        }
-    }
-
-    getUnit = (id) => {
-        apiClient.get(`/rest/content_units/${id}/`)
-             .then(response =>
-                this.setState({
-                    unit: response.data
-                })
-            ).catch(error => {
-                throw Error('Error loading content unit, ' + error);
-            });
-    };
 
     render() {
-        const { unit } = this.state;
-        if (!unit) {
-            return null;
-        }
+        const defaultParams = {
+            id: this.props.match.params.id
+        };
 
         return (
-            <ObjectTable
-                header="Unit Info"
-                source={unit}
-                columns={this.columns}
-            />
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1
+            }}>
+                <ContentUnitInfo id={this.props.match.params.id} />
+                <Header attached="top">Content Unit's Collections</Header>
+                <Segment attached style={{ display: 'flex', flex: '1 0 400px' }}>
+                    <CollectionSearcher defaultParams={defaultParams}
+                                        columns={collectionRelationshipColumns}
+                                        searchPlaceholder="Search..." />
+                </Segment>
+                <Header attached="top">Content Unit's Files</Header>
+                <Segment attached style={{ display: 'flex', flex: '1 0 400px' }}>
+                    <FileSearcher defaultParams={defaultParams}
+                                        columns={fileColumns}
+                                        searchPlaceholder="Search..." />
+                </Segment>
+            </div>
         );
     }
 }
+
+ContentUnit.Info = ContentUnitInfo;
+
+export default ContentUnit;

@@ -23,7 +23,7 @@ const ContentTypeRenderer = ({ cellData }) => CONTENT_TYPE_BY_ID[cellData];
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
 
-const columns = [
+export const columns = [
     <Column key="index"
             label='Index'
             cellRenderer={IndexCellRenderer}
