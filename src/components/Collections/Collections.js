@@ -24,7 +24,7 @@ const FilmDateRenderer = ({ cellData }) => {
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
 
-const columns = [
+export const columns = [
     <Column key="index"
             label='Index'
             cellRenderer={IndexCellRenderer}

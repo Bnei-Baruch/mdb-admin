@@ -2,55 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Header, Segment } from 'semantic-ui-react';
 import { Column } from 'react-virtualized';
-import { Link } from 'react-router-dom';
 import ContentUnitInfo from './ContentUnitInfo/ContentUnitInfo';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
 import { relationshipResponseToPaginated } from '../../helpers/apiResponseTransforms';
 import searcher from '../../hoc/searcher';
+import { columns as collectionColumns } from '../Collections/Collections';
+import { columns as fileColumns } from '../Files/Files';
 
-const LinkToCollectionCellRenderer = ({ cellData, dataKey }) =>
-    <Link to={`/collections/${cellData}`}>{cellData}</Link>;
-
-const FilmDateRenderer = ({ cellData }) => {
-    // This renders even when cellData is undefined (not fetched yet).
-    if (!cellData) {
-        return '';
-    }
-    return cellData.film_date;
-};
-
-const IndexCellRenderer = ({ rowIndex }) => rowIndex;
-
-const collectionsColumns = [
-    <Column key="index"
-            label='Index'
-            cellRenderer={IndexCellRenderer}
-            dataKey='index'
-            width={60} />,
+const collectionRelationshipColumns = [
+    collectionColumns[0],
     <Column key="relationshipName"
             label="Relationship"
             dataKey="relationshipName"
             width={120} />,
-    <Column key="id"
-            label='ID'
-            dataKey='id'
-            cellRenderer={LinkToCollectionCellRenderer}
-            width={80} />,
-    <Column key="uid"
-            label='UID'
-            dataKey='uid'
-            width={160} />,
-    <Column key="filmDate"
-            label='Film Date'
-            dataKey='properties'
-            cellRenderer={FilmDateRenderer}
-            width={160} />,
-    <Column key="created_at"
-            label='Created at'
-            dataKey='created_at'
-            width={160}
-            flexGrow={1} />
+    collectionColumns.slice(1)
 ];
 
 const CollectionSearcher = searcher({
@@ -61,36 +27,6 @@ const CollectionSearcher = searcher({
     },
     searchOnMount: true
 })(InfiniteSearch);
-
-const LinkToFileCellRenderer = ({ cellData, dataKey }) =>
-    <Link to={`/files/${cellData}`}>{cellData}</Link>;
-
-const filesColumns = [
-    <Column key="index"
-            label='Index'
-            cellRenderer={IndexCellRenderer}
-            dataKey='index'
-            width={60} />,
-    <Column key="id"
-            label='ID'
-            dataKey='id'
-            cellRenderer={LinkToFileCellRenderer}
-            width={80} />,
-    <Column key="uid"
-            label='UID'
-            dataKey='uid'
-            width={80} />,
-    <Column key="name"
-            label='Name'
-            dataKey='name'
-            width={160}
-            flexGrow={1} />,
-    <Column key="file_created_at"
-            label='Created at'
-            dataKey='file_created_at'
-            width={80}
-            flexGrow={1} />
-];
 
 const FileSearcher = searcher({
     request: (params) => {
@@ -122,13 +58,13 @@ class ContentUnit extends Component {
                 <Header attached="top">Content Unit's Collections</Header>
                 <Segment attached style={{ display: 'flex', flex: '1 0 400px' }}>
                     <CollectionSearcher defaultParams={defaultParams}
-                                        columns={collectionsColumns}
+                                        columns={collectionRelationshipColumns}
                                         searchPlaceholder="Search..." />
                 </Segment>
                 <Header attached="top">Content Unit's Files</Header>
                 <Segment attached style={{ display: 'flex', flex: '1 0 400px' }}>
                     <FileSearcher defaultParams={defaultParams}
-                                        columns={filesColumns}
+                                        columns={fileColumns}
                                         searchPlaceholder="Search..." />
                 </Segment>
             </div>

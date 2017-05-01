@@ -33,7 +33,7 @@ const FilmDateRenderer = ({ cellData }) => cellData.film_date;
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
 
-const columns = [
+export const columns = [
     <Column key="index"
             label='Index'
             cellRenderer={IndexCellRenderer}
