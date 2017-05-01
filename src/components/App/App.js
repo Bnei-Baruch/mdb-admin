@@ -34,7 +34,7 @@ class App extends Component {
     }
 
     historyChanged = (location) => {
-        if (!!location.pathname.match(/files\/\d+/) &&
+        if (!!location.pathname.match(/[a-z]+\/\d+/) &&
             !this.state.activeItems.includes(location.pathname)) {
             this.setState({
                 activeItems: [
@@ -47,7 +47,11 @@ class App extends Component {
     };
 
     activeItemText = (item) => {
-        return item.match(/files\/(\d+)/)[1];
+        return item.match(/([a-z]+)\/(\d+)/)[1].replace(/s$/, '');
+    };
+
+    activeItemId = (item) => {
+        return item.match(/([a-z]+)\/(\d+)/)[2];
     };
 
     removeActiveItem = (item) => {
@@ -96,13 +100,14 @@ class App extends Component {
                         </div>
                         <div style={{
                             display: activeItemsVisible ? 'block' : 'none',
-                            width: '150px'
+                            width: '200px',
+                            marginLeft: '5px',
                         }}>
                              <Menu fluid vertical tabular='right'>
                                  {
                                      this.state.activeItems.map(i =>
                                         <Menu.Item as={NavLink} key={i} to={i}>
-                                            File #{this.activeItemText(i)}
+                                            {this.activeItemText(i)} #{this.activeItemId(i)}
                                             <i className='remove icon' onClick={() => this.removeActiveItem(i)}/>
                                         </Menu.Item>
                                  )}
