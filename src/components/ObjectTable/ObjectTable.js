@@ -6,7 +6,7 @@ import ObjectTableCell from '../ObjectTableCell/ObjectTableCell';
 export default class ObjectTable extends PureComponent {
 
     static propTypes = {
-        source: PropTypes.object.isRequired,
+        source: PropTypes.object,
         columns: PropTypes.array,
         header: PropTypes.string,
         ignoreKeys: PropTypes.array
@@ -23,6 +23,11 @@ export default class ObjectTable extends PureComponent {
 
     render() {
         const { columns, source, header, ignoreKeys, ...rest } = this.props;
+
+        if (!source) {
+            return null;
+        }
+
         return (
             <Table celled striped {...rest}>
                 {
