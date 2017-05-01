@@ -8,6 +8,8 @@ import ContentUnit from '../ContentUnit/ContentUnit';
 import ContentUnits from '../ContentUnits/ContentUnits';
 import Collection from '../Collection/Collection';
 import Collections from '../Collections/Collections';
+import Operations from '../Operations/Operations';
+import Operation from '../Operation/Operation';
 import Welcome from '../Welcome/Welcome';
 import './App.css';
 
@@ -71,6 +73,7 @@ class App extends Component {
                       <Menu.Item as={NavLink} to="/files">Files</Menu.Item>
                       <Menu.Item as={NavLink} to="/content_units">Content Units</Menu.Item>
                       <Menu.Item as={NavLink} to="/collections">Collections</Menu.Item>
+                      <Menu.Item as={NavLink} to="/operations">Operations</Menu.Item>
                       <Menu.Menu position='right'>
                           <Button icon size='mini'
                                   style={{margin: 5}}
@@ -88,6 +91,8 @@ class App extends Component {
                             <Route exact path="/content_units/:id" component={ContentUnit}/>
                             <Route exact path="/collections" component={Collections}/>
                             <Route exact path="/collections/:id" component={Collection}/>
+                            <Route exact path="/operations" component={Operations}/>
+                            <Route exact path="/operations/:id" component={Operation}/>
                         </div>
                         <div style={{
                             display: activeItemsVisible ? 'block' : 'none',
