@@ -10,7 +10,7 @@ const InfiniteFileSearcher = searcher({
     searchOnMount: true
 })(InfiniteSearch);
 
-const LinkToFileCellRenderer = ({ cellData, dataKey }) =>
+const ItemLinkRenderer = ({ cellData, dataKey }) =>
     <Link to={`/files/${cellData}`}>{cellData}</Link>;
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
@@ -24,7 +24,7 @@ export const columns = [
     <Column key="id"
             label='ID'
             dataKey='id'
-            cellRenderer={LinkToFileCellRenderer}
+            cellRenderer={ItemLinkRenderer}
             width={80} />,
     <Column key="uid"
             label='UID'

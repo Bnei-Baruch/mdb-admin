@@ -41,7 +41,7 @@ class ContentUnit extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
-    };
+    }
 
     render() {
         const defaultParams = {

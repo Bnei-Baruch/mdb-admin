@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Button, Icon, Menu } from 'semantic-ui-react'
 import { Router, NavLink, Route } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory';
-import Files from '../Files/Files';
 import File from '../File/File';
+import Files from '../Files/Files';
 import ContentUnit from '../ContentUnit/ContentUnit';
 import ContentUnits from '../ContentUnits/ContentUnits';
 import Collection from '../Collection/Collection';
 import Collections from '../Collections/Collections';
+import Operation from '../Operation/Operation';
+import Operations from '../Operations/Operations';
 import Welcome from '../Welcome/Welcome';
 import './App.css';
 
@@ -32,7 +34,7 @@ class App extends Component {
     }
 
     historyChanged = (location) => {
-        if (!!location.pathname.match(/files\/\d+/) &&
+        if (!!location.pathname.match(/[a-z]+\/\d+/) &&
             !this.state.activeItems.includes(location.pathname)) {
             this.setState({
                 activeItems: [
@@ -45,7 +47,11 @@ class App extends Component {
     };
 
     activeItemText = (item) => {
-        return item.match(/files\/(\d+)/)[1];
+        return item.match(/([a-z]+)\/(\d+)/)[1].replace(/s$/, '');
+    };
+
+    activeItemId = (item) => {
+        return item.match(/([a-z]+)\/(\d+)/)[2];
     };
 
     removeActiveItem = (item) => {
@@ -68,9 +74,10 @@ class App extends Component {
                 <div style={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
                     <Menu pointing>
                       <Menu.Item as={NavLink} to="/" exact>Welcome</Menu.Item>
-                      <Menu.Item as={NavLink} to="/files">Files</Menu.Item>
-                      <Menu.Item as={NavLink} to="/content_units">Content Units</Menu.Item>
                       <Menu.Item as={NavLink} to="/collections">Collections</Menu.Item>
+                      <Menu.Item as={NavLink} to="/content_units">Content Units</Menu.Item>
+                      <Menu.Item as={NavLink} to="/files">Files</Menu.Item>
+                      <Menu.Item as={NavLink} to="/operations">Operations</Menu.Item>
                       <Menu.Menu position='right'>
                           <Button icon size='mini'
                                   style={{margin: 5}}
@@ -88,16 +95,19 @@ class App extends Component {
                             <Route exact path="/content_units/:id" component={ContentUnit}/>
                             <Route exact path="/collections" component={Collections}/>
                             <Route exact path="/collections/:id" component={Collection}/>
+                            <Route exact path="/operations" component={Operations}/>
+                            <Route exact path="/operations/:id" component={Operation}/>
                         </div>
                         <div style={{
                             display: activeItemsVisible ? 'block' : 'none',
-                            width: '150px'
+                            width: '200px',
+                            marginLeft: '5px',
                         }}>
                              <Menu fluid vertical tabular='right'>
                                  {
                                      this.state.activeItems.map(i =>
                                         <Menu.Item as={NavLink} key={i} to={i}>
-                                            File #{this.activeItemText(i)}
+                                            {this.activeItemText(i)} #{this.activeItemId(i)}
                                             <i className='remove icon' onClick={() => this.removeActiveItem(i)}/>
                                         </Menu.Item>
                                  )}
