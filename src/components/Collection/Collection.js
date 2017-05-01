@@ -1,81 +1,60 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ObjectTable from '../ObjectTable/ObjectTable';
+import { Header, Segment } from 'semantic-ui-react';
+import CollectionInfo from './CollectionInfo/CollectionInfo';
 import apiClient from '../../helpers/apiClient';
+import { Column } from 'react-virtualized';
+import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
+import searcher from '../../hoc/searcher';
+import { relationshipResponseToPaginated } from '../../helpers/apiResponseTransforms';
+import { columns as contentUnitColumns } from '../ContentUnits/ContentUnits';
 
+const contentUnitRelationshipColumns = [
+    contentUnitColumns[0],
+    <Column key="relationshipName"
+        label="Relationship"
+        dataKey="relationshipName"
+        width={120} />,
+    contentUnitColumns.slice(1)
+]
 
-const i18Columns = [
-    objectKey => ({ content: objectKey }),
-    (objectKeys, objectValue) => {
-        const ignoredKeys = ['content_collection_id', 'language'];
-        return {
-            content: <ObjectTable source={objectValue} ignoreKeys={ignoredKeys} />
-        };
-    }
-];
+const ContentUnitSearcher = searcher({
+    request: (params) => {
+        return apiClient.get(`/rest/collections/${params.id}/content_units/`, { params })
+            .then(response => relationshipResponseToPaginated(response, 'content_unit'))
+    },
+    searchOnMount: true
+})(InfiniteSearch);
 
-export default class Collection extends Component {
+class Collection extends Component {
 
     static propTypes = {
         match: PropTypes.object.isRequired,
     };
 
-    state = {
-        collection: null
-    };
-
-    columns = [
-        objectKey => ({ content: objectKey }),
-        (objectKey, objectValue) => {
-            let content;
-            switch (objectKey) {
-                case 'properties':
-                    content = <ObjectTable source={objectValue} />;
-                    break;
-                case 'i18n':
-                    content = <ObjectTable source={objectValue} columns={i18Columns} />;
-                    break;
-                default:
-                    content = objectValue;
-            }
-
-            return { content };
-        }
-    ];
-
-    componentDidMount() {
-        this.getCollection(this.props.match.params.id);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.match.params.id !== nextProps.match.params.id) {
-            this.getCollection(nextProps.match.params.id);
-        }
-    }
-
-    getCollection = (id) => {
-        apiClient.get(`/rest/collections/${id}/`)
-             .then(response =>
-                this.setState({
-                    collection: response.data
-                })
-            ).catch(error => {
-                throw Error('Error loading collection, ' + error);
-            });
-    };
-
     render() {
-        const { collection } = this.state;
-        if (!collection) {
-            return null;
-        }
+        const defaultParams = {
+            id: this.props.match.params.id
+        };
 
         return (
-            <ObjectTable
-                header="Collection Info"
-                source={collection}
-                columns={this.columns}
-            />
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1
+            }}>
+                <CollectionInfo id={this.props.match.params.id} />
+                <Header attached="top">Collection's Content Units</Header>
+                <Segment attached style={{ display: 'flex', flex: 1 }}>
+                    <ContentUnitSearcher defaultParams={defaultParams}
+                                         columns={contentUnitRelationshipColumns}
+                                         searchPlaceholder="Search..." />
+                </Segment>
+            </div>
         );
     }
 }
+
+Collection.Info = CollectionInfo;
+
+export default Collection;
