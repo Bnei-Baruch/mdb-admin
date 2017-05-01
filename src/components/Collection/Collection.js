@@ -60,7 +60,7 @@ export default class Collection extends Component {
                     collection: response.data
                 })
             ).catch(error => {
-                throw Error('Error loading collections, ' + error);
+                throw Error('Error loading collection, ' + error);
             });
     };
 

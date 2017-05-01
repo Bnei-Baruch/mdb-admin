@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
+import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
 
 const InfiniteOperationSearcher = searcher({
@@ -10,34 +11,37 @@ const InfiniteOperationSearcher = searcher({
     searchOnMount: true
 })(InfiniteSearch);
 
-const LinkToOperationCellRenderer = ({ cellData, dataKey }) =>
+const ItemLinkRenderer = ({ cellData, dataKey }) =>
     <Link to={`/operations/${cellData}`}>{cellData}</Link>;
+
+const OperationTypeRenderer = ({ cellData }) => OPERATION_TYPE_BY_ID[cellData];
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
 
 const columns = [
-    <Column key='index'
+    <Column key="index"
             label='Index'
             cellRenderer={IndexCellRenderer}
             dataKey='index'
             width={60} />,
-    <Column key='id'
+    <Column key="id"
             label='ID'
             dataKey='id'
-            cellRenderer={LinkToOperationCellRenderer}
+            cellRenderer={ItemLinkRenderer}
             width={80} />,
-    <Column key='uid'
+    <Column key="uid"
             label='UID'
             dataKey='uid'
-            width={80} />,
-    <Column key='type_id'
-            label='TYPE_ID'
+            width={160} />,
+    <Column key="type"
+            label='Type'
             dataKey='type_id'
-            width={80} />,
-    <Column key='created_at'
+            cellRenderer={OperationTypeRenderer}
+            width={160} />,
+    <Column key="created_at"
             label='Created at'
             dataKey='created_at'
-            width={120}
+            width={160}
             flexGrow={1} />,
     <Column key='station'
             label='Station'
@@ -52,7 +56,7 @@ const columns = [
             label='DETAILS'
             dataKey='details'
             width={80}
-            flexGrow={1} />,
+            flexGrow={1} />
 ];
 
 export default class Operations extends Component {
@@ -60,4 +64,3 @@ export default class Operations extends Component {
         return <InfiniteOperationSearcher columns={columns} searchPlaceholder='Search operations...' />;
     }
 }
-

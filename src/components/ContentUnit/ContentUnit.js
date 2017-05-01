@@ -60,7 +60,7 @@ export default class ContentUnit extends Component {
                     unit: response.data
                 })
             ).catch(error => {
-                throw Error('Error loading units, ' + error);
+                throw Error('Error loading content unit, ' + error);
             });
     };
 

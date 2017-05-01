@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
+import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
 
 const InfiniteCollectionSearcher = searcher({
@@ -11,7 +12,7 @@ const InfiniteCollectionSearcher = searcher({
 })(InfiniteSearch);
 
 
-const LinkToFileCellRenderer = ({ cellData, dataKey }) =>
+const ItemLinkRenderer = ({ cellData, dataKey }) =>
     <Link to={`/collections/${cellData}`}>{cellData}</Link>;
 
 const FilmDateRenderer = ({ cellData }) => {
@@ -21,6 +22,8 @@ const FilmDateRenderer = ({ cellData }) => {
     }
     return cellData.film_date;
 };
+
+const ContentTypeRenderer = ({ cellData }) => CONTENT_TYPE_BY_ID[cellData];
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
 
@@ -33,11 +36,16 @@ const columns = [
     <Column key="id"
             label='ID'
             dataKey='id'
-            cellRenderer={LinkToFileCellRenderer}
+            cellRenderer={ItemLinkRenderer}
             width={80} />,
     <Column key="uid"
             label='UID'
             dataKey='uid'
+            width={160} />,
+    <Column key="type"
+            label='Type'
+            dataKey='type_id'
+            cellRenderer={ContentTypeRenderer}
             width={160} />,
     <Column key="filmDate"
             label='Film Date'

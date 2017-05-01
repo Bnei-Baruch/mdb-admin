@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ObjectTable from '../ObjectTable/ObjectTable';
 import apiClient from '../../helpers/apiClient';
+import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 
 export default class Operation extends Component {
 
@@ -20,7 +21,10 @@ export default class Operation extends Component {
             let content;
             switch (objectKey) {
                 case 'properties':
-                    content = <ObjectTable source={objectValue} />;
+                    content = !!objectValue ? <ObjectTable source={objectValue} /> : null;
+                    break;
+                case 'type_id':
+                    content = `${OPERATION_TYPE_BY_ID[objectValue]} [${objectValue}]`;
                     break;
                 default:
                     content = objectValue;
@@ -35,22 +39,24 @@ export default class Operation extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.match.params.id !== this.props.match.params.id) {
+        if (this.props.match.params.id !== nextProps.match.params.id) {
             this.getOperation(nextProps.match.params.id);
         }
     }
 
     getOperation = (id) => {
         apiClient.get(`/rest/operations/${id}/`)
-            .then(response => this.setState({ operation: response.data }))
-            .catch(error => {
-                throw Error('Error loading operations, ' + error);
+             .then(response =>
+                this.setState({
+                    operation: response.data
+                })
+            ).catch(error => {
+                throw Error('Error loading operation, ' + error);
             });
     };
 
     render() {
-        const operation = this.state.operation;
-
+        const { operation } = this.state;
         if (!operation) {
             return null;
         }
@@ -63,4 +69,3 @@ export default class Operation extends Component {
         );
     }
 }
-
