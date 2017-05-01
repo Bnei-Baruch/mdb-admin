@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import filesize from 'filesize';
-import ObjectTable from '../ObjectTable/ObjectTable';
-import apiClient from '../../helpers/apiClient';
+import ObjectTable from '../../ObjectTable/ObjectTable';
+import apiClient from '../../../helpers/apiClient';
 import dataLoader from '../../../hoc/dataLoader';
 
 const infoColumn = [
@@ -43,7 +43,7 @@ class FileInfo extends Component {
 
         return (
             !!data && <ObjectTable
-                source={file}
+                source={data}
                 header="File Info"
                 columns={infoColumn} />
         );

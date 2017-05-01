@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import invariant from 'invariant';
-import noop from 'lodash/noop';
-import isFunction from 'lodash/isFunction';
 
 const dataLoader = (propsToPromise) => (WrappedComponent) => {
     return class DataLoader extends Component {

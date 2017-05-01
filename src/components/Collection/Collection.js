@@ -3,31 +3,22 @@ import PropTypes from 'prop-types';
 import { Header, Segment } from 'semantic-ui-react';
 import CollectionInfo from './CollectionInfo/CollectionInfo';
 import apiClient from '../../helpers/apiClient';
-
 import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import searcher from '../../hoc/searcher';
+import { relationshipResponseToPaginated } from '../../helpers/apiResponseTransforms';
 
 const LinkToFileCellRenderer = ({ cellData, dataKey }) =>
     <Link to={`/content_units/${cellData}`}>{cellData}</Link>;
 
-const HebNameRenderer = ({ cellData }) => {
-    const lang = cellData.he;
-    return !!lang && lang.name;
-};
+const HebNameRenderer = ({ cellData }) => cellData && cellData.he && cellData.he.name;
 
-const EnNameRenderer = ({ cellData }) => {
-    const lang = cellData.en;
-    return !!lang && lang.name;
-};
+const EnNameRenderer = ({ cellData }) => cellData && cellData.en && cellData.en.name;
 
-const RuNameRenderer = ({ cellData }) => {
-    const lang = cellData.ru;
-    return !!lang && lang.name;
-};
+const RuNameRenderer = ({ cellData }) => cellData && cellData.ru && cellData.ru.name;
 
-const FilmDateRenderer = ({ cellData }) => cellData.film_date;
+const FilmDateRenderer = ({ cellData }) => cellData && cellData.film_date;
 
 const IndexCellRenderer = ({ rowIndex }) => rowIndex;
 
@@ -37,10 +28,10 @@ const columns = [
             cellRenderer={IndexCellRenderer}
             dataKey='index'
             width={60} />,
-        <Column key="relationshipName"
-            label="Relationship"
-            dataKey="relationshipName"
-            width={120} />,
+    <Column key="relationshipName"
+        label="Relationship"
+        dataKey="relationshipName"
+        width={120} />,
     <Column key="id"
             label="ID"
             dataKey="id"
@@ -79,26 +70,7 @@ const columns = [
 const ContentUnitSearcher = searcher({
     request: (params) => {
         return apiClient.get(`/rest/collections/${params.id}/content_units/`, { params })
-            // patch response for infinite search
-            .then(response => {
-                if (Array.isArray(response.data) && response.data.length) {
-                    response.data = {
-                        total: response.data.length,
-                        data: response.data.map(ccu => {
-                            const contentUnit = ccu.content_unit;
-                            contentUnit.relationshipName = ccu.name;
-                            return contentUnit;
-                        })
-                    }
-                } else {
-                    response.data = {
-                        data: [],
-                        total: 0
-                    }
-                }
-
-                return response;
-            });
+            .then(response => relationshipResponseToPaginated(response, 'content_unit'))
     },
     searchOnMount: true
 })(InfiniteSearch);
