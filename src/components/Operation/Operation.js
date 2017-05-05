@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Header, Segment } from 'semantic-ui-react';
 import OperationInfo from './OperationInfo/OperationInfo';
+import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
+import apiClient from '../../helpers/apiClient';
+import { relationshipResponseToPaginated } from '../../helpers/apiResponseTransforms';
+import searcher from '../../hoc/searcher';
+import { columns as fileColumns } from '../Files/Files';
+
+const FileSearcher = searcher({
+    request: (params) => {
+        return apiClient.get(`/rest/operations/${params.id}/files/`, { params })
+            // patch response for infinite search
+            .then(response => relationshipResponseToPaginated(response))
+    },
+    searchOnMount: true
+})(InfiniteSearch);
 
 class Operation extends Component {
 
@@ -9,8 +24,24 @@ class Operation extends Component {
     };
 
     render() {
+        const defaultParams = {
+            id: this.props.match.params.id
+        };
+
         return (
-            <OperationInfo id={this.props.match.params.id} />
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1
+            }}>
+                <OperationInfo id={this.props.match.params.id} />
+                <Header attached="top">Related Files</Header>
+                <Segment attached style={{ display: 'flex', flex: '1 0 400px' }}>
+                    <FileSearcher defaultParams={defaultParams}
+                                        columns={fileColumns}
+                                        searchPlaceholder="Search..." />
+                </Segment>
+            </div>
         );
     }
 }
