@@ -19,6 +19,7 @@ const contentUnitRelationshipColumns = [
 ]
 
 const ContentUnitSearcher = searcher({
+    name: 'collection.content-units',
     request: (params) => {
         return apiClient.get(`/rest/collections/${params.id}/content_units/`, { params })
             .then(response => relationshipResponseToPaginated(response, 'content_unit'))

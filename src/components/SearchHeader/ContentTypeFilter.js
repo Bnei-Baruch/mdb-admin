@@ -1,71 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import noop from 'lodash/noop';
-import Spinner from '../Spinner/Spinner';
-import './SearchHeader.css';
-import { Link } from 'react-router-dom';
+import { Dropdown } from 'semantic-ui-react'
+import { CONTENT_TYPE_BY_ID } from '../../helpers/consts.js';
+import values from 'lodash/values';
 
-function SearchHeader(props) {
-    const {
-        searching,
-        searchText,
-        searchPlaceholder,
-        total,
-        handleSearchChange,
-        handleSearchCancel,
-        error
-    } = props;
+const options = values(CONTENT_TYPE_BY_ID).map((value, key) => ({ key, value, text: value }));
 
-    const removeIconClass = classNames(
-        'remove icon',
-        { 'SearchHeader__removeIcon--hidden': searchText === ''}
-    );
+function ContentTypeFilter(props) {
+    const { onChange, value } = props;
 
     return (
-        <div className="ui fluid search SearchHeader">
-            <div>
-                <div className="ui icon input">
-                    <input className="prompt"
-                           type="text"
-                           placeholder={searchPlaceholder}
-                           value={searchText}
-                           onChange={handleSearchChange} />
-                    <i className="search icon" />
-                </div>
-                <i className={removeIconClass} onClick={handleSearchCancel} />
-            </div>
-            {
-                searching &&
-                <div className="SearchHeader__spinnerContainer">
-                    <Spinner/>
-                    <span className="SearchHeader__searchText">Searching...</span>
-                </div>
-            }
-            {!!error && <span className="SearchHeader__error">{error}</span>}
-            <div>Total: {total}</div>
-        </div>
+        <Dropdown placeholder="Content Type"
+                  value={value}
+                  onChange={(event, data) => onChange(data.value)}
+                  options={options}
+                  multiple search selection />
     );
 }
 
-SearchHeader.propTypes = {
-    searching: PropTypes.bool,
-    searchText: PropTypes.string,
-    searchPlaceholder: PropTypes.string,
-    total: PropTypes.number,
-    handleSearchChange: PropTypes.func,
-    handleSearchCancel: PropTypes.func,
-    error: PropTypes.any
+ContentTypeFilter.defaultProps = {
+    value: []
 };
 
-SearchHeader.defaultProps = {
-    searching: false,
-    searchText: '',
-    searchPlaceholder: 'search...',
-    total: 0,
-    handleSearchChange: noop,
-    handleSearchCancel: noop,
-    error: null
-};
-
-export default SearchHeader;
+export default ContentTypeFilter;

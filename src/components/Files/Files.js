@@ -6,6 +6,7 @@ import apiClient from '../../helpers/apiClient';
 import searcher from '../../hoc/searcher';
 
 const InfiniteFileSearcher = searcher({
+    name: 'files',
     request: params => apiClient.get('/rest/files/', { params }),
     searchOnMount: true
 })(InfiniteSearch);

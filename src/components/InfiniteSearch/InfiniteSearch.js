@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { AutoSizer, InfiniteLoader, Table } from 'react-virtualized';
 import SearchHeader from '../SearchHeader/SearchHeader';
+import ContentTypeFilter from '../SearchHeader/ContentTypeFilter';
 import './InfiniteSearch.css';
 
 import 'react-virtualized/styles.css';
@@ -56,6 +57,11 @@ export default class InfiniteSearch extends Component {
         this.props.search({ query: '' }, true);
     };
 
+    handleFilterChange = (name, value) => {
+        this.resetInfiniteLoaderCache();
+        this.props.search({ [name]: value }, true);
+    };
+
     resetInfiniteLoaderCache = () => this.infLoader.resetLoadMoreRowsCache();
 
     isRowLoaded = ({ index }) => {
@@ -83,8 +89,9 @@ export default class InfiniteSearch extends Component {
                     handleSearchCancel={this.handleSearchCancel}
                     searching={searching}
                     error={error}
-                    total={total}
-                />
+                    total={total}>
+                    <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)} value={this.props.params['content_type']} />
+                </SearchHeader>
                 <div className="InfiniteSearch__loader">
                     <InfiniteLoader
                         ref={el => this.infLoader = el}
