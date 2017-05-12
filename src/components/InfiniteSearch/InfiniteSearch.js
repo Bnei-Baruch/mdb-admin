@@ -62,8 +62,10 @@ export default class InfiniteSearch extends Component {
         this.props.search({ query: '' });
     };
 
-    handleFilterChange = (name, value) => {
-        this.clearItems();
+    handleFilterChange = (name, value, clearItemsPerdicate) => {
+        if (!clearItemsPerdicate || clearItemsPerdicate(value)) {
+            this.clearItems();
+        }
         this.props.search({ [name]: value });
     };
 
@@ -103,7 +105,12 @@ export default class InfiniteSearch extends Component {
                     searching={searching}
                     error={error}
                     total={total}>
-                    <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)} value={this.props.params['content_type']} />
+                    <TextFilter placeholder={searchPlaceholder}
+                                onChange={(value) => this.handleFilterChange('query', value, v => v !== '' )}
+                                value={this.props.params['query']} />
+                    <ContentTypeFilter
+                                onChange={(value) => this.handleFilterChange('content_type', value)}
+                                value={this.props.params['content_type']} />
                 </SearchHeader>
                 <div className="InfiniteSearch__loader">
                     <InfiniteLoader
