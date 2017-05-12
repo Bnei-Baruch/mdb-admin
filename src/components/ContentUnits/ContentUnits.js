@@ -7,6 +7,7 @@ import { CONTENT_TYPE_BY_ID, LANG_HEBREW, LANG_ENGLISH, LANG_RUSSIAN } from '../
 import searcher from '../../hoc/searcher';
 
 const InfiniteContentUnitSearcher = searcher({
+    name: 'content_units',
     request: params => apiClient.get('/rest/content_units/', { params }),
     searchOnMount: true
 })(InfiniteSearch);
@@ -15,9 +16,9 @@ const InfiniteContentUnitSearcher = searcher({
 const ItemLinkRenderer = ({ cellData, dataKey }) =>
     <Link to={`/content_units/${cellData}`}>{cellData}</Link>;
 
-const NameRenderer = (lang) => ({ cellData }) => !!cellData[lang] && cellData[lang].name;
+const NameRenderer = (lang) => ({ cellData }) => !!cellData && !!cellData[lang] && cellData[lang].name;
 
-const FilmDateRenderer = ({ cellData }) => cellData.film_date;
+const FilmDateRenderer = ({ cellData }) => !!cellData && cellData.film_date;
 
 const ContentTypeRenderer = ({ cellData }) => CONTENT_TYPE_BY_ID[cellData];
 

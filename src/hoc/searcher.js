@@ -3,11 +3,18 @@ import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import noop from 'lodash/noop';
 import isFunction from 'lodash/isFunction';
+import { connect } from 'react-redux';
+import { setParams, getParams } from '../redux/modules/search';
 
 const searcher = (options) => (WrappedComponent) => {
     invariant(
         isFunction(options.request),
         'options.request must be a function'
+    );
+
+    invariant(
+        !!options.name,
+        'options.name must not be empty'
     );
 
     const defaultOptions = {
@@ -24,14 +31,17 @@ const searcher = (options) => (WrappedComponent) => {
 
     const DEFAULT_STOP_INDEX = 100;
 
-    return class Searcher extends Component {
+    class Searcher extends Component {
 
         static propTypes = {
-            defaultParams: PropTypes.object
+            defaultParams: PropTypes.object,
+            params: PropTypes.object,
+            setParams: PropTypes.func.isRequired
         };
 
         static defaultProps = {
-            defaultParams: {}
+            defaultParams: {},
+            params: {}
         };
 
         state = {
@@ -48,29 +58,26 @@ const searcher = (options) => (WrappedComponent) => {
             }
         }
 
-        search = (params = {}, isNewSearch = false, startIndex = 0, stopIndex = DEFAULT_STOP_INDEX) => {
+        search = (persistentParams = {}, nonPersistentParams = {}) => {
             return new Promise((resolve, reject) => {
                 onSearching();
+                const oldParams = this.props.params;
+                this.props.setParams(persistentParams);
                 this.setState({
                     searching: true,
-                    params
                 }, () => {
-                    request({ ...this.props.defaultParams, ...params, start_index: startIndex, stop_index: stopIndex }).then(response => {
+                    request({ ...this.props.defaultParams,
+                              ...oldParams,
+                              ...persistentParams,
+                              ...nonPersistentParams }).then(response => {
                         onSuccess(response);
                         const { data, total } = response.data;
-                        this.setState(prevState => {
-                            const items = isNewSearch ? [] : prevState.items;
-                            data.forEach((item, index) => {
-                                items[index + startIndex] = item;
-                            });
-
-                            return {
-                                total,
-                                items,
-                                searching: false,
-                                error: null
-                            };
-                        }, () => resolve());
+                        this.setState({
+                            total,
+                            items: data,
+                            searching: false,
+                            error: null
+                        }, () => resolve(data));
                     }).catch(error => {
                         onError(error);
                         console.error(error);
@@ -88,13 +95,22 @@ const searcher = (options) => (WrappedComponent) => {
                 <WrappedComponent search={this.search}
                                   searching={this.state.searching}
                                   resultItems={this.state.items}
-                                  params={this.state.params}
+                                  params={this.props.params}
                                   searchError={this.state.error}
                                   total={this.state.total}
                                   {...this.props} />
             );
         }
     };
+
+    return connect(
+        state => ({
+            params: getParams(state.search, options.name)
+        }),
+        {
+            setParams: (params) => setParams(options.name, params)
+        }
+    )(Searcher);
 
     // TODO (yaniv): change displayName
 };

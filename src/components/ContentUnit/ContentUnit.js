@@ -20,6 +20,7 @@ const collectionRelationshipColumns = [
 ];
 
 const CollectionSearcher = searcher({
+    name: 'content-unit.collections',
     request: (params) => {
         return apiClient.get(`/rest/content_units/${params.id}/collections/`, { params })
             // patch response for infinite search
@@ -29,6 +30,7 @@ const CollectionSearcher = searcher({
 })(InfiniteSearch);
 
 const FileSearcher = searcher({
+    name: 'content-unit.files',
     request: (params) => {
         return apiClient.get(`/rest/content_units/${params.id}/files/`, { params })
             // patch response for infinite search

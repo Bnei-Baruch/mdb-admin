@@ -7,6 +7,7 @@ import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
 
 const InfiniteCollectionSearcher = searcher({
+    name: 'collections',
     request: params => apiClient.get('/rest/collections/', { params }),
     searchOnMount: true
 })(InfiniteSearch);

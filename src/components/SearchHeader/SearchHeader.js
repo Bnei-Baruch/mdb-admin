@@ -13,7 +13,8 @@ function SearchHeader(props) {
         total,
         handleSearchChange,
         handleSearchCancel,
-        error
+        error,
+        children,
     } = props;
 
     const removeIconClass = classNames(
@@ -32,8 +33,9 @@ function SearchHeader(props) {
                            onChange={handleSearchChange} />
                     <i className="search icon" />
                 </div>
-                <i className={removeIconClass} onClick={handleSearchCancel} />
+                <i className={removeIconClass} onClick={handleSearchCancel} style={{cursor: "pointer"}} />
             </div>
+            { children }
             {
                 searching &&
                 <div className="SearchHeader__spinnerContainer">

@@ -17,12 +17,14 @@
     "invariant": "^2.2.2",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
+    "qs": "^6.4.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-redux": "^5.0.3",
+    "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
     "react-virtualized": "^9.4.1",
     "redux": "^3.6.0",
+    "redux-actions": "^2.0.2",
     "semantic-ui-react": "^0.67.2"
   },
   "scripts": {
