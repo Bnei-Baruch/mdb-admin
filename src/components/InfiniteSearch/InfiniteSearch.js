@@ -33,7 +33,6 @@ const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
 
 export default class InfiniteSearch extends Component {
     static propTypes = {
-        resultItems: PropTypes.array.isRequired,
         error: PropTypes.any,
         search: PropTypes.func.isRequired,
         params: PropTypes.object.isRequired,
@@ -41,40 +40,54 @@ export default class InfiniteSearch extends Component {
         searchPlaceholder: PropTypes.string
     };
 
+    state = {
+        items: []
+    };
+
+    clearItems = () => {
+        this.resetInfiniteLoaderCache();
+        this.setState({ items: [] });
+    };
+
     handleSearchChange = (e) => {
         const value = e.target.value;
-        const isNewSearch = this.props.params.query !== value;
-
-        if (isNewSearch) {
-            this.resetInfiniteLoaderCache();
+        if (this.props.params.query !== value) {
+            this.clearItems();
         }
-
-        this.props.search({ query: value }, isNewSearch);
+        this.props.search({ query: value });
     };
 
     handleSearchCancel = () => {
-        this.resetInfiniteLoaderCache();
-        this.props.search({ query: '' }, true);
+        this.clearItems();
+        this.props.search({ query: '' });
     };
 
     handleFilterChange = (name, value) => {
-        this.resetInfiniteLoaderCache();
-        this.props.search({ [name]: value }, true);
+        this.clearItems();
+        this.props.search({ [name]: value });
     };
 
     resetInfiniteLoaderCache = () => this.infLoader.resetLoadMoreRowsCache();
 
     isRowLoaded = ({ index }) => {
-        const item = this.props.resultItems[index];
+        const item = this.state.items[index];
         return !!item && typeof item.id !== 'undefined';
     };
 
     rowGetter = ({ index }) => {
-        return this.isRowLoaded({ index }) ? this.props.resultItems[index] : {};
+        return this.isRowLoaded({ index }) ? this.state.items[index] : {};
     };
 
     loadMoreRows = ({ startIndex, stopIndex }) => {
-        return this.props.search({ query: this.props.params.query }, false, startIndex, stopIndex);
+        return this.props.search({ query: this.props.params.query }, { 'start_index': startIndex, 'stop_index': stopIndex }).then(data => {
+            return new Promise((resolve) => this.setState(prevState => {
+                const items = prevState.items;
+                data.forEach((item, index) => {
+                    items[index + startIndex] = item;
+                });
+                return { items };
+            }, resolve));
+        });
     };
 
     render() {

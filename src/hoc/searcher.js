@@ -58,30 +58,26 @@ const searcher = (options) => (WrappedComponent) => {
             }
         }
 
-        search = (updateParams = {}, isNewSearch = false, startIndex = 0, stopIndex = DEFAULT_STOP_INDEX) => {
+        search = (persistentParams = {}, nonPersistentParams = {}) => {
             return new Promise((resolve, reject) => {
                 onSearching();
                 const oldParams = this.props.params;
-                this.props.setParams(updateParams);
+                this.props.setParams(persistentParams);
                 this.setState({
                     searching: true,
                 }, () => {
-                    request({ ...this.props.defaultParams, ...oldParams, ...updateParams , start_index: startIndex, stop_index: stopIndex }).then(response => {
+                    request({ ...this.props.defaultParams,
+                              ...oldParams,
+                              ...persistentParams,
+                              ...nonPersistentParams }).then(response => {
                         onSuccess(response);
                         const { data, total } = response.data;
-                        this.setState(prevState => {
-                            const items = isNewSearch ? [] : prevState.items;
-                            data.forEach((item, index) => {
-                                items[index + startIndex] = item;
-                            });
-
-                            return {
-                                total,
-                                items,
-                                searching: false,
-                                error: null
-                            };
-                        }, () => resolve());
+                        this.setState({
+                            total,
+                            items: data,
+                            searching: false,
+                            error: null
+                        }, () => resolve(data));
                     }).catch(error => {
                         onError(error);
                         console.error(error);
