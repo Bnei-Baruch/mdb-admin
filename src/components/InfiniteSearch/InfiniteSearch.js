@@ -111,17 +111,13 @@ export default class InfiniteSearch extends Component {
                     searching={searching}
                     error={error}
                     total={total}>
-<<<<<<< HEAD
                     <TextFilter placeholder={searchPlaceholder}
                                 onChange={(value) => this.handleFilterChange('query', value, v => v !== '' )}
                                 value={this.props.params['query']} />
-                    <ContentTypeFilter
-                                onChange={(value) => this.handleFilterChange('content_type', value)}
-                                value={this.props.params['content_type']} />
-=======
-                    <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)} value={this.props.params['content_type']} />
-                    <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)} value={this.props.params['content_source']} />
->>>>>>> master
+                    <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)}
+                                       value={this.props.params['content_type']} />
+                    <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)}
+                                         value={this.props.params['content_source']} />
                 </SearchHeader>
                 <div className="InfiniteSearch__loader">
                     <InfiniteLoader
