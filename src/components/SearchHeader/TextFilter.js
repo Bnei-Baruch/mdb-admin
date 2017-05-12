@@ -1,7 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 
 function TextFilter(props) {
-    const { onChange, value, placeholder, onClearFilter } = props;
+    const { onChange, value, placeholder } = props;
 
     const removeIconClass = classNames(
         'remove icon',
@@ -15,7 +16,7 @@ function TextFilter(props) {
                         type="text"
                         placeholder={placeholder}
                         value={value}
-                        onChange={(event, data) => onChange(data.value)} />
+                        onChange={(event) => onChange(event.target.value)} />
                 <i className="search icon" />
             </div>
             <i className={removeIconClass} onClick={() => onChange('')} style={{cursor: "pointer"}} />

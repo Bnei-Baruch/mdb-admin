@@ -4,6 +4,7 @@ import { AutoSizer, InfiniteLoader, Table } from 'react-virtualized';
 import SearchHeader from '../SearchHeader/SearchHeader';
 import ContentTypeFilter from '../SearchHeader/ContentTypeFilter';
 import ContentSourceFilter from '../SearchHeader/ContentSourceFilter';
+import TextFilter from '../SearchHeader/TextFilter';
 import './InfiniteSearch.css';
 
 import 'react-virtualized/styles.css';
@@ -104,20 +105,16 @@ export default class InfiniteSearch extends Component {
         return (
             <div className="InfiniteSearch">
                 <SearchHeader
-                    searchText={params.query}
-                    searchPlaceholder={searchPlaceholder}
-                    handleSearchChange={this.handleSearchChange}
-                    handleSearchCancel={this.handleSearchCancel}
                     searching={searching}
                     error={error}
                     total={total}>
                     <TextFilter placeholder={searchPlaceholder}
-                                onChange={(value) => this.handleFilterChange('query', value, v => v !== '' )}
-                                value={this.props.params['query']} />
+                                onChange={(value) => this.handleFilterChange('query', value)}
+                                value={params['query']} />
                     <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)}
-                                       value={this.props.params['content_type']} />
+                                       value={params['content_type']} />
                     <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)}
-                                         value={this.props.params['content_source']} />
+                                         value={params['content_source']} />
                 </SearchHeader>
                 <div className="InfiniteSearch__loader">
                     <InfiniteLoader
