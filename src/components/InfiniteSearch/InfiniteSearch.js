@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { AutoSizer, InfiniteLoader, Table } from 'react-virtualized';
 import SearchHeader from '../SearchHeader/SearchHeader';
 import ContentTypeFilter from '../SearchHeader/ContentTypeFilter';
+import ContentSourceFilter from '../SearchHeader/ContentSourceFilter';
 import './InfiniteSearch.css';
 
 import 'react-virtualized/styles.css';
@@ -31,6 +32,8 @@ const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
     );
 };
 
+const MIN_STOP_INDEX = 100;
+
 export default class InfiniteSearch extends Component {
     static propTypes = {
         error: PropTypes.any,
@@ -44,27 +47,32 @@ export default class InfiniteSearch extends Component {
         items: []
     };
 
+    // Should be removed after Search is.
     clearItems = () => {
         this.resetInfiniteLoaderCache();
         this.setState({ items: [] });
     };
 
+    // Deprecated code
     handleSearchChange = (e) => {
         const value = e.target.value;
         if (this.props.params.query !== value) {
             this.clearItems();
         }
-        this.props.search({ query: value });
+        this.props.search({ query: value }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => this.setState({ items: data }));
     };
 
+    // Deprecated code...
     handleSearchCancel = () => {
         this.clearItems();
-        this.props.search({ query: '' });
+        this.props.search({ query: '' }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => this.setState({ items: data }));
     };
 
     handleFilterChange = (name, value) => {
-        this.clearItems();
-        this.props.search({ [name]: value });
+        this.props.search({ [name]: value }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => {
+            this.resetInfiniteLoaderCache();
+            this.setState({ items: data });
+        });
     };
 
     resetInfiniteLoaderCache = () => this.infLoader.resetLoadMoreRowsCache();
@@ -104,6 +112,7 @@ export default class InfiniteSearch extends Component {
                     error={error}
                     total={total}>
                     <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)} value={this.props.params['content_type']} />
+                    <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)} value={this.props.params['content_source']} />
                 </SearchHeader>
                 <div className="InfiniteSearch__loader">
                     <InfiniteLoader
