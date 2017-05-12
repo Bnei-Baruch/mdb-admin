@@ -29,8 +29,6 @@ const searcher = (options) => (WrappedComponent) => {
         ...options
     };
 
-    const DEFAULT_STOP_INDEX = 100;
-
     class Searcher extends Component {
 
         static propTypes = {
