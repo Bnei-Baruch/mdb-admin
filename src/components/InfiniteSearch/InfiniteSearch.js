@@ -55,7 +55,8 @@ export default class InfiniteSearch extends Component {
     };
 
     handleFilterChange = (name, value) => {
-        this.props.search({ [name]: value }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => {
+        // Start index starts from 1 in the backend.
+        this.props.search({ [name]: value }, { 'start_index': 1, 'stop_index': MIN_STOP_INDEX }).then(data => {
             this.resetInfiniteLoaderCache();
             this.setState({ items: data });
         });
@@ -73,7 +74,8 @@ export default class InfiniteSearch extends Component {
     };
 
     loadMoreRows = ({ startIndex, stopIndex }) => {
-        return this.props.search({ query: this.props.params.query }, { 'start_index': startIndex, 'stop_index': stopIndex }).then(data => {
+        // InfiniteLoader startIndex is zero based so we add 1 for the backend
+        return this.props.search({ query: this.props.params.query }, { 'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
             return new Promise((resolve) => this.setState(prevState => {
                 const items = prevState.items;
                 data.forEach((item, index) => {
