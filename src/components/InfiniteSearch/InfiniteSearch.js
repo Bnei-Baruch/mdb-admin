@@ -4,6 +4,7 @@ import { AutoSizer, InfiniteLoader, Table } from 'react-virtualized';
 import SearchHeader from '../SearchHeader/SearchHeader';
 import ContentTypeFilter from '../SearchHeader/ContentTypeFilter';
 import ContentSourceFilter from '../SearchHeader/ContentSourceFilter';
+import TextFilter from '../SearchHeader/TextFilter';
 import './InfiniteSearch.css';
 
 import 'react-virtualized/styles.css';
@@ -53,21 +54,6 @@ export default class InfiniteSearch extends Component {
         this.setState({ items: [] });
     };
 
-    // Deprecated code
-    handleSearchChange = (e) => {
-        const value = e.target.value;
-        if (this.props.params.query !== value) {
-            this.clearItems();
-        }
-        this.props.search({ query: value }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => this.setState({ items: data }));
-    };
-
-    // Deprecated code...
-    handleSearchCancel = () => {
-        this.clearItems();
-        this.props.search({ query: '' }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => this.setState({ items: data }));
-    };
-
     handleFilterChange = (name, value) => {
         this.props.search({ [name]: value }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => {
             this.resetInfiniteLoaderCache();
@@ -104,15 +90,16 @@ export default class InfiniteSearch extends Component {
         return (
             <div className="InfiniteSearch">
                 <SearchHeader
-                    searchText={params.query}
-                    searchPlaceholder={searchPlaceholder}
-                    handleSearchChange={this.handleSearchChange}
-                    handleSearchCancel={this.handleSearchCancel}
                     searching={searching}
                     error={error}
                     total={total}>
-                    <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)} value={this.props.params['content_type']} />
-                    <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)} value={this.props.params['content_source']} />
+                    <TextFilter placeholder={searchPlaceholder}
+                                onChange={(value) => this.handleFilterChange('query', value)}
+                                value={params['query']} />
+                    <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)}
+                                       value={params['content_type']} />
+                    <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)}
+                                         value={params['content_source']} />
                 </SearchHeader>
                 <div className="InfiniteSearch__loader">
                     <InfiniteLoader

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import noop from 'lodash/noop';
 import Spinner from '../Spinner/Spinner';
 import './SearchHeader.css';
@@ -8,33 +7,13 @@ import './SearchHeader.css';
 function SearchHeader(props) {
     const {
         searching,
-        searchText,
-        searchPlaceholder,
         total,
-        handleSearchChange,
-        handleSearchCancel,
         error,
         children,
     } = props;
 
-    const removeIconClass = classNames(
-        'remove icon',
-        { 'SearchHeader__removeIcon--hidden': searchText === ''}
-    );
-
     return (
         <div className="ui fluid search SearchHeader">
-            <div>
-                <div className="ui icon input">
-                    <input className="prompt"
-                           type="text"
-                           placeholder={searchPlaceholder}
-                           value={searchText}
-                           onChange={handleSearchChange} />
-                    <i className="search icon" />
-                </div>
-                <i className={removeIconClass} onClick={handleSearchCancel} style={{cursor: "pointer"}} />
-            </div>
             { children }
             {
                 searching &&
