@@ -54,21 +54,6 @@ export default class InfiniteSearch extends Component {
         this.setState({ items: [] });
     };
 
-    // Deprecated code
-    handleSearchChange = (e) => {
-        const value = e.target.value;
-        if (this.props.params.query !== value) {
-            this.clearItems();
-        }
-        this.props.search({ query: value }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => this.setState({ items: data }));
-    };
-
-    // Deprecated code...
-    handleSearchCancel = () => {
-        this.clearItems();
-        this.props.search({ query: '' }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => this.setState({ items: data }));
-    };
-
     handleFilterChange = (name, value) => {
         this.props.search({ [name]: value }, { 'start_index': 0, 'stop_index': MIN_STOP_INDEX }).then(data => {
             this.resetInfiniteLoaderCache();
