@@ -5,6 +5,7 @@ import SearchHeader from '../SearchHeader/SearchHeader';
 import ContentTypeFilter from '../SearchHeader/ContentTypeFilter';
 import ContentSourceFilter from '../SearchHeader/ContentSourceFilter';
 import TextFilter from '../SearchHeader/TextFilter';
+import DateFilter from '../SearchHeader/DateFilter';
 import './InfiniteSearch.css';
 
 import 'react-virtualized/styles.css';
@@ -75,6 +76,7 @@ export default class InfiniteSearch extends Component {
 
     loadMoreRows = ({ startIndex, stopIndex }) => {
         // InfiniteLoader startIndex is zero based so we add 1 for the backend
+        // TODO (yaniv): do we need to send the query again? isn't it in redux params already?
         return this.props.search({ query: this.props.params.query }, { 'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
             return new Promise((resolve) => this.setState(prevState => {
                 const items = prevState.items;
@@ -98,6 +100,16 @@ export default class InfiniteSearch extends Component {
                     <TextFilter placeholder={searchPlaceholder}
                                 onChange={(value) => this.handleFilterChange('query', value)}
                                 value={params['query']} />
+                    <DateFilter
+                        placeholderText="Start Date"
+                        onChange={(value) => this.handleFilterChange('start_date', value)}
+                        value={params['start_date']}
+                        maxDate={params['end_date']} />
+                    <DateFilter
+                        placeholderText="End Date"
+                        onChange={(value) => this.handleFilterChange('end_date', value)}
+                        value={params['end_date']}
+                        minDate={params['start_date']} />
                     <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)}
                                        value={params['content_type']} />
                     <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)}
