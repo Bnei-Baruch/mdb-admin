@@ -11,7 +11,7 @@ const Spinner = (props) => {
         borderWidth: `${Math.max(Math.round(size / 10), 2)}px`
     };
 
-    return <div className="spinner" style={style}/>;
+    return <div className="bb-spinner" style={style}/>;
 };
 
 Spinner.propTypes = {

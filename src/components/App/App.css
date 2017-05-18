@@ -24,3 +24,7 @@ body {
     direction: rtl;
 }
 
+.rtl-dir.bb-input input {
+    text-align: right;
+}
+
