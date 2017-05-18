@@ -10,7 +10,10 @@ import Collection from '../Collection/Collection';
 import Collections from '../Collections/Collections';
 import Operation from '../Operation/Operation';
 import Operations from '../Operations/Operations';
+import TagsContainer from '../Tags/TagsContainer';
+import TagContainer from '../Tags/TagContainer';
 import Welcome from '../Welcome/Welcome';
+import Design from '../Design/Design';
 import './App.css';
 
 const history = createBrowserHistory({
@@ -78,6 +81,7 @@ class App extends Component {
                       <Menu.Item as={NavLink} to="/content_units">Content Units</Menu.Item>
                       <Menu.Item as={NavLink} to="/files">Files</Menu.Item>
                       <Menu.Item as={NavLink} to="/operations">Operations</Menu.Item>
+                      <Menu.Item as={NavLink} to="/tags">Tags</Menu.Item>
                       <Menu.Menu position='right'>
                           <Button icon size='mini'
                                   style={{margin: 5}}
@@ -97,6 +101,9 @@ class App extends Component {
                             <Route exact path="/collections/:id" component={Collection}/>
                             <Route exact path="/operations" component={Operations}/>
                             <Route exact path="/operations/:id" component={Operation}/>
+                            <Route exact path="/tags" component={TagsContainer}/>
+                            <Route exact path="/tags/:id" component={TagContainer}/>
+                            <Route exact path="/design" component={Design}/>
                         </div>
                         <div style={{
                             display: activeItemsVisible ? 'block' : 'none',
