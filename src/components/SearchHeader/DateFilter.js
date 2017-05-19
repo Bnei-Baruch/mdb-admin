@@ -16,7 +16,7 @@ function DateFilter(props) {
         <DatePicker
             customInput={
                 <Input icon placeholder={placeholder}>
-                    <Icon name="calendar" />
+                    <Icon name="calendar" circular />
                     <input />
                 </Input>
             }

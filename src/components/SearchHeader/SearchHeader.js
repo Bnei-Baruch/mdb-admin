@@ -9,12 +9,10 @@ function SearchHeader(props) {
         searching,
         total,
         error,
-        children,
     } = props;
 
     return (
-        <div className="ui fluid search SearchHeader">
-            { children }
+        <div className="ui fluid SearchHeader">
             {
                 searching &&
                 <div className="SearchHeader__spinnerContainer">
@@ -30,21 +28,13 @@ function SearchHeader(props) {
 
 SearchHeader.propTypes = {
     searching: PropTypes.bool,
-    searchText: PropTypes.string,
-    searchPlaceholder: PropTypes.string,
     total: PropTypes.number,
-    handleSearchChange: PropTypes.func,
-    handleSearchCancel: PropTypes.func,
     error: PropTypes.any
 };
 
 SearchHeader.defaultProps = {
     searching: false,
-    searchText: '',
-    searchPlaceholder: 'search...',
     total: 0,
-    handleSearchChange: noop,
-    handleSearchCancel: noop,
     error: null
 };
 

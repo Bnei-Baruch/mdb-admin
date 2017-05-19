@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Icon, Input, Button, Label } from 'semantic-ui-react';
 
 function TextFilter(props) {
     const { onChange, value, placeholder } = props;
@@ -11,15 +12,16 @@ function TextFilter(props) {
 
     return (
         <div>
-            <div className="ui icon input">
-                <input className="prompt"
-                        type="text"
-                        placeholder={placeholder}
-                        value={value}
-                        onChange={(event) => onChange(event.target.value)} />
-                <i className="search icon" />
-            </div>
-            <i className={removeIconClass} onClick={() => onChange('')} style={{cursor: "pointer"}} />
+            <Input className="prompt"
+                   type="text"
+                   placeholder={placeholder}
+                   value={value}
+                   onChange={(event) => onChange(event.target.value)}
+                   icon>
+                <input />
+                <Icon name="search" inverted circular />
+            </Input>
+            { value !== '' && <Icon name="remove" circular onClick={() => onChange('')} /> }
         </div>
     );
 }

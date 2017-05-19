@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import chunk from 'lodash/chunk';
+import { Grid, Segment } from 'semantic-ui-react';
 import { AutoSizer, InfiniteLoader, Table } from 'react-virtualized';
 import SearchHeader from '../SearchHeader/SearchHeader';
 import ContentTypeFilter from '../SearchHeader/ContentTypeFilter';
@@ -75,9 +77,7 @@ export default class InfiniteSearch extends Component {
     };
 
     loadMoreRows = ({ startIndex, stopIndex }) => {
-        // InfiniteLoader startIndex is zero based so we add 1 for the backend
-        // TODO (yaniv): do we need to send the query again? isn't it in redux params already?
-        return this.props.search({ query: this.props.params.query }, { 'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
+        return this.props.search({}, { 'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
             return new Promise((resolve) => this.setState(prevState => {
                 const items = prevState.items;
                 data.forEach((item, index) => {
@@ -91,30 +91,57 @@ export default class InfiniteSearch extends Component {
     render() {
         const { params, searching, error, total, searchPlaceholder, columns } = this.props;
 
-        return (
-            <div className="InfiniteSearch">
-                <SearchHeader
-                    searching={searching}
-                    error={error}
-                    total={total}>
-                    <TextFilter placeholder={searchPlaceholder}
-                                onChange={(value) => this.handleFilterChange('query', value)}
-                                value={params['query']} />
-                    <DateFilter
+        const filters = [
+            <DateFilter
                         placeholderText="Start Date"
                         onChange={(value) => this.handleFilterChange('start_date', value)}
                         value={params['start_date']}
-                        maxDate={params['end_date']} />
+                        maxDate={params['end_date']} />,
                     <DateFilter
                         placeholderText="End Date"
                         onChange={(value) => this.handleFilterChange('end_date', value)}
                         value={params['end_date']}
-                        minDate={params['start_date']} />
+                        minDate={params['start_date']} />,
                     <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)}
-                                       value={params['content_type']} />
+                                       value={params['content_type']} />,
                     <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)}
                                          value={params['content_source']} />
-                </SearchHeader>
+        ];
+
+        const filterChunks = chunk(filters, 4);
+
+        return (
+            <div className="InfiniteSearch">
+                <Segment compact>
+                <Grid>
+                    <Grid.Row columns="1">
+                        <Grid.Column>
+                            <TextFilter placeholder={searchPlaceholder}
+                                        onChange={(value) => this.handleFilterChange('query', value)}
+                                        value={params['query']} />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns="1">
+                        <Grid.Column>
+                            <Grid>
+                                {
+                                    filterChunks.map((group, idx) => (
+                                        <Grid.Row columns="4" key={idx}>
+                                            {
+                                                group.map((filter, idx2) => <Grid.Column key={idx2}>{ filter }</Grid.Column>)
+                                            }
+                                        </Grid.Row>
+                                    ))
+                                }
+                            </Grid>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                </Segment>
+                <SearchHeader
+                    searching={searching}
+                    error={error}
+                    total={total} />
                 <div className="InfiniteSearch__loader">
                     <InfiniteLoader
                         ref={el => this.infLoader = el}
