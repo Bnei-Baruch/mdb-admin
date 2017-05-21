@@ -62,6 +62,11 @@ const columns = [
 
 export default class Operations extends Component {
     render() {
-        return <InfiniteOperationSearcher columns={columns} searchPlaceholder='Search operations...' />;
+        return (
+            <InfiniteOperationSearcher
+                columns={columns}
+                searchPlaceholder='Search operations...'
+            />
+        );
     }
 }
