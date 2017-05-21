@@ -228,3 +228,42 @@ export const I18N_ORDER = [
 ];
 
 export const LANGUAGE_OPTIONS = ALL_LANGUAGES.map(x => LANGUAGES[x]);
+
+
+export const MEDIA_TYPES = {
+    "mp4":{type: "video", sub_type: "", mime_type: "video/mp4"},
+    "wmv":{type: "video", sub_type: "", mime_type: "video/x-ms-wmv"},
+    "flv":{type: "video", sub_type: "", mime_type: "video/x-flv"},
+    "mov":{type: "video", sub_type: "", mime_type: "video/quicktime"},
+    "asf":{type: "video", sub_type: "", mime_type: "video/x-ms-asf"},
+    "mpg":{type: "video", sub_type: "", mime_type: "video/mpeg"},
+    "avi":{type: "video", sub_type: "", mime_type: "video/x-msvideo"},
+    "mp3":{type: "audio", sub_type: "", mime_type: "audio/mpeg"},
+    "wma":{type: "audio", sub_type: "", mime_type: "audio/x-ms-wma"},
+    "mid":{type: "audio", sub_type: "", mime_type: "audio/midi"},
+    "wav":{type: "audio", sub_type: "", mime_type: "audio/x-wav"},
+    "aac":{type: "audio", sub_type: "", mime_type: "audio/aac"},
+    "jpg":{type: "image", sub_type: "", mime_type: "image/jpeg"},
+    "gif":{type: "image", sub_type: "", mime_type: "image/gif"},
+    "bmp":{type: "image", sub_type: "", mime_type: "image/bmp"},
+    "tif":{type: "image", sub_type: "", mime_type: "image/tiff"},
+    "zip":{type: "image", sub_type: "", mime_type: "application/zip"},
+    "7z":{type: "image", sub_type: "", mime_type: "application/x-7z-compressed"},
+    "rar":{type: "image", sub_type: "", mime_type: "application/x-rar-compressed"},
+    "sfk":{type: "image", sub_type: "", mime_type: ""},
+    "doc":{type: "text", sub_type: "", mime_type: "application/msword"},
+    "docx":{type: "text", sub_type: "", mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
+    "htm":{type: "text", sub_type: "", mime_type: "text/html"},
+    "html":{type: "text", sub_type: "", mime_type: "text/html"},
+    "pdf":{type: "text", sub_type: "", mime_type: "application/pdf"},
+    "epub":{type: "text", sub_type: "", mime_type: "application/epub+zip"},
+    "rtf":{type: "text", sub_type: "", mime_type: "text/rtf"},
+    "txt":{type: "text", sub_type: "", mime_type: "text/plain"},
+    "fb2":{type: "text", sub_type: "", mime_type: "text/xml"},
+    "rb":{type: "text", sub_type: "", mime_type: "application/x-rocketbook"},
+    "xls":{type: "sheet", sub_type: "", mime_type: "application/vnd.ms-excel"},
+    "swf":{type: "banner", sub_type: "", mime_type: "application/x-shockwave-flash"},
+    "ppt":{type: "presentation", sub_type: "", mime_type: "application/vnd.ms-powerpoint"},
+    "pptx":{type: "presentation", sub_type: "", mime_type: "application/vnd.openxmlformats-officedocument.presentationml.presentation"},
+    "pps":{type: "presentation", sub_type: "", mime_type: "application/vnd.ms-powerpoint"},
+};

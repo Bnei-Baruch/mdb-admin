@@ -1,4 +1,4 @@
-import {I18N_ORDER} from "./consts";
+import {I18N_ORDER, MEDIA_TYPES} from "./consts";
 
 /**
  * Test a pattern for physical file names
@@ -96,5 +96,67 @@ export const formatError = error => {
         return error.toString();
     } else {
         return error;
+    }
+};
+
+/**
+ * Extract type, sub_type and mime_type from a file
+ * or infer based file name extension.
+ * @param file
+ * @returns {{type: String, sub_type: String, mime_type: String}}
+ */
+export const fileTypes = file => {
+    let {type, sub_type, mime_type} = file;
+
+    // infer from file extension in DB has nothing
+    if (!type) {
+        const ext = file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length);
+        ({type, sub_type, mime_type} = MEDIA_TYPES[ext] || {});
+    }
+
+    return {type, sub_type, mime_type};
+};
+
+/**
+ * Determine which icon to use for the given file object
+ * @param file
+ * @returns {string}
+ */
+export const fileIcon = file => {
+    let {type, mime_type} = fileTypes(file);
+
+    switch (type) {
+        case "audio":
+            return "file audio outline";
+        case "video":
+            return "file video outline";
+        case "image":
+            return mime_type && mime_type.startsWith("application") ?
+                "file archive outline" :
+                "file image outline";
+        case "text":
+            switch (mime_type) {
+                case "application/msword":
+                case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                    return "file word outline";
+                case "text/xml":
+                case "text/html":
+                    return "file code outline";
+                case "application/epub+zip":
+                case "application/x-rocketbook":
+                case "application/pdf":
+                    return "file pdf outline";
+                case "text/rtf":
+                case "text/plain":
+                    return "file text outline";
+                default:
+                    return "file text outline"
+            }
+        case "sheet":
+            return "file excel outline";
+        case "presentation":
+            return "file powerpoint outline";
+        default:
+            return "file outline";
     }
 };
