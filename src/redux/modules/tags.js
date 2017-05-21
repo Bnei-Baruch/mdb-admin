@@ -1,5 +1,5 @@
 import {createAction, handleActions} from "redux-actions";
-import {buildHierarchy} from "../../helpers/utils";
+import {buildHierarchy, extractI18n} from "../../helpers/utils";
 
 /* Types */
 
@@ -173,8 +173,26 @@ export const reducer = handleActions({
 
 /* Selectors */
 
+const sortHierarchy = (h, getById) => {
+    h.childMap.forEach((v, k) => {
+        v.sort((a, b) => {
+            const aLabel = extractI18n(getById(a).i18n, ['label'])[0],
+                bLabel = extractI18n(getById(b).i18n, ['label'])[0];
+            if (aLabel < bLabel) {
+                return -1;
+            }
+            if (aLabel > bLabel) {
+                return 1;
+            }
+            return 0;
+        });
+    });
+
+    return h
+};
+
 const getTagById = state => id => state.byID.get(id);
-const getHierarchy = state => buildHierarchy(state.byID);
+const getHierarchy = state => sortHierarchy(buildHierarchy(state.byID), getTagById(state));
 const getWIP = state => key => state.wip.get(key);
 const getError = state => key => state.errors.get(key);
 
