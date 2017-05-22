@@ -3,6 +3,8 @@ import { Dropdown } from 'semantic-ui-react'
 import { SOURCE_TYPE_BY_ID } from '../../helpers/consts.js';
 import values from 'lodash/values';
 
+// TODO (yaniv): add empty value button after we pull the kolman's working filter
+
 const options = values(SOURCE_TYPE_BY_ID).map((value, key) => ({ key, value, text: value }));
 
 function ContentSourceFilter(props) {

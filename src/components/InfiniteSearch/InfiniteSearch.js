@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import noop from 'lodash/noop';
+import chunk from 'lodash/chunk';
+import { Segment, Form } from 'semantic-ui-react';
 import { AutoSizer, InfiniteLoader, Table } from 'react-virtualized';
+import TextFilter from '../Filters/TextFilter';
+import DateFilter from '../Filters/DateFilter';
 import SearchHeader from '../SearchHeader/SearchHeader';
-import ContentTypeFilter from '../SearchHeader/ContentTypeFilter';
-import ContentSourceFilter from '../SearchHeader/ContentSourceFilter';
-import TextFilter from '../SearchHeader/TextFilter';
-import DateFilter from '../SearchHeader/DateFilter';
 import './InfiniteSearch.css';
 
 import 'react-virtualized/styles.css';
@@ -38,15 +39,26 @@ const MIN_STOP_INDEX = 100;
 
 export default class InfiniteSearch extends Component {
     static propTypes = {
-        error: PropTypes.any,
         search: PropTypes.func.isRequired,
         params: PropTypes.object.isRequired,
         columns: PropTypes.arrayOf(PropTypes.element).isRequired,
-        searchPlaceholder: PropTypes.string
+        filters: PropTypes.arrayOf(PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            Filter: PropTypes.any, // component
+            props: PropTypes.func
+        })),
+        searchPlaceholder: PropTypes.string,
+        searchError: PropTypes.any,
     };
 
+    static defaultProps = {
+        filters: [],
+        searchPlaceholder: '',
+        searchError: undefined
+    }
+
     state = {
-        items: []
+        items: [],
     };
 
     // Should be removed after Search is.
@@ -75,9 +87,7 @@ export default class InfiniteSearch extends Component {
     };
 
     loadMoreRows = ({ startIndex, stopIndex }) => {
-        // InfiniteLoader startIndex is zero based so we add 1 for the backend
-        // TODO (yaniv): do we need to send the query again? isn't it in redux params already?
-        return this.props.search({ query: this.props.params.query }, { 'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
+        return this.props.search({}, { 'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
             return new Promise((resolve) => this.setState(prevState => {
                 const items = prevState.items;
                 data.forEach((item, index) => {
@@ -89,33 +99,59 @@ export default class InfiniteSearch extends Component {
     };
 
     render() {
-        const { params, searching, error, total, searchPlaceholder, columns } = this.props;
+        const { params, searching, total, searchPlaceholder, columns, filters } = this.props;
+        const filterChunks = chunk(filters, 4);
 
         return (
             <div className="InfiniteSearch">
+                <Segment fluid color="blue">
+                    <Form>
+                        <Form.Group>
+                            <Form.Field width={8}>
+                                <label>Query:</label>
+                                <TextFilter placeholder={searchPlaceholder}
+                                            onChange={(value) => this.handleFilterChange('query', value)}
+                                            value={params['query']} />
+                            </Form.Field>
+                            <Form.Field width={4}>
+                                <label>Start Date:</label>
+                                <DateFilter placeholder="YYYY-MM-DD"
+                                            onChange={(value) => this.handleFilterChange('start_date', value)}
+                                            value={params['start_date']}
+                                            maxDate={params['end_date']} />
+                            </Form.Field>
+                            <Form.Field width={4}>
+                                <label>End Date:</label>
+                                <DateFilter placeholder="YYYY-MM-DD"
+                                            onChange={(value) => this.handleFilterChange('end_date', value)}
+                                            value={params['end_date']}
+                                            minDate={params['start_date']} />
+                            </Form.Field>
+                        </Form.Group>
+                        {
+                            filterChunks.map((group, idx) => (
+                                <Form.Group key={idx}>
+                                    {
+                                        group.map((filter, idx2) => (
+                                            <Form.Field key={idx2} width={4}>
+                                                <label>{filter.label}:</label>
+                                                <filter.Filter
+                                                    onChange={(value) => this.handleFilterChange(filter.name, value)}
+                                                    value={params[filter.name]}
+                                                    {...(filter.props || noop)(params)}
+                                                />
+                                            </Form.Field>
+                                        ))
+                                    }
+                                </Form.Group>
+                            ))
+                        }
+                    </Form>
+                </Segment>
                 <SearchHeader
                     searching={searching}
-                    error={error}
-                    total={total}>
-                    <TextFilter placeholder={searchPlaceholder}
-                                onChange={(value) => this.handleFilterChange('query', value)}
-                                value={params['query']} />
-                    <DateFilter
-                        placeholderText="Start Date"
-                        onChange={(value) => this.handleFilterChange('start_date', value)}
-                        value={params['start_date']}
-                        maxDate={params['end_date']} />
-                    <DateFilter
-                        placeholderText="End Date"
-                        onChange={(value) => this.handleFilterChange('end_date', value)}
-                        value={params['end_date']}
-                        minDate={params['start_date']} />
-                    <ContentTypeFilter onChange={(value) => this.handleFilterChange('content_type', value)}
-                                       value={params['content_type']} />
-                    <ContentSourceFilter onChange={(value) => this.handleFilterChange('content_source', value)}
-                                         value={params['content_source']} />
-                </SearchHeader>
-                <div className="InfiniteSearch__loader">
+                    total={total} />
+                <Segment color="blue" className="InfiniteSearch__loader">
                     <InfiniteLoader
                         ref={el => this.infLoader = el}
                         isRowLoaded={this.isRowLoaded}
@@ -140,7 +176,7 @@ export default class InfiniteSearch extends Component {
                             </AutoSizer>
                         )}
                     </InfiniteLoader>
-                </div>
+                </Segment>
             </div>
         );
     }

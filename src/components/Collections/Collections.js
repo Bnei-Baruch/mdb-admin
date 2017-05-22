@@ -62,6 +62,11 @@ export const columns = [
 
 export default class Collections extends Component {
     render() {
-        return <InfiniteCollectionSearcher columns={columns} searchPlaceholder="Search collection..." />;
+        return (
+            <InfiniteCollectionSearcher
+                columns={columns}
+                searchPlaceholder="Search collection..."
+            />
+        );
     }
 }
