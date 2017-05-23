@@ -1,5 +1,6 @@
 import {call, put, takeEvery, takeLatest} from "redux-saga/effects";
 import {actions, types} from "../redux/modules/tags";
+import {types as system} from "../redux/modules/system";
 import api from "../helpers/apiClient";
 
 function* fetchItem(action) {
@@ -55,7 +56,7 @@ function* watchFetchItem() {
     yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
 function* watchLastFetchAll() {
-    yield takeLatest(types.FETCH_ALL, fetchAll);
+    yield takeLatest([types.FETCH_ALL, system.INIT], fetchAll);
 }
 function* watchUpdateInfo() {
     yield takeEvery(types.UPDATE_INFO, updateInfo);

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import moment from "moment";
 import filesize from "filesize";
-import {Button, Flag, Grid, Header, Icon, List} from "semantic-ui-react";
+import {Button, Flag, Grid, Header, List, Menu, Segment} from "semantic-ui-react";
 import apiClient from "../../../helpers/apiClient";
 import dataLoader from "../../../hoc/dataLoader";
 import Player from "../../Player/JWPlayer";
@@ -52,127 +52,134 @@ class FileInfo extends Component {
             icon = fileIcon(data),
             types = fileTypes(data);
 
-        return <Grid container>
-            <Grid.Row>
-                <Grid.Column>
-                    <Header size="large">
-                        <Icon name={icon}/>
-                        <Header.Content>
-                            {data.name}
-                            <Header.Subheader>
-                                Created at &nbsp;
-                                {moment.utc(data.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
-                            </Header.Subheader>
-                        </Header.Content>
-                    </Header>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={2}>
-                <Grid.Column width={10}>
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={14}>
-                                <List divided>
-                                    <List.Item>
-                                        <strong>ID:</strong>
-                                        <List.Content floated="right">
-                                            {data.id}
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>UID:</strong>
-                                        <List.Content floated="right">
-                                            {data.uid}
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>Size:</strong>
-                                        <List.Content floated="right">
-                                            {filesize(data.size)}
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>SHA-1:</strong>
-                                        <List.Content floated="right">
-                                            {data.sha1}
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>OS created_at:</strong>
-                                        <List.Content floated="right">
-                                            {
-                                                data.file_created_at ?
-                                                    moment.utc(data.file_created_at).local().format('YYYY-MM-DD HH:mm:ss') :
-                                                    null
-                                            }
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>Type:</strong>
-                                        <List.Content floated="right">
-                                            {data.type}
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>Sub Type:</strong>
-                                        <List.Content floated="right">
-                                            {data.sub_type}
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>Mime Type:</strong>
-                                        <List.Content floated="right">
-                                            {data.mime_type}
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>Language:</strong>
-                                        <List.Content floated="right">
-                                            {language.flag ? <Flag name={language.flag}/> : null }
-                                            {language.text}
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>Content Unit:</strong>
-                                        <List.Content floated="right">
-                                            {
-                                                data.content_unit_id ?
-                                                    <Link
-                                                        to={`/content_units/${data.content_unit_id}`}>{data.content_unit_id}</Link> :
-                                                    "none"
-                                            }
-                                        </List.Content>
-                                    </List.Item>
-                                    <List.Item>
-                                        <strong>Parent:</strong>
-                                        <List.Content floated="right">
-                                            {
-                                                data.parent_id ?
-                                                    <Link to={`/files/${data.parent_id}`}>{data.parent_id}</Link> :
-                                                    "none"
-                                            }
-                                        </List.Content>
-                                    </List.Item>
-                                </List>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Grid.Column>
-                <Grid.Column width={6} textAlign="center">
-                    {
-                        ["audio", "video"].includes(types.type) ?
-                            <Player file={`http://files.bbdomain.org/get/${data.sha1}/${data.name}`}/> :
-                            null
-                    }
-                    <br/>
-                    <Button content='Download'
-                            icon='download'
-                            color="purple"
-                            onClick={e => this.onDownload(e)}/>
-                </Grid.Column>
-            </Grid.Row>
-            {this.renderProperties()}
-        </Grid>;
+        return <div>
+            <Menu attached borderless size="large">
+                <Menu.Item header>
+                    <Header icon={icon} content={data.name} color="blue"/>
+                </Menu.Item>
+            </Menu>
+
+            <Segment attached>
+                <Grid>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={10}>
+                            <Grid>
+                                <Grid.Row>
+                                    <Grid.Column width={14}>
+                                        <List divided relaxed>
+                                            <List.Item>
+                                                <strong>ID:</strong>
+                                                <List.Content floated="right">
+                                                    {data.id}
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>UID:</strong>
+                                                <List.Content floated="right">
+                                                    {data.uid}
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>Size:</strong>
+                                                <List.Content floated="right">
+                                                    {filesize(data.size)}
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>SHA-1:</strong>
+                                                <List.Content floated="right">
+                                                    {data.sha1}
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>DB created_at:</strong>
+                                                <List.Content floated="right">
+                                                    {
+                                                        data.file_created_at ?
+                                                            moment.utc(data.created_at).local().format('YYYY-MM-DD HH:mm:ss') :
+                                                            null
+                                                    }
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>OS created_at:</strong>
+                                                <List.Content floated="right">
+                                                    {
+                                                        data.file_created_at ?
+                                                            moment.utc(data.file_created_at).local().format('YYYY-MM-DD HH:mm:ss') :
+                                                            null
+                                                    }
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>Type:</strong>
+                                                <List.Content floated="right">
+                                                    {data.type}
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>Sub Type:</strong>
+                                                <List.Content floated="right">
+                                                    {data.sub_type}
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>Mime Type:</strong>
+                                                <List.Content floated="right">
+                                                    {data.mime_type}
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>Language:</strong>
+                                                <List.Content floated="right">
+                                                    {language.flag ? <Flag name={language.flag}/> : null }
+                                                    {language.text}
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>Content Unit:</strong>
+                                                <List.Content floated="right">
+                                                    {
+                                                        data.content_unit_id ?
+                                                            <Link
+                                                                to={`/content_units/${data.content_unit_id}`}>{data.content_unit_id}</Link> :
+                                                            "none"
+                                                    }
+                                                </List.Content>
+                                            </List.Item>
+                                            <List.Item>
+                                                <strong>Parent:</strong>
+                                                <List.Content floated="right">
+                                                    {
+                                                        data.parent_id ?
+                                                            <Link
+                                                                to={`/files/${data.parent_id}`}>{data.parent_id}</Link> :
+                                                            "none"
+                                                    }
+                                                </List.Content>
+                                            </List.Item>
+                                        </List>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Grid.Column>
+                        <Grid.Column width={6} textAlign="center">
+                            {
+                                ["audio", "video"].includes(types.type) ?
+                                    <Player file={`http://files.bbdomain.org/get/${data.sha1}/${data.name}`}/> :
+                                    null
+                            }
+                            <br/>
+                            <Button content='Download'
+                                    icon='download'
+                                    color="purple"
+                                    onClick={e => this.onDownload(e)}/>
+                        </Grid.Column>
+                    </Grid.Row>
+                    {this.renderProperties()}
+                </Grid>
+            </Segment>
+        </div>;
     }
 }
 

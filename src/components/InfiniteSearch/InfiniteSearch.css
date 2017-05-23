@@ -1,16 +1,3 @@
-.InfiniteSearch {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    padding: 0 10px;
-}
-
-.InfiniteSearch__loader {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-}
-
 .placeholder {
     display: inline-block;
     height: 80%;

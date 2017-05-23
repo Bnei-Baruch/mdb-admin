@@ -1,23 +1,24 @@
-import {createAction, handleActions} from "redux-actions";
-import {buildHierarchy, extractI18n} from "../../helpers/utils";
+import {createAction, handleActions} from 'redux-actions';
+import {createSelector} from 'reselect';
+import {buildHierarchy, extractI18n} from '../../helpers/utils';
 
 /* Types */
 
-const FETCH_ITEM = 'TAGS/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS = 'TAGS/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE = 'TAGS/FETCH_ITEM_FAILURE';
-const FETCH_ALL = 'TAGS/FETCH_ALL';
-const FETCH_ALL_SUCCESS = 'TAGS/FETCH_ALL_SUCCESS';
-const FETCH_ALL_FAILURE = 'TAGS/FETCH_ALL_FAILURE';
-const UPDATE_INFO = 'TAGS/UPDATE_INFO';
-const UPDATE_INFO_SUCCESS = 'TAGS/UPDATE_INFO_SUCCESS';
-const UPDATE_INFO_FAILURE = 'TAGS/UPDATE_INFO_FAILURE';
-const UPDATE_I18N = 'TAGS/UPDATE_I18N';
-const UPDATE_I18N_SUCCESS = 'TAGS/UPDATE_I18N_SUCCESS';
-const UPDATE_I18N_FAILURE = 'TAGS/UPDATE_I18N_FAILURE';
-const CREATE = 'TAGS/CREATE';
-const CREATE_SUCCESS = 'TAGS/CREATE_SUCCESS';
-const CREATE_FAILURE = 'TAGS/CREATE_FAILURE';
+const FETCH_ITEM = 'Tags/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS = 'Tags/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE = 'Tags/FETCH_ITEM_FAILURE';
+const FETCH_ALL = 'Tags/FETCH_ALL';
+const FETCH_ALL_SUCCESS = 'Tags/FETCH_ALL_SUCCESS';
+const FETCH_ALL_FAILURE = 'Tags/FETCH_ALL_FAILURE';
+const UPDATE_INFO = 'Tags/UPDATE_INFO';
+const UPDATE_INFO_SUCCESS = 'Tags/UPDATE_INFO_SUCCESS';
+const UPDATE_INFO_FAILURE = 'Tags/UPDATE_INFO_FAILURE';
+const UPDATE_I18N = 'Tags/UPDATE_I18N';
+const UPDATE_I18N_SUCCESS = 'Tags/UPDATE_I18N_SUCCESS';
+const UPDATE_I18N_FAILURE = 'Tags/UPDATE_I18N_FAILURE';
+const CREATE = 'Tags/CREATE';
+const CREATE_SUCCESS = 'Tags/CREATE_SUCCESS';
+const CREATE_FAILURE = 'Tags/CREATE_FAILURE';
 
 export const types = {
     FETCH_ITEM,
@@ -174,7 +175,8 @@ export const reducer = handleActions({
 /* Selectors */
 
 const sortHierarchy = (h, getById) => {
-    h.childMap.forEach((v, k) => {
+    console.log('COMPUTE: sortHierarchy ', h.childMap.size);
+    h.childMap.forEach(v => {
         v.sort((a, b) => {
             const aLabel = extractI18n(getById(a).i18n, ['label'])[0],
                 bLabel = extractI18n(getById(b).i18n, ['label'])[0];
@@ -188,11 +190,12 @@ const sortHierarchy = (h, getById) => {
         });
     });
 
-    return h
+    return h;
 };
 
+const getTags = state => state.byID;
 const getTagById = state => id => state.byID.get(id);
-const getHierarchy = state => sortHierarchy(buildHierarchy(state.byID), getTagById(state));
+const getHierarchy = createSelector(getTags, tags => sortHierarchy(buildHierarchy(tags), x => tags.get(x)));
 const getWIP = state => key => state.wip.get(key);
 const getError = state => key => state.errors.get(key);
 

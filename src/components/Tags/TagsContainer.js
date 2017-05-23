@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {Grid} from "semantic-ui-react";
 import {actions, selectors} from "../../redux/modules/tags";
 import TagsHierarchy from "./TagsHierarchy";
 
@@ -17,13 +16,7 @@ class TagsContainer extends Component {
     }
 
     render() {
-        return <Grid container>
-            <Grid.Row>
-                <Grid.Column>
-                    <TagsHierarchy {...this.props}/>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>;
+        return <TagsHierarchy {...this.props}/>;
     }
 }
 

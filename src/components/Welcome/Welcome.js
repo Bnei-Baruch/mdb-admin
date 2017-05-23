@@ -1,19 +1,14 @@
-import React, { Component } from 'react';
+import React from "react";
+import {Header, Image} from "semantic-ui-react";
+import logo from "./KL_Tree_256.png";
 
-class Welcome extends Component {
-    render() {
-        return (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                margin: '20px',
-            }}>
-            <h2>Welcome to MDB Admin!</h2>
-            </div>
-        );
-    }
-
-}
+const Welcome = () => {
+    return <div>
+        <br/>
+        <Image src={logo} centered/>
+        <br/>
+        <Header textAlign="center" as="h2" content="Welcome to the BB Archive Admin!"/>
+    </div>;
+};
 
 export default Welcome;

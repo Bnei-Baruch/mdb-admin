@@ -49,7 +49,7 @@ class TagContainer extends Component {
             wip = getWIP('fetchItem');
 
         if (!!tag) {
-            return <Grid container>
+            return <Grid>
                 <Grid.Row columns={2}>
                     <Grid.Column width={8}>
                         <TagInfoForm {...this.props}/>
@@ -62,18 +62,10 @@ class TagContainer extends Component {
                 </Grid.Row>
             </Grid>;
         } else {
-            return <Grid container>
-                <Grid.Row>
-                    <Grid.Column>
-                        {
-                            wip ?
-                                <LoadingSplash text="Loading tag details" subtext="Hold on tight..."/> :
-                                <FrownSplash text="Couldn't find tag"
-                                             subtext={<span>Try the <Link to="/tags">tags hierarchy</Link>...</span>}/>
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            return  wip ?
+                <LoadingSplash text="Loading tag details" subtext="Hold on tight..."/> :
+                <FrownSplash text="Couldn't find tag"
+                             subtext={<span>Try the <Link to="/tags">tags hierarchy</Link>...</span>}/>;
         }
     }
 }

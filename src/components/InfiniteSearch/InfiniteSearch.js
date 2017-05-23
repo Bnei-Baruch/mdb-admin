@@ -1,31 +1,29 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import noop from 'lodash/noop';
-import chunk from 'lodash/chunk';
-import { Segment, Form } from 'semantic-ui-react';
-import { AutoSizer, InfiniteLoader, Table } from 'react-virtualized';
-import TextFilter from '../Filters/TextFilter';
-import DateFilter from '../Filters/DateFilter';
-import SearchHeader from '../SearchHeader/SearchHeader';
-import './InfiniteSearch.css';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import noop from "lodash/noop";
+import chunk from "lodash/chunk";
+import {Form, Segment} from "semantic-ui-react";
+import {AutoSizer, InfiniteLoader, Table} from "react-virtualized";
+import TextFilter from "../Filters/TextFilter";
+import DateFilter from "../Filters/DateFilter";
+import SearchHeader from "../SearchHeader/SearchHeader";
+import "./InfiniteSearch.css";
 
-import 'react-virtualized/styles.css';
+import "react-virtualized/styles.css";
 
-const RowRenderer = ({ className, columns, key, style, index, rowData }) => {
-    const placeholderElement = (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%', width: '100%'
-            }}
-        >
-            <div className="placeholder" />
-        </div>
-    );
+const placeholderElement = <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+        width: '100%'
+    }}>
+        <div className="placeholder"/>
+    </div>
+;
 
+const RowRenderer = ({className, columns, key, style, index, rowData}) => {
     return (
         <div className={className}
              key={key}
@@ -55,7 +53,7 @@ export default class InfiniteSearch extends Component {
         filters: [],
         searchPlaceholder: '',
         searchError: undefined
-    }
+    };
 
     state = {
         items: [],
@@ -64,46 +62,46 @@ export default class InfiniteSearch extends Component {
     // Should be removed after Search is.
     clearItems = () => {
         this.resetInfiniteLoaderCache();
-        this.setState({ items: [] });
+        this.setState({items: []});
     };
 
     handleFilterChange = (name, value) => {
         // Start index starts from 1 in the backend.
-        this.props.search({ [name]: value }, { 'start_index': 1, 'stop_index': MIN_STOP_INDEX }).then(data => {
+        this.props.search({[name]: value}, {'start_index': 1, 'stop_index': MIN_STOP_INDEX}).then(data => {
             this.resetInfiniteLoaderCache();
-            this.setState({ items: data });
+            this.setState({items: data});
         });
     };
 
     resetInfiniteLoaderCache = () => this.infLoader.resetLoadMoreRowsCache();
 
-    isRowLoaded = ({ index }) => {
+    isRowLoaded = ({index}) => {
         const item = this.state.items[index];
         return !!item && typeof item.id !== 'undefined';
     };
 
-    rowGetter = ({ index }) => {
-        return this.isRowLoaded({ index }) ? this.state.items[index] : {};
+    rowGetter = ({index}) => {
+        return this.isRowLoaded({index}) ? this.state.items[index] : {};
     };
 
-    loadMoreRows = ({ startIndex, stopIndex }) => {
-        return this.props.search({}, { 'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
+    loadMoreRows = ({startIndex, stopIndex}) => {
+        return this.props.search({}, {'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
             return new Promise((resolve) => this.setState(prevState => {
                 const items = prevState.items;
                 data.forEach((item, index) => {
                     items[index + startIndex] = item;
                 });
-                return { items };
+                return {items};
             }, resolve));
         });
     };
 
     render() {
-        const { params, searching, total, searchPlaceholder, columns, filters } = this.props;
+        const {params, searching, total, searchPlaceholder, columns, filters} = this.props;
         const filterChunks = chunk(filters, 4);
 
         return (
-            <div className="InfiniteSearch">
+            <div>
                 <Segment fluid color="blue">
                     <Form>
                         <Form.Group>
@@ -111,21 +109,21 @@ export default class InfiniteSearch extends Component {
                                 <label>Query:</label>
                                 <TextFilter placeholder={searchPlaceholder}
                                             onChange={(value) => this.handleFilterChange('query', value)}
-                                            value={params['query']} />
+                                            value={params['query']}/>
                             </Form.Field>
                             <Form.Field width={4}>
                                 <label>Start Date:</label>
                                 <DateFilter placeholder="YYYY-MM-DD"
                                             onChange={(value) => this.handleFilterChange('start_date', value)}
                                             value={params['start_date']}
-                                            maxDate={params['end_date']} />
+                                            maxDate={params['end_date']}/>
                             </Form.Field>
                             <Form.Field width={4}>
                                 <label>End Date:</label>
                                 <DateFilter placeholder="YYYY-MM-DD"
                                             onChange={(value) => this.handleFilterChange('end_date', value)}
                                             value={params['end_date']}
-                                            minDate={params['start_date']} />
+                                            minDate={params['start_date']}/>
                             </Form.Field>
                         </Form.Group>
                         {
@@ -148,19 +146,21 @@ export default class InfiniteSearch extends Component {
                         }
                     </Form>
                 </Segment>
+
                 <SearchHeader
                     searching={searching}
-                    total={total} />
-                <Segment color="blue" className="InfiniteSearch__loader">
+                    total={total}/>
+
+                <Segment basic style={{height: "50em"}}>
                     <InfiniteLoader
                         ref={el => this.infLoader = el}
                         isRowLoaded={this.isRowLoaded}
                         threshold={100}
                         loadMoreRows={this.loadMoreRows}
-                        rowCount={total} >
-                        {({ onRowsRendered, registerChild }) => (
+                        rowCount={total}>
+                        {({onRowsRendered, registerChild}) => (
                             <AutoSizer>
-                                {({ width, height }) => (
+                                {({width, height}) => (
                                     <Table headerHeight={50}
                                            height={height}
                                            width={width}
@@ -169,7 +169,7 @@ export default class InfiniteSearch extends Component {
                                            onRowsRendered={onRowsRendered}
                                            rowRenderer={RowRenderer}
                                            rowGetter={this.rowGetter}
-                                           rowHeight={50} >
+                                           rowHeight={50}>
                                         { columns }
                                     </Table>
                                 )}
