@@ -7,13 +7,15 @@ import './DateFilter.css';
 
 const format = 'YYYY-MM-DD';
 
+const valueToMoment = value => (value ? moment(value, format) : null);
+
 class DateFilter extends Component {
     static defaultProps = {
         value: '',
     };
 
     state = {
-        value: this.props.value
+        value: null//valueToMoment(this.props.value)
     };
 
     componentDidMount() {
@@ -24,25 +26,22 @@ class DateFilter extends Component {
     componentWillReceiveProps(nextProps) {
         this.setMinDate();
         this.setMaxDate();
-        this.setState({
-            value: this.props.value
-        });
+        // this.setState({
+        //     value: valueToMoment(this.props.value)
+        // });
     }
 
     setMinDate = () => this.momentMinDate = this.props.minDate && moment(this.props.minDate, format);
 
     setMaxDate = () => this.momentMaxDate = this.props.maxDate && moment(this.props.maxDate, format);
 
-    handleRawChange = (value) => {
-        const momentValue = moment(value, format);
-
-        if (momentValue.isValid()) {
-            this.props.onChange(value);
-        }
-    };
+    handleChange = (value) => {
+        console.log(value);
+        this.setState({ value });
+    }
 
     render() {
-        const { onChange, placeholder, ...rest } = props;
+        const { onChange, placeholder, ...rest } = this.props;
         return (
             <div className="DateFilter">
                 <DatePicker
@@ -50,18 +49,17 @@ class DateFilter extends Component {
                         <Input icon iconPosition="left" fluid>
                             <Icon name="calendar" circular />
                             <input />
-                            { !!value &&
+                            { !!this.state.value &&
                                 <Button type="button" icon="remove" onClick={() => onChange('')} floated="right" />
                             }
                         </Input>
                     }
 
-                    minDate={momentMinDate}
-                    maxDate={momentMaxDate}
+                    minDate={this.momentMinDate}
+                    maxDate={this.momentMaxDate}
                     dateFormat={format}
-                    value={value}
-                    onRawChange={this.handleRawChange}
-                    onChange={(moment) => onChange(moment.format(format))}
+                    selected={this.state.value}
+                    onChange={this.handleChange}
                     showYearDropdown
                     showMonthDropdown
                     placeholderText={placeholder}
