@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { Input, Icon, Button } from 'semantic-ui-react';
@@ -7,40 +7,68 @@ import './DateFilter.css';
 
 const format = 'YYYY-MM-DD';
 
-function DateFilter(props) {
-    const { onChange, value, placeholder, minDate, maxDate, ...rest } = props;
+class DateFilter extends Component {
+    static defaultProps = {
+        value: '',
+    };
 
-    const momentMinDate = minDate && moment(minDate, format);
-    const momentMaxDate = maxDate && moment(maxDate, format);
+    state = {
+        value: this.props.value
+    };
 
-    return (
-        <div className="DateFilter">
-            <DatePicker
-                customInput={
-                    <Input icon iconPosition="left" fluid>
-                        <Icon name="calendar" circular />
-                        <input />
-                        { !!value &&
-                            <Button type="button" icon="remove" onClick={() => onChange('')} floated="right" />
-                        }
-                    </Input>
-                }
+    componentDidMount() {
+        this.setMinDate();
+        this.setMaxDate();
+    }
 
-                minDate={momentMinDate}
-                maxDate={momentMaxDate}
-                dateFormat={format}
-                value={value}
-                onChange={(moment) => onChange(moment.format(format))}
-                showYearDropdown
-                showMonthDropdown
-                placeholderText={placeholder}
-                {...rest} />
-        </div>
-    );
+    componentWillReceiveProps(nextProps) {
+        this.setMinDate();
+        this.setMaxDate();
+        this.setState({
+            value: this.props.value
+        });
+    }
+
+    setMinDate = () => this.momentMinDate = this.props.minDate && moment(this.props.minDate, format);
+
+    setMaxDate = () => this.momentMaxDate = this.props.maxDate && moment(this.props.maxDate, format);
+
+    handleRawChange = (value) => {
+        const momentValue = moment(value, format);
+
+        if (momentValue.isValid()) {
+            this.props.onChange(value);
+        }
+    };
+
+    render() {
+        const { onChange, placeholder, ...rest } = props;
+        return (
+            <div className="DateFilter">
+                <DatePicker
+                    customInput={
+                        <Input icon iconPosition="left" fluid>
+                            <Icon name="calendar" circular />
+                            <input />
+                            { !!value &&
+                                <Button type="button" icon="remove" onClick={() => onChange('')} floated="right" />
+                            }
+                        </Input>
+                    }
+
+                    minDate={momentMinDate}
+                    maxDate={momentMaxDate}
+                    dateFormat={format}
+                    value={value}
+                    onRawChange={this.handleRawChange}
+                    onChange={(moment) => onChange(moment.format(format))}
+                    showYearDropdown
+                    showMonthDropdown
+                    placeholderText={placeholder}
+                    {...rest} />
+            </div>
+        );
+    }
 }
-
-DateFilter.defaultProps = {
-    value: '',
-};
 
 export default DateFilter;
