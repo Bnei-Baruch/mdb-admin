@@ -15,7 +15,7 @@ class DateFilter extends Component {
     };
 
     state = {
-        value: null//valueToMoment(this.props.value)
+        inputValue: this.props.value
     };
 
     componentDidMount() {
@@ -24,24 +24,34 @@ class DateFilter extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.value);
         this.setMinDate();
         this.setMaxDate();
-        // this.setState({
-        //     value: valueToMoment(this.props.value)
-        // });
+        this.setState({
+            inputValue: this.props.value
+        });
     }
 
     setMinDate = () => this.momentMinDate = this.props.minDate && moment(this.props.minDate, format);
 
     setMaxDate = () => this.momentMaxDate = this.props.maxDate && moment(this.props.maxDate, format);
 
-    handleChange = (value) => {
-        console.log(value);
-        this.setState({ value });
-    }
+    handleChangeRaw = value => this.setState({ inputValue: value });
+
+    handleChange = (momentValue) => {
+        if (!momentValue) {
+            this.props.onChange('');
+        } else {
+            this.props.onChange(momentValue.format(format));
+        }
+    };
+
+    clearValue = () => this.handleChange(null);
 
     render() {
-        const { onChange, placeholder, ...rest } = this.props;
+        const { onChange, value, placeholder, ...rest } = this.props;
+        const momentValue = valueToMoment(value);
+
         return (
             <div className="DateFilter">
                 <DatePicker
@@ -49,8 +59,8 @@ class DateFilter extends Component {
                         <Input icon iconPosition="left" fluid>
                             <Icon name="calendar" circular />
                             <input />
-                            { !!this.state.value &&
-                                <Button type="button" icon="remove" onClick={() => onChange('')} floated="right" />
+                            { !!value &&
+                                <Button type="button" icon="remove" onClick={this.clearValue} floated="right" />
                             }
                         </Input>
                     }
@@ -58,7 +68,9 @@ class DateFilter extends Component {
                     minDate={this.momentMinDate}
                     maxDate={this.momentMaxDate}
                     dateFormat={format}
-                    selected={this.state.value}
+                    selected={momentValue}
+                    value={this.state.inputValue}
+                    onChangeRaw={this.handleChangeRaw}
                     onChange={this.handleChange}
                     showYearDropdown
                     showMonthDropdown
