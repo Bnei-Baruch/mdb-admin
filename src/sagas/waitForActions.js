@@ -1,12 +1,12 @@
 import { createAction } from 'redux-actions';
-import { takeEvery } from 'redux-saga';
-import { all, race, call } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { takeEvery, all, race, call, take } from 'redux-saga/effects';
 
 const WAIT_FOR_ACTIONS_PROMISE = 'WAIT_FOR_ACTIONS_PROMISE';
 
-export const waitAction = createAction(WAIT_FOR_ACTIONS_PROMISE);
+const waitAction = createAction(WAIT_FOR_ACTIONS_PROMISE);
 
-function resolveOnActions(actions, dispatch, timeout) {
+export function resolveOnActions(actions, dispatch, timeout) {
     return new Promise((resolve, reject) => {
         dispatch(waitAction({
             actions,
@@ -17,9 +17,14 @@ function resolveOnActions(actions, dispatch, timeout) {
 }
 
 export function* watchWaitForActions() {
-    yield takeEvery(WAIT_FOR_ACTIONS_PROMISE, function* ({ payload }) {
+    yield takeEvery(WAIT_FOR_ACTIONS_PROMISE, function* processWaitForActions({ payload }) {
         const { actions, defer, timeout } = payload;
         const { resolve, reject } = defer;
+
+        if (!actions) {
+            yield call(resolve);
+            return;
+        }
 
         const takeAll = all(actions.map(action => take(action)));
 

@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { resolveOnActions } from '../sagas/waitForAction';
+import { connect } from 'react-redux';
+import { resolveOnActions } from '../sagas/waitForActions';
 
 const waitForActions = (options) => (WrappedComponent) => {
-    const actionsToWaitFor = Array.isArray(options.actions) ? options.actions : [options.actions];
-    const LoadingComponent = options.loader || (() => null);
+    let actionsToWaitFor = options.actions;
+    if (actionsToWaitFor && !Array.isArray(actionsToWaitFor)) {
+        actionsToWaitFor = [actionsToWaitFor];
+    }
+    const LoadingComponent = options.LoadingComponent || (() => null);
 
     class WaitForActions extends Component {
+
+        static propTypes = {
+            dispatch: PropTypes.func.isRequired
+        };
 
         state = {
             isComplete: false
         };
 
         componentDidMount() {
-            resolveOnActions(actionsToWaitFor).then(() => this.setState({ isComplete: true });
+            resolveOnActions(actionsToWaitFor, this.props.dispatch, options.timeout)
+                .then(() => this.setState({ isComplete: true }));
         }
 
         render() {
@@ -24,6 +33,8 @@ const waitForActions = (options) => (WrappedComponent) => {
             }
         }
     };
+
+    return connect()(WaitForActions);
 
     // TODO (yaniv): change displayName
 };

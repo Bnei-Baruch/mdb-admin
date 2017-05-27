@@ -9,7 +9,9 @@ import {routerMiddleware as createRouterMiddleware} from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 
 import reducer from "./redux";
-import {actions as system} from "./redux/modules/system";
+import {actions as system, types as systemActionTypes} from "./redux/modules/system";
+import waitForActions from './hoc/waitForActions';
+import { watchWaitForActions } from './sagas/waitForActions';
 import allSagas from "./sagas";
 import sagaMonitor from "./sagas/sagaMonitor";
 import App from "./components/App/App";
@@ -35,30 +37,35 @@ const store = createStore(reducer, {}, compose(
     devToolsStoreEnhancer()
 ));
 
+const appContainer = document.getElementById('root');
+
+const AppLoading = () => (
+    <div style={{
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'black',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }}>
+        <h1 style={{ color: 'white' }}>Loading...</h1>
+    </div>
+);
+
+sagaMiddleWare.run(watchWaitForActions);
+
+const AppWaiting = waitForActions({
+    actions: [systemActionTypes.READY],
+    LoadingComponent: AppLoading
+})(App);
+
+ReactDOM.render(<AppWaiting store={store} history={history}/>, appContainer);
+
 
 //
 // The main application
 //
 function * application() {
-    const appContainer = document.getElementById('root');
-
-    //
-    // Show some loading screen until we're good to go
-    //
-    ReactDOM.render(
-        <div style={{
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'black',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
-            <h1>Loading...</h1>
-        </div>,
-        appContainer
-    );
-
     //
     // Bootstrap the saga middleware with initial sagas
     //
@@ -85,11 +92,6 @@ function * application() {
     // Inform everybody, that we're ready now
     //
     yield put(system.ready());
-
-    //
-    // After everything was initialized correctly, render the application itself.
-    //
-    ReactDOM.render(<App store={store} history={history}/>, appContainer);
 }
 
 sagaMiddleWare.run(application);
