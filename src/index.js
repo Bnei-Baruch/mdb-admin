@@ -67,7 +67,7 @@ function * application() {
     //
     // Tell everybody, that we're booting now
     //
-    store.dispatch(system.boot());
+    yield put(system.boot());
 
     // Future: Do Whatever bootstrap logic here
     // Load configuration, load translations, etc...
