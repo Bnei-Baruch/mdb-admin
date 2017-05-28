@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {Divider, Grid} from "semantic-ui-react";
 import {actions, selectors} from "../../redux/modules/tags";
-import {FrownSplash, LoadingSplash} from "./shared/Splash";
+import {FrownSplash, LoadingSplash} from "../shared/Splash";
 import TagInfoForm from "./TagInfoForm";
 import TagI18nForm from "./TagI18nForm";
 import TagChildren from "./TagChildren";

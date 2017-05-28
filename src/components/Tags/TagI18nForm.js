@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Button, Flag, Header, Input, Message, Segment, Table, Menu} from "semantic-ui-react";
 import classNames from "classnames";
-import LanguageSelector from "./shared/LanguageSelector";
+import LanguageSelector from "../shared/LanguageSelector";
 import {formatError} from "../../helpers/utils";
 import {ALL_LANGUAGES, LANGUAGES, RTL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN} from "../../helpers/consts";
 

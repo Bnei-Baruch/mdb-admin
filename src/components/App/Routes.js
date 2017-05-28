@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
-import File from "../File/File";
+import FileContainer from "../File/FileContainer";
 import Files from "../Files/Files";
 import ContentUnit from "../ContentUnit/ContentUnit";
 import ContentUnits from "../ContentUnits/ContentUnits";
@@ -17,7 +17,7 @@ const Routes = () => {
     return <Switch>
         <Route exact path="/" component={Welcome}/>
         <Route exact path="/files" component={Files}/>
-        <Route exact path="/files/:id" component={File}/>
+        <Route exact path="/files/:id" component={FileContainer}/>
         <Route exact path="/content_units" component={ContentUnits}/>
         <Route exact path="/content_units/:id" component={ContentUnit}/>
         <Route exact path="/collections" component={Collections}/>
