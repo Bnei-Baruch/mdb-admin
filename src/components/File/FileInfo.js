@@ -98,7 +98,7 @@ class FileInfo extends Component {
                                 <List.Header>
                                     Change Security Level
                                 </List.Header>
-                                Make sure you understand what you"re doing.
+                                Make sure you understand what you're doing.
                             </List.Content>
                         </List.Item>
                     </List>
@@ -175,11 +175,7 @@ class FileInfo extends Component {
                                             <List.Item>
                                                 <strong>DB created_at</strong>
                                                 <List.Content floated="right">
-                                                    {
-                                                        file.file_created_at ?
-                                                            moment.utc(file.created_at).local().format('YYYY-MM-DD HH:mm:ss') :
-                                                            null
-                                                    }
+                                                    {moment.utc(file.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
                                                 </List.Content>
                                             </List.Item>
                                             <List.Item>
