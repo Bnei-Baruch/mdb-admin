@@ -35,6 +35,7 @@ const store = createStore(reducer, {}, compose(
     devToolsStoreEnhancer()
 ));
 
+// Render regardless of application's state. let App decide what to render.
 const appContainer = document.getElementById('root');
 ReactDOM.render(<App store={store} history={history}/>, appContainer);
 

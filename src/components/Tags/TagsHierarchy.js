@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import {Grid, Header, Icon, Label, List, Menu, Modal, Segment} from "semantic-ui-react";
 import NewTagForm from "./NewTagForm";
-import {FrownSplash, LoadingSplash} from "./shared/Splash";
+import {FrownSplash, LoadingSplash} from "../shared/Splash";
 import {extractI18n} from "../../helpers/utils";
 
 class TagsHierarchy extends Component {

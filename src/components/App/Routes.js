@@ -1,10 +1,10 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
-import File from "../File/File";
+import FileContainer from "../File/FileContainer";
 import Files from "../Files/Files";
-import ContentUnit from "../ContentUnit/ContentUnit";
+import ContentUnitContainer from "../ContentUnit/ContentUnitContainer";
 import ContentUnits from "../ContentUnits/ContentUnits";
-import Collection from "../Collection/Collection";
+import CollectionContainer from "../Collection/CollectionContainer";
 import Collections from "../Collections/Collections";
 import Operation from "../Operation/Operation";
 import Operations from "../Operations/Operations";
@@ -17,11 +17,11 @@ const Routes = () => {
     return <Switch>
         <Route exact path="/" component={Welcome}/>
         <Route exact path="/files" component={Files}/>
-        <Route exact path="/files/:id" component={File}/>
+        <Route exact path="/files/:id" component={FileContainer}/>
         <Route exact path="/content_units" component={ContentUnits}/>
-        <Route exact path="/content_units/:id" component={ContentUnit}/>
+        <Route exact path="/content_units/:id" component={ContentUnitContainer}/>
         <Route exact path="/collections" component={Collections}/>
-        <Route exact path="/collections/:id" component={Collection}/>
+        <Route exact path="/collections/:id" component={CollectionContainer}/>
         <Route exact path="/operations" component={Operations}/>
         <Route exact path="/operations/:id" component={Operation}/>
         <Route exact path="/tags" component={TagsContainer}/>
