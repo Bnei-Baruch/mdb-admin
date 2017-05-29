@@ -9,9 +9,7 @@ import {routerMiddleware as createRouterMiddleware} from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 
 import reducer from "./redux";
-import {actions as system, types as systemActionTypes} from "./redux/modules/system";
-import waitForActions from './hoc/waitForActions';
-import { watchWaitForActions } from './sagas/waitForActions';
+import {actions as system} from "./redux/modules/system";
 import allSagas from "./sagas";
 import sagaMonitor from "./sagas/sagaMonitor";
 import App from "./components/App/App";
@@ -38,29 +36,7 @@ const store = createStore(reducer, {}, compose(
 ));
 
 const appContainer = document.getElementById('root');
-
-const AppLoading = () => (
-    <div style={{
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: 'black',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }}>
-        <h1 style={{ color: 'white' }}>Loading...</h1>
-    </div>
-);
-
-sagaMiddleWare.run(watchWaitForActions);
-
-const AppWaiting = waitForActions({
-    actions: [systemActionTypes.READY],
-    LoadingComponent: AppLoading
-})(App);
-
-ReactDOM.render(<AppWaiting store={store} history={history}/>, appContainer);
-
+ReactDOM.render(<App store={store} history={history}/>, appContainer);
 
 //
 // The main application
