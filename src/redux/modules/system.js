@@ -1,4 +1,4 @@
-import {createAction} from "redux-actions";
+import {createAction, handleActions} from "redux-actions";
 
 /* Types */
 
@@ -26,8 +26,23 @@ export const actions = {
 
 /* Reducer */
 
-export const reducer = (state, action) => state;
+const initialState = {
+    isReady: false
+};
+
+const _onReady = (state) => ({
+    ...state,
+    isReady: true
+})
+
+export const reducer = handleActions({
+    [READY]: _onReady
+}, initialState);
 
 /* Selectors */
 
-export const selectors = {};
+const isReady = state => state.isReady;
+
+export const selectors = {
+    isReady
+};

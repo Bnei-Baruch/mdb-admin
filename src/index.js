@@ -35,30 +35,14 @@ const store = createStore(reducer, {}, compose(
     devToolsStoreEnhancer()
 ));
 
+// Render regardless of application's state. let App decide what to render.
+const appContainer = document.getElementById('root');
+ReactDOM.render(<App store={store} history={history}/>, appContainer);
 
 //
 // The main application
 //
 function * application() {
-    const appContainer = document.getElementById('root');
-
-    //
-    // Show some loading screen until we're good to go
-    //
-    ReactDOM.render(
-        <div style={{
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'black',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
-            <h1>Loading...</h1>
-        </div>,
-        appContainer
-    );
-
     //
     // Bootstrap the saga middleware with initial sagas
     //
@@ -67,7 +51,7 @@ function * application() {
     //
     // Tell everybody, that we're booting now
     //
-    store.dispatch(system.boot());
+    yield put(system.boot());
 
     // Future: Do Whatever bootstrap logic here
     // Load configuration, load translations, etc...
@@ -85,11 +69,6 @@ function * application() {
     // Inform everybody, that we're ready now
     //
     yield put(system.ready());
-
-    //
-    // After everything was initialized correctly, render the application itself.
-    //
-    ReactDOM.render(<App store={store} history={history}/>, appContainer);
 }
 
 sagaMiddleWare.run(application);
