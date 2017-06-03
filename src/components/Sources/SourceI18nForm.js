@@ -38,7 +38,7 @@ class SourceI18nForm extends Component {
 
     addLanguage = (language) => {
         let i18n = this.state.i18n;
-        i18n[language] = {language, label: ""};
+        i18n[language] = {language, name: ""};
         this.setState({i18n});
     };
 
@@ -50,7 +50,13 @@ class SourceI18nForm extends Component {
 
     onLabelChange = (e, {value}) => {
         let i18n = this.state.i18n;
-        i18n[e.target.name].label = value;
+        i18n[e.target.name].name = value;
+        this.setState({i18n});
+    };
+
+    onDescriptionChange = (e, {value}) => {
+        let i18n = this.state.i18n;
+        i18n[e.target.description].description = value;
         this.setState({i18n});
     };
 
@@ -81,11 +87,17 @@ class SourceI18nForm extends Component {
                             </Table.Cell>
                             <Table.Cell>
                                 <Input fluid
-                                       transparent
+
                                        className={classNames({"bb-input": true, "rtl-dir": RTL_LANGUAGES.includes(k)})}
                                        name={k}
-                                       value={i18n[k].label}
+                                       value={i18n[k].name}
                                        onChange={this.onLabelChange}/>
+                                <Input fluid
+
+                                       className={classNames({"bb-input": true, "rtl-dir": RTL_LANGUAGES.includes(k)})}
+                                       name={k}
+                                       value={i18n[k].description}
+                                       onChange={this.onDescriptionChange}/>
                             </Table.Cell>
                             <Table.Cell collapsing>
                                 <Button circular compact

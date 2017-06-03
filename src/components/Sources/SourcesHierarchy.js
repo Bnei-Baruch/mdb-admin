@@ -65,7 +65,6 @@ class SourcesHierarchy extends Component {
                     {hasChildren ? <Label circular color="teal" size="tiny">{children.length}</Label> : null}
                 </List.Header>
                 <List.Description>{node.description}</List.Description>
-                    if(hasChildren) {<SourcesHierarchy {...this.props}/>}
             </List.Content>
         </List.Item>
     };

@@ -1,15 +1,15 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {Button, Divider, Flag, Form, Header, Input, Message, Segment} from "semantic-ui-react";
-import {isValidPattern, formatError} from "../../helpers/utils";
-import {LANG_ENGLISH, LANG_HEBREW, LANG_RUSSIAN, LANG_SPANISH, MAJOR_LANGUAGES} from "../../helpers/consts";
+import { Button, Divider, Flag, Form, Header, Input, Message, Segment } from "semantic-ui-react";
+import { isValidPattern, formatError } from "../../helpers/utils";
+import { LANG_ENGLISH, LANG_HEBREW, LANG_RUSSIAN, LANG_SPANISH, MAJOR_LANGUAGES } from "../../helpers/consts";
 
 class NewSourceForm extends Component {
     static propTypes = {
-        create: PropTypes.func.isRequired,
-        getWIP: PropTypes.func.isRequired,
+        create  : PropTypes.func.isRequired,
+        getWIP  : PropTypes.func.isRequired,
         getError: PropTypes.func.isRequired,
-        source: PropTypes.object,
+        source  : PropTypes.object,
     };
 
     static defaultProps = {
@@ -22,17 +22,14 @@ class NewSourceForm extends Component {
     }
 
     getInitialState() {
+        let i18n = {};
+        MAJOR_LANGUAGES.forEach(l=>i18n[l] = { label: "", description: null });
         return {
             description: "",
-            pattern: "",
-            labels: {
-                [LANG_HEBREW]: "",
-                [LANG_RUSSIAN]: "",
-                [LANG_ENGLISH]: "",
-                [LANG_SPANISH]: "",
-            },
-            submitted: false,
-            errors: {},
+            pattern    : "",
+            i18n       : i18n,
+            submitted  : false,
+            errors     : {},
         };
     }
 
@@ -44,24 +41,29 @@ class NewSourceForm extends Component {
         }
 
         const parent = this.props.source;
-        let {pattern, description, labels} = this.state;
-        description = description.trim();
-        let i18n = {};
-        Object.keys(labels)
-            .map(x => ({language: x, label: labels[x].trim()}))
-            .filter(x => x.label !== "")
-            .forEach(x => i18n[x.language] = x);
+        let { pattern, description, i18n } = this.state;
+        description  = description.trim();
+        let _i18n    = {};
+        Object.keys(i18n)
+            .filter(x => i18n[x].label !== "")
+            .forEach(x => {
+                _i18n[x] = {
+                    label      : i18n[x].label.trim(),
+                    description: i18n[x].description ? i18n[x].description.trim() : i18n[x].description,
+                    language   : x
+                }
+            });
 
-        this.props.create(parent ? parent.id : null, pattern, description, i18n);
+        this.props.create(parent ? parent.id : null, pattern, description, _i18n);
 
-        this.setState({submitted: true});
+        this.setState({ submitted: true });
     };
 
-    onDescriptionChange = (e, {value}) => {
-        this.setState({description: value});
+    onDescriptionChange = (e, { value }) => {
+        this.setState({ description: value });
     };
 
-    onPatternChange = (e, {value}) => {
+    onPatternChange = (e, { value }) => {
         let errors = this.state.errors;
         if (isValidPattern(value)) {
             delete errors["pattern"];
@@ -69,41 +71,85 @@ class NewSourceForm extends Component {
             errors.pattern = true;
         }
 
-        this.setState({pattern: value, errors});
+        this.setState({ pattern: value, errors });
     };
 
-    onLabelChange = (e, {value}, language) => {
-        let errors = this.state.errors;
+    onLabelChange = (e, { value }, language) => {
+        let { errors, i18n } = this.state;
         if (errors.labels && value.trim() !== "") {
             delete errors["labels"];
         }
+        i18n[language].label = value;
+        this.setState({ errors, i18n: i18n });
+    };
 
-        this.setState({errors, labels: {...this.state.labels, [language]: value}});
+    onI18nDescriptionChange = (e, { value }, language) => {
+        const i18n                 = this.state.i18n;
+        i18n[language].description = value;
+        this.setState({ i18n: i18n });
     };
 
     validate() {
-        const {pattern, labels} = this.state;
+        const { pattern, i18n } = this.state;
         let errors = {};
 
         if (!isValidPattern(pattern)) {
             errors.pattern = true;
         }
 
-        if (MAJOR_LANGUAGES.every(x => labels[x].trim() === "")) {
+        if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].label.trim() === "")) {
             errors.labels = true;
         }
 
-        this.setState({errors});
+        this.setState({ errors });
 
         return !errors.pattern && !errors.labels;
     }
 
+    renderTranslations() {
+        const { i18n } = this.state;
+        const translations = [{
+            lang : LANG_HEBREW,
+            label: "Hebrew",
+            flag : "il"
+
+        }, {
+            lang : LANG_RUSSIAN,
+            label: "Russian",
+            flag : "ru"
+
+        }, {
+            lang : LANG_ENGLISH,
+            label: "English",
+            flag : "us"
+
+        }, {
+            lang : LANG_SPANISH,
+            label: "Spanish",
+            flag : "es"
+        }];
+        return translations.map(t=>
+            <Form.Field key={t.lang}>
+                <label><Flag name={t.flag} />{t.label}</label>
+                <Input placeholder={"Label in " + t.label}
+                       value={i18n[t.lang].label}
+                       onChange={(e, x) => this.onLabelChange(e, x, t.lang)} />
+                <Input placeholder={"Description in " + t.label}
+                       value={i18n[t.lang].description}
+                       onChange={(e, x) => this.onI18nDescriptionChange(e, x, t.lang)} />
+            </Form.Field>
+        ).map((t, index, arr)=> {
+            if (index % 2 === 0) {
+                return <Form.Group widths="equal" key={index}>{t} {arr[index + 1]}</Form.Group>
+            }
+        });
+    }
 
     render() {
-        const {getWIP, getError} = this.props,
-            wip = getWIP('create'),
-            err = getError('create');
-        const {description, pattern, labels, submitted, errors} = this.state;
+        const { getWIP, getError } = this.props,
+              wip = getWIP('create'),
+              err = getError('create');
+        const { description, pattern, submitted, errors } = this.state;
 
         return <Segment.Group>
             <Segment basic>
@@ -112,7 +158,7 @@ class NewSourceForm extends Component {
                         <label>Pattern</label>
                         <Input placeholder="Pattern"
                                value={pattern}
-                               onChange={this.onPatternChange}/>
+                               onChange={this.onPatternChange} />
                         <small className="helper">Used in physical file names. English words separated with '-'</small>
                     </Form.Field>
 
@@ -120,42 +166,13 @@ class NewSourceForm extends Component {
                         <label>Description</label>
                         <Input placeholder="Description"
                                value={description}
-                               onChange={this.onDescriptionChange}/>
+                               onChange={this.onDescriptionChange} />
                         <small className="helper">A short description about this source</small>
                     </Form.Field>
 
                     <Divider horizontal section>Translations</Divider>
-
-                    <Form.Group widths="equal">
-                        <Form.Field>
-                            <label><Flag name="il"/>Hebrew</label>
-                            <Input placeholder="Label in Hebrew"
-                                   value={labels[LANG_HEBREW]}
-                                   onChange={(e, x) => this.onLabelChange(e, x, LANG_HEBREW)}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <label><Flag name="ru"/>Russian</label>
-                            <Input placeholder="Label in Russian"
-                                   value={labels[LANG_RUSSIAN]}
-                                   onChange={(e, x) => this.onLabelChange(e, x, LANG_RUSSIAN)}/>
-                        </Form.Field>
-                    </Form.Group>
-                    <Form.Group widths="equal">
-                        <Form.Field>
-                            <label><Flag name="us"/>English</label>
-                            <Input placeholder="Label in English"
-                                   value={labels[LANG_ENGLISH]}
-                                   onChange={(e, x) => this.onLabelChange(e, x, LANG_ENGLISH)}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <label><Flag name="es"/>Spanish</label>
-                            <Input placeholder="Label in Spanish"
-                                   value={labels[LANG_SPANISH]}
-                                   onChange={(e, x) => this.onLabelChange(e, x, LANG_SPANISH)}/>
-                        </Form.Field>
-                    </Form.Group>
-
-                    {errors.labels ? <Message negative content="At least one translation is required"/> : null}
+                    {this.renderTranslations()}
+                    {errors.labels ? <Message negative content="At least one translation is required" /> : null}
                 </Form>
             </Segment>
 
@@ -167,7 +184,7 @@ class NewSourceForm extends Component {
                             icon="warning sign"
                             floated="left"
                             size="tiny"
-                            style={{marginTop: "0.2rem", marginBottom: "0"}}/>
+                            style={{marginTop: "0.2rem", marginBottom: "0"}} />
                     : null}
                 <Button primary
                         content="Save"
@@ -175,7 +192,7 @@ class NewSourceForm extends Component {
                         floated="right"
                         loading={wip}
                         disabled={wip}
-                        onClick={this.handleSubmit}/>
+                        onClick={this.handleSubmit} />
             </Segment>
         </Segment.Group>;
     }

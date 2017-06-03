@@ -49,18 +49,10 @@ class SourceChildren extends Component {
         return <List.Item key={node.id}>
             <List.Content>
                 <List.Header>
-                    <Link to={`/source/${node.id}`}>{label}</Link>
+                    <Link to={`/sources/${node.id}`}>{label}</Link>
                     &nbsp;&nbsp;
                     {hasChildren ? <Label circular color="teal" size="tiny">{children.length}</Label> : null}
                 </List.Header>
-                <List.Description>{node.description}</List.Description>
-
-                {hasChildren ?
-                    <List.List className="rtl-dir">
-                        {children.map(x => this.renderNode(getSourceById(x)))}
-                    </List.List>
-                    : null}
-
             </List.Content>
         </List.Item>
     };
