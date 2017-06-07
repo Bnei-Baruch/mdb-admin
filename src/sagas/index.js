@@ -1,10 +1,12 @@
 import {sagas as tagsSagas} from "./tags";
+import {sagas as sourcesSagas} from "./sources";
 import {sagas as filesSagas} from "./files";
 import {sagas as collectionsSagas} from "./collections";
 import {sagas as contentUnitsSagas} from "./content_units";
 
 export default [
     ...tagsSagas,
+    ...sourcesSagas,
     ...filesSagas,
     ...collectionsSagas,
     ...contentUnitsSagas,

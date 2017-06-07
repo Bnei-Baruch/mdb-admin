@@ -10,6 +10,8 @@ import Operation from "../Operation/Operation";
 import Operations from "../Operations/Operations";
 import TagsContainer from "../Tags/TagsContainer";
 import TagContainer from "../Tags/TagContainer";
+import SourcesContainer from "../Sources/SourcesContainer";
+import SourceContainer from "../Sources/SourceContainer";
 import Welcome from "../Welcome/Welcome";
 import Design from "../Design/Design";
 
@@ -26,6 +28,8 @@ const Routes = () => {
         <Route exact path="/operations/:id" component={Operation}/>
         <Route exact path="/tags" component={TagsContainer}/>
         <Route exact path="/tags/:id" component={TagContainer}/>
+        <Route exact path="/sources" component={SourcesContainer}/>
+        <Route exact path="/sources/:id" component={SourceContainer}/>
         <Route exact path="/design" component={Design}/>
         <Route render={() => <h1>Page not found</h1>} />
     </Switch>
