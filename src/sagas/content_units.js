@@ -11,6 +11,15 @@ function* fetchItem(action) {
         yield put(actions.fetchItemFailure(err));
     }
 }
+function* fetchFiles(action) {
+    try {
+        const id = action.payload;
+        const resp = yield call(api.get, `/rest/content_units/${id}/files`);
+        yield put(actions.fetchFilesSuccess(resp.data));
+    } catch (err) {
+        yield put(actions.fetchItemFailure(err));
+    }
+}
 
 function* changeSecurityLevel(action) {
     try {
@@ -24,6 +33,7 @@ function* changeSecurityLevel(action) {
 
 function* watchFetchItem() {
     yield takeEvery(types.FETCH_ITEM, fetchItem);
+    yield takeEvery(types.FETCH_FILES, fetchFiles);
 }
 function* watchChangeSecurityLevel() {
     yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);

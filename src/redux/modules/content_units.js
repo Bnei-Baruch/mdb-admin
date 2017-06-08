@@ -31,6 +31,7 @@ const changeSecurityLevel = createAction(CHANGE_SECURITY_LEVEL);
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const fetchFiles = createAction(FETCH_FILES);
+const fetchFilesSuccess = createAction(FETCH_FILES_SUCCESS);
 
 export const actions = {
     fetchItem,
@@ -39,7 +40,8 @@ export const actions = {
     changeSecurityLevel,
     changeSecurityLevelSuccess,
     changeSecurityLevelFailure,
-    fetchFiles
+    fetchFiles,
+    fetchFilesSuccess
 };
 
 /* Reducer */
@@ -54,7 +56,7 @@ const _keys = new Map([
 ]);
 
 const _collections = new Map([
-    ['files', new Map(['data', []], ['wip', false], ['errors', null])]
+    ['files', [['data', null], ['wip', false], ['errors', null]]]
 ]);
 
 const initialState = {

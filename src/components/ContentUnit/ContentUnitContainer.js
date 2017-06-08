@@ -14,7 +14,7 @@ class ContentUnitContainer extends Component {
         fetchItem: PropTypes.func.isRequired,
         getWIP: PropTypes.func.isRequired,
         unit: PropTypes.object,
-        fetchCollections: PropTypes.func.isRequired
+        fetchFiles: PropTypes.func.isRequired
     };
 
     static defaultProps = {
@@ -36,6 +36,7 @@ class ContentUnitContainer extends Component {
 
     askForData(id) {
         this.props.fetchItem(id);
+        this.props.fetchFiles(id);
     }
 
     render() {
