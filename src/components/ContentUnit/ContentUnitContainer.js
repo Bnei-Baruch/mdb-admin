@@ -14,6 +14,7 @@ class ContentUnitContainer extends Component {
         fetchItem: PropTypes.func.isRequired,
         getWIP: PropTypes.func.isRequired,
         unit: PropTypes.object,
+        fetchCollections: PropTypes.func.isRequired
     };
 
     static defaultProps = {

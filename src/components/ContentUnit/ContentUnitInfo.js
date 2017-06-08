@@ -134,7 +134,7 @@ class ContentUnitInfo extends Component {
                 <Grid stackable>
                     <Grid.Row>
                         <Grid.Column width={8}>
-                            <Header content="Details" />
+                            <Header content="Details"/>
                             <List divided relaxed>
                                 <List.Item>
                                     <strong>ID</strong>
@@ -182,7 +182,7 @@ class ContentUnitInfo extends Component {
                             </List>
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <Header content="Collections" />
+                            <Header content="Collections"/>
                             <List>
                                 {
                                     (unit.collections || []).map(({name, content_unit}) =>
