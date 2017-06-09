@@ -8,8 +8,9 @@ const FETCH_ITEM_FAILURE = 'ContentUnits/FETCH_ITEM_FAILURE';
 const CHANGE_SECURITY_LEVEL = 'ContentUnits/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'ContentUnits/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'ContentUnits/CHANGE_SECURITY_LEVEL_FAILURE';
-const FETCH_FILES = 'ContentUnits/FETCH_FILES';
-const FETCH_FILES_SUCCESS = 'ContentUnits/FETCH_FILES_SUCCESS';
+const UPDATE_I18N = 'ContentUnits/UPDATE_I18N';
+const UPDATE_I18N_SUCCESS = 'ContentUnits/UPDATE_I18N_SUCCESS';
+const UPDATE_I18N_FAILURE = 'ContentUnits/UPDATE_I18N_FAILURE';
 
 
 export const types = {
@@ -19,7 +20,9 @@ export const types = {
     CHANGE_SECURITY_LEVEL,
     CHANGE_SECURITY_LEVEL_SUCCESS,
     CHANGE_SECURITY_LEVEL_FAILURE,
-    FETCH_FILES,
+    UPDATE_I18N,
+    UPDATE_I18N_SUCCESS,
+    UPDATE_I18N_FAILURE,
 };
 
 /* Actions */
@@ -30,8 +33,9 @@ const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
 const changeSecurityLevel = createAction(CHANGE_SECURITY_LEVEL);
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
-const fetchFiles = createAction(FETCH_FILES);
-const fetchFilesSuccess = createAction(FETCH_FILES_SUCCESS);
+const updateI18n = createAction(UPDATE_I18N,(id, i18n) => ({id, i18n}));
+const updateI18nSuccess = createAction(UPDATE_I18N_SUCCESS);
+const updateI18nFailure = createAction(UPDATE_I18N_FAILURE);
 
 export const actions = {
     fetchItem,
@@ -40,8 +44,9 @@ export const actions = {
     changeSecurityLevel,
     changeSecurityLevelSuccess,
     changeSecurityLevelFailure,
-    fetchFiles,
-    fetchFilesSuccess
+    updateI18n,
+    updateI18nSuccess,
+    updateI18nFailure,
 };
 
 /* Reducer */
@@ -53,17 +58,15 @@ const _keys = new Map([
     [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
     [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
     [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
-]);
-
-const _collections = new Map([
-    ['files', [['data', null], ['wip', false], ['errors', null]]]
+    [UPDATE_I18N, 'updateI18n'],
+    [UPDATE_I18N_SUCCESS, 'updateI18n'],
+    [UPDATE_I18N_FAILURE, 'updateI18n'],
 ]);
 
 const initialState = {
     byID: new Map(),
     wip: new Map(Array.from(_keys.values(), x => [x, false])),
     errors: new Map(Array.from(_keys.values(), x => [x, null])),
-    collections: _collections
 };
 
 const _setMap = (m, k, v) => {
@@ -89,18 +92,15 @@ const _onFailure = (state, action) => {
 const _onSuccess = (state, action) => {
     const key = _keys.get(action.type);
 
-    let byID, collections;
+    let byID;
     switch (action.type) {
         case CHANGE_SECURITY_LEVEL_SUCCESS:
         case FETCH_ITEM_SUCCESS:
+        case UPDATE_I18N_SUCCESS:
             byID = _setMap(state.byID, action.payload.id, action.payload);
-            break;
-        case FETCH_FILES_SUCCESS:
-            collections = _setMap(state.collections, 'files', action.payload);
             break;
         default:
             byID = state.byID;
-            collections = state.collections;
     }
 
     return {
@@ -108,7 +108,6 @@ const _onSuccess = (state, action) => {
         byID,
         wip: _setMap(state.wip, key, false),
         errors: _setMap(state.errors, key, null),
-        collections: collections
     }
 };
 
@@ -121,22 +120,21 @@ export const reducer = handleActions({
     [CHANGE_SECURITY_LEVEL_SUCCESS]: _onSuccess,
     [CHANGE_SECURITY_LEVEL_FAILURE]: _onFailure,
 
-    [FETCH_FILES]: _onRequest,
-    [FETCH_FILES_SUCCESS]: _onSuccess,
+
+    [UPDATE_I18N]: _onRequest,
+    [UPDATE_I18N_SUCCESS]: _onSuccess,
+    [UPDATE_I18N_FAILURE]: _onFailure,
 
 }, initialState);
 
 /* Selectors */
 
-const getContentUnits = state => state.byID;
 const getContentUnitById = state => id => state.byID.get(id);
 const getWIP = state => key => state.wip.get(key);
 const getError = state => key => state.errors.get(key);
-const getCollectionByKey = state => key => state.collections.get(key);
 
 export const selectors = {
     getContentUnitById,
     getWIP,
     getError,
-    getCollectionByKey
 };

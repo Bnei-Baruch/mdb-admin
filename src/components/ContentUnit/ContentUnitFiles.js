@@ -11,7 +11,7 @@ class ContentUnitFiles extends Component {
 
     static propTypes = {
         data: PropTypes.object,
-        id: PropTypes.object,
+        id: PropTypes.number,
     };
 
     render() {

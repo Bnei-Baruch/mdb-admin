@@ -5,6 +5,7 @@ import {SECURITY_LEVELS} from "../../helpers/consts";
 import ContentUnitFiles from "./ContentUnitFiles";
 import ContentUnitCollections from "./ContentUnitCollections";
 import ContentUnitDetails from "./ContentUnitDetails";
+import ContentUnitI18nForm from "./ContentUnitI18nForm";
 
 class ContentUnitInfo extends Component {
 
@@ -136,10 +137,11 @@ class ContentUnitInfo extends Component {
                     <Grid.Row>
                         <Grid.Column width={8}>
                             <ContentUnitDetails unit={this.props.unit}></ContentUnitDetails>
+                            <ContentUnitI18nForm {...this.props}></ContentUnitI18nForm>
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <ContentUnitFiles id={this.props.unit.id} />
-                            <ContentUnitCollections id={this.props.unit.id} />
+                            <ContentUnitFiles id={this.props.unit.id}/>
+                            <ContentUnitCollections id={this.props.unit.id}/>
                         </Grid.Column>
                     </Grid.Row>
                     {this.renderProperties()}
