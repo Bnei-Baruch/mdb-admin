@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
-import {Link} from "react-router-dom";
 import {Button, Dropdown, Grid, Header, Icon, List, Menu, Modal, Segment} from "semantic-ui-react";
-import {CONTENT_TYPE_BY_ID, SECURITY_LEVELS} from "../../helpers/consts";
+import {SECURITY_LEVELS} from "../../helpers/consts";
+import ContentUnitFiles from "./ContentUnitFiles";
+import ContentUnitCollections from "./ContentUnitCollections";
+import ContentUnitDetails from "./ContentUnitDetails";
 
 class ContentUnitInfo extends Component {
 
@@ -134,64 +135,11 @@ class ContentUnitInfo extends Component {
                 <Grid stackable>
                     <Grid.Row>
                         <Grid.Column width={8}>
-                            <Header content="Details"/>
-                            <List divided relaxed>
-                                <List.Item>
-                                    <strong>ID</strong>
-                                    <List.Content floated="right">
-                                        {unit.id}
-                                    </List.Content>
-                                </List.Item>
-                                <List.Item>
-                                    <strong>UID</strong>
-                                    <List.Content floated="right">
-                                        {unit.uid}
-                                    </List.Content>
-                                </List.Item>
-                                <List.Item>
-                                    <strong>DB created_at</strong>
-                                    <List.Content floated="right">
-                                        {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
-                                    </List.Content>
-                                </List.Item>
-                                <List.Item>
-                                    <strong>Type</strong>
-                                    <List.Content floated="right">
-                                        {CONTENT_TYPE_BY_ID[unit.type_id]}
-                                    </List.Content>
-                                </List.Item>
-                                <List.Item>
-                                    <strong>Secure</strong>
-                                    <List.Content floated="right">
-                                        <Header size="tiny"
-                                                content={SECURITY_LEVELS[unit.secure].text}
-                                                color={SECURITY_LEVELS[unit.secure].color}/>
-
-                                    </List.Content>
-                                </List.Item>
-                                <List.Item>
-                                    <strong>Published</strong>
-                                    <List.Content floated="right">
-                                        {
-                                            unit.published ?
-                                                <Icon name="checkmark" color="green"/> :
-                                                <Icon name="ban" color="red"/>
-                                        }
-                                    </List.Content>
-                                </List.Item>
-                            </List>
+                            <ContentUnitDetails unit={this.props.unit}></ContentUnitDetails>
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <Header content="Collections"/>
-                            <List>
-                                {
-                                    (unit.collections || []).map(({name, content_unit}) =>
-                                        <List.Item>
-                                            <Link to={`/content_units/${content_unit.id}`}>{name}</Link>
-                                        </List.Item>
-                                    )
-                                }
-                            </List>
+                            <ContentUnitFiles id={this.props.unit.id} />
+                            <ContentUnitCollections id={this.props.unit.id} />
                         </Grid.Column>
                     </Grid.Row>
                     {this.renderProperties()}
