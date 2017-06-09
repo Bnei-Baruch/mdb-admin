@@ -1,13 +1,15 @@
-import {sagas as tagsSagas} from "./tags";
-import {sagas as sourcesSagas} from "./sources";
-import {sagas as filesSagas} from "./files";
-import {sagas as collectionsSagas} from "./collections";
-import {sagas as contentUnitsSagas} from "./content_units";
+import { sagas as collections } from './collections';
+import { sagas as contentUnits } from './content_units';
+import { sagas as files } from './files';
+import { sagas as authors } from './authors';
+import { sagas as sources } from './sources';
+import { sagas as tags } from './tags';
 
 export default [
-    ...tagsSagas,
-    ...sourcesSagas,
-    ...filesSagas,
-    ...collectionsSagas,
-    ...contentUnitsSagas,
+  ...collections,
+  ...contentUnits,
+  ...files,
+  ...authors,
+  ...sources,
+  ...tags,
 ];
