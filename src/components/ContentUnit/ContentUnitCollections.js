@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
-import {List, Segment, Header} from "semantic-ui-react";
+import {List, Segment, Header, Message} from "semantic-ui-react";
 import dataLoader from '../../hoc/dataLoader';
 import Collections from '../Collections/Collections';
 
@@ -15,28 +15,41 @@ class ContentUnitCollections extends Component {
         id: PropTypes.object,
     };
 
+    renderCollections = (collections) => {
+        if (collections.length === 0) {
+            return (<Message size="tiny">No collection found</Message>);
+        }
+
+        return (
+            <List> {
+                collections.map(
+                    f => (
+                        <List.Item>
+                            <Link to={`/collections/${f.id}`}>{f.name}</Link>
+                        </List.Item>
+                    )
+                )
+            }
+            </List>
+        );
+    };
+
     render() {
-        const files = this.props.data;
-        if (!files) {
+        let collections = this.props.data;
+        if (!collections) {
             return null;
         }
         return <div>
             <Header content="Collections"/>
             <Segment attached>
-                <List>
-                    {
-                        files.data.map(f => (<List.Item>
-                            <Link to={`/collections/${f.id}`}>{f.uid}</Link>
-                        </List.Item>))
-                    }
-                </List>
+                {this.renderCollections(collections)}
             </Segment>
         </div>;
     }
 }
 
 export default dataLoader(({id}) => {
-    return apiClient.get(`/rest/collections/?page_size=20`)
+    return apiClient.get(`/rest/content_units/${id}/collections/`)
         .catch(error => {
             throw new Error(error);
         })

@@ -85,7 +85,8 @@ class ContentUnitI18nForm extends Component {
                                        className={classNames({"bb-input": true, "rtl-dir": RTL_LANGUAGES.includes(k)})}
                                        name={k}
                                        value={i18n[k].label}
-                                       onChange={this.onLabelChange}/>
+                                       onChange={this.onLabelChange}
+                                       required/>
                             </Table.Cell>
                             <Table.Cell collapsing>
                                 <Button circular compact

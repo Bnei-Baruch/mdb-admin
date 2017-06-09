@@ -33,7 +33,7 @@ const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
 const changeSecurityLevel = createAction(CHANGE_SECURITY_LEVEL);
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
-const updateI18n = createAction(UPDATE_I18N,(id, i18n) => ({id, i18n}));
+const updateI18n = createAction(UPDATE_I18N, (id, i18n) => ({id, i18n}));
 const updateI18nSuccess = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure = createAction(UPDATE_I18N_FAILURE);
 
