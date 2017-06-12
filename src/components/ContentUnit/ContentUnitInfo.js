@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Button, Dropdown, Grid, Header, Icon, List, Menu, Modal, Segment} from "semantic-ui-react";
+import {Button, Dropdown, Grid, Header, Icon, List, Menu, Modal, Segment, Divider} from "semantic-ui-react";
 import {SECURITY_LEVELS} from "../../helpers/consts";
 import ContentUnitFiles from "./ContentUnitFiles";
 import ContentUnitCollections from "./ContentUnitCollections";
@@ -59,14 +59,19 @@ class ContentUnitInfo extends Component {
             return null;
         }
 
-        return <Grid.Row>
-            <Grid.Column>
-                <Header content="Extra properties"/>
+        return <div>
+            <Menu attached borderless size="large">
+                <Menu.Item header>
+                    <Header content="Extra properties" size="medium" color="blue"/>
+                </Menu.Item>
+            </Menu>
+            <Segment attached>
+
                 <pre>
                     {JSON.stringify(p, null, 2)}
                 </pre>
-            </Grid.Column>
-        </Grid.Row>
+            </Segment>
+        </div>;
     }
 
     renderDangerZone() {
@@ -138,17 +143,23 @@ class ContentUnitInfo extends Component {
                 <Grid stackable>
                     <Grid.Row>
                         <Grid.Column width={8}>
-                            <ContentUnitDetails unit={this.props.unit} />
+                            <ContentUnitDetails unit={this.props.unit}/>
+                            <Divider horizontal hidden/>
+
+                            {this.renderProperties()}
+                            <Divider horizontal hidden/>
                             <ContentUnitI18nForm {...this.props} />
-                            <ContentUnitSources id={this.props.unit.id} />
-                            <ContentUnitTags id={this.props.unit.id} />
+                            <Divider horizontal hidden/>
+                            <ContentUnitSources id={this.props.unit.id}/>
+                            <Divider horizontal hidden/>
+                            <ContentUnitTags id={this.props.unit.id}/>
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <ContentUnitCollections id={this.props.unit.id}/>
+                            <Divider horizontal hidden/>
                             <ContentUnitFiles id={this.props.unit.id}/>
                         </Grid.Column>
                     </Grid.Row>
-                    {this.renderProperties()}
                 </Grid>
             </Segment>
             <br/>
