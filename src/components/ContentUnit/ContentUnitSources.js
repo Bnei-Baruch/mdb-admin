@@ -10,8 +10,11 @@ import apiClient from '../../helpers/apiClient';
 class ContentUnitSources extends Component {
 
     static propTypes = {
-        data: PropTypes.object,
-        id: PropTypes.object,
+        data: PropTypes.array,
+        id: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string
+        ]),
     };
 
     renderSources = (sources) => {

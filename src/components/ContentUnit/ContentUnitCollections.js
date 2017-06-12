@@ -11,8 +11,11 @@ import apiClient from '../../helpers/apiClient';
 class ContentUnitCollections extends Component {
 
     static propTypes = {
-        data: PropTypes.object,
-        id: PropTypes.object,
+        data: PropTypes.array,
+        id: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string
+        ]),
     };
 
     renderCollections = (collections) => {
@@ -24,8 +27,8 @@ class ContentUnitCollections extends Component {
             <List> {
                 collections.map(
                     f => (
-                        <List.Item>
-                            <Link to={`/collections/${f.id}`}>{f.name}</Link>
+                        <List.Item key={f.collection.id}>
+                            <Link to={`/collections/${f.collection.id}`}>{f.collection.uid}</Link>
                         </List.Item>
                     )
                 )

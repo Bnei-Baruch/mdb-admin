@@ -10,8 +10,11 @@ import apiClient from '../../helpers/apiClient';
 class ContentUnitFiles extends Component {
 
     static propTypes = {
-        data: PropTypes.object,
-        id: PropTypes.number,
+        data: PropTypes.array,
+        id: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string
+        ]),
     };
 
     renderFiles = (files) => {
@@ -23,7 +26,7 @@ class ContentUnitFiles extends Component {
             <List> {
                 files.map(
                     f => (
-                        <List.Item>
+                        <List.Item key={f.id}>
                             <Link to={`/files/${f.id}`}>{f.name}</Link>
                         </List.Item>)
                 )
@@ -42,7 +45,7 @@ class ContentUnitFiles extends Component {
 
             <Menu attached borderless size="large">
                 <Menu.Item header>
-                    <Header content="Collections" size="medium" color="blue"/>
+                    <Header content="Files" size="medium" color="blue"/>
                 </Menu.Item>
             </Menu>
             <Segment attached>

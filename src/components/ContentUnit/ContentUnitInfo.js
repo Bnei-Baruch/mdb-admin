@@ -139,13 +139,13 @@ class ContentUnitInfo extends Component {
                     <Grid.Row>
                         <Grid.Column width={8}>
                             <ContentUnitDetails unit={this.props.unit} />
-                            <ContentUnitI18nForm id={this.props.unit.id} />
+                            <ContentUnitI18nForm {...this.props} />
                             <ContentUnitSources id={this.props.unit.id} />
                             <ContentUnitTags id={this.props.unit.id} />
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <ContentUnitFiles id={this.props.unit.id}/>
                             <ContentUnitCollections id={this.props.unit.id}/>
+                            <ContentUnitFiles id={this.props.unit.id}/>
                         </Grid.Column>
                     </Grid.Row>
                     {this.renderProperties()}
