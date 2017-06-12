@@ -7,25 +7,26 @@ import dataLoader from '../../hoc/dataLoader';
 import apiClient from '../../helpers/apiClient';
 
 
-class ContentUnitFiles extends Component {
+class ContentUnitTags extends Component {
 
     static propTypes = {
         data: PropTypes.object,
-        id: PropTypes.number,
+        id: PropTypes.object,
     };
 
-    renderFiles = (files) => {
-        if (files.length === 0) {
-            return (<Message size="tiny">No files found</Message>);
+    renderTags = (tags) => {
+        if (tags.length === 0) {
+            return (<Message size="tiny">No tags found</Message>);
         }
 
         return (
             <List> {
-                files.map(
+                tags.map(
                     f => (
                         <List.Item>
-                            <Link to={`/files/${f.id}`}>{f.name}</Link>
-                        </List.Item>)
+                            <Link to={`/tags/${f.id}`}>{f.name}</Link>
+                        </List.Item>
+                    )
                 )
             }
             </List>
@@ -33,29 +34,26 @@ class ContentUnitFiles extends Component {
     };
 
     render() {
-        const files = this.props.data;
-        if (!files) {
+        let tags = this.props.data;
+        if (!tags) {
             return null;
         }
-
-        return (<div>
-
+        return <div>
             <Menu attached borderless size="large">
                 <Menu.Item header>
-                    <Header content="Collections" size="medium" color="blue"/>
+                    <Header content="Tags" size="medium" color="blue"/>
                 </Menu.Item>
             </Menu>
             <Segment attached>
-                {this.renderFiles(files)}
+                {this.renderTags(tags)}
             </Segment>
-        </div >);
+        </div>;
     }
 }
 
 export default dataLoader(({id}) => {
-    return apiClient.get(`/rest/content_units/${id}/files/`)
+    return apiClient.get(`/rest/content_units/${id}/tags/`)
         .catch(error => {
             throw new Error(error);
         })
-})(ContentUnitFiles);
-//export default ContentUnitFiles;
+})(ContentUnitTags);

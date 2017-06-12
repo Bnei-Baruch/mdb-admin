@@ -7,25 +7,26 @@ import dataLoader from '../../hoc/dataLoader';
 import apiClient from '../../helpers/apiClient';
 
 
-class ContentUnitFiles extends Component {
+class ContentUnitSources extends Component {
 
     static propTypes = {
         data: PropTypes.object,
-        id: PropTypes.number,
+        id: PropTypes.object,
     };
 
-    renderFiles = (files) => {
-        if (files.length === 0) {
-            return (<Message size="tiny">No files found</Message>);
+    renderSources = (sources) => {
+        if (sources.length === 0) {
+            return (<Message size="tiny">No sources found</Message>);
         }
 
         return (
             <List> {
-                files.map(
+                sources.map(
                     f => (
                         <List.Item>
-                            <Link to={`/files/${f.id}`}>{f.name}</Link>
-                        </List.Item>)
+                            <Link to={`/sources/${f.id}`}>{f.name}</Link>
+                        </List.Item>
+                    )
                 )
             }
             </List>
@@ -33,29 +34,26 @@ class ContentUnitFiles extends Component {
     };
 
     render() {
-        const files = this.props.data;
-        if (!files) {
+        let sources = this.props.data;
+        if (!sources) {
             return null;
         }
-
-        return (<div>
-
+        return <div>
             <Menu attached borderless size="large">
                 <Menu.Item header>
-                    <Header content="Collections" size="medium" color="blue"/>
+                    <Header content="Sources" size="medium" color="blue"/>
                 </Menu.Item>
             </Menu>
             <Segment attached>
-                {this.renderFiles(files)}
+                {this.renderSources(sources)}
             </Segment>
-        </div >);
+        </div>;
     }
 }
 
 export default dataLoader(({id}) => {
-    return apiClient.get(`/rest/content_units/${id}/files/`)
+    return apiClient.get(`/rest/content_units/${id}/sources/`)
         .catch(error => {
             throw new Error(error);
         })
-})(ContentUnitFiles);
-//export default ContentUnitFiles;
+})(ContentUnitSources);

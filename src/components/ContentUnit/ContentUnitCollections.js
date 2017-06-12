@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
-import {List, Segment, Header, Message} from "semantic-ui-react";
+import {List, Segment, Header, Message, Menu} from "semantic-ui-react";
 import dataLoader from '../../hoc/dataLoader';
 import Collections from '../Collections/Collections';
 
@@ -40,7 +40,12 @@ class ContentUnitCollections extends Component {
             return null;
         }
         return <div>
-            <Header content="Collections"/>
+
+            <Menu attached borderless size="large">
+                <Menu.Item header>
+                    <Header content="Collections" size="medium" color="blue" />
+                </Menu.Item>
+            </Menu>
             <Segment attached>
                 {this.renderCollections(collections)}
             </Segment>

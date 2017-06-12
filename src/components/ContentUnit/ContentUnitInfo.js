@@ -6,6 +6,8 @@ import ContentUnitFiles from "./ContentUnitFiles";
 import ContentUnitCollections from "./ContentUnitCollections";
 import ContentUnitDetails from "./ContentUnitDetails";
 import ContentUnitI18nForm from "./ContentUnitI18nForm";
+import ContentUnitSources from "./ContentUnitSources";
+import ContentUnitTags from "./ContentUnitTags";
 
 class ContentUnitInfo extends Component {
 
@@ -136,8 +138,10 @@ class ContentUnitInfo extends Component {
                 <Grid stackable>
                     <Grid.Row>
                         <Grid.Column width={8}>
-                            <ContentUnitDetails unit={this.props.unit}></ContentUnitDetails>
-                            <ContentUnitI18nForm {...this.props}></ContentUnitI18nForm>
+                            <ContentUnitDetails unit={this.props.unit} />
+                            <ContentUnitI18nForm id={this.props.unit.id} />
+                            <ContentUnitSources id={this.props.unit.id} />
+                            <ContentUnitTags id={this.props.unit.id} />
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <ContentUnitFiles id={this.props.unit.id}/>

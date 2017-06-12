@@ -17,7 +17,7 @@ class ContentUnitI18nForm extends Component {
 
     static defaultProps = {
         unit: {
-            i18n: {}
+            i18n: PropTypes.number.isRequired
         }
     };
 
