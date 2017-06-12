@@ -1,6 +1,6 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 
-import { actions, types } from '../redux/modules/tags';
+import { actions, types } from '../redux/modules/sources';
 import { types as system } from '../redux/modules/system';
 import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
@@ -8,7 +8,7 @@ import { loadAllPages } from './utils';
 function* fetchItem(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/tags/${id}/`);
+    const resp = yield call(api.get, `/rest/sources/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
@@ -17,7 +17,7 @@ function* fetchItem(action) {
 
 function* fetchAll(action) {
   try {
-    const data = yield loadAllPages('/rest/tags/');
+    const data = yield loadAllPages('/rest/sources/');
     yield put(actions.fetchAllSuccess(data));
   } catch (err) {
     yield put(actions.fetchAllFailure(err));
@@ -26,8 +26,8 @@ function* fetchAll(action) {
 
 function* updateInfo(action) {
   try {
-    const { id, pattern, description } = action.payload;
-    const resp                         = yield call(api.put, `/rest/tags/${id}/`, { pattern, description });
+    const { id, pattern, description, type_id } = action.payload;
+    const resp                         = yield call(api.put, `/rest/sources/${id}/`, { pattern, description, type_id });
     yield put(actions.updateInfoSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateInfoFailure(err));
@@ -37,7 +37,7 @@ function* updateInfo(action) {
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
-    const resp         = yield call(api.put, `/rest/tags/${id}/i18n/`, i18n);
+    const resp         = yield call(api.put, `/rest/sources/${id}/i18n/`, i18n);
     yield put(actions.updateI18nSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateI18nFailure(err));
@@ -46,8 +46,8 @@ function* updateI18n(action) {
 
 function* create(action) {
   try {
-    const resp = yield call(api.post, '/rest/tags/', action.payload);
-    yield put(actions.createSuccess(resp.data));
+    const resp = yield call(api.post, '/rest/sources/', action.payload);
+    yield put(actions.createSuccess(resp.data, action.payload.author));
   } catch (err) {
     yield put(actions.createFailure(err));
   }
