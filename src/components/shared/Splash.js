@@ -1,37 +1,36 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {Header, Icon} from "semantic-ui-react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Header, Icon } from 'semantic-ui-react';
 
-export const LoadingSplash = (props) => {
-    const {text, subtext} = props;
+export const Splash = (props) => {
+  const { text, subtext, icon, color, isLoading } = props;
 
-    return <Header as="h2" icon textAlign="center">
-        <Icon name="spinner" loading/>
-        <Header.Content>
-            {text}
-            {subtext ? <Header.Subheader>{subtext}</Header.Subheader> : null}
-        </Header.Content>
-    </Header>;
+  return (
+    <Header as="h2" icon textAlign="center">
+      <Icon name={icon} loading={isLoading} color={color} />
+      <Header.Content>
+        {text}
+        {subtext ? <Header.Subheader>{subtext}</Header.Subheader> : null}
+      </Header.Content>
+    </Header>
+  );
 };
 
-LoadingSplash.propTypes = {
-    text: PropTypes.node,
-    subtext: PropTypes.node,
+Splash.propTypes = {
+  icon: PropTypes.string.isRequired,
+  text: PropTypes.node.isRequired,
+  subtext: PropTypes.node,
+  color: PropTypes.string,
+  isLoading: PropTypes.bool,
 };
 
-export const FrownSplash = (props) => {
-    const {text, subtext} = props;
-
-    return <Header as="h2" icon textAlign="center">
-        <Icon name="frown" color="orange"/>
-        <Header.Content>
-            {text}
-            {subtext ? <Header.Subheader>{subtext}</Header.Subheader> : null}
-        </Header.Content>
-    </Header>;
+Splash.defaultProps = {
+  text: '',
+  subtext: null,
+  color: 'black',
+  isLoading: false,
 };
 
-FrownSplash.propTypes = {
-    text: PropTypes.node,
-    subtext: PropTypes.node,
-};
+export const LoadingSplash = props => (<Splash isLoading icon="spinner" {...props} />);
+export const FrownSplash   = props => (<Splash icon="frown" color="orange" {...props} />);
+export const ErrorSplash   = props => (<Splash icon="warning sign" color="red" {...props} />);

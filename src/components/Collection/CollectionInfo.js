@@ -82,9 +82,8 @@ class CollectionInfo extends Component {
                                     <Button.Group color="red">
                                         <Dropdown button upward
                                                   options={options}
-                                                  defaultValue={options[0].value}
-                                                  onChange={(e, {value}) => this.onChangeSecurityLevel(value)}
-                                                  className="icon"/>
+                                                  value={options[0].value}
+                                                  onChange={(e, {value}) => this.onChangeSecurityLevel(value)}/>
                                     </Button.Group>
                                 </List.Content>
                                 <List.Content>

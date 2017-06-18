@@ -26,6 +26,11 @@ const TypedEntity = {
   type_id: PropTypes.number.isRequired,
 };
 
+const SecurePublished = {
+  secure: PropTypes.number,
+  published: PropTypes.bool,
+};
+
 const BaseI18n = {
   language: PropTypes.string.isRequired,
   created_at: PropTypes.string,
@@ -67,6 +72,7 @@ export const TagI18n = PropTypes.shape({
 
 export const File = PropTypes.shape({
   ...BaseEntity,
+  ...SecurePublished,
   name: PropTypes.string.isRequired,
   sha1: PropTypes.string,
   size: PropTypes.number,
@@ -78,12 +84,14 @@ export const File = PropTypes.shape({
 
 export const ContentUnit = PropTypes.shape({
   ...TypedEntity,
+  ...SecurePublished,
   i18n: PropTypes.objectOf(ContentUnitI18n),
-  files: PropTypes.arrayOf(File),
+  files: PropTypes.arrayOf(PropTypes.number),
 });
 
 export const Collection = PropTypes.shape({
   ...TypedEntity,
+  ...SecurePublished,
   i18n: PropTypes.objectOf(CollectionI18n),
   content_units: PropTypes.arrayOf(ContentUnit),
 });

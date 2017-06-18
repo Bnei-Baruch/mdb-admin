@@ -1,28 +1,45 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {Dropdown} from "semantic-ui-react";
-import {LANG_HEBREW, LANG_MULTI, LANG_UNKNOWN, LANGUAGE_OPTIONS} from "../../helpers/consts";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Dropdown } from 'semantic-ui-react';
 
+import { ALL_LANGUAGES, LANG_HEBREW, LANG_MULTI, LANG_UNKNOWN, LANGUAGE_OPTIONS } from '../../helpers/consts';
 
 const LanguageSelector = (props) => {
-    const options = LANGUAGE_OPTIONS.filter(x => !props.exclude.includes(x.value));
+  const { isSelection, defaultValue, text, include, exclude, onSelect } = props;
 
-    return <Dropdown item labeled scrolling
-                     text="Add Language"
-                     defaultValue={props.defaultValue}
-                     options={options}
-                     onChange={(e, {value}) => props.onSelect(value)}/>;
+  const dProps = {
+    item: true,
+    labeled: true,
+    scrolling: true,
+    defaultValue,
+    options: LANGUAGE_OPTIONS.filter(x => include.includes(x.value) && !exclude.includes(x.value)),
+    onChange: (e, { value }) => onSelect(value)
+  };
+
+  if (isSelection) {
+    dProps.selection = true;
+  } else {
+    dProps.text = text;
+  }
+
+  return <Dropdown {...dProps} />;
 };
 
 LanguageSelector.propTypes = {
-    onSelect: PropTypes.func.isRequired,
-    defaultValue: PropTypes.string,
-    exclude: PropTypes.array,
+  onSelect: PropTypes.func.isRequired,
+  isSelection: PropTypes.bool,
+  defaultValue: PropTypes.string,
+  text: PropTypes.string,
+  include: PropTypes.arrayOf(PropTypes.string),
+  exclude: PropTypes.arrayOf(PropTypes.string),
 };
 
 LanguageSelector.defaultProps = {
-    defaultValue: LANG_HEBREW,
-    exclude: [LANG_MULTI, LANG_UNKNOWN],
+  isSelection: false,
+  defaultValue: LANG_HEBREW,
+  text: 'Add Language',
+  include: ALL_LANGUAGES,
+  exclude: [LANG_MULTI, LANG_UNKNOWN],
 };
 
 export default LanguageSelector;

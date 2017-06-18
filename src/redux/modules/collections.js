@@ -1,120 +1,125 @@
-import {createAction, handleActions} from "redux-actions";
+import { createAction, handleActions } from 'redux-actions';
+import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
 
-const FETCH_ITEM = 'Collections/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS = 'Collections/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE = 'Collections/FETCH_ITEM_FAILURE';
-const CHANGE_SECURITY_LEVEL = 'Collections/CHANGE_SECURITY_LEVEL';
+const FETCH_ITEM                    = 'Collections/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS            = 'Collections/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE            = 'Collections/FETCH_ITEM_FAILURE';
+const CHANGE_SECURITY_LEVEL         = 'Collections/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'Collections/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'Collections/CHANGE_SECURITY_LEVEL_FAILURE';
-
+const RECEIVE_ITEMS                 = 'Collections/RECEIVE_ITEMS';
 
 export const types = {
-    FETCH_ITEM,
-    FETCH_ITEM_SUCCESS,
-    FETCH_ITEM_FAILURE,
-    CHANGE_SECURITY_LEVEL,
-    CHANGE_SECURITY_LEVEL_SUCCESS,
-    CHANGE_SECURITY_LEVEL_FAILURE,
+  FETCH_ITEM,
+  FETCH_ITEM_SUCCESS,
+  FETCH_ITEM_FAILURE,
+  CHANGE_SECURITY_LEVEL,
+  CHANGE_SECURITY_LEVEL_SUCCESS,
+  CHANGE_SECURITY_LEVEL_FAILURE,
+  RECEIVE_ITEMS,
 };
 
 /* Actions */
 
-const fetchItem = createAction(FETCH_ITEM);
-const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
-const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
-const changeSecurityLevel = createAction(CHANGE_SECURITY_LEVEL);
+const fetchItem                  = createAction(FETCH_ITEM);
+const fetchItemSuccess           = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure           = createAction(FETCH_ITEM_FAILURE);
+const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL);
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
+const receiveItems               = createAction(RECEIVE_ITEMS);
 
 export const actions = {
-    fetchItem,
-    fetchItemSuccess,
-    fetchItemFailure,
-    changeSecurityLevel,
-    changeSecurityLevelSuccess,
-    changeSecurityLevelFailure,
+  fetchItem,
+  fetchItemSuccess,
+  fetchItemFailure,
+  changeSecurityLevel,
+  changeSecurityLevelSuccess,
+  changeSecurityLevelFailure,
+  receiveItems,
 };
 
 /* Reducer */
 
-const _keys = new Map([
-    [FETCH_ITEM, 'fetchItem'],
-    [FETCH_ITEM_SUCCESS, 'fetchItem'],
-    [FETCH_ITEM_FAILURE, 'fetchItem'],
-    [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
-    [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
-    [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
+const keys = new Map([
+  [FETCH_ITEM, 'fetchItem'],
+  [FETCH_ITEM_SUCCESS, 'fetchItem'],
+  [FETCH_ITEM_FAILURE, 'fetchItem'],
+  [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
+  [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
+  [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
 ]);
 
 const initialState = {
-    byID: new Map(),
-    wip: new Map(Array.from(_keys.values(), x => [x, false])),
-    errors: new Map(Array.from(_keys.values(), x => [x, null])),
+  byID: new Map(),
+  wip: new Map(Array.from(keys.values(), x => [x, false])),
+  errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
-const _setMap = (m, k, v) => {
-    const nm = new Map(m);
-    nm.set(k, v);
-    return nm
-};
-
-const _onRequest = (state, action) => ({
-    ...state,
-    wip: _setMap(state.wip, _keys.get(action.type), true)
+const onRequest = (state, action) => ({
+  ...state,
+  wip: setMap(state.wip, keys.get(action.type), true)
 });
 
-const _onFailure = (state, action) => {
-    const key = _keys.get(action.type);
-    return {
-        ...state,
-        wip: _setMap(state.wip, key, false),
-        errors: _setMap(state.errors, key, action.payload),
-    }
+const onFailure = (state, action) => {
+  const key = keys.get(action.type);
+  return {
+    ...state,
+    wip: setMap(state.wip, key, false),
+    errors: setMap(state.errors, key, action.payload),
+  };
 };
 
-const _onSuccess = (state, action) => {
-    const key = _keys.get(action.type);
+const onSuccess = (state, action) => {
+  const key = keys.get(action.type);
 
-    let byID;
-    switch (action.type) {
-        case CHANGE_SECURITY_LEVEL_SUCCESS:
-        case FETCH_ITEM_SUCCESS:
-            byID = _setMap(state.byID, action.payload.id, action.payload);
-            break;
-        default:
-            byID = state.byID
-    }
+  let byID;
+  switch (action.type) {
+  case CHANGE_SECURITY_LEVEL_SUCCESS:
+  case FETCH_ITEM_SUCCESS:
+    byID = merge(state.byID, action.payload);
+    break;
+  default:
+    byID = state.byID;
+  }
 
-    return {
-        ...state,
-        byID,
-        wip: _setMap(state.wip, key, false),
-        errors: _setMap(state.errors, key, null),
-    }
+  return {
+    ...state,
+    byID,
+    wip: setMap(state.wip, key, false),
+    errors: setMap(state.errors, key, null),
+  };
 };
+
+const onReceiveItems = (state, action) => ({
+  ...state,
+  byID: bulkMerge(state.byID, action.payload),
+});
 
 export const reducer = handleActions({
-    [FETCH_ITEM]: _onRequest,
-    [FETCH_ITEM_SUCCESS]: _onSuccess,
-    [FETCH_ITEM_FAILURE]: _onFailure,
+  [FETCH_ITEM]: onRequest,
+  [FETCH_ITEM_SUCCESS]: onSuccess,
+  [FETCH_ITEM_FAILURE]: onFailure,
 
-    [CHANGE_SECURITY_LEVEL]: _onRequest,
-    [CHANGE_SECURITY_LEVEL_SUCCESS]: _onSuccess,
-    [CHANGE_SECURITY_LEVEL_FAILURE]: _onFailure,
+  [CHANGE_SECURITY_LEVEL]: onRequest,
+  [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
+  [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
+
+  [RECEIVE_ITEMS]: onReceiveItems,
 
 }, initialState);
 
 /* Selectors */
 
-const getCollections = state => state.byID;
+const getCollections    = state => state.byID;
 const getCollectionById = state => id => state.byID.get(id);
-const getWIP = state => key => state.wip.get(key);
-const getError = state => key => state.errors.get(key);
+const getWIP            = state => key => state.wip.get(key);
+const getError          = state => key => state.errors.get(key);
 
 export const selectors = {
-    getCollectionById,
-    getWIP,
-    getError,
+  getCollectionById,
+  getWIP,
+  getError,
 };
