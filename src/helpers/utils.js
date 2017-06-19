@@ -6,9 +6,9 @@ import { I18N_ORDER, MEDIA_TYPES } from './consts';
  * @param {String} pattern
  * @returns {Boolean}
  */
-export const isValidPattern = (pattern) => {
-  return pattern === '' || /^[0-9a-zA-Z^&'@{}[\],$=!\-#()%+]+$/.test(pattern);
-};
+export const isValidPattern = pattern => (
+  pattern === '' || /^[0-9a-zA-Z^&'@{}[\],$=!\-#()%+]+$/.test(pattern)
+);
 
 /**
  * Build hierarchy from a flat map of entities.
@@ -18,8 +18,8 @@ export const isValidPattern = (pattern) => {
  */
 export const buildHierarchy = (nodeMap) => {
   console.log('COMPUTE: buildHierarchy ', nodeMap.size);
-  let roots    = [],
-      childMap = new Map();
+  const roots    = [];
+  const childMap = new Map();
 
   nodeMap.forEach((v, k) => {
     if (v.parent_id) {
@@ -47,20 +47,20 @@ export const buildHierarchy = (nodeMap) => {
  */
 export const extractI18n = (i18ns, fields, languages = I18N_ORDER) => {
   // Order i18ns by language
-  let orderedI18ns = [];
+  const orderedI18ns = [];
   for (let i = 0; i < languages.length; i++) {
     const i18n = i18ns[languages[i]];
-    if (!!i18n) {
+    if (i18n) {
       orderedI18ns.push(i18n);
     }
   }
 
   // Coalesce values per field
-  return fields.map(x => {
+  return fields.map((x) => {
     let value;
     for (let i = 0; i < orderedI18ns.length; i++) {
       value = orderedI18ns[i][x];
-      if (!!value) {
+      if (value) {
         break;
       }
     }
@@ -77,7 +77,7 @@ export const extractI18n = (i18ns, fields, languages = I18N_ORDER) => {
  * @param error
  * @returns {String}
  */
-export const formatError = error => {
+export const formatError = (error) => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -93,9 +93,22 @@ export const formatError = error => {
     return error.message;
   } else if (typeof error.toString === 'function') {
     return error.toString();
-  } else {
-    return error;
   }
+  return error;
+};
+
+/**
+ * Returns the given string suffix after the last dot '.'
+ * The empty string '' is returned if no dots found.
+ * @param name {string}
+ * @returns {string}
+ */
+export const filenameExtension = (name) => {
+  const lastDot = name.lastIndexOf('.');
+  if (lastDot === -1) {
+    return '';
+  }
+  return name.substring(lastDot + 1, name.length);
 };
 
 /**
@@ -104,12 +117,12 @@ export const formatError = error => {
  * @param file
  * @returns {{type: String, sub_type: String, mime_type: String}}
  */
-export const fileTypes = file => {
+export const fileTypes = (file) => {
   let { type, sub_type, mime_type } = file;
 
   // infer from file extension in DB has nothing
   if (!type) {
-    const ext = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length);
+    const ext = filenameExtension(file.name);
     ({ type, sub_type, mime_type } = MEDIA_TYPES[ext] || {});
   }
 
@@ -121,8 +134,8 @@ export const fileTypes = file => {
  * @param file
  * @returns {string}
  */
-export const fileIcon = file => {
-  let { type, mime_type } = fileTypes(file);
+export const fileIcon = (file) => {
+  const { type, mime_type: mime } = fileTypes(file);
 
   switch (type) {
   case 'audio':
@@ -130,11 +143,11 @@ export const fileIcon = file => {
   case 'video':
     return 'file video outline';
   case 'image':
-    return mime_type && mime_type.startsWith('application') ?
+    return mime && mime.startsWith('application') ?
       'file archive outline' :
       'file image outline';
   case 'text':
-    switch (mime_type) {
+    switch (mime) {
     case 'application/msword':
     case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
       return 'file word outline';
@@ -158,4 +171,17 @@ export const fileIcon = file => {
   default:
     return 'file outline';
   }
+};
+
+/**
+ * Returns the url to the physical file
+ * @param file
+ * @param ext {boolean} include file name extension in url or not
+ */
+export const physicalFile = (file, ext = false) => {
+  let suffix = '';
+  if (ext) {
+    suffix = `.${filenameExtension(file.name)}`;
+  }
+  return `http://app.mdb.bbdomain.org/links/${file.uid}${suffix}`;
 };

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
-import { Button, List, Menu, Message, Segment } from 'semantic-ui-react';
+import { Button, Flag, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
+import JWPlayer from '../../../shared/JWPlayer';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { fileIcon, fileTypes, formatError } from '../../../../helpers/utils';
-import { LANG_HEBREW, LANG_UNKNOWN } from '../../../../helpers/consts';
+import { fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
+import { LANG_HEBREW, LANG_UNKNOWN, LANGUAGES } from '../../../../helpers/consts';
 
 class Files extends Component {
 
@@ -32,7 +33,9 @@ class Files extends Component {
   getInitialState = (props) => {
     const { unit = {}, getFileById } = props;
     const files                      = (unit.files || []).map(x => getFileById(x));
-    return this.getStateFromFiles(files, LANG_HEBREW);
+    const state                      = this.getStateFromFiles(files, LANG_HEBREW);
+    state.currentFile                = null;
+    return state;
   };
 
   componentWillReceiveProps(nextProps) {
@@ -46,7 +49,8 @@ class Files extends Component {
     }
 
     const files = (unit.files || []).map(x => getFileById(x));
-    this.setState(this.getStateFromFiles(files, this.state.language || LANG_HEBREW));
+    const state = this.getStateFromFiles(files, this.state.language || LANG_HEBREW);
+    this.setState(state);
   }
 
   getStateFromFiles = (files, lang) => {
@@ -76,20 +80,20 @@ class Files extends Component {
   };
 
   handlePlay = (file) => {
-
+    this.setState({ currentFile: file });
   };
 
   handleDownload = (file) => {
-    const url = `http://files.bbdomain.org/get/${file.sha1}/${file.name}`;
-    window.open(url, '_blank');
+    window.open(physicalFile(file), '_blank');
   };
 
   renderFile(file) {
-    const { id, name, size, type, properties } = file;
-    const sizeDisplay                          = filesize(size);
-    const icon                                 = fileIcon(file);
-    const isPhysical                           = size > 0;
-    const isAV                                 = ['audio', 'video'].includes(type);
+    const { id, name, size, type, language, properties } = file;
+    const sizeDisplay                                    = filesize(size);
+    const icon                                           = fileIcon(file);
+    const isPhysical                                     = size > 0;
+    const isAV                                           = ['audio', 'video'].includes(type);
+    const lang                                           = LANGUAGES[language || LANG_UNKNOWN];
 
     let durationDisplay = null;
     if (properties && properties.duration) {
@@ -129,6 +133,12 @@ class Files extends Component {
           </List.Header>
           <List.Description>
             <List horizontal>
+              <List.Item>
+                {
+                  lang.flag ? <Flag name={lang.flag} /> : <strong>Language:&nbsp;</strong>
+                }
+                {lang.text}
+              </List.Item>
               <List.Item><strong>Size:</strong>&nbsp;{sizeDisplay}</List.Item>
               {
                 durationDisplay ?
@@ -151,7 +161,7 @@ class Files extends Component {
       return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     }
 
-    const { total, groups, language } = this.state;
+    const { total, groups, language, currentFile } = this.state;
 
     if (total === 0) {
       return wip ?
@@ -180,6 +190,15 @@ class Files extends Component {
           </Menu.Item>
         </Menu>
         <Segment attached>
+          {
+            currentFile ?
+              <JWPlayer
+                playerId="unit-files"
+                isAutoPlay
+                file={physicalFile(currentFile, true)}
+              /> :
+              null
+          }
           <List divided relaxed verticalAlign="middle">
             { files.map(f => this.renderFile(f)) }
           </List>
