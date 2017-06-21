@@ -38,15 +38,15 @@ class I18nForm extends Component {
     }
   }
 
-  onLabelChange = (e, { value }) => {
+  onNameChange = (e, { value }) => {
     const i18n                = this.state.i18n;
-    i18n[e.target.name].label = value;
+    i18n[e.target.name].name = value;
     this.setState({ i18n });
   };
 
   addLanguage = (language) => {
     const i18n     = this.state.i18n;
-    i18n[language] = { language, label: '' };
+    i18n[language] = { language, name: '' };
     this.setState({ i18n });
   };
 
@@ -88,8 +88,8 @@ class I18nForm extends Component {
                   transparent
                   className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
                   name={k}
-                  value={i18n[k].label}
-                  onChange={this.onLabelChange}
+                  value={i18n[k].name}
+                  onChange={this.onNameChange}
                   required
                 />
               </Table.Cell>
