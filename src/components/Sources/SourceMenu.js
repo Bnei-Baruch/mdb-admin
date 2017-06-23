@@ -8,7 +8,7 @@ const SourceMenu = (props) => {
   return (
     <Menu attached borderless size="large">
       <Menu.Item position="right">
-          <SourceBreadcrumb {...props} />
+        <SourceBreadcrumb {...props} />
       </Menu.Item>
     </Menu>
   );
