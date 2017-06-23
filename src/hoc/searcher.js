@@ -4,7 +4,7 @@ import invariant from 'invariant';
 import noop from 'lodash/noop';
 import isFunction from 'lodash/isFunction';
 import { connect } from 'react-redux';
-import { setParams, getParams } from '../redux/modules/search';
+import { setParams, selectors as filterSelectors } from '../redux/modules/filters';
 
 const searcher = (options) => (WrappedComponent) => {
     invariant(
@@ -60,7 +60,7 @@ const searcher = (options) => (WrappedComponent) => {
             return new Promise((resolve, reject) => {
                 onSearching();
                 const oldParams = this.props.params;
-                this.props.setParams(persistentParams);
+                // this.props.setParams(persistentParams);
                 this.setState({
                     searching: true,
                 }, () => {
@@ -96,6 +96,7 @@ const searcher = (options) => (WrappedComponent) => {
                                   params={this.props.params}
                                   searchError={this.state.error}
                                   total={this.state.total}
+                                  namespace={options.name}
                                   {...this.props} />
             );
         }
@@ -103,10 +104,10 @@ const searcher = (options) => (WrappedComponent) => {
 
     return connect(
         state => ({
-            params: getParams(state.search, options.name)
+            params: filterSelectors.getFilters(state.filters, options.name)
         }),
         {
-            setParams: (params) => setParams(options.name, params)
+            setParams: () => ({})// (params) => setParams(options.name, params)
         }
     )(Searcher);
 

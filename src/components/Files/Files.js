@@ -43,6 +43,8 @@ export const columns = [
             flexGrow={1} />
 ];
 
+// FIXME: (yaniv) add filter config here
+
 export default class Files extends Component {
     render() {
         return (

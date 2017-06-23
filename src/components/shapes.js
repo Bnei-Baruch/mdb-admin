@@ -129,3 +129,10 @@ export const Hierarchy = PropTypes.shape({
   roots: PropTypes.arrayOf(PropTypes.number),
   childMap: PropTypes.instanceOf(Map),  // ID => [...IDs]
 });
+
+export const filterConfigShape = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  Component: PropTypes.any, // react component
+  props: PropTypes.object // props passed to the component
+});

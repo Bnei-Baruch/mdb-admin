@@ -1,11 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import noop from "lodash/noop";
-import chunk from "lodash/chunk";
-import {Form, Segment} from "semantic-ui-react";
-import {AutoSizer, InfiniteLoader, Table} from "react-virtualized";
-import TextFilter from "../Filters/TextFilter";
-import DateFilter from "../Filters/DateFilter";
+import { Segment } from "semantic-ui-react";
+import { AutoSizer, InfiniteLoader, Table } from "react-virtualized";
+import { filterConfigShape } from '../shapes';
+import Filters from '../Filters/Filters';
 import SearchHeader from "../SearchHeader/SearchHeader";
 import "./InfiniteSearch.css";
 
@@ -37,21 +35,16 @@ const MIN_STOP_INDEX = 100;
 
 export default class InfiniteSearch extends Component {
     static propTypes = {
+        namespace: PropTypes.string.isRequired,
         search: PropTypes.func.isRequired,
         params: PropTypes.object.isRequired,
         columns: PropTypes.arrayOf(PropTypes.element).isRequired,
-        filters: PropTypes.arrayOf(PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            Filter: PropTypes.any, // component
-            props: PropTypes.func
-        })),
-        searchPlaceholder: PropTypes.string,
+        filters: PropTypes.arrayOf(filterConfigShape),
         searchError: PropTypes.any,
     };
 
     static defaultProps = {
         filters: [],
-        searchPlaceholder: '',
         searchError: undefined
     };
 
@@ -97,55 +90,11 @@ export default class InfiniteSearch extends Component {
     };
 
     render() {
-        const {params, searching, total, searchPlaceholder, columns, filters} = this.props;
-        const filterChunks = chunk(filters, 4);
+        const {params, searching, total, columns, filters, namespace } = this.props;
 
         return (
             <div>
-                <Segment fluid color="blue">
-                    <Form>
-                        <Form.Group>
-                            <Form.Field width={8}>
-                                <label>Query:</label>
-                                <TextFilter placeholder={searchPlaceholder}
-                                            onChange={(value) => this.handleFilterChange('query', value)}
-                                            value={params['query']}/>
-                            </Form.Field>
-                            <Form.Field width={4}>
-                                <label>Start Date:</label>
-                                <DateFilter placeholder="YYYY-MM-DD"
-                                            onChange={(value) => this.handleFilterChange('start_date', value)}
-                                            value={params['start_date']}
-                                            maxDate={params['end_date']}/>
-                            </Form.Field>
-                            <Form.Field width={4}>
-                                <label>End Date:</label>
-                                <DateFilter placeholder="YYYY-MM-DD"
-                                            onChange={(value) => this.handleFilterChange('end_date', value)}
-                                            value={params['end_date']}
-                                            minDate={params['start_date']}/>
-                            </Form.Field>
-                        </Form.Group>
-                        {
-                            filterChunks.map((group, idx) => (
-                                <Form.Group key={idx}>
-                                    {
-                                        group.map((filter, idx2) => (
-                                            <Form.Field key={idx2} width={4}>
-                                                <label>{filter.label}:</label>
-                                                <filter.Filter
-                                                    onChange={(value) => this.handleFilterChange(filter.name, value)}
-                                                    value={params[filter.name]}
-                                                    {...(filter.props || noop)(params)}
-                                                />
-                                            </Form.Field>
-                                        ))
-                                    }
-                                </Form.Group>
-                            ))
-                        }
-                    </Form>
-                </Segment>
+                <Filters filters={filters} namespace={namespace} />
 
                 <SearchHeader
                     searching={searching}
