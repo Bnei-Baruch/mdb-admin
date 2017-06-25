@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { Header, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
-import { extractI18n, formatError } from '../../../../helpers/utils';
+import { formatError } from '../../../../helpers/utils';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import SourceBreadcrumb from '../../../Sources/SourceBreadcrumb';
 
 class Sources extends Component {
 
   static propTypes = {
-    getSourceById          : PropTypes.func.isRequired,
+    getSourceById: PropTypes.func.isRequired,
     getAuthorByCollectionId: PropTypes.func.isRequired,
-    getWIP                 : PropTypes.func.isRequired,
-    getError               : PropTypes.func.isRequired,
-    unit                   : shapes.ContentUnit,
+    getWIP: PropTypes.func.isRequired,
+    getError: PropTypes.func.isRequired,
+    unit: shapes.ContentUnit,
   };
 
   static defaultProps = {
@@ -28,7 +27,7 @@ class Sources extends Component {
             getSourceById,
             getWIP,
             getError
-          } = this.props;
+          }       = this.props;
     const wip     = getWIP('fetchItemSources');
     const err     = getError('fetchItemSources');
     const sources = (unit.sources || []).map(x => getSourceById(x));
@@ -45,17 +44,16 @@ class Sources extends Component {
         <List relaxed divided className="rtl-dir">
           {
             sources.map((x) => {
-              let _props              = Object.assign({}, this.props);
-              _props.source           = sources[0];
-              _props.lastSourceIsLink = true;
+              const props = Object.assign({}, this.props, { source: x, lastSourceIsLink: true });
               return (
                 <List.Item key={x.id}>
-                  <SourceBreadcrumb {..._props} />
+                  <SourceBreadcrumb {...props} />
                 </List.Item>
               );
             })
           }
-        </List>);
+        </List>
+      );
     }
 
     return (
@@ -71,7 +69,6 @@ class Sources extends Component {
       </div>
     );
   }
-
 }
 
 export default Sources;

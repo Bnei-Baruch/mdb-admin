@@ -25,30 +25,30 @@ const SourceBreadcrumb = (props) => {
 
   // source's ancestors
   for (let i = 0; i < path.length; i++) {
-    x        = path[i];
-    let name = extractI18n(x.i18n, ['name'])[0];
+    x          = path[i];
+    const name = extractI18n(x.i18n, ['name'])[0];
 
-    let _breadcrumb = (
+    let crumb = (
       <Breadcrumb.Section key={x.id} as="span" link>
         <Link to={`/sources/${x.id}`}>{name}</Link>
       </Breadcrumb.Section>
     );
 
     if (i === 0 && !lastSourceIsLink) {
-      _breadcrumb = (<Breadcrumb.Section key={x.id} active>{name}</Breadcrumb.Section>);
+      crumb = (<Breadcrumb.Section key={x.id} active>{name}</Breadcrumb.Section>);
     }
 
-    crumbs.push(_breadcrumb);
+    crumbs.push(crumb);
     crumbs.push((<Breadcrumb.Divider key={`d${i}`} icon="left angle" />));
   }
 
   // author (might not be loaded yet)
   const author = getAuthorByCollectionId(x.id);
   if (author) {
-    let name = extractI18n(author.i18n, ['name'])[0];
+    const name = extractI18n(author.i18n, ['name'])[0];
     crumbs.push((
       <Breadcrumb.Section key={author.code} as="span" link>
-        <Link to={{pathname: '/sources', state: {author}}}>{name}</Link>
+        <Link to={{ pathname: '/sources', state: { author } }}>{name}</Link>
       </Breadcrumb.Section>
     ));
   }
@@ -58,14 +58,14 @@ const SourceBreadcrumb = (props) => {
 };
 
 SourceBreadcrumb.propTypes = {
-  getSourceById          : PropTypes.func.isRequired,
+  getSourceById: PropTypes.func.isRequired,
   getAuthorByCollectionId: PropTypes.func.isRequired,
-  source                 : shapes.Source,
-  lastSourceIsLink       : PropTypes.bool
+  source: shapes.Source,
+  lastSourceIsLink: PropTypes.bool
 };
 
 SourceBreadcrumb.defaultProps = {
-  source          : {},
+  source: {},
   lastSourceIsLink: false
 };
 

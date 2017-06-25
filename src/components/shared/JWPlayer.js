@@ -4,7 +4,7 @@ import JWPlayer from 'react-jw-player';
 
 const Player = props => (
   <JWPlayer
-    playerId={props.playerId} // bring in the randomly generated playerId
+    playerId={props.playerId}
     playerScript="https://content.jwplatform.com/libraries/bgQiNcsk.js"
     {...props}
   />
