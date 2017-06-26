@@ -4,7 +4,7 @@ import FileContainer from '../File/FileContainer';
 import Files from '../Files/Files';
 import ContentUnit from '../ContentUnit/Container';
 import ContentUnits from '../ContentUnits/ContentUnits';
-import CollectionContainer from '../Collection/CollectionContainer';
+import Collection from '../Collection/Container';
 import Collections from '../Collections/Collections';
 import Operation from '../Operation/Operation';
 import Operations from '../Operations/Operations';
@@ -23,7 +23,7 @@ const Routes = () => (
     <Route exact path="/content_units" component={ContentUnits} />
     <Route exact path="/content_units/:id" component={ContentUnit} />
     <Route exact path="/collections" component={Collections} />
-    <Route exact path="/collections/:id" component={CollectionContainer} />
+    <Route exact path="/collections/:id" component={Collection} />
     <Route exact path="/operations" component={Operations} />
     <Route exact path="/operations/:id" component={Operation} />
     <Route exact path="/tags" component={TagsContainer} />

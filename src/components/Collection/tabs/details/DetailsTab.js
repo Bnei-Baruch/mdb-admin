@@ -9,16 +9,16 @@ import I18nForm from './I18nForm';
 class DetailsTab extends Component {
 
   static propTypes = {
-    unit: shapes.ContentUnit,
+    collection: shapes.Collection,
   };
 
   static defaultProps = {
-    unit: null,
+    collection: null,
   };
 
   render() {
-    const unit = this.props.unit;
-    if (!unit) {
+    const collection = this.props.collection;
+    if (!collection) {
       return null;
     }
 
@@ -26,9 +26,9 @@ class DetailsTab extends Component {
       <Grid stackable>
         <Grid.Row>
           <Grid.Column width={8}>
-            <Details unit={unit} />
+            <Details collection={collection} />
             <Divider horizontal hidden />
-            <Properties properties={unit.properties} />
+            <Properties properties={collection.properties} />
           </Grid.Column>
           <Grid.Column width={8}>
             <I18nForm {...this.props} />

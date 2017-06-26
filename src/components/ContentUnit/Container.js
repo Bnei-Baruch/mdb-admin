@@ -10,7 +10,6 @@ import { selectors as collections } from '../../redux/modules/collections';
 import { selectors as sources } from '../../redux/modules/sources';
 import { selectors as tags } from '../../redux/modules/tags';
 import { selectors as authors } from '../../redux/modules/authors';
-
 import MainPage from './MainPage';
 
 class Container extends Component {
