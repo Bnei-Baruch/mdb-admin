@@ -46,7 +46,6 @@ export default class InfiniteSearch extends Component {
         error: null
     };
 
-
     // Should be remove when new search starts (new search means filters have changed)
     resetInfiniteLoaderCache = () => this.infLoader.resetLoadMoreRowsCache();
 
@@ -55,14 +54,10 @@ export default class InfiniteSearch extends Component {
         return !!item && typeof item.id !== 'undefined';
     };
 
-    rowGetter = ({index}) => {
-        return this.props.resultItems[index] || {};
-    };
+    rowGetter = ({index}) => this.props.resultItems[index] || {};
 
-    loadMoreRows = ({ startIndex, stopIndex }) => {
-        // FIXME: (yaniv) wrap search with promise that resolves when search is successful or failed for this namespace and startIndex + stopIndex
-        return this.props.search({}, startIndex, stopIndex);
-    };
+    // FIXME: (yaniv) wrap search with promise that resolves when search is successful or failed for this namespace and startIndex + stopIndex
+    loadMoreRows = ({ startIndex, stopIndex }) => this.props.search({}, startIndex, stopIndex);
 
     render() {
         const {params, searching, total, columns, filters, namespace } = this.props;
