@@ -31,62 +31,37 @@ const RowRenderer = ({className, columns, key, style, index, rowData}) => {
     );
 };
 
-const MIN_STOP_INDEX = 100;
-
 export default class InfiniteSearch extends Component {
     static propTypes = {
         namespace: PropTypes.string.isRequired,
         search: PropTypes.func.isRequired,
-        params: PropTypes.object.isRequired,
         columns: PropTypes.arrayOf(PropTypes.element).isRequired,
         filters: PropTypes.arrayOf(filterConfigShape),
-        searchError: PropTypes.any,
+        resultItems: PropTypes.array.isRequired,
+        error: PropTypes.object
     };
 
     static defaultProps = {
         filters: [],
-        searchError: undefined
+        error: null
     };
 
-    state = {
-        items: [],
-    };
 
-    // Should be removed after Search is.
-    clearItems = () => {
-        this.resetInfiniteLoaderCache();
-        this.setState({items: []});
-    };
-
-    handleFilterChange = (name, value) => {
-        // Start index starts from 1 in the backend.
-        this.props.search({[name]: value}, {'start_index': 1, 'stop_index': MIN_STOP_INDEX}).then(data => {
-            this.resetInfiniteLoaderCache();
-            this.setState({items: data});
-        });
-    };
-
+    // Should be remove when new search starts (new search means filters have changed)
     resetInfiniteLoaderCache = () => this.infLoader.resetLoadMoreRowsCache();
 
     isRowLoaded = ({index}) => {
-        const item = this.state.items[index];
+        const item = this.props.resultItems[index];
         return !!item && typeof item.id !== 'undefined';
     };
 
     rowGetter = ({index}) => {
-        return this.isRowLoaded({index}) ? this.state.items[index] : {};
+        return this.props.resultItems[index] || {};
     };
 
-    loadMoreRows = ({startIndex, stopIndex}) => {
-        return this.props.search({}, {'start_index': startIndex + 1, 'stop_index': stopIndex + 1}).then(data => {
-            return new Promise((resolve) => this.setState(prevState => {
-                const items = prevState.items;
-                data.forEach((item, index) => {
-                    items[index + startIndex] = item;
-                });
-                return {items};
-            }, resolve));
-        });
+    loadMoreRows = ({ startIndex, stopIndex }) => {
+        // FIXME: (yaniv) wrap search with promise that resolves when search is successful or failed for this namespace and startIndex + stopIndex
+        return this.props.search({}, startIndex, stopIndex);
     };
 
     render() {
@@ -95,11 +70,7 @@ export default class InfiniteSearch extends Component {
         return (
             <div>
                 <Filters filters={filters} namespace={namespace} />
-
-                <SearchHeader
-                    searching={searching}
-                    total={total}/>
-
+                <SearchHeader searching={searching} total={total} />
                 <Segment basic style={{height: "50em"}}>
                     <InfiniteLoader
                         ref={el => this.infLoader = el}

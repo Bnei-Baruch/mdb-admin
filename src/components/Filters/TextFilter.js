@@ -7,7 +7,7 @@ class TextFilter extends Component {
     
     static propTypes = {
         updateValue: PropTypes.func.isRequired,
-        value: PropTypes.arrayOf(PropTypes.string),
+        value: PropTypes.string,
     };
 
     static defaultProps = {
