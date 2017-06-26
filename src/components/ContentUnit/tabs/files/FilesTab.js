@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import * as shapes from '../../../shapes';
-import Files from './Files';
+// import Files from './Files';
+import FilesHierarchy from './FilesHierarchy';
 
 class FilesTab extends Component {
 
@@ -33,7 +34,7 @@ class FilesTab extends Component {
   }
 
   render() {
-    return <Files {...this.props} />;
+    return <FilesHierarchy {...this.props} />;
   }
 }
 

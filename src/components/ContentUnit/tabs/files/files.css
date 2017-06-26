@@ -1,0 +1,9 @@
+.cu-files-item:hover {
+  background-color: rgba(0, 0, 0, .1);
+}
+
+.cu-files-item.active {
+  background-color: #EAE7FF;
+  box-shadow: 0 0 0 1px #6435C9 inset, 0 0 0 0 transparent;
+  border-radius: 4px;
+}
