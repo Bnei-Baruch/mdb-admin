@@ -15,7 +15,8 @@
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
     "react-scripts": "1.0.7",
-    "react-test-renderer": "^15.5.4"
+    "react-test-renderer": "^15.5.4",
+    "why-did-you-update": "0.0.8"
   },
   "dependencies": {
     "amdefine": "^1.0.1",
