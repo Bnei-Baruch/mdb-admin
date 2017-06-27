@@ -172,16 +172,23 @@ class FilesHierarchy extends Component {
     const { currentFile, hierarchy } = this.state;
     const { childMap }               = hierarchy;
 
-    const { id, name, size, language, secure, published, properties } = file;
-    const sizeDisplay                                                 = filesize(size);
-    const icon                                                        = fileIcon(file);
-    const lang                                                        = LANGUAGES[language || LANG_UNKNOWN];
-    const children                                                    = childMap.get(id) || [];
-
-    let durationDisplay = null;
-    if (properties && properties.duration) {
-      durationDisplay = moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss');
-    }
+    const {
+            id,
+            name,
+            size,
+            language,
+            secure,
+            published,
+            properties,
+          }               = file;
+    const sizeDisplay     = filesize(size);
+    const icon            = fileIcon(file);
+    const lang            = LANGUAGES[language || LANG_UNKNOWN];
+    const children        = childMap.get(id) || [];
+    const duration        = (properties || {}).duration;
+    const durationDisplay = duration ?
+      moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
+      null;
 
     return (
       <div key={id}>

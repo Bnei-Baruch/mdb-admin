@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Header, List, Menu, Message, Segment } from 'semantic-ui-react';
+import { Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import { selectors } from '../../../../redux/modules/content_units';
 import { selectors as collections } from '../../../../redux/modules/collections';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { formatError } from '../../../../helpers/utils';
-import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
+import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
+import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
 
 class Collections extends Component {
 
@@ -37,13 +37,52 @@ class Collections extends Component {
         <Message>No collections found for this unit</Message>;
     } else {
       content = (
-        <List>
+        <List divided relaxed>
           {
             ccus.map((x) => {
-              const { name, collection } = x;
+              const { collection } = x;
+              const {
+                      id,
+                      uid,
+                      type_id: typeID,
+                      i18n,
+                      secure,
+                      published,
+                      properties,
+                    }              = collection;
+              const name           = extractI18n(i18n, ['name'])[0];
+              const type           = CONTENT_TYPE_BY_ID[typeID];
+              const filmDate       = (properties || {}).film_date;
+              const number         = (properties || {}).number;
+
               return (
-                <List.Item key={collection.id}>
-                  <Link to={`/collections/${collection.id}`}>{collection.uid} [name: {name}]</Link>
+                <List.Item key={id}>
+                  <List.Content>
+                    <List.Header>
+                      <Link to={`/collections/${id}`}>{name || uid}</Link>
+                    </List.Header>
+                    <List.Description>
+                      <List horizontal>
+                        <List.Item>{titleize(type)}</List.Item>
+                        <List.Item>{number}</List.Item>
+                        <List.Item>{filmDate}</List.Item>
+                        <List.Item>
+                          <Header
+                            size="tiny"
+                            content={SECURITY_LEVELS[secure].text}
+                            color={SECURITY_LEVELS[secure].color}
+                          />
+                        </List.Item>
+                        <List.Item>
+                          {
+                            published ?
+                              <Icon name="checkmark" color="green" /> :
+                              <Icon name="ban" color="red" />
+                          }
+                        </List.Item>
+                      </List>
+                    </List.Description>
+                  </List.Content>
                 </List.Item>
               );
             })

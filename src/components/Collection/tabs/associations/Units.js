@@ -24,21 +24,28 @@ const Units = (props) => {
       <List divided relaxed>
         {
           units.map((x) => {
-            const { name: ccuName, content_unit: unit }                    = x;
-            const { type_id: typeID, i18n, secure, published, properties } = unit;
-            const name                                                     = extractI18n(i18n, ['name'])[0];
-            const type                                                     = CONTENT_TYPE_BY_ID[typeID];
-
-            let durationDisplay = null;
-            if (properties && properties.duration) {
-              durationDisplay = moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss');
-            }
+            const { name: ccuName, content_unit: unit } = x;
+            const {
+                    id,
+                    uid,
+                    type_id: typeID,
+                    i18n,
+                    secure,
+                    published,
+                    properties,
+                  }                                     = unit;
+            const name                                  = extractI18n(i18n, ['name'])[0];
+            const type                                  = CONTENT_TYPE_BY_ID[typeID];
+            const duration                              = (properties || {}).duration;
+            const durationDisplay                       = duration ?
+              moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
+              null;
 
             return (
-              <List.Item key={unit.id}>
+              <List.Item key={id}>
                 <List.Content>
                   <List.Header>
-                    <Link to={`/content_units/${unit.id}`}>{name || unit.uid}</Link>
+                    <Link to={`/content_units/${id}`}>{name || uid}</Link>
                   </List.Header>
                   <List.Description>
                     <List horizontal>
