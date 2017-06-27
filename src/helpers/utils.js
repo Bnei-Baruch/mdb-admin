@@ -1,3 +1,6 @@
+import words from 'lodash/words';
+import capitalize from 'lodash/capitalize';
+
 import { I18N_ORDER, MEDIA_TYPES } from './consts';
 
 /**
@@ -67,6 +70,8 @@ export const extractI18n = (i18ns, fields, languages = I18N_ORDER) => {
     return value;
   });
 };
+
+export const titleize = str => words(str).map(x => capitalize(x)).join(' ');
 
 /**
  * Format the given error into a user friendly string

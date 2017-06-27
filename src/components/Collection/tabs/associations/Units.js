@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Header, List, Menu, Message, Segment } from 'semantic-ui-react';
+import { Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { formatError } from '../../../../helpers/utils';
-import { EMPTY_ARRAY } from '../../../../helpers/consts';
+import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
+import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, SECURITY_LEVELS } from '../../../../helpers/consts';
 
 const Units = (props) => {
   const { units, wip, err } = props;
@@ -20,13 +21,47 @@ const Units = (props) => {
       <Message>No content units found for this collection</Message>;
   } else {
     content = (
-      <List>
+      <List divided relaxed>
         {
           units.map((x) => {
-            const { name, content_unit: unit } = x;
+            const { name: ccuName, content_unit: unit }                    = x;
+            const { type_id: typeID, i18n, secure, published, properties } = unit;
+            const name                                                     = extractI18n(i18n, ['name'])[0];
+            const type                                                     = CONTENT_TYPE_BY_ID[typeID];
+
+            let durationDisplay = null;
+            if (properties && properties.duration) {
+              durationDisplay = moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss');
+            }
+
             return (
               <List.Item key={unit.id}>
-                <Link to={`/content_units/${unit.id}`}>{unit.uid} [name: {name}]</Link>
+                <List.Content>
+                  <List.Header>
+                    <Link to={`/content_units/${unit.id}`}>{name || unit.uid}</Link>
+                  </List.Header>
+                  <List.Description>
+                    <List horizontal>
+                      <List.Item>{titleize(type)}</List.Item>
+                      <List.Item>{ccuName}</List.Item>
+                      <List.Item>{durationDisplay}</List.Item>
+                      <List.Item>
+                        <Header
+                          size="tiny"
+                          content={SECURITY_LEVELS[secure].text}
+                          color={SECURITY_LEVELS[secure].color}
+                        />
+                      </List.Item>
+                      <List.Item>
+                        {
+                          published ?
+                            <Icon name="checkmark" color="green" /> :
+                            <Icon name="ban" color="red" />
+                        }
+                      </List.Item>
+                    </List>
+                  </List.Description>
+                </List.Content>
               </List.Item>
             );
           })
