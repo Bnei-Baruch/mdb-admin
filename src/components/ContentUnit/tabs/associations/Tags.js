@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Header, List, Menu, Message, Segment } from 'semantic-ui-react';
 
+import { selectors } from '../../../../redux/modules/content_units';
+import { selectors as tagsSelectors } from '../../../../redux/modules/tags';
 import * as shapes from '../../../shapes';
 import { extractI18n, formatError } from '../../../../helpers/utils';
+import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 
 class Tags extends Component {
 
   static propTypes = {
-    getTagById: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    unit: shapes.ContentUnit,
+    tags: PropTypes.arrayOf(shapes.Tag),
+    wip: PropTypes.bool,
+    err: shapes.Error,
   };
 
   static defaultProps = {
-    unit: undefined,
+    tags: EMPTY_ARRAY,
+    wip: false,
+    err: null,
   };
 
   render() {
-    const {
-            unit = {},
-            getTagById,
-            getWIP,
-            getError
-          }    = this.props;
-    const wip  = getWIP('fetchItemTags');
-    const err  = getError('fetchItemTags');
-    const tags = (unit.tags || []).map(x => getTagById(x));
+    const { tags, wip, err } = this.props;
 
     let content;
     if (err) {
@@ -67,7 +64,17 @@ class Tags extends Component {
       </div>
     );
   }
-
 }
 
-export default Tags;
+const mapState = (state, ownProps) => {
+  const { unit = EMPTY_OBJECT } = ownProps;
+  const tagIDs                  = unit.tags;
+  const denormIDs               = tagsSelectors.denormIDs(state.tags);
+  return {
+    tags: tagIDs ? denormIDs(tagIDs) : EMPTY_ARRAY,
+    wip: selectors.getWIP(state.content_units, 'fetchItemTags'),
+    err: selectors.getError(state.content_units, 'fetchItemTags'),
+  };
+};
+
+export default connect(mapState)(Tags);

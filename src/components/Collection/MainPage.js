@@ -10,6 +10,12 @@ import DetailsTab from './tabs/details/DetailsTab';
 import AssociationsTab from './tabs/associations/AssociationsTab';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
 
+const items = [
+  { name: 'Details', element: DetailsTab },
+  { name: 'Associations', element: AssociationsTab },
+  { name: 'Danger Zone', element: DangerZoneTab },
+];
+
 const MainPage = (props) => {
   const { collection, wip, err } = props;
 
@@ -26,25 +32,7 @@ const MainPage = (props) => {
       />;
   }
 
-  const items = [
-    {
-      name: 'details',
-      label: 'Details',
-      component: <DetailsTab collection={collection} />,
-    },
-    {
-      name: 'associations',
-      label: 'Associations',
-      component: <AssociationsTab collection={collection} />,
-    },
-    {
-      name: 'danger',
-      label: 'Danger Zone',
-      component: <DangerZoneTab collection={collection} />,
-    },
-  ];
-
-  return <TabsMenu items={items} />;
+  return <TabsMenu items={items} collection={collection} />;
 };
 
 MainPage.propTypes = {

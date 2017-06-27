@@ -1,6 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+import memoize from 'lodash/memoize';
 
+import { setMap } from '../utils';
 import { types as sources } from './sources';
 
 /* Types */
@@ -29,7 +31,7 @@ export const actions = {
 
 /* Reducer */
 
-const _keys = new Map([
+const keys = new Map([
   [FETCH_ALL, 'fetchAuthors'],
   [FETCH_ALL_SUCCESS, 'fetchAuthors'],
   [FETCH_ALL_FAILURE, 'fetchAuthors'],
@@ -37,32 +39,26 @@ const _keys = new Map([
 
 const initialState = {
   byID: new Map(),
-  wip: new Map(Array.from(_keys.values(), x => [x, false])),
-  errors: new Map(Array.from(_keys.values(), x => [x, null])),
+  wip: new Map(Array.from(keys.values(), x => [x, false])),
+  errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
-const _setMap = (m, k, v) => {
-  const nm = new Map(m);
-  nm.set(k, v);
-  return nm;
-};
-
-const _onRequest = (state, action) => ({
+const onRequest = (state, action) => ({
   ...state,
-  wip: _setMap(state.wip, _keys.get(action.type), true)
+  wip: setMap(state.wip, keys.get(action.type), true)
 });
 
-const _onFailure = (state, action) => {
-  const key = _keys.get(action.type);
+const onFailure = (state, action) => {
+  const key = keys.get(action.type);
   return {
     ...state,
-    wip: _setMap(state.wip, key, false),
-    errors: _setMap(state.errors, key, action.payload),
+    wip: setMap(state.wip, key, false),
+    errors: setMap(state.errors, key, action.payload),
   };
 };
 
-const _onSuccess = (state, action) => {
-  const key = _keys.get(action.type);
+const onSuccess = (state, action) => {
+  const key = keys.get(action.type);
 
   let byID;
   switch (action.type) {
@@ -83,8 +79,8 @@ const _onSuccess = (state, action) => {
   return {
     ...state,
     byID,
-    wip: _setMap(state.wip, key, false),
-    errors: _setMap(state.errors, key, null),
+    wip: setMap(state.wip, key, false),
+    errors: setMap(state.errors, key, null),
   };
 };
 
@@ -99,14 +95,14 @@ const onNewSource = (state, action) => {
 
   return {
     ...state,
-    byID: _setMap(state.byID, author, a)
+    byID: setMap(state.byID, author, a)
   };
 };
 
 export const reducer = handleActions({
-  [FETCH_ALL]: _onRequest,
-  [FETCH_ALL_SUCCESS]: _onSuccess,
-  [FETCH_ALL_FAILURE]: _onFailure,
+  [FETCH_ALL]: onRequest,
+  [FETCH_ALL_SUCCESS]: onSuccess,
+  [FETCH_ALL_FAILURE]: onFailure,
 
   [sources.CREATE_SUCCESS]: onNewSource,
 }, initialState);
@@ -122,7 +118,7 @@ const getAuthorByCollectionId = createSelector(getAuthorsList, getAuthorById,
   (authors, byId) => {
     const pairs = authors.reduce((acc, val) => acc.concat(val.sources.map(x => [x, val.id])), []);
     const m     = new Map(pairs);
-    return id => byId(m.get(id));
+    return memoize(id => byId(m.get(id)));
   });
 
 export const selectors = {

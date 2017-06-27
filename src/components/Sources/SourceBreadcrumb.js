@@ -1,31 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Breadcrumb } from 'semantic-ui-react';
 
+import { selectors as sources } from '../../redux/modules/sources';
+import { selectors as authors } from '../../redux/modules/authors';
 import * as shapes from '../shapes';
 import { extractI18n } from '../../helpers/utils';
 
 const SourceBreadcrumb = (props) => {
-  const { source, getSourceById, getAuthorByCollectionId, lastSourceIsLink } = props;
-
-  // construct path
-  // note that hierarchy is still being loaded...
-  let x      = source;
-  const path = [source];
-  while (x && x.parent_id) {
-    x = getSourceById(x.parent_id);
-    if (x) {
-      path.push(x);
-    }
-  }
+  const { path, author, lastSourceIsLink } = props;
 
   // convert path to breadcrumbs
   const crumbs = [];
 
-  // source's ancestors
+  // source's path
   for (let i = 0; i < path.length; i++) {
-    x          = path[i];
+    const x    = path[i];
     const name = extractI18n(x.i18n, ['name'])[0];
 
     let crumb = (
@@ -42,8 +34,7 @@ const SourceBreadcrumb = (props) => {
     crumbs.push((<Breadcrumb.Divider key={`d${i}`} icon="left angle" />));
   }
 
-  // author (might not be loaded yet)
-  const author = getAuthorByCollectionId(x.id);
+  // author
   if (author) {
     const name = extractI18n(author.i18n, ['name'])[0];
     crumbs.push((
@@ -58,15 +49,26 @@ const SourceBreadcrumb = (props) => {
 };
 
 SourceBreadcrumb.propTypes = {
-  getSourceById: PropTypes.func.isRequired,
-  getAuthorByCollectionId: PropTypes.func.isRequired,
-  source: shapes.Source,
+  source: shapes.Source.isRequired,
+  path: PropTypes.arrayOf(shapes.Source),
+  author: shapes.Author,
   lastSourceIsLink: PropTypes.bool
 };
 
 SourceBreadcrumb.defaultProps = {
-  source: {},
+  path: [],
+  author: null,
   lastSourceIsLink: false
 };
 
-export default SourceBreadcrumb;
+const mapState = (state, ownProps) => {
+  const { source } = ownProps;
+  const path       = sources.getPathByID(state.sources)(source.id);
+  const root       = path.length === 0 ? null : path[path.length - 1];
+  return {
+    path,
+    author: root ? authors.getAuthorByCollectionId(state.authors)(root.id) : null,
+  };
+};
+
+export default connect(mapState)(SourceBreadcrumb);

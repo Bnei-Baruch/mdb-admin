@@ -11,10 +11,15 @@ import AssociationsTab from './tabs/associations/AssociationsTab';
 import FilesTab from './tabs/files/FilesTab';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
 
+const items = [
+  { name: 'Details', element: DetailsTab },
+  { name: 'Files', element: FilesTab },
+  { name: 'Associations', element: AssociationsTab },
+  { name: 'Danger Zone', element: DangerZoneTab },
+];
+
 const MainPage = (props) => {
-  const { unit, getWIP, getError } = props;
-  const wip                        = getWIP('fetchItem');
-  const err                        = getError('fetchItem');
+  const { unit, wip, err } = props;
 
   if (err) {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -29,40 +34,19 @@ const MainPage = (props) => {
       />;
   }
 
-  const items = [
-    {
-      name: 'details',
-      label: 'Details',
-      component: <DetailsTab {...props} />,
-    },
-    {
-      name: 'files',
-      label: 'Files',
-      component: <FilesTab {...props} />,
-    },
-    {
-      name: 'associations',
-      label: 'Associations',
-      component: <AssociationsTab {...props} />,
-    },
-    {
-      name: 'danger',
-      label: 'Danger Zone',
-      component: <DangerZoneTab {...props} />,
-    },
-  ];
-
-  return <TabsMenu items={items} />;
+  return <TabsMenu items={items} unit={unit} />;
 };
 
 MainPage.propTypes = {
-  getWIP: PropTypes.func.isRequired,
-  getError: PropTypes.func.isRequired,
   unit: shapes.ContentUnit,
+  wip: PropTypes.bool,
+  err: shapes.Error,
 };
 
 MainPage.defaultProps = {
   unit: null,
+  wip: false,
+  err: null,
 };
 
 export default MainPage;

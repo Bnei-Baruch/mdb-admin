@@ -1,14 +1,14 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
 
-import * as shapes from '../../../shapes';
 import { actions, selectors } from '../../../../redux/modules/collections';
+import * as shapes from '../../../shapes';
 import { SECURITY_LEVELS } from '../../../../helpers/consts';
 
-class DangerZoneTab extends PureComponent {
+class DangerZoneTab extends Component {
 
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,

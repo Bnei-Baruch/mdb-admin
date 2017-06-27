@@ -19,10 +19,10 @@ import App from './components/App/App';
 //
 const isProduction = process.env.NODE_ENV === 'production';
 
-if (!isProduction) {
-  const { whyDidYouUpdate } = require('why-did-you-update');
-  whyDidYouUpdate(React, { exclude: /Menu*|Dropdown*|List*|Button*|Message*|Link/ });
-}
+// if (!isProduction) {
+//   const { whyDidYouUpdate } = require('why-did-you-update');
+//   whyDidYouUpdate(React, { exclude: /Menu*|Dropdown*|List*|Button*|Message*|Link|ReactJWPlayer*/ });
+// }
 
 const devToolsArePresent    = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => !isProduction && devToolsArePresent ? window.devToolsExtension() : f => f;

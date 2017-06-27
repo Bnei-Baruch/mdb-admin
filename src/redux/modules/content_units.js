@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
+
 import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
@@ -177,7 +178,7 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_COLLECTIONS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
-      collections: action.payload.data.map(x => ({ ...x, collection: x.collection.id })),
+      collections: action.payload.data.map(x => ({ name: x.name, collection_id: x.collection.id })),
     });
     break;
   case FETCH_ITEM_SOURCES_SUCCESS:
@@ -238,16 +239,17 @@ export const reducer = handleActions({
 
 /* Selectors */
 
-const getUnits           = state => state.byID;
-const denormCCUs            = createSelector(getUnits, byID =>
+const getUnits   = state => state.byID;
+const getWIP     = (state, key) => state.wip.get(key);
+const getError   = (state, key) => state.errors.get(key);
+const denormCCUs = createSelector(getUnits, byID =>
   memoize(ccus => ccus.map(x => ({ ...x, content_unit: byID.get(x.content_unit_id) }))));
+
 const getContentUnitById = state => id => state.byID.get(id);
-const getWIP             = state => key => state.wip.get(key);
-const getError           = state => key => state.errors.get(key);
 
 export const selectors = {
-  denormCCUs,
-  getContentUnitById,
   getWIP,
   getError,
+  getContentUnitById,
+  denormCCUs,
 };

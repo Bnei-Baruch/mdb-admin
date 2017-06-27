@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Divider, Grid } from 'semantic-ui-react';
 
+import { actions } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';
 import Collections from './Collections';
 import Sources from './Sources';
@@ -57,5 +60,12 @@ class AssociationsTab extends Component {
   }
 }
 
-export default AssociationsTab;
+function mapDispatch(dispatch) {
+  return bindActionCreators({
+    fetchItemCollections: actions.fetchItemCollections,
+    fetchItemSources: actions.fetchItemSources,
+    fetchItemTags: actions.fetchItemTags,
+  }, dispatch);
+}
 
+export default connect(null, mapDispatch)(AssociationsTab);

@@ -78,6 +78,7 @@ export const File = PropTypes.shape({
   name: PropTypes.string.isRequired,
   sha1: PropTypes.string,
   size: PropTypes.number,
+  parent_id: PropTypes.number,
   type: PropTypes.string,
   subtype: PropTypes.string,
   mime_type: PropTypes.string,
@@ -89,6 +90,8 @@ const BaseContentUnit = {
   ...SecurePublished,
   i18n: PropTypes.objectOf(ContentUnitI18n),
   files: PropTypes.arrayOf(PropTypes.number),
+  sources: PropTypes.arrayOf(PropTypes.number),
+  tags: PropTypes.arrayOf(PropTypes.number),
 };
 
 const BaseCollection = {
@@ -107,6 +110,7 @@ const BaseCollectionContentUnit = {
 
 export const CollectionContentUnit = PropTypes.shape(BaseCollectionContentUnit);
 
+BaseContentUnit.collections = PropTypes.arrayOf(CollectionContentUnit);
 export const ContentUnit = PropTypes.shape(BaseContentUnit);
 
 BaseCollection.content_units = PropTypes.arrayOf(CollectionContentUnit);

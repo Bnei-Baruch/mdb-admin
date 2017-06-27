@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import classNames from 'classnames';
 import { Button, Flag, Header, Input, Menu, Message, Segment, Table } from 'semantic-ui-react';
 
@@ -18,7 +17,7 @@ class I18nForm extends Component {
     updateI18n: PropTypes.func.isRequired,
     collection: shapes.Collection,
     wip: PropTypes.bool,
-    err: PropTypes.object,
+    err: shapes.Error,
   };
 
   static defaultProps = {

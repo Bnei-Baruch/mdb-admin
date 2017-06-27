@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import { selectors as units } from '../../../../redux/modules/content_units';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import Units from './Units';
 
-class AssociationsTab extends PureComponent {
+class AssociationsTab extends Component {
 
   static propTypes = {
     fetchItemUnits: PropTypes.func.isRequired,
@@ -18,7 +18,7 @@ class AssociationsTab extends PureComponent {
   };
 
   static defaultProps = {
-    collection: undefined,
+    collection: null,
   };
 
   componentDidMount() {
@@ -53,10 +53,10 @@ class AssociationsTab extends PureComponent {
 
 const mapState = (state, ownProps) => {
   const { collection = EMPTY_OBJECT } = ownProps;
-  const unitIds = collection.content_units;
+  const unitIDs = collection.content_units;
   const denormCCUs = units.denormCCUs(state.content_units);
   return {
-    units: unitIds ? denormCCUs(unitIds) : EMPTY_ARRAY,
+    units: unitIDs ? denormCCUs(unitIDs) : EMPTY_ARRAY,
     wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
     err: selectors.getError(state.collections, 'fetchItemUnits'),
   };

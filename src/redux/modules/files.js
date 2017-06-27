@@ -1,4 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
+import memoize from 'lodash/memoize';
+
 import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
@@ -6,18 +9,22 @@ import { bulkMerge, merge, setMap } from '../utils';
 const FETCH_ITEM                    = 'Files/FETCH_ITEM';
 const FETCH_ITEM_SUCCESS            = 'Files/FETCH_ITEM_SUCCESS';
 const FETCH_ITEM_FAILURE            = 'Files/FETCH_ITEM_FAILURE';
+
 const CHANGE_SECURITY_LEVEL         = 'Files/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'Files/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'Files/CHANGE_SECURITY_LEVEL_FAILURE';
+
 const RECEIVE_ITEMS                 = 'Files/RECEIVE_ITEMS';
 
 export const types = {
   FETCH_ITEM,
   FETCH_ITEM_SUCCESS,
   FETCH_ITEM_FAILURE,
+
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
   CHANGE_SECURITY_LEVEL_FAILURE,
+
   RECEIVE_ITEMS,
 };
 
@@ -26,18 +33,22 @@ export const types = {
 const fetchItem                  = createAction(FETCH_ITEM);
 const fetchItemSuccess           = createAction(FETCH_ITEM_SUCCESS);
 const fetchItemFailure           = createAction(FETCH_ITEM_FAILURE);
+
 const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL);
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
+
 const receiveItems               = createAction(RECEIVE_ITEMS);
 
 export const actions = {
   fetchItem,
   fetchItemSuccess,
   fetchItemFailure,
+
   changeSecurityLevel,
   changeSecurityLevelSuccess,
   changeSecurityLevelFailure,
+
   receiveItems,
 };
 
@@ -47,6 +58,7 @@ const keys = new Map([
   [FETCH_ITEM, 'fetchItem'],
   [FETCH_ITEM_SUCCESS, 'fetchItem'],
   [FETCH_ITEM_FAILURE, 'fetchItem'],
+
   [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
   [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
   [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
@@ -118,8 +130,12 @@ const getFileById = state => id => state.byID.get(id);
 const getWIP      = state => key => state.wip.get(key);
 const getError    = state => key => state.errors.get(key);
 
+const denormIDs = createSelector(getFiles, byID =>
+  memoize(ids => ids.map(id => byID.get(id))));
+
 export const selectors = {
   getFileById,
+  denormIDs,
   getWIP,
   getError,
 };

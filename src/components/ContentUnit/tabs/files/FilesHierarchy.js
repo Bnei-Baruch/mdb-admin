@@ -10,45 +10,46 @@ import * as shapes from '../../../shapes';
 import JWPlayer from '../../../shared/JWPlayer';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
-import { ALL_FILE_TYPES, ALL_LANGUAGES, LANG_UNKNOWN, LANGUAGES, SECURITY_LEVELS } from '../../../../helpers/consts';
+import {
+  ALL_FILE_TYPES,
+  ALL_LANGUAGES,
+  EMPTY_ARRAY,
+  LANG_UNKNOWN,
+  LANGUAGES,
+  SECURITY_LEVELS
+} from '../../../../helpers/consts';
 
 import './files.css';
 
-class Files extends Component {
+class FilesHierarchy extends Component {
 
   static propTypes = {
-    getFileById: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    unit: shapes.ContentUnit,
+    files: PropTypes.arrayOf(shapes.File),
+    wip: PropTypes.bool,
+    err: shapes.Error,
   };
 
   static defaultProps = {
-    unit: undefined,
+    files: EMPTY_ARRAY,
+    wip: false,
+    err: null,
   };
 
   constructor(props) {
     super(props);
-    this.state = this.getInitialState(props);
+    const { files } = props;
+    this.state      = this.getStateFromFiles(files);
   }
 
-  getInitialState = (props) => {
-    const { unit = {}, getFileById } = props;
-    const files                      = (unit.files || []).map(x => getFileById(x));
-    return this.getStateFromFiles(files);
-  };
-
   componentWillReceiveProps(nextProps) {
-    const { unit, getFileById } = nextProps;
-    const props                 = this.props;
+    const { files } = nextProps;
+    const props     = this.props;
 
     // no change ?
-    if (unit === props.unit ||
-      (unit && props.unit && unit.files === props.unit.files)) {
+    if (files === props.files) {
       return;
     }
 
-    const files     = (unit.files || []).map(x => getFileById(x));
     const nextState = this.getStateFromFiles(files);
     if (this.state.currentFile) {
       delete nextState.currentFile;
@@ -57,7 +58,7 @@ class Files extends Component {
   }
 
   getStateFromFiles = (files) => {
-    const total   = files ? files.length : 0;
+    const total   = files.length;
     const cuFiles = new Set(files.map(x => x.id));
 
     const fileMap = new Map(files.map((x) => {
@@ -235,9 +236,7 @@ class Files extends Component {
   }
 
   render() {
-    const { getWIP, getError } = this.props;
-    const wip                  = getWIP('fetchItemFiles');
-    const err                  = getError('fetchItemFiles');
+    const { wip, err } = this.props;
 
     if (err) {
       return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -290,4 +289,4 @@ class Files extends Component {
   }
 }
 
-export default Files;
+export default FilesHierarchy;
