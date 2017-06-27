@@ -1,3 +1,9 @@
+
+// Use these for immutable default values
+export const EMPTY_ARRAY = Object.freeze([]);
+export const EMPTY_OBJECT = Object.freeze({});
+
+
 // Collection Types
 export const CT_DAILY_LESSON       = 'DAILY_LESSON';
 export const CT_SPECIAL_LESSON     = 'SPECIAL_LESSON';

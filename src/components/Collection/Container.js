@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/collections';
-import { selectors as units } from '../../redux/modules/content_units';
 import MainPage from './MainPage';
 
 class Container extends Component {
@@ -43,9 +43,12 @@ class Container extends Component {
 
 const mapState = (state, props) => ({
   collection: selectors.getCollectionById(state.collections)(parseInt(props.match.params.id, 10)),
-  getWIP: selectors.getWIP(state.collections),
-  getError: selectors.getError(state.collections),
-  getContentUnitById: units.getContentUnitById(state.content_units),
+  wip: selectors.getWIP(state.collections, 'fetchItem'),
+  err: selectors.getError(state.collections, 'fetchItem'),
 });
 
-export default connect(mapState, actions)(Container);
+function mapDispatch(dispatch) {
+  return bindActionCreators({ fetchItem: actions.fetchItem }, dispatch);
+}
+
+export default connect(mapState, mapDispatch)(Container);

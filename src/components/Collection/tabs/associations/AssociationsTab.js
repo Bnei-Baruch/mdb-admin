@@ -1,11 +1,16 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
+import { actions, selectors } from '../../../../redux/modules/collections';
+import { selectors as units } from '../../../../redux/modules/content_units';
+import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import Units from './Units';
 
-class AssociationsTab extends Component {
+class AssociationsTab extends PureComponent {
 
   static propTypes = {
     fetchItemUnits: PropTypes.func.isRequired,
@@ -13,7 +18,7 @@ class AssociationsTab extends Component {
   };
 
   static defaultProps = {
-    collection: null,
+    collection: undefined,
   };
 
   componentDidMount() {
@@ -46,5 +51,19 @@ class AssociationsTab extends Component {
   }
 }
 
-export default AssociationsTab;
+const mapState = (state, ownProps) => {
+  const { collection = EMPTY_OBJECT } = ownProps;
+  const unitIds = collection.content_units;
+  const denormCCUs = units.denormCCUs(state.content_units);
+  return {
+    units: unitIds ? denormCCUs(unitIds) : EMPTY_ARRAY,
+    wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
+    err: selectors.getError(state.collections, 'fetchItemUnits'),
+  };
+};
 
+function mapDispatch(dispatch) {
+  return bindActionCreators({ fetchItemUnits: actions.fetchItemUnits }, dispatch);
+}
+
+export default connect(mapState, mapDispatch)(AssociationsTab);

@@ -1,19 +1,26 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
+import { actions, selectors } from '../../../../redux/modules/collections';
 import { SECURITY_LEVELS } from '../../../../helpers/consts';
 
-class DangerZoneTab extends Component {
+class DangerZoneTab extends PureComponent {
 
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
     collection: shapes.Collection,
+    wip: PropTypes.bool,
+    err: shapes.Error,
   };
 
   static defaultProps = {
     collection: null,
+    wip: false,
+    err: null,
   };
 
   state = {
@@ -107,4 +114,13 @@ class DangerZoneTab extends Component {
   }
 }
 
-export default DangerZoneTab;
+const mapState = state => ({
+  wip: selectors.getWIP(state.collections, 'changeSecurityLevel'),
+  err: selectors.getError(state.collections, 'changeSecurityLevel'),
+});
+
+function mapDispatch(dispatch) {
+  return bindActionCreators({ changeSecurityLevel: actions.changeSecurityLevel }, dispatch);
+}
+
+export default connect(mapState, mapDispatch)(DangerZoneTab);

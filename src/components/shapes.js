@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+export const Error = PropTypes.object;
+
 export const RouterMatch = PropTypes.shape({
   path: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
@@ -82,19 +84,33 @@ export const File = PropTypes.shape({
   language: PropTypes.string,
 });
 
-export const ContentUnit = PropTypes.shape({
+const BaseContentUnit = {
   ...TypedEntity,
   ...SecurePublished,
   i18n: PropTypes.objectOf(ContentUnitI18n),
   files: PropTypes.arrayOf(PropTypes.number),
-});
+};
 
-export const Collection = PropTypes.shape({
+const BaseCollection = {
   ...TypedEntity,
   ...SecurePublished,
   i18n: PropTypes.objectOf(CollectionI18n),
-  content_units: PropTypes.arrayOf(ContentUnit),
-});
+};
+
+const BaseCollectionContentUnit = {
+  collection_id: PropTypes.number,
+  collection: PropTypes.shape(BaseCollection),
+  content_unit_id: PropTypes.number,
+  content_unit: PropTypes.shape(BaseContentUnit),
+  name: PropTypes.string,
+};
+
+export const CollectionContentUnit = PropTypes.shape(BaseCollectionContentUnit);
+
+export const ContentUnit = PropTypes.shape(BaseContentUnit);
+
+BaseCollection.content_units = PropTypes.arrayOf(CollectionContentUnit);
+export const Collection      = PropTypes.shape(BaseCollection);
 
 export const Source = PropTypes.shape({
   ...TypedEntity,

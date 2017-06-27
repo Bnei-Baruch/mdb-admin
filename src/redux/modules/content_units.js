@@ -1,4 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
+import memoize from 'lodash/memoize';
 import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
@@ -236,11 +238,15 @@ export const reducer = handleActions({
 
 /* Selectors */
 
+const getUnits           = state => state.byID;
+const denormCCUs            = createSelector(getUnits, byID =>
+  memoize(ccus => ccus.map(x => ({ ...x, content_unit: byID.get(x.content_unit_id) }))));
 const getContentUnitById = state => id => state.byID.get(id);
 const getWIP             = state => key => state.wip.get(key);
 const getError           = state => key => state.errors.get(key);
 
 export const selectors = {
+  denormCCUs,
   getContentUnitById,
   getWIP,
   getError,

@@ -11,9 +11,7 @@ import AssociationsTab from './tabs/associations/AssociationsTab';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
 
 const MainPage = (props) => {
-  const { collection, getWIP, getError } = props;
-  const wip                              = getWIP('fetchItem');
-  const err                              = getError('fetchItem');
+  const { collection, wip, err } = props;
 
   if (err) {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -32,17 +30,17 @@ const MainPage = (props) => {
     {
       name: 'details',
       label: 'Details',
-      component: <DetailsTab {...props} />,
+      component: <DetailsTab collection={collection} />,
     },
     {
       name: 'associations',
       label: 'Associations',
-      component: <AssociationsTab {...props} />,
+      component: <AssociationsTab collection={collection} />,
     },
     {
       name: 'danger',
       label: 'Danger Zone',
-      component: <DangerZoneTab {...props} />,
+      component: <DangerZoneTab collection={collection} />,
     },
   ];
 
@@ -50,13 +48,15 @@ const MainPage = (props) => {
 };
 
 MainPage.propTypes = {
-  getWIP: PropTypes.func.isRequired,
-  getError: PropTypes.func.isRequired,
   collection: shapes.Collection,
+  wip: PropTypes.bool,
+  err: shapes.Error,
 };
 
 MainPage.defaultProps = {
   collection: null,
+  wip: false,
+  err: null,
 };
 
 export default MainPage;

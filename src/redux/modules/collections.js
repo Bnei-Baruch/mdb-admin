@@ -124,7 +124,7 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
-      units: action.payload.data.map(x => ({ ...x, content_unit: x.content_unit.id })),
+      content_units: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.content_unit.id })),
     });
     break;
   default:
@@ -165,10 +165,9 @@ export const reducer = handleActions({
 
 /* Selectors */
 
-const getCollections    = state => state.byID;
 const getCollectionById = state => id => state.byID.get(id);
-const getWIP            = state => key => state.wip.get(key);
-const getError          = state => key => state.errors.get(key);
+const getWIP            = (state, key) => state.wip.get(key);
+const getError          = (state, key) => state.errors.get(key);
 
 export const selectors = {
   getCollectionById,

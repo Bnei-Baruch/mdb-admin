@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import classNames from 'classnames';
 import { Button, Flag, Header, Input, Menu, Message, Segment, Table } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
+import { actions, selectors } from '../../../../redux/modules/collections';
 import LanguageSelector from '../../../shared/LanguageSelector';
 import { formatError } from '../../../../helpers/utils';
 import { ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGES, RTL_LANGUAGES } from '../../../../helpers/consts';
@@ -12,15 +16,17 @@ class I18nForm extends Component {
 
   static propTypes = {
     updateI18n: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
     collection: shapes.Collection,
+    wip: PropTypes.bool,
+    err: PropTypes.object,
   };
 
   static defaultProps = {
     collection: {
       i18n: {},
     },
+    wip: false,
+    err: null,
   };
 
   constructor(props) {
@@ -39,7 +45,7 @@ class I18nForm extends Component {
   }
 
   onNameChange = (e, { value }) => {
-    const i18n                = this.state.i18n;
+    const i18n               = this.state.i18n;
     i18n[e.target.name].name = value;
     this.setState({ i18n });
   };
@@ -58,8 +64,8 @@ class I18nForm extends Component {
 
   handleSubmit = () => {
     const { collection, updateI18n } = this.props;
-    const i18n                 = this.state.i18n;
-    const data                 = Object.keys(i18n).map(x => i18n[x]);
+    const i18n                       = this.state.i18n;
+    const data                       = Object.keys(i18n).map(x => i18n[x]);
     updateI18n(collection.id, data);
 
     this.setState({ submitted: true });
@@ -112,10 +118,7 @@ class I18nForm extends Component {
   }
 
   render() {
-    const { getWIP, getError } = this.props;
-    const wip                  = getWIP('updateI18n');
-    const err                  = getError('updateI18n');
-
+    const { wip, err }        = this.props;
     const { i18n, submitted } = this.state;
     const exclude             = [LANG_MULTI, LANG_UNKNOWN].concat(Object.keys(i18n));
 
@@ -160,4 +163,14 @@ class I18nForm extends Component {
   }
 }
 
-export default I18nForm;
+const mapState = state => ({
+  wip: selectors.getWIP(state.collections, 'updateI18n'),
+  err: selectors.getError(state.collections, 'updateI18n'),
+});
+
+function mapDispatch(dispatch) {
+  return bindActionCreators({ updateI18n: actions.updateI18n }, dispatch);
+}
+
+export default connect(mapState, mapDispatch)(I18nForm);
+
