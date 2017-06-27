@@ -197,8 +197,8 @@ const sortHierarchy = (h, getById) => {
 
 const getTags    = state => state.byID;
 const getTagById = state => id => state.byID.get(id);
-const getWIP      = state => key => state.wip.get(key);
-const getError    = state => key => state.errors.get(key);
+const getWIP     = state => key => state.wip.get(key);
+const getError   = state => key => state.errors.get(key);
 
 const getHierarchy = createSelector(getTags,
   tags => sortHierarchy(buildHierarchy(tags), x => tags.get(x)));
@@ -206,10 +206,27 @@ const getHierarchy = createSelector(getTags,
 const denormIDs = createSelector(getTags, byID =>
   memoize(ids => ids.map(id => byID.get(id))));
 
+const getPathByID = createSelector(getTags, byID =>
+  memoize((id) => {
+    const tag  = byID.get(id);
+    const path = [tag];
+
+    let x = tag;
+    while (x && x.parent_id) {
+      x = byID.get(x.parent_id);
+      if (x) {
+        path.push(x);
+      }
+    }
+
+    return path;
+  }));
+
 export const selectors = {
   getTagById,
   getHierarchy,
   getWIP,
   getError,
   denormIDs,
+  getPathByID,
 };

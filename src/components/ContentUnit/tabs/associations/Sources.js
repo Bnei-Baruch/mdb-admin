@@ -9,7 +9,7 @@ import * as shapes from '../../../shapes';
 import { formatError } from '../../../../helpers/utils';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import SourceBreadcrumb from '../../../Sources/SourceBreadcrumb';
+import SourceBreadcrumbs from '../../../Sources/SourceBreadcrumbs';
 
 class Sources extends Component {
 
@@ -42,7 +42,7 @@ class Sources extends Component {
             sources.map(x =>
               (
                 <List.Item key={x.id}>
-                  <SourceBreadcrumb source={x} lastSourceIsLink />
+                  <SourceBreadcrumbs source={x} lastIsLink />
                 </List.Item>
               )
             )

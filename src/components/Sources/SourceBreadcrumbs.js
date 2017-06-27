@@ -9,8 +9,8 @@ import { selectors as authors } from '../../redux/modules/authors';
 import * as shapes from '../shapes';
 import { extractI18n } from '../../helpers/utils';
 
-const SourceBreadcrumb = (props) => {
-  const { path, author, lastSourceIsLink } = props;
+const SourceBreadcrumbs = (props) => {
+  const { path, author, lastIsLink } = props;
 
   // convert path to breadcrumbs
   const crumbs = [];
@@ -26,7 +26,7 @@ const SourceBreadcrumb = (props) => {
       </Breadcrumb.Section>
     );
 
-    if (i === 0 && !lastSourceIsLink) {
+    if (i === 0 && !lastIsLink) {
       crumb = (<Breadcrumb.Section key={x.id} active>{name}</Breadcrumb.Section>);
     }
 
@@ -48,17 +48,17 @@ const SourceBreadcrumb = (props) => {
   );
 };
 
-SourceBreadcrumb.propTypes = {
+SourceBreadcrumbs.propTypes = {
   source: shapes.Source.isRequired,
   path: PropTypes.arrayOf(shapes.Source),
   author: shapes.Author,
-  lastSourceIsLink: PropTypes.bool
+  lastIsLink: PropTypes.bool
 };
 
-SourceBreadcrumb.defaultProps = {
+SourceBreadcrumbs.defaultProps = {
   path: [],
   author: null,
-  lastSourceIsLink: false
+  lastIsLink: false
 };
 
 const mapState = (state, ownProps) => {
@@ -71,4 +71,4 @@ const mapState = (state, ownProps) => {
   };
 };
 
-export default connect(mapState)(SourceBreadcrumb);
+export default connect(mapState)(SourceBreadcrumbs);

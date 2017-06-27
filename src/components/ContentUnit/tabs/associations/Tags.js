@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Header, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import { selectors } from '../../../../redux/modules/content_units';
 import { selectors as tagsSelectors } from '../../../../redux/modules/tags';
 import * as shapes from '../../../shapes';
-import { extractI18n, formatError } from '../../../../helpers/utils';
+import { formatError } from '../../../../helpers/utils';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
+import TagBreadcrumbs from '../../../Tags/TagBreadcrumbs';
 
 class Tags extends Component {
 
@@ -39,14 +39,13 @@ class Tags extends Component {
       content = (
         <List relaxed divided className="rtl-dir">
           {
-            tags.map((x) => {
-              const label = extractI18n(x.i18n, ['label'])[0];
-              return (
+            tags.map(x =>
+              (
                 <List.Item key={x.id}>
-                  <Link to={`/tags/${x.id}`}>{label}</Link>
+                  <TagBreadcrumbs tag={x} lastIsLink />
                 </List.Item>
-              );
-            })
+              )
+            )
           }
         </List>);
     }

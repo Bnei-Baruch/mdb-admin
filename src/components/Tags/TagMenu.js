@@ -1,14 +1,14 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
 
-import SourceBreadcrumbs from './SourceBreadcrumbs';
+import TagBreadcrumbs from './TagBreadcrumbs';
 
-const SourceMenu = props => (
+const TagMenu = props => (
   <Menu attached borderless size="large">
     <Menu.Item position="right">
-      <SourceBreadcrumbs {...props} />
+      <TagBreadcrumbs {...props} />
     </Menu.Item>
   </Menu>
 );
 
-export default SourceMenu;
+export default TagMenu;
