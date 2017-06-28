@@ -239,17 +239,18 @@ export const reducer = handleActions({
 
 /* Selectors */
 
-const getUnits   = state => state.byID;
-const getWIP     = (state, key) => state.wip.get(key);
-const getError   = (state, key) => state.errors.get(key);
+const getUnits           = state => state.byID;
+const getContentUnitById = (state, id) => state.byID.get(id);
+const getWIP             = (state, key) => state.wip.get(key);
+const getError           = (state, key) => state.errors.get(key);
+
+// CCU = CollectionContentUnit
 const denormCCUs = createSelector(getUnits, byID =>
   memoize(ccus => ccus.map(x => ({ ...x, content_unit: byID.get(x.content_unit_id) }))));
 
-const getContentUnitById = state => id => state.byID.get(id);
-
 export const selectors = {
+  getContentUnitById,
   getWIP,
   getError,
-  getContentUnitById,
   denormCCUs,
 };

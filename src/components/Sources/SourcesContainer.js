@@ -27,7 +27,6 @@ const mapState = state => ({
   getWIP: selectors.getWIP(state.sources),
   getError: selectors.getError(state.sources),
   authors: authors.getAuthorsList(state.authors),
-  getAuthorById: authors.getAuthorById(state.authors),
 });
 
 function mapDispatch(dispatch) {

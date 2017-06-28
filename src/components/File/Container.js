@@ -42,7 +42,7 @@ class FileContainer extends Component {
 }
 
 const mapState = (state, props) => ({
-  file: selectors.getFileById(state.files)(parseInt(props.match.params.id, 10)),
+  file: selectors.getFileById(state.files, parseInt(props.match.params.id, 10)),
   wip: selectors.getWIP(state.files, 'fetchItem'),
   err: selectors.getError(state.files, 'fetchItem'),
 });

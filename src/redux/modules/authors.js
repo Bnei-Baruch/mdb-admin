@@ -122,8 +122,6 @@ const getAuthorByCollectionId = createSelector(getAuthorsList, getAuthorById,
   });
 
 export const selectors = {
-  getAuthors,
-  getAuthorById,
   getWIP,
   getError,
   getAuthorsList,

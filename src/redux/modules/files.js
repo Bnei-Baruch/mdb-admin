@@ -6,15 +6,15 @@ import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
 
-const FETCH_ITEM                    = 'Files/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS            = 'Files/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE            = 'Files/FETCH_ITEM_FAILURE';
+const FETCH_ITEM         = 'Files/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS = 'Files/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE = 'Files/FETCH_ITEM_FAILURE';
 
 const CHANGE_SECURITY_LEVEL         = 'Files/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'Files/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'Files/CHANGE_SECURITY_LEVEL_FAILURE';
 
-const RECEIVE_ITEMS                 = 'Files/RECEIVE_ITEMS';
+const RECEIVE_ITEMS = 'Files/RECEIVE_ITEMS';
 
 export const types = {
   FETCH_ITEM,
@@ -30,15 +30,15 @@ export const types = {
 
 /* Actions */
 
-const fetchItem                  = createAction(FETCH_ITEM);
-const fetchItemSuccess           = createAction(FETCH_ITEM_SUCCESS);
-const fetchItemFailure           = createAction(FETCH_ITEM_FAILURE);
+const fetchItem        = createAction(FETCH_ITEM);
+const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
 
 const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL);
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 
-const receiveItems               = createAction(RECEIVE_ITEMS);
+const receiveItems = createAction(RECEIVE_ITEMS);
 
 export const actions = {
   fetchItem,
@@ -126,7 +126,7 @@ export const reducer = handleActions({
 /* Selectors */
 
 const getFiles    = state => state.byID;
-const getFileById = state => id => state.byID.get(id);
+const getFileById = (state, id) => state.byID.get(id);
 const getWIP      = (state, key) => state.wip.get(key);
 const getError    = (state, key) => state.errors.get(key);
 
@@ -135,7 +135,7 @@ const denormIDs = createSelector(getFiles, byID =>
 
 export const selectors = {
   getFileById,
-  denormIDs,
   getWIP,
   getError,
+  denormIDs,
 };

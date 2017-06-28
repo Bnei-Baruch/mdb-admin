@@ -42,7 +42,7 @@ class Container extends Component {
 }
 
 const mapState = (state, props) => ({
-  unit: selectors.getContentUnitById(state.content_units)(parseInt(props.match.params.id, 10)),
+  unit: selectors.getContentUnitById(state.content_units, parseInt(props.match.params.id, 10)),
   wip: selectors.getWIP(state.content_units, 'fetchItem'),
   err: selectors.getError(state.content_units, 'fetchItem'),
 });

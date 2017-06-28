@@ -42,7 +42,7 @@ class Container extends Component {
 }
 
 const mapState = (state, props) => ({
-  collection: selectors.getCollectionById(state.collections)(parseInt(props.match.params.id, 10)),
+  collection: selectors.getCollectionById(state.collections, parseInt(props.match.params.id, 10)),
   wip: selectors.getWIP(state.collections, 'fetchItem'),
   err: selectors.getError(state.collections, 'fetchItem'),
 });
