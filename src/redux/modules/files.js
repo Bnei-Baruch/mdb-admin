@@ -127,8 +127,8 @@ export const reducer = handleActions({
 
 const getFiles    = state => state.byID;
 const getFileById = state => id => state.byID.get(id);
-const getWIP      = state => key => state.wip.get(key);
-const getError    = state => key => state.errors.get(key);
+const getWIP      = (state, key) => state.wip.get(key);
+const getError    = (state, key) => state.errors.get(key);
 
 const denormIDs = createSelector(getFiles, byID =>
   memoize(ids => ids.map(id => byID.get(id))));
