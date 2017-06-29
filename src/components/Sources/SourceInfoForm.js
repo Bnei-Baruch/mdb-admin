@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Header, Input, List, Menu, Segment } from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
 import { formatError, isValidPattern } from '../../helpers/utils';
-import { SOURCE_TYPES_OPTIONS } from '../../helpers/consts';
+import { EMPTY_OBJECT, SOURCE_TYPES_OPTIONS } from '../../helpers/consts';
+import * as shapes from '../shapes';
 
 class SourceInfoForm extends Component {
 
@@ -16,7 +16,7 @@ class SourceInfoForm extends Component {
   };
 
   static defaultProps = {
-    source: {},
+    source: EMPTY_OBJECT,
   };
 
   constructor(props) {
@@ -71,10 +71,10 @@ class SourceInfoForm extends Component {
   };
 
   render() {
-    const { source, getWIP, getError }                         = this.props;
-    const wip                                                  = getWIP('updateInfo');
-    const err                                                  = getError('updateInfo');
-    const { pattern, description, type_id, submitted, errors } = this.state;
+    const { source, getWIP, getError }                                 = this.props;
+    const wip                                                          = getWIP('updateInfo');
+    const err                                                          = getError('updateInfo');
+    const { pattern, description, type_id: typeID, submitted, errors } = this.state;
 
     return (
       <div>
@@ -96,7 +96,7 @@ class SourceInfoForm extends Component {
               <Form.Select
                 id="type"
                 placeholder="Type"
-                value={type_id}
+                value={typeID}
                 options={SOURCE_TYPES_OPTIONS}
                 onChange={this.onTypeChange}
               />
@@ -152,7 +152,7 @@ class SourceInfoForm extends Component {
         </Segment>
       </div>
     );
-  };
+  }
 }
 
 export default SourceInfoForm;

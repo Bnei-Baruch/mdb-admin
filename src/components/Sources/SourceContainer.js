@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Divider, Grid } from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/sources';
 import { selectors as authors } from '../../redux/modules/authors';
+import * as shapes from '../shapes';
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import SourceMenu from './SourceMenu';
 import SourceInfoForm from './SourceInfoForm';
@@ -49,7 +49,7 @@ class SourceContainer extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column>
-              <SourceMenu {...this.props} />
+              <SourceMenu source={source} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={2}>

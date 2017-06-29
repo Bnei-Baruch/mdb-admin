@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import { actions, selectors } from '../../redux/modules/sources';
 import { selectors as authors } from '../../redux/modules/authors';
 import SourcesHierarchy from './SourcesHierarchy';

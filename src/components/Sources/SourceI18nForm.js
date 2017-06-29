@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { Button, Flag, Header, Input, Menu, Message, Segment, Table } from 'semantic-ui-react';
 import classNames from 'classnames';
 
-import LanguageSelector from '../shared/LanguageSelector';
-import { formatError } from '../../helpers/utils';
 import { ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGES, RTL_LANGUAGES } from '../../helpers/consts';
+import { formatError } from '../../helpers/utils';
+import * as shapes from '../shapes';
+import LanguageSelector from '../shared/LanguageSelector';
 
 class SourceI18nForm extends Component {
 
@@ -13,7 +14,7 @@ class SourceI18nForm extends Component {
     updateI18n: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
     getError: PropTypes.func.isRequired,
-    source: PropTypes.object,
+    source: shapes.Source,
   };
 
   static defaultProps = {
@@ -51,7 +52,7 @@ class SourceI18nForm extends Component {
 
   addLanguage = (language) => {
     const i18n     = this.state.i18n;
-    i18n[language] = { language, name: '', description: ''};
+    i18n[language] = { language, name: '', description: '' };
     this.setState({ i18n });
   };
 
@@ -113,7 +114,7 @@ class SourceI18nForm extends Component {
                     icon="remove"
                     color="red"
                     inverted
-                    onClick={e => this.removeLanguage(k)}
+                    onClick={() => this.removeLanguage(k)}
                   />
                 </Table.Cell>
               </Table.Row>)

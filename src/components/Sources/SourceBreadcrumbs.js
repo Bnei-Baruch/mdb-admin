@@ -6,8 +6,8 @@ import { Breadcrumb } from 'semantic-ui-react';
 
 import { selectors as sources } from '../../redux/modules/sources';
 import { selectors as authors } from '../../redux/modules/authors';
-import * as shapes from '../shapes';
 import { extractI18n } from '../../helpers/utils';
+import * as shapes from '../shapes';
 
 const SourceBreadcrumbs = (props) => {
   const { path, author, lastIsLink } = props;

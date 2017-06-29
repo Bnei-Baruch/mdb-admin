@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Grid, Header, Icon, List, Menu, Modal, Segment } from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import { extractI18n } from '../../helpers/utils';
+import * as shapes from '../shapes';
 import NewSourceForm from './NewSourceForm';
 
 class SourcesHierarchy extends Component {
@@ -31,7 +31,7 @@ class SourcesHierarchy extends Component {
     super(props);
 
     const { location, authors } = props;
-    let author = location.state && location.state.author;
+    let author                  = location.state && location.state.author;
     if (!author && authors.length > 0) {
       author = authors[0];
     }
