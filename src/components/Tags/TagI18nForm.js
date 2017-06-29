@@ -90,7 +90,7 @@ class TagI18nForm extends Component {
                     transparent
                     className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
                     name={k}
-                    value={i18n[k].label}
+                    value={i18n[k].label || ''}
                     onChange={this.onLabelChange}
                   />
                 </Table.Cell>

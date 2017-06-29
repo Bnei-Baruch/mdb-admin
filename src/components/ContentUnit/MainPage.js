@@ -25,16 +25,16 @@ const MainPage = (props) => {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
   }
 
-  if (!unit) {
-    return wip ?
-      <LoadingSplash text="Loading content unit details" subtext="Hold on tight..." /> :
-      <FrownSplash
-        text="Couldn't find content unit"
-        subtext={<span>Try the <Link to="/content_units">content units list</Link>...</span>}
-      />;
+  if (unit) {
+    return <TabsMenu items={items} unit={unit} />;
   }
 
-  return <TabsMenu items={items} unit={unit} />;
+  return wip ?
+    <LoadingSplash text="Loading content unit details" subtext="Hold on tight..." /> :
+    <FrownSplash
+      text="Couldn't find content unit"
+      subtext={<span>Try the <Link to="/content_units">content units list</Link>...</span>}
+    />;
 };
 
 MainPage.propTypes = {
