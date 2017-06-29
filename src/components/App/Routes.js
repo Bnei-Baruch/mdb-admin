@@ -7,7 +7,7 @@ import ContentUnit from '../ContentUnit/Container';
 import ContentUnits from '../ContentUnits/ContentUnits';
 import Collection from '../Collection/Container';
 import Collections from '../Collections/Collections';
-import Operation from '../Operation/Operation';
+import Operation from '../Operation/Container';
 import Operations from '../Operations/Operations';
 import Tags from '../Tags/TagsContainer';
 import Tag from '../Tags/TagContainer';

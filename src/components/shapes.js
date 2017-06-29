@@ -83,11 +83,21 @@ export const File = PropTypes.shape({
   subtype: PropTypes.string,
   mime_type: PropTypes.string,
   language: PropTypes.string,
+  properties: PropTypes.object,
+});
+
+export const Operation = PropTypes.shape({
+  ...TypedEntity,
+  station: PropTypes.string,
+  user_id: PropTypes.number,
+  details: PropTypes.string,
+  properties: PropTypes.object,
 });
 
 const BaseContentUnit = {
   ...TypedEntity,
   ...SecurePublished,
+  properties: PropTypes.object,
   i18n: PropTypes.objectOf(ContentUnitI18n),
   files: PropTypes.arrayOf(PropTypes.number),
   sources: PropTypes.arrayOf(PropTypes.number),
@@ -97,6 +107,7 @@ const BaseContentUnit = {
 const BaseCollection = {
   ...TypedEntity,
   ...SecurePublished,
+  properties: PropTypes.object,
   i18n: PropTypes.objectOf(CollectionI18n),
 };
 

@@ -17,7 +17,7 @@ class FilesTab extends Component {
   };
 
   static defaultProps = {
-    unit: null,
+    unit: undefined,
   };
 
   componentDidMount() {
