@@ -6,7 +6,7 @@ import {Form, Segment} from "semantic-ui-react";
 import {AutoSizer, InfiniteLoader, Table} from "react-virtualized";
 import TextFilter from "../Filters/TextFilter";
 import DateFilter from "../Filters/DateFilter";
-import SearchHeader from "../SearchHeader/SearchHeader";
+import SearchHeader from "../shared/SearchHeader";
 import "./InfiniteSearch.css";
 
 import "react-virtualized/styles.css";
