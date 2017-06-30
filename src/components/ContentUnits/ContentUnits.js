@@ -8,8 +8,7 @@ import { CONTENT_TYPE_BY_ID, LANG_HEBREW, LANG_ENGLISH, LANG_RUSSIAN } from '../
 import searcher from '../../hoc/searcher';
 
 const InfiniteContentUnitSearcher = searcher({
-    name: 'content_units',
-    request: params => apiClient.get('/rest/content_units/', { params }),
+    namespace: 'content_units',
     searchOnMount: true
 })(InfiniteSearch);
 

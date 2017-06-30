@@ -5,8 +5,6 @@ import { Dropdown } from 'semantic-ui-react'
 import connectFilter from './connectFilter';
 import { SOURCE_TYPE_BY_ID } from '../../helpers/consts.js';
 
-// TODO (yaniv): add empty value button after we pull the kolman's working filter
-
 const options = values(SOURCE_TYPE_BY_ID).map((value, key) => ({ key, value, text: value }));
 
 class ContentSourceFilter extends Component {

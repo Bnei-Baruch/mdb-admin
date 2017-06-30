@@ -1,35 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import invariant from 'invariant';
-import noop from 'lodash/noop';
-import isFunction from 'lodash/isFunction';
 import { connect } from 'react-redux';
 import { actions as searchActions, selectors as searchSelectors } from '../redux/modules/search';
-import { setParams, selectors as filterSelectors } from '../redux/modules/filters';
+import { selectors as filterSelectors } from '../redux/modules/filters';
 
 const MIN_STOP_INDEX = 100;
 
 const searcher = (options) => (WrappedComponent) => {
     invariant(
-        isFunction(options.request),
-        'options.request must be a function'
+        !!options.namespace,
+        'options.namespace must not be empty'
     );
-
-    const namespace = options.name;
-
-    invariant(
-        !!options.name,
-        'options.name must not be empty'
-    );
+    const namespace = options.namespace;
 
     const defaultOptions = {
-        onSearching: noop,
-        onSuccess: noop,
-        onError: noop,
         searchOnMount: false,
     };
 
-    const { onSearching, onSuccess, onError, searchOnMount, request } = {
+    const { searchOnMount } = {
         ...defaultOptions,
         ...options
     };
@@ -69,7 +58,7 @@ const searcher = (options) => (WrappedComponent) => {
                                   params={this.props.params}
                                   searchError={this.props.error}
                                   total={this.props.total}
-                                  namespace={options.name}
+                                  namespace={namespace}
                                   {...this.props} />
             );
         }

@@ -7,7 +7,7 @@ import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
 
 const InfiniteOperationSearcher = searcher({
-    name: 'operations',
+    namespace: 'operations',
     request: params => apiClient.get('/rest/operations/', { params }),
     searchOnMount: true
 })(InfiniteSearch);

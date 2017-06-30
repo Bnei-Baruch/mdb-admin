@@ -1,6 +1,7 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { actions, types } from '../redux/modules/search';
 import { selectors as filterSelectors } from '../redux/modules/filters';
+import { filtersTransformer } from '../filters';
 import api from '../helpers/apiClient';
 
 const namespaceToRequest = {
@@ -13,13 +14,12 @@ function* searchItems(action) {
     try {
         const request = namespaceToRequest[namespace];
         const filters = yield select(state => filterSelectors.getFilters(state.filters, namespace));
-
-        // FIXME: (yaniv) see that filters are built correctly
-        console.log(filters);
+        const params  = filtersTransformer.toApiParams(filters);
+        
         const response = yield call(request, {
             'start_index': startIndex,
             'stop_index': stopIndex,
-            ...filters
+            ...params
         });
         yield put(actions.searchItemsSuccess(namespace, response.data, startIndex, stopIndex));
     } catch (error) {

@@ -4,10 +4,10 @@ import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
 import searcher from '../../hoc/searcher';
+import * as filterComponents from '../Filters/filterComponents';
 
 const InfiniteFileSearcher = searcher({
-    name: 'files',
-    request: params => apiClient.get('/rest/files/', { params }),
+    namespace: 'files',
     searchOnMount: true
 })(InfiniteSearch);
 
@@ -43,12 +43,32 @@ export const columns = [
             flexGrow={1} />
 ];
 
-// FIXME: (yaniv) add filter config here
+const filters = [
+    {
+        name: 'query',
+        label: 'Query',
+        Component: filterComponents.TextFilter,
+        props: {
+            placeholder: 'Search content units...'
+        }
+    },
+    {
+        name: 'start_date',
+        label: 'Start Date',
+        Component: filterComponents.DateFilter
+    },
+    {
+        name: 'end_date',
+        label: 'End Date',
+        Component: filterComponents.DateFilter
+    }
+];
 
 export default class Files extends Component {
     render() {
         return (
             <InfiniteFileSearcher
+                filters={filters}
                 columns={columns}
                 searchPlaceholder="Search files..." />
         );

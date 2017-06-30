@@ -4,6 +4,7 @@ import { Segment } from "semantic-ui-react";
 import { AutoSizer, InfiniteLoader, Table } from "react-virtualized";
 import { filterConfigShape } from '../shapes';
 import Filters from '../Filters/Filters';
+import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
 import SearchHeader from "../SearchHeader/SearchHeader";
 import "./InfiniteSearch.css";
 
@@ -60,10 +61,11 @@ export default class InfiniteSearch extends Component {
     loadMoreRows = ({ startIndex, stopIndex }) => this.props.search({}, startIndex, stopIndex);
 
     render() {
-        const {params, searching, total, columns, filters, namespace } = this.props;
+        const { searching, total, columns, filters, namespace } = this.props;
 
         return (
             <div>
+                <FiltersHydrator namespace={namespace} onHydrated={() => ({})} />
                 <Filters filters={filters} namespace={namespace} />
                 <SearchHeader searching={searching} total={total} />
                 <Segment basic style={{height: "50em"}}>

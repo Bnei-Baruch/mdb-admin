@@ -9,7 +9,7 @@ import searcher from '../../hoc/searcher';
 import { columns as fileColumns } from '../Files/Files';
 
 const FileSearcher = searcher({
-    name: 'operation.files',
+    namespace: 'operation.files',
     request: (params) => {
         return apiClient.get(`/rest/operations/${params.id}/files/`, { params })
             // patch response for infinite search

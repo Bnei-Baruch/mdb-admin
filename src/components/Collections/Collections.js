@@ -5,10 +5,10 @@ import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
 import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
+import * as filterComponents from '../Filters/filterComponents';
 
 const InfiniteCollectionSearcher = searcher({
-    name: 'collections',
-    request: params => apiClient.get('/rest/collections/', { params }),
+    namespace: 'collections',
     searchOnMount: true
 })(InfiniteSearch);
 
@@ -60,12 +60,32 @@ export const columns = [
             flexGrow={1} />
 ];
 
-// FIXME: (yaniv) add filter config here
+const filters = [
+    {
+        name: 'query',
+        label: 'Query',
+        Component: filterComponents.TextFilter,
+        props: {
+            placeholder: 'Search content units...'
+        }
+    },
+    {
+        name: 'start_date',
+        label: 'Start Date',
+        Component: filterComponents.DateFilter
+    },
+    {
+        name: 'end_date',
+        label: 'End Date',
+        Component: filterComponents.DateFilter
+    }
+];
 
 export default class Collections extends Component {
     render() {
         return (
             <InfiniteCollectionSearcher
+                filters={filters}
                 columns={columns}
                 searchPlaceholder="Search collection..."
             />
