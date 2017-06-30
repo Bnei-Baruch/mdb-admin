@@ -8,14 +8,20 @@ class TextFilter extends Component {
     static propTypes = {
         updateValue: PropTypes.func.isRequired,
         value: PropTypes.string,
+        onApply: PropTypes.func.isRequired
     };
 
     static defaultProps = {
         value: ''
     };
 
+    apply = (value) => {
+        this.props.updateValue(value);
+        this.props.onApply();
+    }
+
     render() {
-        const { updateValue, value, placeholder } = this.props;
+        const { value, placeholder } = this.props;
 
         return (
                 <Input 
@@ -23,7 +29,7 @@ class TextFilter extends Component {
                     type="text"
                     placeholder={placeholder}
                     value={value}
-                    onChange={(event) => updateValue(event.target.value)}
+                    onChange={(event) => this.apply(event.target.value)}
                     icon
                     iconPosition="left"
                     fluid
@@ -31,7 +37,7 @@ class TextFilter extends Component {
                     <input />
                     <Icon name="search" inverted circular />
                     { value !== '' &&
-                        <Button type="button" icon="remove" onClick={() => updateValue('')} floated="right" />
+                        <Button type="button" icon="remove" onClick={() => this.apply('')} floated="right" />
                     }
                 </Input>
         );

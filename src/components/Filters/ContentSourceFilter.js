@@ -12,20 +12,26 @@ class ContentSourceFilter extends Component {
     static propTypes = {
         updateValue: PropTypes.func.isRequired,
         value: PropTypes.arrayOf(PropTypes.string),
+        onApply: PropTypes.func.isRequired
     };
 
     static defaultProps = {
         value: []
     };
 
+    apply = (value) => {
+        this.props.updateValue(value);
+        this.props.onApply();
+    }
+
     render() {
-        const { updateValue, value } = this.props;
+        const { value } = this.props;
 
         return (
             <Dropdown 
                 placeholder="Content Source"
                 value={value}
-                onChange={(event, data) => updateValue(data.value)}
+                onChange={(event, data) => this.apply(data.value)}
                 options={options}
                 multiple search selection 
             />

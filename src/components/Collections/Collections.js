@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
-import apiClient from '../../helpers/apiClient';
 import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
 import * as filterComponents from '../Filters/filterComponents';
 
 const InfiniteCollectionSearcher = searcher({
     namespace: 'collections',
-    searchOnMount: true
 })(InfiniteSearch);
 
 
@@ -66,7 +64,7 @@ const filters = [
         label: 'Query',
         Component: filterComponents.TextFilter,
         props: {
-            placeholder: 'Search content units...'
+            placeholder: 'Search collections...'
         }
     },
     {
@@ -87,7 +85,6 @@ export default class Collections extends Component {
             <InfiniteCollectionSearcher
                 filters={filters}
                 columns={columns}
-                searchPlaceholder="Search collection..."
             />
         );
     }

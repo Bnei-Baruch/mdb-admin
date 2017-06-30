@@ -14,15 +14,6 @@ const searcher = (options) => (WrappedComponent) => {
     );
     const namespace = options.namespace;
 
-    const defaultOptions = {
-        searchOnMount: false,
-    };
-
-    const { searchOnMount } = {
-        ...defaultOptions,
-        ...options
-    };
-
     class Searcher extends Component {
 
         static propTypes = {
@@ -40,14 +31,8 @@ const searcher = (options) => (WrappedComponent) => {
             isSearching: false
         };
 
-        componentDidMount() {
-            if (searchOnMount) {
-                this.searchItems();
-            }
-        }
-
-        searchItems = (params = {}, startIndex = 0, stopIndex = MIN_STOP_INDEX) => {
-            this.props.searchItems(namespace, startIndex, stopIndex, params);
+        searchItems = (params = {}, startIndex = 0, stopIndex = MIN_STOP_INDEX, meta) => {
+            this.props.searchItems(namespace, startIndex, stopIndex, params, meta);
         }
 
         render() {

@@ -1,6 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import isFunction from 'lodash/isFunction';
-import isEqual from 'lodash/isEqual';
 
 /* Types */
 
@@ -16,7 +14,7 @@ export const types = {
 
 /* Actions */
 
-const searchItems = createAction(SEARCH_ITEMS, (namespace, startIndex, stopIndex, params) => ({ namespace, startIndex, stopIndex, params }));
+const searchItems = createAction(SEARCH_ITEMS, (namespace, startIndex, stopIndex, params, meta) => ({ namespace, startIndex, stopIndex, params, meta }));
 const searchItemsSuccess = createAction(SEARCH_ITEMS_SUCCESS, (namespace, data, startIndex, stopIndex) => ({ namespace, data, startIndex, stopIndex }));
 const searchItemsFailure = createAction(SEARCH_ITEMS_FAILURE, (namespace, error) => ({ namespace, error }));
 
@@ -45,7 +43,7 @@ const _searchItems = (state, action) => {
 };
 
 const _searchItemsSuccess = (state, action) => {
-    const { namespace, data, startIndex, stopIndex } = action.payload;
+    const { namespace, data, startIndex } = action.payload;
 
     const oldNamespace = state[namespace] || {};
     const items = oldNamespace.items ? oldNamespace.items.slice() : [];
@@ -96,6 +94,5 @@ export const selectors = {
   getIsSearching,
   getResultItems,
   getTotal,
-  getIsSearching,
   getError
 };

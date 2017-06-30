@@ -3,13 +3,11 @@ import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import * as filterComponents from '../Filters/filterComponents';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
-import apiClient from '../../helpers/apiClient';
 import { CONTENT_TYPE_BY_ID, LANG_HEBREW, LANG_ENGLISH, LANG_RUSSIAN } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
 
 const InfiniteContentUnitSearcher = searcher({
-    namespace: 'content_units',
-    searchOnMount: true
+    namespace: 'content_units'
 })(InfiniteSearch);
 
 

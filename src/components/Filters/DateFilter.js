@@ -14,16 +14,22 @@ class DateFilter extends Component {
     static propTypes = {
         updateValue: PropTypes.func.isRequired,
         value: PropTypes.string,
-        placeholder: PropTypes.string
+        placeholder: PropTypes.string,
+        onApply: PropTypes.func.isRequired
     };
 
     static defaultProps = {
         value: '',
         placeholder: 'YYYY-MM-DD'
     };
+
+    apply = (value) => {
+        this.props.updateValue(value);
+        this.props.onApply();
+    }
     
     render() {
-        const { updateValue, value, placeholder, minDate, maxDate, ...rest } = this.props;
+        const { value, placeholder, minDate, maxDate, ...rest } = this.props;
 
         const momentMinDate = minDate && moment(minDate, format);
         const momentMaxDate = maxDate && moment(maxDate, format);
@@ -36,7 +42,7 @@ class DateFilter extends Component {
                             <Icon name="calendar" circular />
                             <input />
                             { !!value &&
-                                <Button type="button" icon="remove" onClick={() => updateValue('')} floated="right" />
+                                <Button type="button" icon="remove" onClick={() => this.apply('')} floated="right" />
                             }
                         </Input>
                     }
@@ -45,7 +51,7 @@ class DateFilter extends Component {
                     maxDate={momentMaxDate}
                     dateFormat={format}
                     value={value}
-                    onChange={(moment) => updateValue(moment.format(format))}
+                    onChange={(moment) => this.apply(moment.format(format))}
                     showYearDropdown
                     showMonthDropdown
                     placeholderText={placeholder}

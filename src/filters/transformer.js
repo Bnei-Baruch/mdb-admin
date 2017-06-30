@@ -58,6 +58,9 @@ const filtersTransformer = {
       return acc;
     }, {});
   },
+  /**
+   * @param {arrayOf({ name: string, values: array})} filters 
+   */
   toApiParams(filters /* arrayOf({ name: string, values: array}) */) {
     return filters.reduce((acc, filter) => {
       const definition = this.definitionsByName[filter.name];

@@ -39,12 +39,14 @@ export default class InfiniteSearch extends Component {
         columns: PropTypes.arrayOf(PropTypes.element).isRequired,
         filters: PropTypes.arrayOf(filterConfigShape),
         resultItems: PropTypes.array.isRequired,
-        error: PropTypes.object
+        error: PropTypes.object,
+        extra: PropTypes.object
     };
 
     static defaultProps = {
         filters: [],
-        error: null
+        error: null,
+        extra: {}
     };
 
     // Should be remove when new search starts (new search means filters have changed)
@@ -58,15 +60,20 @@ export default class InfiniteSearch extends Component {
     rowGetter = ({index}) => this.props.resultItems[index] || {};
 
     // FIXME: (yaniv) wrap search with promise that resolves when search is successful or failed for this namespace and startIndex + stopIndex
-    loadMoreRows = ({ startIndex, stopIndex }) => this.props.search({}, startIndex, stopIndex);
+    loadMoreRows = ({ startIndex, stopIndex } = {}) => this.props.search({}, startIndex, stopIndex, this.props.extra);
+
+    onFilterApplication = () => {
+        this.resetInfiniteLoaderCache();
+        this.loadMoreRows();
+    };
 
     render() {
         const { searching, total, columns, filters, namespace } = this.props;
 
         return (
-            <div>
-                <FiltersHydrator namespace={namespace} onHydrated={() => ({})} />
-                <Filters filters={filters} namespace={namespace} />
+            <div style={{ width: '100%' }}>
+                <FiltersHydrator namespace={namespace} onHydrated={this.loadMoreRows} />
+                <Filters filters={filters} namespace={namespace} onFilterApplication={this.onFilterApplication} />
                 <SearchHeader searching={searching} total={total} />
                 <Segment basic style={{height: "50em"}}>
                     <InfiniteLoader

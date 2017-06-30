@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
-import apiClient from '../../helpers/apiClient';
 import searcher from '../../hoc/searcher';
 import * as filterComponents from '../Filters/filterComponents';
 
 const InfiniteFileSearcher = searcher({
-    namespace: 'files',
-    searchOnMount: true
+    namespace: 'files'
 })(InfiniteSearch);
 
 const ItemLinkRenderer = ({ cellData, dataKey }) =>
@@ -49,7 +47,7 @@ const filters = [
         label: 'Query',
         Component: filterComponents.TextFilter,
         props: {
-            placeholder: 'Search content units...'
+            placeholder: 'Search files...'
         }
     },
     {
@@ -70,7 +68,7 @@ export default class Files extends Component {
             <InfiniteFileSearcher
                 filters={filters}
                 columns={columns}
-                searchPlaceholder="Search files..." />
+            />
         );
     }
 }
