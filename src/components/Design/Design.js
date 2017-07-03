@@ -1,5 +1,7 @@
 import React from 'react';
-import { Grid, Header, Icon } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
+
+import SourcesSearch from '../Autocomplete/SourcesSearch';
 
 const renderInGrid = content => (
   <Grid container>
@@ -15,49 +17,6 @@ const renderInGrid = content => (
   </Grid>
 );
 
-const ItemDetails = () => (
-  <div>
-    <Header as="h2">
-      <Icon name="settings" />
-      <Header.Content>
-        Account Settings
-        <Header.Subheader>
-          Manage your preferences
-        </Header.Subheader>
-      </Header.Content>
-    </Header>
-    <div style={{ paddingLeft: '25px' }}>
-      <Header as="h4">
-        <Icon name="settings" />
-        <Header.Content>
-          Account Settings
-          <Header.Subheader>
-            Manage your preferences
-          </Header.Subheader>
-        </Header.Content>
-      </Header>
-      <Header as="h4" style={{ backgroundColor: '#00b5ad' }}>
-        <Icon name="settings" />
-        <Header.Content>
-          Account Settings
-          <Header.Subheader>
-            Manage your preferences
-          </Header.Subheader>
-        </Header.Content>
-      </Header>
-      <Header as="h4">
-        <Icon name="settings" />
-        <Header.Content>
-          Account Settings
-          <Header.Subheader>
-            Manage your preferences
-          </Header.Subheader>
-        </Header.Content>
-      </Header>
-    </div>
-  </div>
-);
-
 const Design = () => {
   // const contents = [
   //   <Header as="h2" content="Menu" />,
@@ -65,10 +24,7 @@ const Design = () => {
   // ];
 
   const contents = [
-    ItemDetails(),
-    ItemDetails(),
-    ItemDetails(),
-    ItemDetails(),
+    (<SourcesSearch onSelect={suggestion => console.log('selected', suggestion)} />),
   ];
 
   // return renderInGrid(contents);

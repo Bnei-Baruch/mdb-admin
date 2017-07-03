@@ -77,6 +77,46 @@ function* updateI18n(action) {
   }
 }
 
+function* addSource(action) {
+  try {
+    const { id, sourceID } = action.payload;
+    yield call(api.post, `/rest/content_units/${id}/sources/`, { sourceID });
+    yield put(actions.addSourceSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.addSourceFailure(err));
+  }
+}
+
+function* removeSource(action) {
+  try {
+    const { id, sourceID } = action.payload;
+    yield call(api.delete, `/rest/content_units/${id}/sources/${sourceID}`);
+    yield put(actions.removeSourceSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.removeSourceFailure(err));
+  }
+}
+
+function* addTag(action) {
+  try {
+    const { id, tagID } = action.payload;
+    yield call(api.post, `/rest/content_units/${id}/tags/`, { tagID });
+    yield put(actions.addTagSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.addTagFailure(err));
+  }
+}
+
+function* removeTag(action) {
+  try {
+    const { id, tagID } = action.payload;
+    yield call(api.delete, `/rest/content_units/${id}/tags/${tagID}`);
+    yield put(actions.removeTagSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.removeTagFailure(err));
+  }
+}
+
 function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
@@ -105,6 +145,22 @@ function* watchUpdateI18n() {
   yield takeEvery(types.UPDATE_I18N, updateI18n);
 }
 
+function* watchAddSource() {
+  yield takeEvery(types.ADD_SOURCE, addSource);
+}
+
+function* watchRemoveSource() {
+  yield takeEvery(types.REMOVE_SOURCE, removeSource);
+}
+
+function* watchAddTag() {
+  yield takeEvery(types.ADD_TAG, addTag);
+}
+
+function* watchRemoveTag() {
+  yield takeEvery(types.REMOVE_TAG, removeTag);
+}
+
 export const sagas = [
   watchFetchItem,
   watchFetchItemFiles,
@@ -113,4 +169,8 @@ export const sagas = [
   watchFetchItemTags,
   watchChangeSecurityLevel,
   watchUpdateI18n,
+  watchAddSource,
+  watchRemoveSource,
+  watchAddTag,
+  watchRemoveTag,
 ];

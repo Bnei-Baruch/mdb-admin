@@ -1,8 +1,13 @@
+import freezeMap from './freezeMap';
 
 // Use these for immutable default values
-export const EMPTY_ARRAY = Object.freeze([]);
-export const EMPTY_OBJECT = Object.freeze({});
-
+export const EMPTY_ARRAY     = Object.freeze([]);
+export const EMPTY_OBJECT    = Object.freeze({});
+export const EMPTY_MAP       = freezeMap(new Map());
+export const EMPTY_HIERARCHY = Object.freeze({
+  roots: EMPTY_ARRAY,
+  childMap: EMPTY_MAP,
+});
 
 // Collection Types
 export const CT_DAILY_LESSON       = 'DAILY_LESSON';

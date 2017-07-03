@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { bulkMerge, merge, setMap } from '../utils';
+import { bulkMerge, merge, setMap, update } from '../utils';
 
 /* Types */
 
@@ -28,6 +28,18 @@ const CHANGE_SECURITY_LEVEL_FAILURE = 'ContentUnits/CHANGE_SECURITY_LEVEL_FAILUR
 const UPDATE_I18N                   = 'ContentUnits/UPDATE_I18N';
 const UPDATE_I18N_SUCCESS           = 'ContentUnits/UPDATE_I18N_SUCCESS';
 const UPDATE_I18N_FAILURE           = 'ContentUnits/UPDATE_I18N_FAILURE';
+const ADD_SOURCE                    = 'ContentUnits/ADD_SOURCE';
+const ADD_SOURCE_SUCCESS            = 'ContentUnits/ADD_SOURCE_SUCCESS';
+const ADD_SOURCE_FAILURE            = 'ContentUnits/ADD_SOURCE_FAILURE';
+const REMOVE_SOURCE                 = 'ContentUnits/REMOVE_SOURCE';
+const REMOVE_SOURCE_SUCCESS         = 'ContentUnits/REMOVE_SOURCE_SUCCESS';
+const REMOVE_SOURCE_FAILURE         = 'ContentUnits/REMOVE_SOURCE_FAILURE';
+const ADD_TAG                       = 'ContentUnits/ADD_TAG';
+const ADD_TAG_SUCCESS               = 'ContentUnits/ADD_TAG_SUCCESS';
+const ADD_TAG_FAILURE               = 'ContentUnits/ADD_TAG_FAILURE';
+const REMOVE_TAG                    = 'ContentUnits/REMOVE_TAG';
+const REMOVE_TAG_SUCCESS            = 'ContentUnits/REMOVE_TAG_SUCCESS';
+const REMOVE_TAG_FAILURE            = 'ContentUnits/REMOVE_TAG_FAILURE';
 
 const RECEIVE_ITEMS = 'ContentUnits/RECEIVE_ITEMS';
 
@@ -54,6 +66,18 @@ export const types = {
   UPDATE_I18N,
   UPDATE_I18N_SUCCESS,
   UPDATE_I18N_FAILURE,
+  ADD_SOURCE,
+  ADD_SOURCE_SUCCESS,
+  ADD_SOURCE_FAILURE,
+  REMOVE_SOURCE,
+  REMOVE_SOURCE_SUCCESS,
+  REMOVE_SOURCE_FAILURE,
+  ADD_TAG,
+  ADD_TAG_SUCCESS,
+  ADD_TAG_FAILURE,
+  REMOVE_TAG,
+  REMOVE_TAG_SUCCESS,
+  REMOVE_TAG_FAILURE,
 
   RECEIVE_ITEMS,
 };
@@ -82,6 +106,18 @@ const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
+const addSource                     = createAction(ADD_SOURCE, (id, sourceID) => ({ id, sourceID }));
+const addSourceSuccess              = createAction(ADD_SOURCE_SUCCESS);
+const addSourceFailure              = createAction(ADD_SOURCE_FAILURE);
+const removeSource                  = createAction(REMOVE_SOURCE, (id, sourceID) => ({ id, sourceID }));
+const removeSourceSuccess           = createAction(REMOVE_SOURCE_SUCCESS);
+const removeSourceFailure           = createAction(REMOVE_SOURCE_FAILURE);
+const addTag                     = createAction(ADD_TAG, (id, tagID) => ({ id, tagID }));
+const addTagSuccess              = createAction(ADD_TAG_SUCCESS);
+const addTagFailure              = createAction(ADD_TAG_FAILURE);
+const removeTag                  = createAction(REMOVE_TAG, (id, tagID) => ({ id, tagID }));
+const removeTagSuccess           = createAction(REMOVE_TAG_SUCCESS);
+const removeTagFailure           = createAction(REMOVE_TAG_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
@@ -108,6 +144,18 @@ export const actions = {
   updateI18n,
   updateI18nSuccess,
   updateI18nFailure,
+  addSource,
+  addSourceSuccess,
+  addSourceFailure,
+  removeSource,
+  removeSourceSuccess,
+  removeSourceFailure,
+  addTag,
+  addTagSuccess,
+  addTagFailure,
+  removeTag,
+  removeTagSuccess,
+  removeTagFailure,
 
   receiveItems,
 };
@@ -137,6 +185,18 @@ const keys = new Map([
   [UPDATE_I18N, 'updateI18n'],
   [UPDATE_I18N_SUCCESS, 'updateI18n'],
   [UPDATE_I18N_FAILURE, 'updateI18n'],
+  [ADD_SOURCE, 'addSource'],
+  [ADD_SOURCE_SUCCESS, 'addSource'],
+  [ADD_SOURCE_FAILURE, 'addSource'],
+  [REMOVE_SOURCE, 'removeSource'],
+  [REMOVE_SOURCE_SUCCESS, 'removeSource'],
+  [REMOVE_SOURCE_FAILURE, 'removeSource'],
+  [ADD_TAG, 'addTag'],
+  [ADD_TAG_SUCCESS, 'addTag'],
+  [ADD_TAG_FAILURE, 'addTag'],
+  [REMOVE_TAG, 'removeTag'],
+  [REMOVE_TAG_SUCCESS, 'removeTag'],
+  [REMOVE_TAG_FAILURE, 'removeTag'],
 ]);
 
 const initialState = {
@@ -187,11 +247,27 @@ const onSuccess = (state, action) => {
       sources: action.payload.data.map(x => x.id),
     });
     break;
+  case ADD_SOURCE_SUCCESS:
+    byID = update(state.byID, action.payload.id,
+      x => ({ ...x, sources: [...x.sources, action.payload.sourceID] }));
+    break;
+  case REMOVE_SOURCE_SUCCESS:
+    byID = update(state.byID, action.payload.id,
+      x => ({ ...x, sources: x.sources.filter(s => s !== action.payload.sourceID) }));
+    break;
   case FETCH_ITEM_TAGS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
       tags: action.payload.data.map(x => x.id),
     });
+    break;
+  case ADD_TAG_SUCCESS:
+    byID = update(state.byID, action.payload.id,
+      x => ({ ...x, tags: [...x.tags, action.payload.tagID] }));
+    break;
+  case REMOVE_TAG_SUCCESS:
+    byID = update(state.byID, action.payload.id,
+      x => ({ ...x, tags: x.tags.filter(t => t !== action.payload.tagID) }));
     break;
   default:
     byID = state.byID;
@@ -233,6 +309,18 @@ export const reducer = handleActions({
   [UPDATE_I18N]: onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
   [UPDATE_I18N_FAILURE]: onFailure,
+  [ADD_SOURCE]: onRequest,
+  [ADD_SOURCE_SUCCESS]: onSuccess,
+  [ADD_SOURCE_FAILURE]: onFailure,
+  [REMOVE_SOURCE]: onRequest,
+  [REMOVE_SOURCE_SUCCESS]: onSuccess,
+  [REMOVE_SOURCE_FAILURE]: onFailure,
+  [ADD_TAG]: onRequest,
+  [ADD_TAG_SUCCESS]: onSuccess,
+  [ADD_TAG_FAILURE]: onFailure,
+  [REMOVE_TAG]: onRequest,
+  [REMOVE_TAG_SUCCESS]: onSuccess,
+  [REMOVE_TAG_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 }, initialState);

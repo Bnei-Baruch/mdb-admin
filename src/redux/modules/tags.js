@@ -155,7 +155,6 @@ export const reducer = handleActions({
   [FETCH_ITEM]: onRequest,
   [FETCH_ITEM_SUCCESS]: onSuccess,
   [FETCH_ITEM_FAILURE]: onFailure,
-
   [FETCH_ALL]: onRequest,
   [FETCH_ALL_SUCCESS]: onSuccess,
   [FETCH_ALL_FAILURE]: onFailure,
@@ -163,11 +162,9 @@ export const reducer = handleActions({
   [UPDATE_INFO]: onRequest,
   [UPDATE_INFO_SUCCESS]: onSuccess,
   [UPDATE_INFO_FAILURE]: onFailure,
-
   [UPDATE_I18N]: onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
   [UPDATE_I18N_FAILURE]: onFailure,
-
   [CREATE]: onRequest,
   [CREATE_SUCCESS]: onSuccess,
   [CREATE_FAILURE]: onFailure,
@@ -223,6 +220,7 @@ const getPathByID = createSelector(getTags, byID =>
   }));
 
 export const selectors = {
+  getTags,
   getTagById,
   getHierarchy,
   getWIP,

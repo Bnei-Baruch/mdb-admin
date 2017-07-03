@@ -160,3 +160,8 @@ export const Hierarchy = PropTypes.shape({
   roots: PropTypes.arrayOf(PropTypes.number),
   childMap: PropTypes.instanceOf(Map),  // ID => [...IDs]
 });
+
+export const AsyncStatusMap = PropTypes.objectOf(PropTypes.shape({
+  wip: PropTypes.bool,
+  err: Error,
+}));
