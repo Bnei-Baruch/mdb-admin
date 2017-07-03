@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import { Input, Icon, Button } from 'semantic-ui-react';
+import { selectors as filterSelectors } from '../../redux/modules/filters';
 import connectFilter from './connectFilter';
 import 'react-datepicker/dist/react-datepicker.css';
 import './DateFilter.css';
@@ -15,7 +17,15 @@ class DateFilter extends Component {
         updateValue: PropTypes.func.isRequired,
         value: PropTypes.string,
         placeholder: PropTypes.string,
-        onApply: PropTypes.func.isRequired
+        onApply: PropTypes.func.isRequired,
+        minDate: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.instanceOf(Date)
+        ]),
+        maxDate: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.instanceOf(Date)
+        ])
     };
 
     static defaultProps = {
@@ -62,5 +72,25 @@ class DateFilter extends Component {
     }
 }
 
-// TODO (yaniv): connect here to get minDate and maxDate from state maybe
-export default connectFilter()(DateFilter);
+export default connect(
+    (state, ownProps) => {
+        const { namespace, before, after } = ownProps;
+        console.log(ownProps);
+        // FUTURE: (yaniv) handle before and after being valid dates instead of a filter name
+        let minDate; 
+        let maxDate;
+        if (before) {
+            maxDate = filterSelectors.getLastFilterValue(state.filters, namespace, before);
+        }
+
+        if (after) {
+            minDate = filterSelectors.getLastFilterValue(state.filters, namespace, after);
+        }
+
+        return {
+            minDate,
+            maxDate
+        };
+    }
+)
+(connectFilter()(DateFilter));

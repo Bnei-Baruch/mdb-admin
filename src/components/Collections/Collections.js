@@ -70,12 +70,18 @@ const filters = [
     {
         name: 'start_date',
         label: 'Start Date',
-        Component: filterComponents.DateFilter
+        Component: filterComponents.DateFilter,
+        props: {
+            before: 'end_date'
+        }
     },
     {
         name: 'end_date',
         label: 'End Date',
-        Component: filterComponents.DateFilter
+        Component: filterComponents.DateFilter,
+        props: {
+            after: 'start_date'
+        }
     }
 ];
 
