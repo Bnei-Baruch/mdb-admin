@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Divider, Flag, Form, Header, Input, Message, Segment } from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
-import { extractI18n, formatError, isValidPattern } from '../../helpers/utils';
 import {
+  EMPTY_ARRAY,
   LANG_ENGLISH,
   LANG_HEBREW,
   LANG_RUSSIAN,
@@ -12,6 +11,8 @@ import {
   MAJOR_LANGUAGES,
   SOURCE_TYPES_OPTIONS
 } from '../../helpers/consts';
+import { extractI18n, formatError, isValidPattern } from '../../helpers/utils';
+import * as shapes from '../shapes';
 
 class NewSourceForm extends Component {
 
@@ -25,7 +26,7 @@ class NewSourceForm extends Component {
 
   static defaultProps = {
     source: null,
-    authors: [],
+    authors: EMPTY_ARRAY,
   };
 
   constructor(props) {
@@ -126,10 +127,11 @@ class NewSourceForm extends Component {
   }
 
   render() {
-    const { getWIP, getError, source, authors }             = this.props;
-    const wip                                               = getWIP('create');
-    const err                                               = getError('create');
-    const { author, type_id, description, pattern, i18n, submitted, errors } = this.state;
+    const { getWIP, getError, source, authors } = this.props;
+    const wip                                   = getWIP('create');
+    const err                                   = getError('create');
+
+    const { author, type_id: typeID, description, pattern, i18n, submitted, errors } = this.state;
 
     const authorsOptions = source ? null : authors.map(x => ({
       text: extractI18n(x.i18n, ['name'])[0],
@@ -160,7 +162,7 @@ class NewSourceForm extends Component {
               <Form.Select
                 id="type"
                 placeholder="Type"
-                value={type_id}
+                value={typeID}
                 options={SOURCE_TYPES_OPTIONS}
                 onChange={this.onTypeChange}
               />

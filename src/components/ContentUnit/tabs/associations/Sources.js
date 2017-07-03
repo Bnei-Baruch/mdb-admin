@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Header, List, Menu, Message, Segment } from 'semantic-ui-react';
 
+import { selectors } from '../../../../redux/modules/content_units';
+import { selectors as sourcesSelectors } from '../../../../redux/modules/sources';
 import * as shapes from '../../../shapes';
-import { extractI18n, formatError } from '../../../../helpers/utils';
+import { formatError } from '../../../../helpers/utils';
+import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
+import SourceBreadcrumbs from '../../../Sources/SourceBreadcrumbs';
 
 class Sources extends Component {
 
   static propTypes = {
-    getSourceById: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    unit: shapes.ContentUnit,
+    sources: PropTypes.arrayOf(shapes.Source),
+    wip: PropTypes.bool,
+    err: shapes.Error,
   };
 
   static defaultProps = {
-    unit: undefined,
+    sources: EMPTY_ARRAY,
+    wip: false,
+    err: null,
   };
 
   render() {
-    const {
-            unit = {},
-            getSourceById,
-            getWIP,
-            getError
-          }       = this.props;
-    const wip     = getWIP('fetchItemSources');
-    const err     = getError('fetchItemSources');
-    const sources = (unit.sources || []).map(x => getSourceById(x));
+    const { sources, wip, err } = this.props;
 
     let content;
     if (err) {
@@ -42,16 +39,16 @@ class Sources extends Component {
       content = (
         <List relaxed divided className="rtl-dir">
           {
-            sources.map((x) => {
-              const name = extractI18n(x.i18n, ['name'])[0];
-              return (
+            sources.map(x =>
+              (
                 <List.Item key={x.id}>
-                  <Link to={`/sources/${x.id}`}>{name}</Link>
+                  <SourceBreadcrumbs source={x} lastIsLink />
                 </List.Item>
-              );
-            })
+              )
+            )
           }
-        </List>);
+        </List>
+      );
     }
 
     return (
@@ -67,7 +64,17 @@ class Sources extends Component {
       </div>
     );
   }
-
 }
 
-export default Sources;
+const mapState = (state, ownProps) => {
+  const { unit = EMPTY_OBJECT } = ownProps;
+  const sourceIDs               = unit.sources;
+  const denormIDs               = sourcesSelectors.denormIDs(state.sources);
+  return {
+    sources: sourceIDs ? denormIDs(sourceIDs) : EMPTY_ARRAY,
+    wip: selectors.getWIP(state.content_units, 'fetchItemSources'),
+    err: selectors.getError(state.content_units, 'fetchItemSources'),
+  };
+};
+
+export default connect(mapState)(Sources);

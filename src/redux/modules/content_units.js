@@ -1,5 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
-import { merge, setMap } from '../utils';
+import { createSelector } from 'reselect';
+import memoize from 'lodash/memoize';
+
+import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
 
@@ -26,6 +29,8 @@ const UPDATE_I18N                   = 'ContentUnits/UPDATE_I18N';
 const UPDATE_I18N_SUCCESS           = 'ContentUnits/UPDATE_I18N_SUCCESS';
 const UPDATE_I18N_FAILURE           = 'ContentUnits/UPDATE_I18N_FAILURE';
 
+const RECEIVE_ITEMS = 'ContentUnits/RECEIVE_ITEMS';
+
 export const types = {
   FETCH_ITEM,
   FETCH_ITEM_SUCCESS,
@@ -49,6 +54,8 @@ export const types = {
   UPDATE_I18N,
   UPDATE_I18N_SUCCESS,
   UPDATE_I18N_FAILURE,
+
+  RECEIVE_ITEMS,
 };
 
 /* Actions */
@@ -76,6 +83,8 @@ const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
 
+const receiveItems = createAction(RECEIVE_ITEMS);
+
 export const actions = {
   fetchItem,
   fetchItemSuccess,
@@ -99,6 +108,8 @@ export const actions = {
   updateI18n,
   updateI18nSuccess,
   updateI18nFailure,
+
+  receiveItems,
 };
 
 /* Reducer */
@@ -153,9 +164,9 @@ const onSuccess = (state, action) => {
 
   let byID;
   switch (action.type) {
-  case CHANGE_SECURITY_LEVEL_SUCCESS:
   case FETCH_ITEM_SUCCESS:
   case UPDATE_I18N_SUCCESS:
+  case CHANGE_SECURITY_LEVEL_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ITEM_FILES_SUCCESS:
@@ -167,7 +178,7 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_COLLECTIONS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
-      collections: action.payload.data.map(x => ({ ...x, collection: x.collection.id })),
+      collections: action.payload.data.map(x => ({ name: x.name, collection_id: x.collection.id })),
     });
     break;
   case FETCH_ITEM_SOURCES_SUCCESS:
@@ -194,6 +205,11 @@ const onSuccess = (state, action) => {
   };
 };
 
+const onReceiveItems = (state, action) => ({
+  ...state,
+  byID: bulkMerge(state.byID, action.payload),
+});
+
 export const reducer = handleActions({
   [FETCH_ITEM]: onRequest,
   [FETCH_ITEM_SUCCESS]: onSuccess,
@@ -218,16 +234,23 @@ export const reducer = handleActions({
   [UPDATE_I18N_SUCCESS]: onSuccess,
   [UPDATE_I18N_FAILURE]: onFailure,
 
+  [RECEIVE_ITEMS]: onReceiveItems,
 }, initialState);
 
 /* Selectors */
 
-const getContentUnitById = state => id => state.byID.get(id);
-const getWIP             = state => key => state.wip.get(key);
-const getError           = state => key => state.errors.get(key);
+const getUnits           = state => state.byID;
+const getContentUnitById = (state, id) => state.byID.get(id);
+const getWIP             = (state, key) => state.wip.get(key);
+const getError           = (state, key) => state.errors.get(key);
+
+// CCU = CollectionContentUnit
+const denormCCUs = createSelector(getUnits, byID =>
+  memoize(ccus => ccus.map(x => ({ ...x, content_unit: byID.get(x.content_unit_id) }))));
 
 export const selectors = {
   getContentUnitById,
   getWIP,
   getError,
+  denormCCUs,
 };

@@ -11,58 +11,42 @@ import AssociationsTab from './tabs/associations/AssociationsTab';
 import FilesTab from './tabs/files/FilesTab';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
 
+const items = [
+  { name: 'Details', element: DetailsTab },
+  { name: 'Files', element: FilesTab },
+  { name: 'Associations', element: AssociationsTab },
+  { name: 'Danger Zone', element: DangerZoneTab },
+];
+
 const MainPage = (props) => {
-  const { unit, getWIP, getError } = props;
-  const wip                        = getWIP('fetchItem');
-  const err                        = getError('fetchItem');
+  const { unit, wip, err } = props;
 
   if (err) {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
   }
 
-  if (!unit) {
-    return wip ?
-      <LoadingSplash text="Loading content unit details" subtext="Hold on tight..." /> :
-      <FrownSplash
-        text="Couldn't find content unit"
-        subtext={<span>Try the <Link to="/content_units">content units list</Link>...</span>}
-      />;
+  if (unit) {
+    return <TabsMenu items={items} unit={unit} />;
   }
 
-  const items = [
-    {
-      name: 'details',
-      label: 'Details',
-      component: <DetailsTab {...props} />,
-    },
-    {
-      name: 'files',
-      label: 'Files',
-      component: <FilesTab {...props} />,
-    },
-    {
-      name: 'associations',
-      label: 'Associations',
-      component: <AssociationsTab {...props} />,
-    },
-    {
-      name: 'danger',
-      label: 'Danger Zone',
-      component: <DangerZoneTab {...props} />,
-    },
-  ];
-
-  return <TabsMenu items={items} />;
+  return wip ?
+    <LoadingSplash text="Loading content unit details" subtext="Hold on tight..." /> :
+    <FrownSplash
+      text="Couldn't find content unit"
+      subtext={<span>Try the <Link to="/content_units">content units list</Link>...</span>}
+    />;
 };
 
 MainPage.propTypes = {
-  getWIP: PropTypes.func.isRequired,
-  getError: PropTypes.func.isRequired,
   unit: shapes.ContentUnit,
+  wip: PropTypes.bool,
+  err: shapes.Error,
 };
 
 MainPage.defaultProps = {
   unit: null,
+  wip: false,
+  err: null,
 };
 
 export default MainPage;

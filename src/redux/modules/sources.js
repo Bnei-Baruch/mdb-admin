@@ -1,15 +1,19 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+import memoize from 'lodash/memoize';
+
+import { merge, setMap } from '../utils';
 import { buildHierarchy, extractI18n } from '../../helpers/utils';
 
 /* Types */
 
-const FETCH_ITEM          = 'Sources/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS  = 'Sources/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE  = 'Sources/FETCH_ITEM_FAILURE';
-const FETCH_ALL           = 'Sources/FETCH_ALL';
-const FETCH_ALL_SUCCESS   = 'Sources/FETCH_ALL_SUCCESS';
-const FETCH_ALL_FAILURE   = 'Sources/FETCH_ALL_FAILURE';
+const FETCH_ITEM         = 'Sources/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS = 'Sources/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE = 'Sources/FETCH_ITEM_FAILURE';
+const FETCH_ALL          = 'Sources/FETCH_ALL';
+const FETCH_ALL_SUCCESS  = 'Sources/FETCH_ALL_SUCCESS';
+const FETCH_ALL_FAILURE  = 'Sources/FETCH_ALL_FAILURE';
+
 const UPDATE_INFO         = 'Sources/UPDATE_INFO';
 const UPDATE_INFO_SUCCESS = 'Sources/UPDATE_INFO_SUCCESS';
 const UPDATE_INFO_FAILURE = 'Sources/UPDATE_INFO_FAILURE';
@@ -27,6 +31,7 @@ export const types = {
   FETCH_ALL,
   FETCH_ALL_SUCCESS,
   FETCH_ALL_FAILURE,
+
   UPDATE_INFO,
   UPDATE_INFO_SUCCESS,
   UPDATE_INFO_FAILURE,
@@ -40,14 +45,15 @@ export const types = {
 
 /* Actions */
 
-const fetchItem         = createAction(FETCH_ITEM);
-const fetchItemSuccess  = createAction(FETCH_ITEM_SUCCESS);
-const fetchItemFailure  = createAction(FETCH_ITEM_FAILURE);
-const fetchAll          = createAction(FETCH_ALL);
-const fetchAllSuccess   = createAction(FETCH_ALL_SUCCESS);
-const fetchAllFailure   = createAction(FETCH_ALL_FAILURE);
+const fetchItem        = createAction(FETCH_ITEM);
+const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
+const fetchAll         = createAction(FETCH_ALL);
+const fetchAllSuccess  = createAction(FETCH_ALL_SUCCESS);
+const fetchAllFailure  = createAction(FETCH_ALL_FAILURE);
+
 const updateInfo        = createAction(UPDATE_INFO,
-  (id, pattern, description, type_id) => ({ id, pattern, description, type_id }));
+  (id, pattern, description, typeID) => ({ id, pattern, description, type_id: typeID }));
 const updateInfoSuccess = createAction(UPDATE_INFO_SUCCESS);
 const updateInfoFailure = createAction(UPDATE_INFO_FAILURE);
 const updateI18n        = createAction(UPDATE_I18N,
@@ -55,13 +61,13 @@ const updateI18n        = createAction(UPDATE_I18N,
 const updateI18nSuccess = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure = createAction(UPDATE_I18N_FAILURE);
 const create            = createAction(CREATE,
-  (parent_id, pattern, description, i18n, author, type_id) => ({
-    parent_id,
+  (parentID, pattern, description, i18n, author, typeID) => ({
+    parent_id: parentID,
     pattern,
     description,
     i18n,
     author,
-    type_id
+    type_id: typeID
   }));
 const createSuccess     = createAction(CREATE_SUCCESS, (source, author) => ({ source, author }));
 const createFailure     = createAction(CREATE_FAILURE);
@@ -73,6 +79,7 @@ export const actions = {
   fetchAll,
   fetchAllSuccess,
   fetchAllFailure,
+
   updateInfo,
   updateInfoSuccess,
   updateInfoFailure,
@@ -86,13 +93,14 @@ export const actions = {
 
 /* Reducer */
 
-const _keys = new Map([
+const keys = new Map([
   [FETCH_ITEM, 'fetchItem'],
   [FETCH_ITEM_SUCCESS, 'fetchItem'],
   [FETCH_ITEM_FAILURE, 'fetchItem'],
   [FETCH_ALL, 'fetchAll'],
   [FETCH_ALL_SUCCESS, 'fetchAll'],
   [FETCH_ALL_FAILURE, 'fetchAll'],
+
   [UPDATE_INFO, 'updateInfo'],
   [UPDATE_INFO_SUCCESS, 'updateInfo'],
   [UPDATE_INFO_FAILURE, 'updateInfo'],
@@ -106,45 +114,35 @@ const _keys = new Map([
 
 const initialState = {
   byID: new Map(),
-  wip: new Map(Array.from(_keys.values(), x => [x, false])),
-  errors: new Map(Array.from(_keys.values(), x => [x, null])),
+  wip: new Map(Array.from(keys.values(), x => [x, false])),
+  errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
-const _setMap = (m, k, v) => {
-  const nm = new Map(m);
-  nm.set(k, v);
-  return nm;
-};
-
-const _onRequest = (state, action) => ({
+const onRequest = (state, action) => ({
   ...state,
-  wip: _setMap(state.wip, _keys.get(action.type), true)
+  wip: setMap(state.wip, keys.get(action.type), true)
 });
 
-const _onFailure = (state, action) => {
-  const key = _keys.get(action.type);
+const onFailure = (state, action) => {
+  const key = keys.get(action.type);
   return {
     ...state,
-    wip: _setMap(state.wip, key, false),
-    errors: _setMap(state.errors, key, action.payload),
+    wip: setMap(state.wip, key, false),
+    errors: setMap(state.errors, key, action.payload),
   };
 };
 
-const _onSuccess = (state, action) => {
-  const key = _keys.get(action.type);
+const onSuccess = (state, action) => {
+  const key = keys.get(action.type);
 
   let byID;
   switch (action.type) {
   case FETCH_ITEM_SUCCESS:
   case UPDATE_INFO_SUCCESS:
   case UPDATE_I18N_SUCCESS:
-    byID = _setMap(state.byID, action.payload.id, action.payload);
+  case CREATE_SUCCESS:
+    byID = merge(state.byID, action.payload);
     break;
-  case CREATE_SUCCESS: {
-    const { source } = action.payload;
-    byID             = _setMap(state.byID, source.id, source);
-    break;
-  }
   case FETCH_ALL_SUCCESS:
     byID = new Map(action.payload.map(x => [x.id, x]));
     break;
@@ -155,31 +153,31 @@ const _onSuccess = (state, action) => {
   return {
     ...state,
     byID,
-    wip: _setMap(state.wip, key, false),
-    errors: _setMap(state.errors, key, null),
+    wip: setMap(state.wip, key, false),
+    errors: setMap(state.errors, key, null),
   };
 };
 
 export const reducer = handleActions({
-  [FETCH_ITEM]: _onRequest,
-  [FETCH_ITEM_SUCCESS]: _onSuccess,
-  [FETCH_ITEM_FAILURE]: _onFailure,
+  [FETCH_ITEM]: onRequest,
+  [FETCH_ITEM_SUCCESS]: onSuccess,
+  [FETCH_ITEM_FAILURE]: onFailure,
 
-  [FETCH_ALL]: _onRequest,
-  [FETCH_ALL_SUCCESS]: _onSuccess,
-  [FETCH_ALL_FAILURE]: _onFailure,
+  [FETCH_ALL]: onRequest,
+  [FETCH_ALL_SUCCESS]: onSuccess,
+  [FETCH_ALL_FAILURE]: onFailure,
 
-  [UPDATE_INFO]: _onRequest,
-  [UPDATE_INFO_SUCCESS]: _onSuccess,
-  [UPDATE_INFO_FAILURE]: _onFailure,
+  [UPDATE_INFO]: onRequest,
+  [UPDATE_INFO_SUCCESS]: onSuccess,
+  [UPDATE_INFO_FAILURE]: onFailure,
 
-  [UPDATE_I18N]: _onRequest,
-  [UPDATE_I18N_SUCCESS]: _onSuccess,
-  [UPDATE_I18N_FAILURE]: _onFailure,
+  [UPDATE_I18N]: onRequest,
+  [UPDATE_I18N_SUCCESS]: onSuccess,
+  [UPDATE_I18N_FAILURE]: onFailure,
 
-  [CREATE]: _onRequest,
-  [CREATE_SUCCESS]: _onSuccess,
-  [CREATE_FAILURE]: _onFailure,
+  [CREATE]: onRequest,
+  [CREATE_SUCCESS]: onSuccess,
+  [CREATE_FAILURE]: onFailure,
 
 }, initialState);
 
@@ -213,14 +211,36 @@ const sortHierarchy = (h, getById) => {
 
 const getSources    = state => state.byID;
 const getSourceById = state => id => state.byID.get(id);
-const getHierarchy  = createSelector(getSources,
+const getWIP      = state => key => state.wip.get(key);
+const getError    = state => key => state.errors.get(key);
+
+const getHierarchy = createSelector(getSources,
   sources => sortHierarchy(buildHierarchy(sources), x => sources.get(x)));
-const getWIP        = state => key => state.wip.get(key);
-const getError      = state => key => state.errors.get(key);
+
+const denormIDs = createSelector(getSources, byID =>
+  memoize(ids => ids.map(id => byID.get(id))));
+
+const getPathByID = createSelector(getSources, byID =>
+  memoize((id) => {
+    const source = byID.get(id);
+    const path   = [source];
+
+    let x = source;
+    while (x && x.parent_id) {
+      x = byID.get(x.parent_id);
+      if (x) {
+        path.push(x);
+      }
+    }
+
+    return path;
+  }));
 
 export const selectors = {
   getSourceById,
-  getHierarchy,
   getWIP,
   getError,
+  getHierarchy,
+  denormIDs,
+  getPathByID,
 };

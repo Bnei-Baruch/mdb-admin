@@ -5,11 +5,6 @@ import { connect } from 'react-redux';
 
 import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/content_units';
-import { selectors as files } from '../../redux/modules/files';
-import { selectors as collections } from '../../redux/modules/collections';
-import { selectors as sources } from '../../redux/modules/sources';
-import { selectors as tags } from '../../redux/modules/tags';
-
 import MainPage from './MainPage';
 
 class Container extends Component {
@@ -47,17 +42,13 @@ class Container extends Component {
 }
 
 const mapState = (state, props) => ({
-  unit: selectors.getContentUnitById(state.content_units)(parseInt(props.match.params.id, 10)),
-  getWIP: selectors.getWIP(state.content_units),
-  getError: selectors.getError(state.content_units),
-  getFileById: files.getFileById(state.files),
-  getCollectionById: collections.getCollectionById(state.collections),
-  getSourceById: sources.getSourceById(state.sources),
-  getTagById: tags.getTagById(state.tags),
+  unit: selectors.getContentUnitById(state.content_units, parseInt(props.match.params.id, 10)),
+  wip: selectors.getWIP(state.content_units, 'fetchItem'),
+  err: selectors.getError(state.content_units, 'fetchItem'),
 });
 
 function mapDispatch(dispatch) {
-  return bindActionCreators(actions, dispatch);
+  return bindActionCreators({ fetchItem: actions.fetchItem }, dispatch);
 }
 
 export default connect(mapState, mapDispatch)(Container);

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Header, Icon, Label, List, Menu, Modal, Segment } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-import * as shapes from '../shapes';
+import { EMPTY_OBJECT } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
+import * as shapes from '../shapes';
 import NewSourceForm from './NewSourceForm';
 
 class SourceChildren extends Component {
@@ -18,7 +19,7 @@ class SourceChildren extends Component {
   };
 
   static defaultProps = {
-    source: {},
+    source: EMPTY_OBJECT,
     hierarchy: {
       childMap: new Map()
     }

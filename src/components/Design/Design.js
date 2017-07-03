@@ -1,6 +1,5 @@
 import React from 'react';
-import { Grid, Header } from 'semantic-ui-react';
-import Player from '../shared/JWPlayer';
+import { Grid, Header, Icon } from 'semantic-ui-react';
 
 const renderInGrid = content => (
   <Grid container>
@@ -16,10 +15,60 @@ const renderInGrid = content => (
   </Grid>
 );
 
+const ItemDetails = () => (
+  <div>
+    <Header as="h2">
+      <Icon name="settings" />
+      <Header.Content>
+        Account Settings
+        <Header.Subheader>
+          Manage your preferences
+        </Header.Subheader>
+      </Header.Content>
+    </Header>
+    <div style={{ paddingLeft: '25px' }}>
+      <Header as="h4">
+        <Icon name="settings" />
+        <Header.Content>
+          Account Settings
+          <Header.Subheader>
+            Manage your preferences
+          </Header.Subheader>
+        </Header.Content>
+      </Header>
+      <Header as="h4" style={{ backgroundColor: '#00b5ad' }}>
+        <Icon name="settings" />
+        <Header.Content>
+          Account Settings
+          <Header.Subheader>
+            Manage your preferences
+          </Header.Subheader>
+        </Header.Content>
+      </Header>
+      <Header as="h4">
+        <Icon name="settings" />
+        <Header.Content>
+          Account Settings
+          <Header.Subheader>
+            Manage your preferences
+          </Header.Subheader>
+        </Header.Content>
+      </Header>
+    </div>
+  </div>
+);
+
 const Design = () => {
+  // const contents = [
+  //   <Header as="h2" content="Menu" />,
+  //   <Player playerId="design" file="http://files.kabbalahmedia.info/files/heb_o_norav_2017-05-21_lesson_achana_n1_p0.mp4" />
+  // ];
+
   const contents = [
-    <Header as="h2" content="Menu" />,
-    <Player playerId="design" file="http://files.kabbalahmedia.info/files/heb_o_norav_2017-05-21_lesson_achana_n1_p0.mp4" />
+    ItemDetails(),
+    ItemDetails(),
+    ItemDetails(),
+    ItemDetails(),
   ];
 
   // return renderInGrid(contents);

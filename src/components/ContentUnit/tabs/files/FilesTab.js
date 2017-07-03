@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
+import { actions, selectors } from '../../../../redux/modules/content_units';
+import { selectors as files } from '../../../../redux/modules/files';
+import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
-import Files from './Files';
+import FilesHierarchy from './FilesHierarchy';
 
 class FilesTab extends Component {
 
@@ -12,7 +17,7 @@ class FilesTab extends Component {
   };
 
   static defaultProps = {
-    unit: null,
+    unit: undefined,
   };
 
   componentDidMount() {
@@ -33,9 +38,24 @@ class FilesTab extends Component {
   }
 
   render() {
-    return <Files {...this.props} />;
+    return <FilesHierarchy {...this.props} />;
   }
 }
 
-export default FilesTab;
+const mapState = (state, ownProps) => {
+  const { unit = EMPTY_OBJECT } = ownProps;
+  const fileIds                 = unit.files;
+  const denormIDs               = files.denormIDs(state.files);
+  return {
+    files: fileIds ? denormIDs(fileIds) : EMPTY_ARRAY,
+    wip: selectors.getWIP(state.content_units, 'fetchItemFiles'),
+    err: selectors.getError(state.content_units, 'fetchItemFiles'),
+  };
+};
+
+function mapDispatch(dispatch) {
+  return bindActionCreators({ fetchItemFiles: actions.fetchItemFiles }, dispatch);
+}
+
+export default connect(mapState, mapDispatch)(FilesTab);
 

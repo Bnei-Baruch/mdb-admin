@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+export const Error = PropTypes.object;
+
 export const RouterMatch = PropTypes.shape({
   path: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
@@ -76,25 +78,54 @@ export const File = PropTypes.shape({
   name: PropTypes.string.isRequired,
   sha1: PropTypes.string,
   size: PropTypes.number,
+  parent_id: PropTypes.number,
   type: PropTypes.string,
   subtype: PropTypes.string,
   mime_type: PropTypes.string,
   language: PropTypes.string,
+  properties: PropTypes.object,
 });
 
-export const ContentUnit = PropTypes.shape({
+export const Operation = PropTypes.shape({
+  ...TypedEntity,
+  station: PropTypes.string,
+  user_id: PropTypes.number,
+  details: PropTypes.string,
+  properties: PropTypes.object,
+});
+
+const BaseContentUnit = {
   ...TypedEntity,
   ...SecurePublished,
+  properties: PropTypes.object,
   i18n: PropTypes.objectOf(ContentUnitI18n),
   files: PropTypes.arrayOf(PropTypes.number),
-});
+  sources: PropTypes.arrayOf(PropTypes.number),
+  tags: PropTypes.arrayOf(PropTypes.number),
+};
 
-export const Collection = PropTypes.shape({
+const BaseCollection = {
   ...TypedEntity,
   ...SecurePublished,
+  properties: PropTypes.object,
   i18n: PropTypes.objectOf(CollectionI18n),
-  content_units: PropTypes.arrayOf(ContentUnit),
-});
+};
+
+const BaseCollectionContentUnit = {
+  collection_id: PropTypes.number,
+  collection: PropTypes.shape(BaseCollection),
+  content_unit_id: PropTypes.number,
+  content_unit: PropTypes.shape(BaseContentUnit),
+  name: PropTypes.string,
+};
+
+export const CollectionContentUnit = PropTypes.shape(BaseCollectionContentUnit);
+
+BaseContentUnit.collections = PropTypes.arrayOf(CollectionContentUnit);
+export const ContentUnit = PropTypes.shape(BaseContentUnit);
+
+BaseCollection.content_units = PropTypes.arrayOf(CollectionContentUnit);
+export const Collection      = PropTypes.shape(BaseCollection);
 
 export const Source = PropTypes.shape({
   ...TypedEntity,

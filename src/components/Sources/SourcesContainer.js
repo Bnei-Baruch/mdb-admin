@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import { actions, selectors } from '../../redux/modules/sources';
 import { selectors as authors } from '../../redux/modules/authors';
 import SourcesHierarchy from './SourcesHierarchy';
@@ -27,7 +28,6 @@ const mapState = state => ({
   getWIP: selectors.getWIP(state.sources),
   getError: selectors.getError(state.sources),
   authors: authors.getAuthorsList(state.authors),
-  getAuthorById: authors.getAuthorById(state.authors),
 });
 
 function mapDispatch(dispatch) {

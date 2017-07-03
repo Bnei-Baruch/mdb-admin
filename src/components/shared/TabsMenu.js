@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from 'semantic-ui-react';
 
+import { EMPTY_ARRAY } from '../../helpers/consts';
+
 class TabsMenu extends Component {
 
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      component: PropTypes.node.isRequired,
+      element: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
     })),
     active: PropTypes.string,
   };
 
   static defaultProps = {
-    items: [],
+    items: EMPTY_ARRAY,
     active: '',
   };
 
@@ -44,14 +45,16 @@ class TabsMenu extends Component {
   render() {
     const { active } = this.state;
     const { items }  = this.props;
-    const activeItem = items.find(x => x.name === active);
+
+    const activeItem  = items.find(x => x.name === active);
+    const ElementType = activeItem.element;
 
     return (
       <div>
         <Menu secondary pointing color="blue">
           {
             items.map((item) => {
-              const { name, label } = item;
+              const { name } = item;
               return (
                 <Menu.Item
                   key={name}
@@ -59,13 +62,13 @@ class TabsMenu extends Component {
                   active={active === name}
                   onClick={this.handleActiveChange}
                 >
-                  {label}
+                  {name}
                 </Menu.Item>
               );
             })
           }
         </Menu>
-        {activeItem.component}
+        {(<ElementType {...this.props} />)}
       </div>
     );
   }
