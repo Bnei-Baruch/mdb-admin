@@ -75,7 +75,7 @@ class DateFilter extends Component {
 export default connect(
     (state, ownProps) => {
         const { namespace, before, after } = ownProps;
-        console.log(ownProps);
+        
         // FUTURE: (yaniv) handle before and after being valid dates instead of a filter name
         let minDate; 
         let maxDate;

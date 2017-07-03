@@ -5,7 +5,7 @@ import { Form, Segment } from 'semantic-ui-react';
 import { filterConfigShape } from '../shapes';
 
 const Filters = (props) => {
-    const { filters, namespace, onFilterApplication } = props
+    const { filters, namespace, onFilterApplication } = props;
     const filterChunks = chunk(filters, 4);
 
     return (

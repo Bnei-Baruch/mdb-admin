@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "http://app.mdb.bbdomain.org/admin/",
-  "optionalDependencies": {
-    "fsevents": "^1.1.1"
-  },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
@@ -32,7 +29,7 @@
     "prop-types": "^15.5.10",
     "qs": "^6.4.0",
     "react": "^15.6.1",
-    "react-datepicker": "^0.46.0",
+    "react-datepicker": "^0.48.0",
     "react-dom": "^15.6.1",
     "react-jw-player": "github:Bnei-Baruch/react-jw-player",
     "react-redux": "^5.0.5",
