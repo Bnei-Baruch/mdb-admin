@@ -70,7 +70,7 @@ class SourceChildren extends Component {
           {
             hasChildren ?
               <List relaxed divided className="rtl-dir">
-                {children.map((x) => {
+                {children.map((x, i) => {
                   const node  = getSourceById(x);
                   const label = extractI18n(node.i18n, ['name'])[0];
 
@@ -78,7 +78,7 @@ class SourceChildren extends Component {
                     <List.Item key={node.id}>
                       <List.Content>
                         <List.Header>
-                          <Link to={`/sources/${node.id}`}>{label}</Link>
+                          <Link to={`/sources/${node.id}`}>{i + 1}. {label}</Link>
                         </List.Header>
                       </List.Content>
                     </List.Item>
