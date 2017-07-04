@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
+import {Grid, Header, Icon, Label, List, Menu, Modal, Segment} from 'semantic-ui-react';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
 import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
+import NewCollectionForm from './NewCollectionForm';
 
 const InfiniteCollectionSearcher = searcher({
     name: 'collections',
@@ -61,12 +63,51 @@ export const columns = [
 ];
 
 export default class Collections extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            modalOpen: false
+        };
+    }
+
+    showModal = () => this.setState({modalOpen: true});
+    hideModal = () => this.setState({modalOpen: false});
     render() {
+
+        const modalOpen = this.state.modalOpen;
         return (
+
+        <div>
+            <Menu attached borderless size="large">
+                <Menu.Item header>
+                    <Header content="Tags Hierarchy" size="medium" color="blue"/>
+                </Menu.Item>
+                <Menu.Menu position="right">
+                    <Menu.Item onClick={this.showModal}>
+                        <Icon name="plus"/>
+                        New Collection
+                    </Menu.Item>
+                </Menu.Menu>
+            </Menu>
+
             <InfiniteCollectionSearcher
                 columns={columns}
                 searchPlaceholder="Search collection..."
             />
+
+            <Modal
+                closeIcon
+                size="small"
+                open={modalOpen}
+                onClose={this.hideModal}>
+                <Modal.Header>Create New Root Tag</Modal.Header>
+                <Modal.Content>
+                    <NewCollectionForm {...this.props} />
+                </Modal.Content>
+            </Modal>
+        </div>
         );
     }
 }

@@ -5,7 +5,7 @@ import { Button, Divider, Flag, Form, Header, Input, Message, Segment } from 'se
 import * as shapes from '../shapes';
 import { formatError, isValidPattern } from '../../helpers/utils';
 
-class NewContentUnits extends Component {
+class NewCollectionForm extends Component {
     static propTypes = {
         create: PropTypes.func.isRequired,
         getWIP: PropTypes.func.isRequired,
@@ -24,4 +24,4 @@ class NewContentUnits extends Component {
     }
 }
 
-export default NewContentUnits;
+export default NewCollectionForm;
