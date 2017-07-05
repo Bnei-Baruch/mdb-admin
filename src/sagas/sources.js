@@ -57,7 +57,7 @@ function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, /* system.INIT */], fetchAll);
+  yield takeLatest([types.FETCH_ALL, system.INIT], fetchAll);
 }
 function* watchUpdateInfo() {
   yield takeEvery(types.UPDATE_INFO, updateInfo);

@@ -14,7 +14,7 @@ function* fetchAll(action) {
 }
 
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, /* system.INIT */], fetchAll);
+  yield takeLatest([types.FETCH_ALL, system.INIT], fetchAll);
 }
 
 export const sagas = [
