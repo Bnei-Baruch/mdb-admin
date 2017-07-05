@@ -161,6 +161,13 @@ export const Hierarchy = PropTypes.shape({
   childMap: PropTypes.instanceOf(Map),  // ID => [...IDs]
 });
 
+export const filterConfigShape = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  Component: PropTypes.any, // react component
+  props: PropTypes.object // props passed to the component
+});
+
 export const AsyncStatusMap = PropTypes.objectOf(PropTypes.shape({
   wip: PropTypes.bool,
   err: Error,

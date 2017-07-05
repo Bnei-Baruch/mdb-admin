@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
-import apiClient from '../../helpers/apiClient';
 import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
+import * as filterComponents from '../Filters/filterComponents';
 
 const InfiniteOperationSearcher = searcher({
-    name: 'operations',
-    request: params => apiClient.get('/rest/operations/', { params }),
-    searchOnMount: true
+    namespace: 'operations'
 })(InfiniteSearch);
 
 const ItemLinkRenderer = ({ cellData, dataKey }) =>
@@ -60,12 +58,33 @@ const columns = [
             flexGrow={1} />
 ];
 
+const filters = [
+    {
+        name: 'query',
+        label: 'Query',
+        Component: filterComponents.TextFilter,
+        props: {
+            placeholder: 'Search operations...'
+        }
+    },
+    {
+        name: 'start_date',
+        label: 'Start Date',
+        Component: filterComponents.DateFilter
+    },
+    {
+        name: 'end_date',
+        label: 'End Date',
+        Component: filterComponents.DateFilter
+    }
+];
+
 export default class Operations extends Component {
     render() {
         return (
             <InfiniteOperationSearcher
+                filters={filters}
                 columns={columns}
-                searchPlaceholder='Search operations...'
             />
         );
     }

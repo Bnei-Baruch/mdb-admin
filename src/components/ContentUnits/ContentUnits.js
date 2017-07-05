@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
-import ContentTypeFilter from '../Filters/ContentTypeFilter';
-import ContentSourceFilter from '../Filters/ContentSourceFilter';
+import * as filterComponents from '../Filters/filterComponents';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
-import apiClient from '../../helpers/apiClient';
 import { CONTENT_TYPE_BY_ID, LANG_HEBREW, LANG_ENGLISH, LANG_RUSSIAN } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
 
 const InfiniteContentUnitSearcher = searcher({
-    name: 'content_units',
-    request: params => apiClient.get('/rest/content_units/', { params }),
-    searchOnMount: true
+    namespace: 'content_units'
 })(InfiniteSearch);
 
 
@@ -75,13 +71,31 @@ export const columns = [
 
 const filters = [
     {
+        name: 'query',
+        label: 'Query',
+        Component: filterComponents.TextFilter,
+        props: {
+            placeholder: 'Search content units...'
+        }
+    },
+    {
+        name: 'start_date',
+        label: 'Start Date',
+        Component: filterComponents.DateFilter
+    },
+    {
+        name: 'end_date',
+        label: 'End Date',
+        Component: filterComponents.DateFilter
+    },
+    {
         name: 'content_type',
         label: 'Content Types',
-        Filter: ContentTypeFilter
+        Component: filterComponents.ContentTypeFilter
     }, {
         name: 'content_source',
         label: 'Content Sources',
-        Filter: ContentSourceFilter
+        Component: filterComponents.ContentSourceFilter
     }
 ];
 

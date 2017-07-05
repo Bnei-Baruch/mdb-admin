@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
-import apiClient from '../../helpers/apiClient';
 import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import searcher from '../../hoc/searcher';
+import * as filterComponents from '../Filters/filterComponents';
 
 const InfiniteCollectionSearcher = searcher({
-    name: 'collections',
-    request: params => apiClient.get('/rest/collections/', { params }),
-    searchOnMount: true
+    namespace: 'collections',
 })(InfiniteSearch);
 
 
@@ -60,12 +58,39 @@ export const columns = [
             flexGrow={1} />
 ];
 
+const filters = [
+    {
+        name: 'query',
+        label: 'Query',
+        Component: filterComponents.TextFilter,
+        props: {
+            placeholder: 'Search collections...'
+        }
+    },
+    {
+        name: 'start_date',
+        label: 'Start Date',
+        Component: filterComponents.DateFilter,
+        props: {
+            before: 'end_date'
+        }
+    },
+    {
+        name: 'end_date',
+        label: 'End Date',
+        Component: filterComponents.DateFilter,
+        props: {
+            after: 'start_date'
+        }
+    }
+];
+
 export default class Collections extends Component {
     render() {
         return (
             <InfiniteCollectionSearcher
+                filters={filters}
                 columns={columns}
-                searchPlaceholder="Search collection..."
             />
         );
     }
