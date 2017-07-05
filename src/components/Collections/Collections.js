@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Column } from 'react-virtualized';
-import {Grid, Header, Icon, Label, List, Menu, Modal, Segment} from 'semantic-ui-react';
+import {Header, Icon, Menu, Modal} from 'semantic-ui-react';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
 import apiClient from '../../helpers/apiClient';
 import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';

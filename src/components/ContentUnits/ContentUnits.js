@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Column, Menu} from 'react-virtualized';
-import { Grid, Header, Icon, Label, List, Menu, Modal, Segment } from 'semantic-ui-react';
 import ContentTypeFilter from '../Filters/ContentTypeFilter';
 import ContentSourceFilter from '../Filters/ContentSourceFilter';
 import InfiniteSearch from '../InfiniteSearch/InfiniteSearch';
@@ -88,42 +87,16 @@ const filters = [
 
 export default class ContentUnits extends Component {
 
-    showModal = () => this.setState({ modalOpen: true });
-    hideModal = () => this.setState({ modalOpen: false });
+    showModal = () => this.setState({modalOpen: true});
+    hideModal = () => this.setState({modalOpen: false});
+
     render() {
         return (
-            <div>
-
-                <Menu attached borderless size="large">
-                    <Menu.Item header>
-                        <Header content="Tags Hierarchy" size="medium" color="blue" />
-                    </Menu.Item>
-                    <Menu.Menu position="right">
-                        <Menu.Item onClick={this.showModal}>
-                            <Icon name="plus" />
-                            New Root
-                        </Menu.Item>
-                    </Menu.Menu>
-                </Menu>
-
-                <InfiniteContentUnitSearcher
-                    columns={columns}
-                    searchPlaceholder="Search content units..."
-                    filters={filters}
-                />
-
-                <Modal
-                    closeIcon
-                    size="small"
-                    open={modalOpen}
-                    onClose={this.hideModal}
-                >
-                    <Modal.Header>Create New Root Tag</Modal.Header>
-                    <Modal.Content>
-                        <NewTagForm {...this.props} />
-                    </Modal.Content>
-                </Modal>
-            </div>
+            <InfiniteContentUnitSearcher
+                columns={columns}
+                searchPlaceholder="Search content units..."
+                filters={filters}
+            />
         );
     }
 }
