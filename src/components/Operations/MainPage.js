@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header, Icon, Label, Menu } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_FILES } from '../../helpers/consts';
+import { EMPTY_ARRAY, NS_OPERATIONS } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
@@ -10,7 +10,7 @@ import FilterTags from '../Filters/FilterTags/FilterTags';
 import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
-import FilesList from './List';
+import OperationsList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
 
@@ -55,7 +55,7 @@ class FilesMainPage extends Component {
       <div>
         <Menu borderless size="large">
           <Menu.Item header>
-            <Header content="Files" size="medium" color="blue" />
+            <Header content="Operations" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
             <Menu.Item onClick={this.toggleFilters}>
@@ -65,7 +65,7 @@ class FilesMainPage extends Component {
           </Menu.Menu>
         </Menu>
 
-        <FiltersHydrator namespace={NS_FILES} onHydrated={onFiltersHydrated} />
+        <FiltersHydrator namespace={NS_OPERATIONS} onHydrated={onFiltersHydrated} />
 
         <Grid>
           <Grid.Row>
@@ -78,7 +78,7 @@ class FilesMainPage extends Component {
                   </div> :
                   null
               }
-              <FilterTags namespace={NS_FILES} onClose={onFiltersChange} />
+              <FilterTags namespace={NS_OPERATIONS} onClose={onFiltersChange} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -98,7 +98,7 @@ class FilesMainPage extends Component {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <FilesList items={items} />
+              <OperationsList items={items} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
