@@ -1,12 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Grid, Header, Segment } from 'semantic-ui-react';
+
+import { NS_OPERATIONS } from '../../../helpers/consts';
+import { OperationTypeFilter } from '../../Filters/filterComponents';
 
 const Others = props => (
   <Segment>
     <Grid>
       <Grid.Row>
-        Not Implemented yet...
+        <Grid.Column width={4}>
+          <Header content="Operation Type" size="small" />
+          <OperationTypeFilter
+            namespace={NS_OPERATIONS}
+            name="operation_type"
+            onApply={props.onFilterApplication}
+          />
+        </Grid.Column>
       </Grid.Row>
     </Grid>
   </Segment>
