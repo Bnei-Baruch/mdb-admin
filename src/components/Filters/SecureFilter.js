@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'semantic-ui-react';
 
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../helpers/consts';
+import { SECURITY_LEVELS, EMPTY_ARRAY } from '../../helpers/consts';
 import connectFilter from './connectFilter';
 
-class ContentTypeFilter extends Component {
+class SecureFilter extends Component {
 
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
-    allValues: PropTypes.arrayOf(PropTypes.string),
+    allValues: PropTypes.arrayOf(PropTypes.number),
     onApply: PropTypes.func.isRequired,
   };
 
@@ -24,16 +24,15 @@ class ContentTypeFilter extends Component {
 
   render() {
     const { allValues } = this.props;
-    const options       = Array.from(Object.values(CONTENT_TYPE_BY_ID))
-      .filter(x => allValues.findIndex(y => y === x) === -1)
-      .map(x => ({ key: x, value: x, text: x }));
+    const options       = Array.from(Object.values(SECURITY_LEVELS))
+      .filter(x => allValues.findIndex(y => y === x.value) === -1)
+      .map(x => ({ key: x.value, value: x.value, text: x.text }));
 
     return (
       <Dropdown
-        search
         selection
         fluid
-        placeholder="Content Type"
+        placeholder="Security Level"
         onChange={this.handleChange}
         options={options}
       />
@@ -41,4 +40,4 @@ class ContentTypeFilter extends Component {
   }
 }
 
-export default connectFilter({ isMultiple: true })(ContentTypeFilter);
+export default connectFilter({ isMultiple: true })(SecureFilter);

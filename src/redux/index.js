@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
+
 import { reducer as filters } from './modules/filters';
+import { reducer as lists } from './modules/lists';
 import { reducer as search } from './modules/search';
 import { reducer as system } from './modules/system';
 import { reducer as collections } from './modules/collections';
@@ -15,6 +17,7 @@ export default combineReducers({
   router,
   system,
   filters,
+  lists,
   search,
   collections,
   content_units,

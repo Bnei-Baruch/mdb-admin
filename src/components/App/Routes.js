@@ -6,7 +6,7 @@ import Files from '../Files/Files';
 import ContentUnit from '../ContentUnit/Container';
 import ContentUnits from '../ContentUnits/ContentUnits';
 import Collection from '../Collection/Container';
-import Collections from '../Collections/Collections';
+import Collections from '../Collections/Container';
 import Operation from '../Operation/Container';
 import Operations from '../Operations/Operations';
 import Tags from '../Tags/TagsContainer';

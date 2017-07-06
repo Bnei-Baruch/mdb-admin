@@ -16,7 +16,6 @@ import { filtersTransformer } from '../filters';
 
 function* updateFilterValuesInQuery(action) {
   const filters = yield select(state => filterSelectors.getFilters(state.filters, action.payload.namespace));
-
   yield* updateQuery(query => Object.assign(query, filtersTransformer.toQueryParams(filters)));
 }
 

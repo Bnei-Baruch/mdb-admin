@@ -11,7 +11,7 @@ import createHistory from 'history/createBrowserHistory';
 import reducer from './redux';
 import { actions as system } from './redux/modules/system';
 import allSagas from './sagas';
-import sagaMonitor from './sagas/sagaMonitor';
+import sagaMonitor from './sagas/helpers/sagaMonitor';
 import App from './components/App/App';
 
 //

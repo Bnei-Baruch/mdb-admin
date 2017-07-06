@@ -29,7 +29,7 @@ class FiltersHydrator extends Component {
   }
 
   render() {
-    return <div />;
+    return <div style={{ display: 'hidden' }} />;
   }
 }
 

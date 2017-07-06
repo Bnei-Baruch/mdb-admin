@@ -1,16 +1,18 @@
 import reduce from 'lodash/reduce';
 import keyBy from 'lodash/keyBy';
-import compact from 'lodash/compact';
 import castArray from 'lodash/castArray';
 import { isEmpty } from '../helpers/utils';
 import * as definitions from './definitions';
 
-const compactMap = (values, transform) => compact(values.map(transform));
+const cleanMap = (values, transform) =>
+  values
+    .map(transform)
+    .filter(x => x !== undefined && x !== null);
 
 const filterValuesToQueryValues = (definition, values = []) =>
-  compactMap(castArray(values), arg => definition.valueToQuery(arg));
+  cleanMap(castArray(values), arg => definition.valueToQuery(arg));
 const queryValuesToFilterValues = (definition, values = []) =>
-  compactMap(castArray(values), arg => definition.queryToValue(arg));
+  cleanMap(castArray(values), arg => definition.queryToValue(arg));
 
 function filterValuesToApiParams(definition, values = []) {
   const transformedValues = castArray(values).map(definition.valueToApiParam);
@@ -32,10 +34,8 @@ const filtersTransformer = {
   queryKeyToName: reduce(definitions, (acc, definition) => Object.assign(acc, { [definition.queryKey]: definition.name }), {}),
   toQueryParams(filters /* arrayOf({ name: string, values: array }) */) {
     return filters.reduce((acc, filter) => {
-      const definition = this.definitionsByName[filter.name];
-
+      const definition  = this.definitionsByName[filter.name];
       const paramValues = filterValuesToQueryValues(definition, filter.values);
-
       return Object.assign(acc, { [definition.queryKey]: paramValues });
     }, {});
   },

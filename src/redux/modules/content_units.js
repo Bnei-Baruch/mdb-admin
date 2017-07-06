@@ -106,12 +106,12 @@ const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
-const addSource                     = createAction(ADD_SOURCE, (id, sourceID) => ({ id, sourceID }));
-const addSourceSuccess              = createAction(ADD_SOURCE_SUCCESS);
-const addSourceFailure              = createAction(ADD_SOURCE_FAILURE);
-const removeSource                  = createAction(REMOVE_SOURCE, (id, sourceID) => ({ id, sourceID }));
-const removeSourceSuccess           = createAction(REMOVE_SOURCE_SUCCESS);
-const removeSourceFailure           = createAction(REMOVE_SOURCE_FAILURE);
+const addSource                  = createAction(ADD_SOURCE, (id, sourceID) => ({ id, sourceID }));
+const addSourceSuccess           = createAction(ADD_SOURCE_SUCCESS);
+const addSourceFailure           = createAction(ADD_SOURCE_FAILURE);
+const removeSource               = createAction(REMOVE_SOURCE, (id, sourceID) => ({ id, sourceID }));
+const removeSourceSuccess        = createAction(REMOVE_SOURCE_SUCCESS);
+const removeSourceFailure        = createAction(REMOVE_SOURCE_FAILURE);
 const addTag                     = createAction(ADD_TAG, (id, tagID) => ({ id, tagID }));
 const addTagSuccess              = createAction(ADD_TAG_SUCCESS);
 const addTagFailure              = createAction(ADD_TAG_FAILURE);
@@ -332,6 +332,9 @@ const getContentUnitById = (state, id) => state.byID.get(id);
 const getWIP             = (state, key) => state.wip.get(key);
 const getError           = (state, key) => state.errors.get(key);
 
+const denormIDs = createSelector(getUnits, byID =>
+  memoize(ids => ids.map(id => byID.get(id))));
+
 // CCU = CollectionContentUnit
 const denormCCUs = createSelector(getUnits, byID =>
   memoize(ccus => ccus.map(x => ({ ...x, content_unit: byID.get(x.content_unit_id) }))));
@@ -340,5 +343,6 @@ export const selectors = {
   getContentUnitById,
   getWIP,
   getError,
+  denormIDs,
   denormCCUs,
 };

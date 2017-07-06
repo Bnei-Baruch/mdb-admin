@@ -1,42 +1,40 @@
-import {createAction, handleActions} from "redux-actions";
+import { createAction, handleActions } from 'redux-actions';
 
 /* Types */
 
-const BOOT = 'System/BOOT';
-const INIT = 'System/INIT';
+const BOOT  = 'System/BOOT';
+const INIT  = 'System/INIT';
 const READY = 'System/READY';
 
 export const types = {
-    BOOT,
-    INIT,
-    READY
+  BOOT,
+  INIT,
+  READY
 };
 
 /* Actions */
 
-const boot = createAction(BOOT);
-const init = createAction(INIT);
+const boot  = createAction(BOOT);
+const init  = createAction(INIT);
 const ready = createAction(READY);
 
 export const actions = {
-    boot,
-    init,
-    ready
+  boot,
+  init,
+  ready
 };
 
 /* Reducer */
 
 const initialState = {
-    isReady: false
+  isReady: false
 };
 
-const _onReady = (state) => ({
+export const reducer = handleActions({
+  [READY]: state => ({
     ...state,
     isReady: true
-})
-
-export const reducer = handleActions({
-    [READY]: _onReady
+  })
 }, initialState);
 
 /* Selectors */
@@ -44,5 +42,5 @@ export const reducer = handleActions({
 const isReady = state => state.isReady;
 
 export const selectors = {
-    isReady
+  isReady
 };
