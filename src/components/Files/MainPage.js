@@ -24,7 +24,7 @@ class FilesMainPage extends Component {
   static propTypes = {
     pageNo: PropTypes.number,
     total: PropTypes.number,
-    items: PropTypes.arrayOf(shapes.Collection),
+    items: PropTypes.arrayOf(shapes.File),
     wip: PropTypes.bool,
     err: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
