@@ -44,7 +44,7 @@ class CollectionsList extends PureComponent {
     }
 
     return (
-      <Table.Row verticalAlign="top" key={`l-${item.id}`}>
+      <Table.Row key={item.id}>
         <Table.Cell collapsing>
           <Link to={`/collections/${item.id}`}>
             {item.id}

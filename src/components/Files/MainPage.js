@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header, Icon, Label, Menu } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_COLLECTIONS } from '../../helpers/consts';
+import { EMPTY_ARRAY, NS_FILES } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
@@ -19,7 +19,7 @@ const filterTabs = [
   { name: 'Others', element: Others },
 ];
 
-class CollectionsMainPage extends Component {
+class FilesMainPage extends Component {
 
   static propTypes = {
     pageNo: PropTypes.number,
@@ -55,21 +55,17 @@ class CollectionsMainPage extends Component {
       <div>
         <Menu borderless size="large">
           <Menu.Item header>
-            <Header content="Collections" size="medium" color="blue" />
+            <Header content="Files" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
             <Menu.Item onClick={this.toggleFilters}>
               <Icon name="filter" />
               {showFilters ? 'Hide' : 'Show' } Filters
             </Menu.Item>
-            <Menu.Item >
-              <Icon name="plus" />
-              New Collection
-            </Menu.Item>
           </Menu.Menu>
         </Menu>
 
-        <FiltersHydrator namespace={NS_COLLECTIONS} onHydrated={onFiltersHydrated} />
+        <FiltersHydrator namespace={NS_FILES} onHydrated={onFiltersHydrated} />
 
         <Grid>
           <Grid.Row>
@@ -82,7 +78,7 @@ class CollectionsMainPage extends Component {
                   </div> :
                   null
               }
-              <FilterTags namespace={NS_COLLECTIONS} onClose={onFiltersChange} />
+              <FilterTags namespace={NS_FILES} onClose={onFiltersChange} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -111,4 +107,4 @@ class CollectionsMainPage extends Component {
   }
 }
 
-export default CollectionsMainPage;
+export default FilesMainPage;

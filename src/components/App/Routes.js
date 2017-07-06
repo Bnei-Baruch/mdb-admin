@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import File from '../File/Container';
-import Files from '../Files/Files';
+import Files from '../Files/Container';
 import ContentUnit from '../ContentUnit/Container';
 import ContentUnits from '../ContentUnits/ContentUnits';
 import Collection from '../Collection/Container';
