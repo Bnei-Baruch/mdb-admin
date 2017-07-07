@@ -1,30 +1,98 @@
-import { createAction } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 
-const initialState = {};
+/* Types */
 
-const SET_PARAMS = 'SET_PARAMS';
+const SEARCH_ITEMS = 'Search/SEARCH_ITEMS';
+const SEARCH_ITEMS_SUCCESS = 'Search/SEARCH_ITEMS_SUCCESS';
+const SEARCH_ITEMS_FAILURE = 'Search/SEARCH_ITEMS_FAILURE';
 
-export default function reducer(state = initialState, action = {}) {
-    switch (action.type) {
-        case SET_PARAMS: {
-            const oldSearch = state[action.payload.name] || {};
-            return {
-                ...state,
-                [action.payload.name]: {
-                    ...oldSearch,
-                    params: {
-                        ...oldSearch.params,
-                        ...action.payload.params
-                    }
-                }
-            };
-        }
-        default:
-            return state;
-    }
+export const types = {
+  SEARCH_ITEMS,
+  SEARCH_ITEMS_SUCCESS,
+  SEARCH_ITEMS_FAILURE,
 };
 
-export const getParams = (state, name) => state[name] && state[name].params;
+/* Actions */
 
-export const setParams = createAction(SET_PARAMS, (name, params) => ({ name, params }));
+const searchItems = createAction(SEARCH_ITEMS, (namespace, startIndex, stopIndex, params, meta) => ({ namespace, startIndex, stopIndex, params, meta }));
+const searchItemsSuccess = createAction(SEARCH_ITEMS_SUCCESS, (namespace, data, startIndex, stopIndex) => ({ namespace, data, startIndex, stopIndex }));
+const searchItemsFailure = createAction(SEARCH_ITEMS_FAILURE, (namespace, error) => ({ namespace, error }));
 
+export const actions = {
+  searchItems,
+  searchItemsSuccess,
+  searchItemsFailure,
+};
+
+/* Reducer */
+
+const initialState = {
+};
+
+const _searchItems = (state, action) => {
+    const { namespace } = action.payload;
+    const oldNamespace = state[namespace] || {};
+
+    return {
+        ...state,
+        [namespace]: {
+            ...oldNamespace,
+            isSearching: true
+        }
+    };
+};
+
+const _searchItemsSuccess = (state, action) => {
+    const { namespace, data, startIndex } = action.payload;
+
+    const oldNamespace = state[namespace] || {};
+    const items = oldNamespace.items ? oldNamespace.items.slice() : [];
+    const newItems = data.data;
+
+    newItems.forEach((item, index) => items[index + startIndex] = item);
+    return {
+        ...state,
+        [namespace]: {
+            ...oldNamespace,
+            isSearching: false,
+            items,
+            total: data.total
+        }
+    };
+};
+
+const _searchItemsFailure = (state, action) => {
+    const { namespace, error } = action.payload;
+    const oldNamespace = state[namespace] || {};
+
+    return {
+        ...state,
+        [namespace]: {
+            ...oldNamespace,
+            isSearching: false,
+            error
+        }
+    };
+};
+
+export const reducer = handleActions({
+  [SEARCH_ITEMS]: _searchItems,
+  [SEARCH_ITEMS_SUCCESS]: _searchItemsSuccess,
+  [SEARCH_ITEMS_FAILURE]: _searchItemsFailure,
+}, initialState);
+
+/* Selectors */
+const getIsSearching = (state, namespace) => !!state[namespace] && state[namespace].isSearching;
+
+const getError = (state, namespace) => state[namespace] && state[namespace].error;
+
+const getResultItems = (state, namespace) => (state[namespace] && state[namespace].items) || [];
+
+const getTotal = (state, namespace) =>  (state[namespace] && state[namespace].total) || 0;
+
+export const selectors = {
+  getIsSearching,
+  getResultItems,
+  getTotal,
+  getError
+};

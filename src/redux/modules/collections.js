@@ -199,13 +199,17 @@ const getCollectionById = (state, id) => state.byID.get(id);
 const getWIP = (state, key) => state.wip.get(key);
 const getError = (state, key) => state.errors.get(key);
 
+const denormIDs = createSelector(getCollections, byID =>
+  memoize(ids => ids.map(id => byID.get(id))));
+
 // CCU = CollectionContentUnit
 const denormCCUs = createSelector(getCollections, byID =>
     memoize(ccus => ccus.map(x => ({...x, collection: byID.get(x.collection_id)}))));
 
 export const selectors = {
-    getCollectionById,
-    getWIP,
-    getError,
-    denormCCUs,
+  getCollectionById,
+  getWIP,
+  getError,
+  denormIDs,
+  denormCCUs,
 };

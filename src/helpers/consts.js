@@ -9,6 +9,14 @@ export const EMPTY_HIERARCHY = Object.freeze({
     childMap: EMPTY_MAP,
 });
 
+// Namespaces
+export const NS_COLLECTIONS = 'collections';
+export const NS_UNITS       = 'content_units';
+export const NS_FILES       = 'files';
+export const NS_OPERATIONS  = 'operations';
+
+export const PAGE_SIZE = 50;
+
 // Collection Types
 export const CT_DAILY_LESSON = 'DAILY_LESSON';
 export const CT_SPECIAL_LESSON = 'SPECIAL_LESSON';

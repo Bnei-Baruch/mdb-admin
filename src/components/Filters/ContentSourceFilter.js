@@ -1,27 +1,43 @@
-import React from 'react';
-import { Dropdown } from 'semantic-ui-react'
-import { SOURCE_TYPE_BY_ID } from '../../helpers/consts.js';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import values from 'lodash/values';
-
-// TODO (yaniv): add empty value button after we pull the kolman's working filter
+import { Dropdown } from 'semantic-ui-react'
+import connectFilter from './connectFilter';
+import { SOURCE_TYPE_BY_ID } from '../../helpers/consts.js';
 
 const options = values(SOURCE_TYPE_BY_ID).map((value, key) => ({ key, value, text: value }));
 
-function ContentSourceFilter(props) {
-    const { onChange, value } = props;
+class ContentSourceFilter extends Component {
 
-    return (
-        <Dropdown placeholder="Content Source"
-                  value={value}
-                  onChange={(event, data) => onChange(data.value)}
-                  options={options}
-                  multiple search selection />
-    );
+    static propTypes = {
+        updateValue: PropTypes.func.isRequired,
+        value: PropTypes.arrayOf(PropTypes.string),
+        onApply: PropTypes.func.isRequired
+    };
+
+    static defaultProps = {
+        value: []
+    };
+
+    apply = (value) => {
+        this.props.updateValue(value);
+        this.props.onApply();
+    }
+
+    render() {
+        const { value } = this.props;
+
+        return (
+            <Dropdown 
+                placeholder="Content Source"
+                value={value}
+                onChange={(event, data) => this.apply(data.value)}
+                options={options}
+                multiple search selection 
+            />
+        );
+    }
 }
 
-ContentSourceFilter.defaultProps = {
-    value: []
-};
-
-export default ContentSourceFilter;
+export default connectFilter()(ContentSourceFilter);
 

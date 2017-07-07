@@ -1,7 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+import memoize from 'lodash/memoize';
 
-import { merge, setMap } from '../utils';
+import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
 
@@ -12,6 +13,8 @@ const FETCH_ITEM_FILES         = 'Operations/FETCH_ITEM_FILES';
 const FETCH_ITEM_FILES_SUCCESS = 'Operations/FETCH_ITEM_FILES_SUCCESS';
 const FETCH_ITEM_FILES_FAILURE = 'Operations/FETCH_ITEM_FILES_FAILURE';
 
+const RECEIVE_ITEMS = 'Operations/RECEIVE_ITEMS';
+
 export const types = {
   FETCH_ITEM,
   FETCH_ITEM_SUCCESS,
@@ -19,6 +22,8 @@ export const types = {
   FETCH_ITEM_FILES,
   FETCH_ITEM_FILES_SUCCESS,
   FETCH_ITEM_FILES_FAILURE,
+
+  RECEIVE_ITEMS,
 };
 
 /* Actions */
@@ -30,6 +35,8 @@ const fetchItemFiles        = createAction(FETCH_ITEM_FILES);
 const fetchItemFilesSuccess = createAction(FETCH_ITEM_FILES_SUCCESS);
 const fetchItemFilesFailure = createAction(FETCH_ITEM_FILES_FAILURE);
 
+const receiveItems = createAction(RECEIVE_ITEMS);
+
 export const actions = {
   fetchItem,
   fetchItemSuccess,
@@ -37,6 +44,8 @@ export const actions = {
   fetchItemFiles,
   fetchItemFilesSuccess,
   fetchItemFilesFailure,
+
+  receiveItems,
 };
 
 /* Reducer */
@@ -96,6 +105,11 @@ const onSuccess = (state, action) => {
   };
 };
 
+const onReceiveItems = (state, action) => ({
+  ...state,
+  byID: bulkMerge(state.byID, action.payload),
+});
+
 export const reducer = handleActions({
   [FETCH_ITEM]: onRequest,
   [FETCH_ITEM_SUCCESS]: onSuccess,
@@ -103,6 +117,8 @@ export const reducer = handleActions({
   [FETCH_ITEM_FILES]: onRequest,
   [FETCH_ITEM_FILES_SUCCESS]: onSuccess,
   [FETCH_ITEM_FILES_FAILURE]: onFailure,
+
+  [RECEIVE_ITEMS]: onReceiveItems,
 }, initialState);
 
 /* Selectors */
@@ -112,9 +128,13 @@ const getOperationById = (state, id) => state.byID.get(id);
 const getWIP           = (state, key) => state.wip.get(key);
 const getError         = (state, key) => state.errors.get(key);
 
+const denormIDs = createSelector(getOperations, byID =>
+  memoize(ids => ids.map(id => byID.get(id))));
+
 export const selectors = {
   getOperations,
   getOperationById,
   getWIP,
   getError,
+  denormIDs,
 };

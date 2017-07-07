@@ -1,101 +1,49 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import invariant from 'invariant';
-import noop from 'lodash/noop';
-import isFunction from 'lodash/isFunction';
 import { connect } from 'react-redux';
-import { setParams, getParams } from '../redux/modules/search';
+import { actions as searchActions, selectors as searchSelectors } from '../redux/modules/search';
+import { selectors as filterSelectors } from '../redux/modules/filters';
+
+const MIN_STOP_INDEX = 100;
 
 const searcher = (options) => (WrappedComponent) => {
     invariant(
-        isFunction(options.request),
-        'options.request must be a function'
+        !!options.namespace,
+        'options.namespace must not be empty'
     );
-
-    invariant(
-        !!options.name,
-        'options.name must not be empty'
-    );
-
-    const defaultOptions = {
-        onSearching: noop,
-        onSuccess: noop,
-        onError: noop,
-        searchOnMount: false,
-    };
-
-    const { onSearching, onSuccess, onError, searchOnMount, request } = {
-        ...defaultOptions,
-        ...options
-    };
+    const namespace = options.namespace;
 
     class Searcher extends Component {
 
         static propTypes = {
-            defaultParams: PropTypes.object,
-            params: PropTypes.object,
-            setParams: PropTypes.func.isRequired
+            items: PropTypes.array,
+            total: PropTypes.number,
+            searchItems: PropTypes.func.isRequired,
+            error: PropTypes.any,
+            isSearching: PropTypes.bool
         };
 
         static defaultProps = {
-            defaultParams: {},
-            params: {}
-        };
-
-        state = {
-            searching: false,
             items: [],
-            params: {},
             total: 0,
-            error: null
+            error: null,
+            isSearching: false
         };
 
-        componentDidMount() {
-            if (searchOnMount) {
-                this.search();
-            }
+        searchItems = (params = {}, startIndex = 0, stopIndex = MIN_STOP_INDEX, meta) => {
+            this.props.searchItems(namespace, startIndex, stopIndex, params, meta);
         }
-
-        search = (persistentParams = {}, nonPersistentParams = {}) => {
-            return new Promise((resolve, reject) => {
-                onSearching();
-                const oldParams = this.props.params;
-                this.props.setParams(persistentParams);
-                this.setState({
-                    searching: true,
-                }, () => {
-                    request({ ...this.props.defaultParams,
-                              ...oldParams,
-                              ...persistentParams,
-                              ...nonPersistentParams }).then(response => {
-                        onSuccess(response);
-                        const { data, total } = response.data;
-                        this.setState({
-                            total,
-                            items: data,
-                            searching: false,
-                            error: null
-                        }, () => resolve(data));
-                    }).catch(error => {
-                        onError(error);
-                        console.error(error);
-                        this.setState({
-                            searching: false,
-                            error: error
-                        }, () => reject());
-                    });
-                });
-            });
-        };
 
         render() {
             return (
-                <WrappedComponent search={this.search}
-                                  searching={this.state.searching}
-                                  resultItems={this.state.items}
+                <WrappedComponent search={this.searchItems}
+                                  searching={this.props.isSearching}
+                                  resultItems={this.props.items}
                                   params={this.props.params}
-                                  searchError={this.state.error}
-                                  total={this.state.total}
+                                  searchError={this.props.error}
+                                  total={this.props.total}
+                                  namespace={namespace}
                                   {...this.props} />
             );
         }
@@ -103,11 +51,13 @@ const searcher = (options) => (WrappedComponent) => {
 
     return connect(
         state => ({
-            params: getParams(state.search, options.name)
+            params: filterSelectors.getFilters(state.filters, namespace),
+            items: searchSelectors.getResultItems(state.search, namespace),
+            total: searchSelectors.getTotal(state.search, namespace),
+            error: searchSelectors.getError(state.search, namespace),
+            isSearching: searchSelectors.getIsSearching(state.search, namespace)
         }),
-        {
-            setParams: (params) => setParams(options.name, params)
-        }
+        searchActions
     )(Searcher);
 
     // TODO (yaniv): change displayName

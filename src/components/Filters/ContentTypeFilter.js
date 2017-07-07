@@ -1,32 +1,44 @@
-import React from 'react';
-import values from 'lodash/values';
-import { Dropdown, Button } from 'semantic-ui-react'
-import { CONTENT_TYPE_BY_ID } from '../../helpers/consts.js';
-import './ContentTypeFilter.css';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Dropdown } from 'semantic-ui-react';
 
-const options = values(CONTENT_TYPE_BY_ID).map((value, key) => ({ key, value, text: value }));
+import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../helpers/consts';
+import connectFilter from './connectFilter';
 
-const emptyValue = [];
+class ContentTypeFilter extends Component {
 
-function ContentTypeFilter(props) {
-    const { onChange, value } = props;
+  static propTypes = {
+    updateValue: PropTypes.func.isRequired,
+    allValues: PropTypes.arrayOf(PropTypes.string),
+    onApply: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    allValues: EMPTY_ARRAY,
+  };
+
+  handleChange = (e, data) => {
+    this.props.updateValue(data.value);
+    this.props.onApply();
+  };
+
+  render() {
+    const { allValues } = this.props;
+    const options       = Array.from(Object.values(CONTENT_TYPE_BY_ID))
+      .filter(x => allValues.findIndex(y => y === x) === -1)
+      .map(x => ({ key: x, value: x, text: x }));
 
     return (
-        <div className="ContentTypeFilter">
-            <Dropdown placeholder="Content Type"
-                    value={value}
-                    onChange={(event, data) => onChange(data.value)}
-                    options={options}
-                    multiple search selection fluid />
-            { value && value.length > 0 &&
-                <Button type="button" icon="remove" onClick={() => onChange(emptyValue)} floated="right" />
-            }
-        </div>
+      <Dropdown
+        search
+        selection
+        fluid
+        placeholder="Content Type"
+        onChange={this.handleChange}
+        options={options}
+      />
     );
+  }
 }
 
-ContentTypeFilter.defaultProps = {
-    value: []
-};
-
-export default ContentTypeFilter;
+export default connectFilter({ isMultiple: true })(ContentTypeFilter);

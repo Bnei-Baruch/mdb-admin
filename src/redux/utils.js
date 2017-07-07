@@ -11,9 +11,9 @@ export const merge = (m, v) => {
   return setMap(m, v.id, { ...old, ...v });
 };
 
-export const update = (m, id, updater) => {
-  const old = m.get(id) || {};
-  return setMap(m, id, updater(old));
+export const update = (m, k, updater) => {
+  const old = m.get(k) || {};
+  return setMap(m, k, updater(old));
 };
 
 export const bulkMerge = (m, a) => {
