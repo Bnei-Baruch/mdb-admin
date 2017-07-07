@@ -75,18 +75,21 @@ export const CONTENT_TYPE_BY_ID = {
 };
 //Collection types
 
-export const COLLECTIONS = {
-    CT_DAILY_LESSON,
-    CT_SPECIAL_LESSON,
-    CT_FRIENDS_GATHERINGS,
-    CT_CONGRESS,
-    CT_VIDEO_PROGRAM,
-    CT_LECTURE_SERIES,
-    CT_MEALS,
-    CT_HOLIDAY,
-    CT_PICNIC,
-    CT_UNITY_DAY,
+export const COLLECTION_TYPE_OPTIONS = {
+    [CT_DAILY_LESSON]: {text: CT_DAILY_LESSON, value: CT_DAILY_LESSON},
+    [CT_SPECIAL_LESSON]: {text: CT_SPECIAL_LESSON, value: CT_SPECIAL_LESSON},
+    [CT_FRIENDS_GATHERINGS]: {text: CT_FRIENDS_GATHERINGS, value: CT_FRIENDS_GATHERINGS},
+    [CT_CONGRESS]: {text: CT_CONGRESS, value: CT_CONGRESS},
+    [CT_VIDEO_PROGRAM]: {text: CT_VIDEO_PROGRAM, value: CT_VIDEO_PROGRAM},
+    [CT_LECTURE_SERIES]: {text: CT_LECTURE_SERIES, value: CT_LECTURE_SERIES},
+    [CT_MEALS]: {text: CT_MEALS, value: CT_MEALS},
+    [CT_HOLIDAY]: {text: CT_HOLIDAY, value: CT_HOLIDAY},
+    [CT_PICNIC]: {text: CT_PICNIC, value: CT_PICNIC},
+    [CT_UNITY_DAY]: {text: CT_UNITY_DAY, value: CT_UNITY_DAY},
+    [CT_VIRTUAL_LESSON]: {text: CT_VIRTUAL_LESSON, value: CT_VIRTUAL_LESSON},
 }
+
+
 // Operation Types
 export const OP_CAPTURE_START = 'capture_start';
 export const OP_CAPTURE_STOP = 'capture_stop';
