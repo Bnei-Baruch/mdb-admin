@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import moment from 'moment';
-import {Button, Divider, Flag, Form, Header, Input, Message, Segment, Select, Checkbox} from 'semantic-ui-react';
+import {Button, Divider, Flag, Form, Header, Input, Dropdown, Segment, Select, Checkbox} from 'semantic-ui-react';
 import {
     LANG_ENGLISH,
     LANG_HEBREW,
@@ -11,6 +11,7 @@ import {
     MAJOR_LANGUAGES,
     COLLECTION_TYPE_OPTIONS, CT_CONGRESS, CT_VIDEO_PROGRAM, CT_VIRTUAL_LESSON
 } from '../../helpers/consts';
+import countries from '../../helpers/countries';
 import * as shapes from '../shapes';
 import {formatError, isValidPattern} from '../../helpers/utils';
 
@@ -120,6 +121,12 @@ class NewCollectionForm extends Component {
                 <Form.Group widths="equal">
                     <Form.Field>
                         <label htmlFor="country">Country*</label>
+                        <Dropdown
+                            placeholder='Select Country'
+                            fluid
+                            search
+                            selection
+                            options={countries}/>
                         <Input id="country"
                                placeholder="Country"
                                value={country}
