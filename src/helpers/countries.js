@@ -1,6 +1,5 @@
-export default countries;
 
-const countries = [
+export const countries = [
     {
         text: 'Afghanistan',
         value: 'AF'

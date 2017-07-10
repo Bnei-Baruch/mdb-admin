@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import moment from 'moment';
+import trim from 'lodash/trim';
 import {Button, Divider, Flag, Form, Header, Input, Dropdown, Segment, Select, Checkbox} from 'semantic-ui-react';
 import {
     LANG_ENGLISH,
@@ -11,7 +12,7 @@ import {
     MAJOR_LANGUAGES,
     COLLECTION_TYPE_OPTIONS, CT_CONGRESS, CT_VIDEO_PROGRAM, CT_VIRTUAL_LESSON
 } from '../../helpers/consts';
-import countries from '../../helpers/countries';
+import {countries} from '../../helpers/countries';
 import * as shapes from '../shapes';
 import {formatError, isValidPattern} from '../../helpers/utils';
 
@@ -66,22 +67,41 @@ class NewCollectionForm extends Component {
     };
 
     onCountryChange = (e, {value}) => {
-        const errors = this.state.errors;
-        if (isValidPattern(value)) {
-            delete errors.country;
-        } else {
-            errors.country = true;
-        }
-
-        this.setState({country: value, errors});
+        this.setState({country: value});
     };
 
-    handleSubmit() {
+    onCountryChange = (e, {value}) => {
+        this.setState({country: value});
+    };
 
+    handleSubmit = () => {
+        if (!this.isValid()) {
+            return;
+        }
+    };
+
+    isValid = ()=> {
+        const {typeId, pattern, start_day,end_day, country,city, errors} = this.state;
+        if (Object.keys(errors).filter((key)=>!errors[key]).length !== 0) {
+            return false;
+        }
+        let requiredFields = {pattern};
+        if (typeId === CT_CONGRESS) {
+            requiredFields = Object.assign(requiredFields, {start_day, end_day, country});
+        }
+        let _errors = Object.keys(requiredFields).filter(key=>!trim(requiredFields[key])).map(key=> {
+            return {[key]: true};
+        });
+
+        if (_errors.length > 0) {
+            this.setState({errors: Object.assign(requiredFields, {start_day, end_day, country}});
+            return false;
+        }
+        return true;
     };
 
     renderCongressFields = () => {
-        const {country, city, start_day, end_day, address} = this.state;
+        const {city, start_day, end_day, address, errors} = this.state;
         const dayPickerStartProps = {
             disabledDays: {
                 after: moment(end_day).toDate(),
@@ -95,7 +115,7 @@ class NewCollectionForm extends Component {
         return (
             <div>
                 <Form.Group widths="equal">
-                    <Form.Field>
+                    <Form.Field error={!!errors.start_day}>
                         <label htmlFor="start_day">Start day*</label>
                         <DayPickerInput
                             placeholder="YYYY-MM-DD"
@@ -106,7 +126,7 @@ class NewCollectionForm extends Component {
                             }}
                             dayPickerProps={dayPickerStartProps}/>
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={!!errors.end_day}>
                         <label htmlFor="end_day">End day*</label>
                         <DayPickerInput
                             placeholder="YYYY-MM-DD"
@@ -119,20 +139,17 @@ class NewCollectionForm extends Component {
                     </Form.Field>
                 </Form.Group>
                 <Form.Group widths="equal">
-                    <Form.Field>
+                    <Form.Field error={!!errors.country}>
                         <label htmlFor="country">Country*</label>
                         <Dropdown
                             placeholder='Select Country'
                             fluid
                             search
                             selection
+                            onChange={this.onCountryChange}
                             options={countries}/>
-                        <Input id="country"
-                               placeholder="Country"
-                               value={country}
-                               onChange={this.onCountryChange}/>
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={!!errors.city}>
                         <label htmlFor="city">City</label>
                         <Input id="city"
                                placeholder="City"
@@ -182,29 +199,31 @@ class NewCollectionForm extends Component {
             <Segment.Group>
                 <Segment basic>
                     <Form onSubmit={this.handleSubmit}>
-                        <Form.Field>
-                            <label htmlFor="type_id">Collection type</label>
-                            <Select id="type_id"
-                                    onChange={this.changeTypeId}
-                                    placeholder='Select collection type'
-                                    options={COLLECTION_TYPE_OPTIONS}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <label htmlFor="active">active</label>
-                            <Checkbox label={"active"} id="active" checked={isActive} onChange={this.toggleActive}/>
-                        </Form.Field>
-                        <Form.Field error={!!errors.pattern}>
-                            <label htmlFor="pattern">Pattern</label>
-                            <Input
-                                id="pattern"
-                                placeholder="Pattern"
-                                value={pattern}
-                                onChange={this.onPatternChange}/>
-                            <small className="helper">
-                                Used in physical file names.
-                                English words separated with &lsquo;-&rsquo;
-                            </small>
-                        </Form.Field>
+                        <Form.Group>
+                            <Form.Field widths={7}>
+                                <label htmlFor="type_id">Collection type</label>
+                                <Select id="type_id"
+                                        onChange={this.changeTypeId}
+                                        placeholder='Select collection type'
+                                        options={COLLECTION_TYPE_OPTIONS}/>
+                            </Form.Field>
+                            <Form.Field widths={7} error={!!errors.pattern}>
+                                <label htmlFor="pattern">Pattern</label>
+                                <Input
+                                    id="pattern"
+                                    placeholder="Pattern"
+                                    value={pattern}
+                                    onChange={this.onPatternChange}/>
+                                <small className="helper">
+                                    Used in physical file names.
+                                    English words separated with &lsquo;-&rsquo;
+                                </small>
+                            </Form.Field>
+                            <Form.Field widths={2} error={!!errors.sctive}>
+                                <label htmlFor="active"></label>
+                                <Checkbox label={"active"} id="active" checked={isActive} onChange={this.toggleActive}/>
+                            </Form.Field>
+                        </Form.Group>
                         <Divider horizontal section>Translations</Divider>
                         <Form.Group widths="equal">
                             <Form.Field>
@@ -214,7 +233,7 @@ class NewCollectionForm extends Component {
                                     placeholder="Label in Hebrew"
                                     value={labels[LANG_HEBREW]}
                                     onChange={(e, x) => this.onLabelChange(e, x, LANG_HEBREW)}
-                                />
+                                    />
                             </Form.Field>
                         </Form.Group>
                         {this.renderByType()}
@@ -231,7 +250,7 @@ class NewCollectionForm extends Component {
                             floated="left"
                             size="tiny"
                             style={{marginTop: '0.2rem', marginBottom: '0'}}
-                        />
+                            />
                         : null}
                     <Button
                         primary
@@ -241,7 +260,7 @@ class NewCollectionForm extends Component {
                         loading={wip}
                         disabled={wip}
                         onClick={this.handleSubmit}
-                    />
+                        />
                 </Segment>
             </Segment.Group>
         )
