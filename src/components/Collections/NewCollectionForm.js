@@ -67,11 +67,9 @@ class NewCollectionForm extends Component {
     };
 
     onCountryChange = (e, {value}) => {
-        this.setState({country: value});
-    };
-
-    onCountryChange = (e, {value}) => {
-        this.setState({country: value});
+        const errors = this.state.errors;
+        delete errors.country;
+        this.setState({country: value, errors});
     };
 
     handleSubmit = () => {
@@ -89,12 +87,13 @@ class NewCollectionForm extends Component {
         if (typeId === CT_CONGRESS) {
             requiredFields = Object.assign(requiredFields, {start_day, end_day, country});
         }
-        let _errors = Object.keys(requiredFields).filter(key=>!trim(requiredFields[key])).map(key=> {
-            return {[key]: true};
+        let _errors = {};
+        Object.keys(requiredFields).filter(key=>!trim(requiredFields[key])).forEach(key=> {
+            _errors[key] = true;
         });
 
-        if (_errors.length > 0) {
-            this.setState({errors: Object.assign(requiredFields, {start_day, end_day, country}});
+        if (Object.keys(_errors).length > 0) {
+            this.setState({errors: _errors});
             return false;
         }
         return true;
@@ -122,7 +121,8 @@ class NewCollectionForm extends Component {
                             format="YYYY-MM-DD"
                             value={moment(start_day).format("YYYY-MM-DD")}
                             onDayChange={val => {
-                                this.setState({start_day: val})
+                                delete errors.start_day;
+                                this.setState({start_day: val, errors})
                             }}
                             dayPickerProps={dayPickerStartProps}/>
                     </Form.Field>
@@ -133,6 +133,7 @@ class NewCollectionForm extends Component {
                             format="YYYY-MM-DD"
                             value={moment(end_day).format("YYYY-MM-DD")}
                             onDayChange={val => {
+                                delete errors.end_day;
                                 this.setState({end_day: val})
                             }}
                             dayPickerProps={dayPickerEndProps}/>
@@ -220,8 +221,8 @@ class NewCollectionForm extends Component {
                                 </small>
                             </Form.Field>
                             <Form.Field widths={2} error={!!errors.sctive}>
-                                <label htmlFor="active"></label>
-                                <Checkbox label={"active"} id="active" checked={isActive} onChange={this.toggleActive}/>
+                                <label htmlFor="active">active</label>
+                                <Checkbox id="active" checked={isActive} onChange={this.toggleActive}/>
                             </Form.Field>
                         </Form.Group>
                         <Divider horizontal section>Translations</Divider>
