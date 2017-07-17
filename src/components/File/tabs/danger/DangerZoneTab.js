@@ -4,35 +4,34 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
 
+import { SECURITY_LEVELS } from '../../../../helpers/consts';
+import { formatError } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/files';
 import * as shapes from '../../../shapes';
-import { SECURITY_LEVELS } from '../../../../helpers/consts';
 
 class DangerZoneTab extends Component {
 
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
     file: shapes.File,
-    wip: PropTypes.bool,
     err: shapes.Error,
   };
 
   static defaultProps = {
     file: null,
-    wip: false,
     err: null,
   };
 
   state = {
-    changedSecurityLevel: null,
+    changedSecure: null,
     modals: {
       confirmChangeSecurityLevel: false,
     },
   };
 
-  onChangeSecurityLevel = (value) => {
+  handleChangeSecure = (e, data) => {
     this.setState({
-      changedSecurityLevel: value,
+      changedSecure: data.value,
       modals: {
         ...this.state.modals,
         confirmChangeSecurityLevel: true
@@ -40,15 +39,16 @@ class DangerZoneTab extends Component {
     });
   };
 
-  onConfirmChangeSecurityLevel = () => {
-    const level = this.state.changedSecurityLevel;
-    this.props.changeSecurityLevel({ id: this.props.file.id, level });
+  handleConfirmChangeSecure = () => {
+    const { file, changeSecurityLevel } = this.props;
+    const level                         = this.state.changedSecure;
+    changeSecurityLevel(file.id, level);
     this.hideChangeSecurityLevelModal();
   };
 
   hideChangeSecurityLevelModal = () => {
     this.setState({
-      changedSecurityLevel: null,
+      changedSecure: null,
       modals: {
         ...this.state.modals,
         confirmChangeSecurityLevel: false,
@@ -57,9 +57,10 @@ class DangerZoneTab extends Component {
   };
 
   render() {
-    const options = Object.keys(SECURITY_LEVELS)
+    const { file, err } = this.props;
+    const options       = Object.keys(SECURITY_LEVELS)
       .map(k => SECURITY_LEVELS[k])
-      .filter(x => x.value !== this.props.file.secure);
+      .filter(x => x.value !== file.secure);
 
     return (
       <Grid>
@@ -76,7 +77,7 @@ class DangerZoneTab extends Component {
                         upward
                         options={options}
                         value={options[0].value}
-                        onChange={(e, { value }) => this.onChangeSecurityLevel(value)}
+                        onChange={this.handleChangeSecure}
                       />
                     </Button.Group>
                   </List.Content>
@@ -85,6 +86,16 @@ class DangerZoneTab extends Component {
                       Change Security Level
                     </List.Header>
                     Make sure you understand what you are doing.
+                    {
+                      err ?
+                        <Header
+                          content={formatError(err)}
+                          icon={{ name: 'warning sign' }}
+                          color="red"
+                          size="tiny"
+                        /> :
+                        null
+                    }
                   </List.Content>
                 </List.Item>
               </List>
@@ -102,7 +113,7 @@ class DangerZoneTab extends Component {
                 <Button basic color="green" inverted onClick={this.hideChangeSecurityLevelModal}>
                   <Icon name="remove" /> No
                 </Button>
-                <Button color="red" inverted onClick={this.onConfirmChangeSecurityLevel}>
+                <Button color="red" inverted onClick={this.handleConfirmChangeSecure}>
                   <Icon name="checkmark" /> Yes
                 </Button>
               </Modal.Actions>
@@ -115,8 +126,7 @@ class DangerZoneTab extends Component {
 }
 
 const mapState = state => ({
-  wip: selectors.getWIP(state.collections, 'changeSecurityLevel'),
-  err: selectors.getError(state.collections, 'changeSecurityLevel'),
+  err: selectors.getError(state.files, 'changeSecurityLevel'),
 });
 
 function mapDispatch(dispatch) {
