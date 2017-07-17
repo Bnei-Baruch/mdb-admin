@@ -100,12 +100,12 @@ const fetchItemTags               = createAction(FETCH_ITEM_TAGS);
 const fetchItemTagsSuccess        = createAction(FETCH_ITEM_TAGS_SUCCESS);
 const fetchItemTagsFailure        = createAction(FETCH_ITEM_TAGS_FAILURE);
 
-const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL);
-const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
-const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
+const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
+const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
+const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const addSource                  = createAction(ADD_SOURCE, (id, sourceID) => ({ id, sourceID }));
 const addSourceSuccess           = createAction(ADD_SOURCE_SUCCESS);
 const addSourceFailure           = createAction(ADD_SOURCE_FAILURE);
@@ -138,12 +138,12 @@ export const actions = {
   fetchItemTagsSuccess,
   fetchItemTagsFailure,
 
-  changeSecurityLevel,
-  changeSecurityLevelSuccess,
-  changeSecurityLevelFailure,
   updateI18n,
   updateI18nSuccess,
   updateI18nFailure,
+  changeSecurityLevel,
+  changeSecurityLevelSuccess,
+  changeSecurityLevelFailure,
   addSource,
   addSourceSuccess,
   addSourceFailure,
@@ -179,12 +179,12 @@ const keys = new Map([
   [FETCH_ITEM_TAGS_SUCCESS, 'fetchItemTags'],
   [FETCH_ITEM_TAGS_FAILURE, 'fetchItemTags'],
 
-  [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
-  [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
-  [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
   [UPDATE_I18N, 'updateI18n'],
   [UPDATE_I18N_SUCCESS, 'updateI18n'],
   [UPDATE_I18N_FAILURE, 'updateI18n'],
+  [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
+  [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
+  [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
   [ADD_SOURCE, 'addSource'],
   [ADD_SOURCE_SUCCESS, 'addSource'],
   [ADD_SOURCE_FAILURE, 'addSource'],
@@ -303,12 +303,12 @@ export const reducer = handleActions({
   [FETCH_ITEM_TAGS_SUCCESS]: onSuccess,
   [FETCH_ITEM_TAGS_FAILURE]: onFailure,
 
-  [CHANGE_SECURITY_LEVEL]: onRequest,
-  [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
-  [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
   [UPDATE_I18N]: onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
   [UPDATE_I18N_FAILURE]: onFailure,
+  [CHANGE_SECURITY_LEVEL]: onRequest,
+  [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
+  [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
   [ADD_SOURCE]: onRequest,
   [ADD_SOURCE_SUCCESS]: onSuccess,
   [ADD_SOURCE_FAILURE]: onFailure,
