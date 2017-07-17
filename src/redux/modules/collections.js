@@ -58,7 +58,18 @@ const fetchItemUnits = createAction(FETCH_ITEM_UNITS);
 const fetchItemUnitsSuccess = createAction(FETCH_ITEM_UNITS_SUCCESS);
 const fetchItemUnitsFailure = createAction(FETCH_ITEM_UNITS_FAILURE);
 
-const create = createAction(CREATE);
+const create = createAction(CREATE, (parentID, state) => ({
+        parent_id: parentID,
+        pattern: state.pattern,
+        labels: state.labels,
+        start_day: state.start_day,
+        end_day: state.end_day,
+        country: state.country,
+        city: state.city,
+        full_address: state.full_address,
+        i18n: state.i18n
+    })
+);
 const createSuccess = createAction(CREATE_SUCCESS);
 const createFailure = createAction(CREATE_FAILURE);
 
@@ -200,16 +211,16 @@ const getWIP = (state, key) => state.wip.get(key);
 const getError = (state, key) => state.errors.get(key);
 
 const denormIDs = createSelector(getCollections, byID =>
-  memoize(ids => ids.map(id => byID.get(id))));
+    memoize(ids => ids.map(id => byID.get(id))));
 
 // CCU = CollectionContentUnit
 const denormCCUs = createSelector(getCollections, byID =>
     memoize(ccus => ccus.map(x => ({...x, collection: byID.get(x.collection_id)}))));
 
 export const selectors = {
-  getCollectionById,
-  getWIP,
-  getError,
-  denormIDs,
-  denormCCUs,
+    getCollectionById,
+    getWIP,
+    getError,
+    denormIDs,
+    denormCCUs,
 };

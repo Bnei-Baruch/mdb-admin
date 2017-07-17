@@ -24,6 +24,17 @@ function* fetchItemUnits(action) {
   }
 }
 
+
+function* create(action) {
+    try {
+      console.log(action);
+        const resp = yield call(api.post, '/rest/collections/', action.payload);
+        yield put(actions.createSuccess(resp.data));
+    } catch (err) {
+        yield put(actions.createFailure(err));
+    }
+}
+
 function* changeSecurityLevel(action) {
   try {
     const { id, level } = action.payload;
@@ -60,9 +71,14 @@ function* watchUpdateI18n() {
   yield takeEvery(types.UPDATE_I18N, updateI18n);
 }
 
+function* watchCreate() {
+  yield takeEvery(types.CREATE, create);
+}
+
 export const sagas = [
   watchFetchItem,
   watchFetchItemUnits,
   watchChangeSecurityLevel,
   watchUpdateI18n,
+  watchCreate,
 ];

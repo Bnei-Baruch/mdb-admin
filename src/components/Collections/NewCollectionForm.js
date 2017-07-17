@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import moment from 'moment';
 import trim from 'lodash/trim';
+import toPairs from 'lodash/toPairs';
+import moment from 'moment';
 import {Button, Divider, Flag, Form, Header, Input, Dropdown, Segment, Select, Checkbox} from 'semantic-ui-react';
 import {
     LANGUAGES,
@@ -21,8 +23,8 @@ import LanguageSelector from '../shared/LanguageSelector';
 class NewCollectionForm extends Component {
     static propTypes = {
         create: PropTypes.func.isRequired,
-        getWIP: PropTypes.func.isRequired,
-        getError: PropTypes.func.isRequired,
+        wip: PropTypes.bool.isRequired,
+        err: PropTypes.bool,
         collection: shapes.Collection,
     };
 
@@ -38,10 +40,13 @@ class NewCollectionForm extends Component {
     getInitialState() {
         return {
             typeId: CT_CONGRESS,
-            isActive: '',
+            isActive: false,
             pattern: '',
             labels: {
-                [LANG_HEBREW]: ''
+                [LANG_HEBREW]: '',
+                [LANG_RUSSIAN]: '',
+                [LANG_ENGLISH]: '',
+                [LANG_SPANISH]: '',
             },
             submitted: false,
             errors: {},
@@ -69,34 +74,44 @@ class NewCollectionForm extends Component {
         this.setState({pattern: value, errors});
     };
 
-    onCountryChange = (e, {value}) => {
+    onLabelChange = (e, {value}, language) => {
         const errors = this.state.errors;
-        delete errors.country;
-        this.setState({country: value, errors});
+        if (errors.labels && value.trim() !== '') {
+            delete errors.labels;
+        }
+
+        this.setState({errors, labels: {...this.state.labels, [language]: value}});
     };
 
-    handleSubmit = () => {
+    onCountryChange = (e, {value}) => {
+        this.setState({country: value});
+    };
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const parent = this.props.collection;
         if (!this.isValid()) {
             return;
         }
+        this.props.create(parent ? parent.id : null, this.state);
+        this.setState({submitted: true});
     };
 
-    isValid = ()=> {
-        const {typeId, pattern, start_day,end_day, country,city, errors} = this.state;
-        if (Object.keys(errors).filter((key)=>!errors[key]).length !== 0) {
+    isValid = () => {
+        const {typeId, pattern, start_day, end_day, country, city, errors} = this.state;
+        if (Object.keys(errors).filter((key) => !errors[key]).length !== 0) {
             return false;
         }
         let requiredFields = {pattern};
         if (typeId === CT_CONGRESS) {
             requiredFields = Object.assign(requiredFields, {start_day, end_day, country});
         }
-        let _errors = {};
-        Object.keys(requiredFields).filter(key=>!trim(requiredFields[key])).forEach(key=> {
-            _errors[key] = true;
+        let _errors = Object.keys(requiredFields).filter(key => !trim(requiredFields[key])).map(key => {
+            return [key, true];
         });
 
-        if (Object.keys(_errors).length > 0) {
-            this.setState({errors: _errors});
+        if (_errors.length > 0) {
+            this.setState({errors: toPairs(_errors)});
             return false;
         }
         return true;
@@ -235,13 +250,42 @@ class NewCollectionForm extends Component {
                         <Divider horizontal section>Translations</Divider>
                         <Form.Group widths="equal">
                             <Form.Field>
-                                <label htmlFor="he.name"><Flag name="il"/>Hebrew</label>
+                                <label htmlFor="he.name"><Flag name="ru"/>Hebrew</label>
                                 <Input
                                     id="he.name"
                                     placeholder="Label in Hebrew"
                                     value={labels[LANG_HEBREW]}
                                     onChange={(e, x) => this.onLabelChange(e, x, LANG_HEBREW)}
-                                    />
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label htmlFor="ru.name"><Flag name="ru"/>Russian</label>
+                                <Input
+                                    id="ru.name"
+                                    placeholder="Label in Russian"
+                                    value={labels[LANG_RUSSIAN]}
+                                    onChange={(e, x) => this.onLabelChange(e, x, LANG_RUSSIAN)}
+                                />
+                            </Form.Field>
+                        </Form.Group>
+                        <Form.Group widths="equal">
+                            <Form.Field>
+                                <label htmlFor="en.name"><Flag name="us"/>English</label>
+                                <Input
+                                    id="en.name"
+                                    placeholder="Label in English"
+                                    value={labels[LANG_ENGLISH]}
+                                    onChange={(e, x) => this.onLabelChange(e, x, LANG_ENGLISH)}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label htmlFor="es.name"><Flag name="es"/>Spanish</label>
+                                <Input
+                                    id="es.name"
+                                    placeholder="Label in Spanish"
+                                    value={labels[LANG_SPANISH]}
+                                    onChange={(e, x) => this.onLabelChange(e, x, LANG_SPANISH)}
+                                />
                             </Form.Field>
                         </Form.Group>
                         {this.renderByType()}
@@ -258,7 +302,7 @@ class NewCollectionForm extends Component {
                             floated="left"
                             size="tiny"
                             style={{marginTop: '0.2rem', marginBottom: '0'}}
-                            />
+                        />
                         : null}
                     <Button
                         primary
@@ -268,7 +312,7 @@ class NewCollectionForm extends Component {
                         loading={wip}
                         disabled={wip}
                         onClick={this.handleSubmit}
-                        />
+                    />
                 </Segment>
             </Segment.Group>
         )
