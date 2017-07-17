@@ -37,7 +37,7 @@ function* changeSecurityLevel(action) {
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
-    const resp         = yield call(api.put, `/rest/content_units/${id}/i18n/`, i18n);
+    const resp         = yield call(api.put, `/rest/collections/${id}/i18n/`, i18n);
     yield put(actions.updateI18nSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateI18nFailure(err));

@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { Button, Flag, Header, Input, Menu, Message, Segment, Table } from 'semantic-ui-react';
 
-import * as shapes from '../../../shapes';
-import { actions, selectors } from '../../../../redux/modules/collections';
-import LanguageSelector from '../../../shared/LanguageSelector';
-import { formatError } from '../../../../helpers/utils';
 import { ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGES, RTL_LANGUAGES } from '../../../../helpers/consts';
+import { formatError } from '../../../../helpers/utils';
+import { actions, selectors } from '../../../../redux/modules/collections';
+import * as shapes from '../../../shapes';
+import LanguageSelector from '../../../shared/LanguageSelector';
 
 class I18nForm extends Component {
 
@@ -49,9 +49,15 @@ class I18nForm extends Component {
     this.setState({ i18n });
   };
 
+  onDescriptionChange = (e, { value }) => {
+    const i18n                      = this.state.i18n;
+    i18n[e.target.name].description = value;
+    this.setState({ i18n });
+  };
+
   addLanguage = (language) => {
     const i18n     = this.state.i18n;
-    i18n[language] = { language, name: '' };
+    i18n[language] = { language, name: '', description: '' };
     this.setState({ i18n });
   };
 
@@ -88,14 +94,23 @@ class I18nForm extends Component {
                 {LANGUAGES[k].text}
               </Table.Cell>
               <Table.Cell>
+                <label htmlFor={`${k}.name`}>Name</label>
                 <Input
                   fluid
-                  transparent
-                  className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
+                  id={`${k}.name`}
                   name={k}
                   value={i18n[k].name}
+                  className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
                   onChange={this.onNameChange}
-                  required
+                />
+                <label htmlFor={`${k}.description`}>Description</label>
+                <Input
+                  fluid
+                  id={`${k}.description`}
+                  name={k}
+                  value={i18n[k].description || ''}
+                  className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
+                  onChange={this.onDescriptionChange}
                 />
               </Table.Cell>
               <Table.Cell collapsing>
@@ -106,7 +121,7 @@ class I18nForm extends Component {
                   icon="remove"
                   color="red"
                   inverted
-                  onClick={e => this.removeLanguage(k)}
+                  onClick={() => this.removeLanguage(k)}
                 />
               </Table.Cell>
             </Table.Row>))
@@ -172,4 +187,3 @@ function mapDispatch(dispatch) {
 }
 
 export default connect(mapState, mapDispatch)(I18nForm);
-
