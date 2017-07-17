@@ -5,6 +5,7 @@ import moment from 'moment';
 import trim from 'lodash/trim';
 import {Button, Divider, Flag, Form, Header, Input, Dropdown, Segment, Select, Checkbox} from 'semantic-ui-react';
 import {
+    LANGUAGES,
     LANG_ENGLISH,
     LANG_HEBREW,
     LANG_RUSSIAN,
@@ -15,6 +16,7 @@ import {
 import {countries} from '../../helpers/countries';
 import * as shapes from '../shapes';
 import {formatError, isValidPattern} from '../../helpers/utils';
+import LanguageSelector from '../shared/LanguageSelector';
 
 class NewCollectionForm extends Component {
     static propTypes = {
@@ -48,6 +50,7 @@ class NewCollectionForm extends Component {
             country: '',
             city: '',
             full_address: '',
+            default_language: LANG_HEBREW
         };
     }
 
@@ -167,13 +170,20 @@ class NewCollectionForm extends Component {
                 </Form.Field>
             </div>
         );
-    }
+    };
 
     renderDefaultLanguage = () => {
-        /*
-         default_language
-
-         */
+        const default_language = this.state.default_language;
+        return (
+            <div>
+                <Flag name={LANGUAGES[default_language].flag}/>
+                {LANGUAGES[default_language].text}
+                <LanguageSelector
+                    exclude={[default_language]}
+                    onSelect={ l => { this.setState({ default_language: l })}}
+                    text="Select default language"/>
+            </div>
+        );
 
     }
 
@@ -188,12 +198,9 @@ class NewCollectionForm extends Component {
             default:
                 return null;
         }
-
-
     };
 
     render() {
-
         const {wip, err} = this.props;
         const {submitted, errors, isActive, pattern, labels} = this.state;
         return (
