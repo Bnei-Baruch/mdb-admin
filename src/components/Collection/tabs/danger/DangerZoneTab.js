@@ -2,37 +2,38 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import { Button, Checkbox, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
 
+import { EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
+import { formatError } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/collections';
 import * as shapes from '../../../shapes';
-import { SECURITY_LEVELS } from '../../../../helpers/consts';
 
 class DangerZoneTab extends Component {
 
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
+    changeActive: PropTypes.func.isRequired,
     collection: shapes.Collection,
-    wip: PropTypes.bool,
-    err: shapes.Error,
+    status: shapes.AsyncStatusMap,
   };
 
   static defaultProps = {
     collection: null,
-    wip: false,
-    err: null,
+    status: EMPTY_OBJECT,
   };
 
   state = {
-    changedSecurityLevel: null,
+    changedSecure: null,
+    changedActive: null,
     modals: {
       confirmChangeSecurityLevel: false,
     },
   };
 
-  onChangeSecurityLevel = (value) => {
+  handleChangeSecure = (e, data) => {
     this.setState({
-      changedSecurityLevel: value,
+      changedSecure: data.value,
       modals: {
         ...this.state.modals,
         confirmChangeSecurityLevel: true
@@ -40,15 +41,21 @@ class DangerZoneTab extends Component {
     });
   };
 
-  onConfirmChangeSecurityLevel = () => {
-    const level = this.state.changedSecurityLevel;
-    this.props.changeSecurityLevel({ id: this.props.collection.id, level });
+  handleConfirmChangeSecure = () => {
+    const { collection, changeSecurityLevel } = this.props;
+    const level                               = this.state.changedSecure;
+    changeSecurityLevel(collection.id, level);
     this.hideChangeSecurityLevelModal();
+  };
+
+  handleChangeActive = () => {
+    const { collection, changeActive } = this.props;
+    changeActive(collection.id);
   };
 
   hideChangeSecurityLevelModal = () => {
     this.setState({
-      changedSecurityLevel: null,
+      changedSecure: null,
       modals: {
         ...this.state.modals,
         confirmChangeSecurityLevel: false,
@@ -57,9 +64,12 @@ class DangerZoneTab extends Component {
   };
 
   render() {
-    const options = Object.keys(SECURITY_LEVELS)
+    const { collection, status } = this.props;
+    const properties             = collection.properties || {};
+    const isActive               = Object.prototype.hasOwnProperty.call(properties, 'active') ? properties.active : true;
+    const options                = Object.keys(SECURITY_LEVELS)
       .map(k => SECURITY_LEVELS[k])
-      .filter(x => x.value !== this.props.collection.secure);
+      .filter(x => x.value !== collection.secure);
 
     return (
       <Grid>
@@ -67,7 +77,7 @@ class DangerZoneTab extends Component {
           <Grid.Column>
             <Header attached inverted content="Danger Zone" color="red" />
             <Segment attached>
-              <List divided verticalAlign="middle">
+              <List divided relaxed="very" verticalAlign="middle">
                 <List.Item>
                   <List.Content floated="right">
                     <Button.Group color="red">
@@ -76,7 +86,7 @@ class DangerZoneTab extends Component {
                         upward
                         options={options}
                         value={options[0].value}
-                        onChange={(e, { value }) => this.onChangeSecurityLevel(value)}
+                        onChange={this.handleChangeSecure}
                       />
                     </Button.Group>
                   </List.Content>
@@ -85,6 +95,47 @@ class DangerZoneTab extends Component {
                       Change Security Level
                     </List.Header>
                     Make sure you understand what you are doing.
+                    {
+                      status.changeSecurityLevel.err ?
+                        <Header
+                          content={formatError(status.changeSecurityLevel.err)}
+                          icon={{ name: 'warning sign' }}
+                          color="red"
+                          size="tiny"
+                        /> :
+                        null
+                    }
+                  </List.Content>
+                </List.Item>
+                <List.Item>
+                  <List.Content floated="right">
+                    {
+                      status.changeActive.wip ?
+                        <Icon name="spinner" loading /> :
+                        null
+                    }
+                    <Checkbox
+                      toggle
+                      checked={isActive}
+                      label={isActive ? 'active' : 'inactive'}
+                      onClick={this.handleChangeActive}
+                    />
+                  </List.Content>
+                  <List.Content>
+                    <List.Header>
+                      Change Active Mode
+                    </List.Header>
+                    Active collections are available for selection in BB studio, rename tool.
+                    {
+                      status.changeActive.err ?
+                        <Header
+                          content={formatError(status.changeActive.err)}
+                          icon={{ name: 'warning sign' }}
+                          color="red"
+                          size="tiny"
+                        /> :
+                        null
+                    }
                   </List.Content>
                 </List.Item>
               </List>
@@ -102,7 +153,7 @@ class DangerZoneTab extends Component {
                 <Button basic color="green" inverted onClick={this.hideChangeSecurityLevelModal}>
                   <Icon name="remove" /> No
                 </Button>
-                <Button color="red" inverted onClick={this.onConfirmChangeSecurityLevel}>
+                <Button color="red" inverted onClick={this.handleConfirmChangeSecure}>
                   <Icon name="checkmark" /> Yes
                 </Button>
               </Modal.Actions>
@@ -114,13 +165,24 @@ class DangerZoneTab extends Component {
   }
 }
 
-const mapState = state => ({
-  wip: selectors.getWIP(state.collections, 'changeSecurityLevel'),
-  err: selectors.getError(state.collections, 'changeSecurityLevel'),
-});
+const mapState = (state) => {
+  const status = ['changeSecurityLevel', 'changeActive']
+    .reduce((acc, val) => {
+      acc[val] = {
+        wip: selectors.getWIP(state.collections, val),
+        err: selectors.getError(state.collections, val),
+      };
+      return acc;
+    }, {});
+
+  return { status };
+};
 
 function mapDispatch(dispatch) {
-  return bindActionCreators({ changeSecurityLevel: actions.changeSecurityLevel }, dispatch);
+  return bindActionCreators({
+    changeSecurityLevel: actions.changeSecurityLevel,
+    changeActive: actions.changeActive,
+  }, dispatch);
 }
 
 export default connect(mapState, mapDispatch)(DangerZoneTab);
