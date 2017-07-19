@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
-import moment from 'moment';
 import trim from 'lodash/trim';
-import toPairs from 'lodash/toPairs';
+import fromPairs from 'lodash/fromPairs';
 import moment from 'moment';
 import {Button, Divider, Flag, Form, Header, Input, Dropdown, Segment, Select, Checkbox} from 'semantic-ui-react';
 import {
@@ -13,7 +12,7 @@ import {
     LANG_RUSSIAN,
     LANG_SPANISH,
     MAJOR_LANGUAGES,
-    COLLECTION_TYPE_OPTIONS, CT_CONGRESS, CT_VIDEO_PROGRAM, CT_VIRTUAL_LESSON
+    COLLECTION_TYPE_OPTIONS, COLLECTION_TYPE, CT_CONGRESS, CT_VIDEO_PROGRAM, CT_VIRTUAL_LESSON
 } from '../../helpers/consts';
 import {countries} from '../../helpers/countries';
 import * as shapes from '../shapes';
@@ -39,7 +38,7 @@ class NewCollectionForm extends Component {
 
     getInitialState() {
         return {
-            typeId: CT_CONGRESS,
+            type_id: COLLECTION_TYPE[CT_CONGRESS].value,
             isActive: false,
             pattern: '',
             labels: {
@@ -60,7 +59,7 @@ class NewCollectionForm extends Component {
     }
 
 
-    changeTypeId = (e, {value}) => this.setState({typeId: value});
+    changeTypeId = (e, {value}) => this.setState({type_id: value});
     toggleActive = () => this.setState({isActive: !this.state.isActive});
 
     onPatternChange = (e, {value}) => {
@@ -98,12 +97,12 @@ class NewCollectionForm extends Component {
     };
 
     isValid = () => {
-        const {typeId, pattern, start_day, end_day, country, city, errors} = this.state;
+        const {type_id, pattern, start_day, end_day, country, city, errors} = this.state;
         if (Object.keys(errors).filter((key) => !errors[key]).length !== 0) {
             return false;
         }
         let requiredFields = {pattern};
-        if (typeId === CT_CONGRESS) {
+        if (type_id === COLLECTION_TYPE[CT_CONGRESS].value) {
             requiredFields = Object.assign(requiredFields, {start_day, end_day, country});
         }
         let _errors = Object.keys(requiredFields).filter(key => !trim(requiredFields[key])).map(key => {
@@ -111,7 +110,7 @@ class NewCollectionForm extends Component {
         });
 
         if (_errors.length > 0) {
-            this.setState({errors: toPairs(_errors)});
+            this.setState({errors: fromPairs(_errors)});
             return false;
         }
         return true;
@@ -200,15 +199,15 @@ class NewCollectionForm extends Component {
             </div>
         );
 
-    }
+    };
 
     renderByType = () => {
-        const {typeId} = this.state;
-        switch (typeId) {
-            case CT_CONGRESS:
+        const {type_id} = this.state;
+        switch (type_id) {
+            case COLLECTION_TYPE[CT_CONGRESS].value:
                 return (this.renderCongressFields());
-            case CT_VIDEO_PROGRAM:
-            case CT_VIRTUAL_LESSON:
+            case COLLECTION_TYPE[CT_VIDEO_PROGRAM].value:
+            case COLLECTION_TYPE[CT_VIRTUAL_LESSON].value:
                 return this.renderDefaultLanguage();
             default:
                 return null;
@@ -315,7 +314,7 @@ class NewCollectionForm extends Component {
                     />
                 </Segment>
             </Segment.Group>
-        )
+        );
     }
 }
 

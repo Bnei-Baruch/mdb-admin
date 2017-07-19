@@ -27,7 +27,6 @@ function* fetchItemUnits(action) {
 
 function* create(action) {
     try {
-      console.log(action);
         const resp = yield call(api.post, '/rest/collections/', action.payload);
         yield put(actions.createSuccess(resp.data));
     } catch (err) {

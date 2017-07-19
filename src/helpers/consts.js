@@ -11,9 +11,9 @@ export const EMPTY_HIERARCHY = Object.freeze({
 
 // Namespaces
 export const NS_COLLECTIONS = 'collections';
-export const NS_UNITS       = 'content_units';
-export const NS_FILES       = 'files';
-export const NS_OPERATIONS  = 'operations';
+export const NS_UNITS = 'content_units';
+export const NS_FILES = 'files';
+export const NS_OPERATIONS = 'operations';
 
 export const PAGE_SIZE = 50;
 
@@ -75,19 +75,20 @@ export const CONTENT_TYPE_BY_ID = {
 };
 //Collection types
 
-export const COLLECTION_TYPE_OPTIONS = [
-    {text: CT_DAILY_LESSON, value: CT_DAILY_LESSON},
-    {text: CT_SPECIAL_LESSON, value: CT_SPECIAL_LESSON},
-    {text: CT_FRIENDS_GATHERINGS, value: CT_FRIENDS_GATHERINGS},
-    {text: CT_CONGRESS, value: CT_CONGRESS},
-    {text: CT_VIDEO_PROGRAM, value: CT_VIDEO_PROGRAM},
-    {text: CT_LECTURE_SERIES, value: CT_LECTURE_SERIES},
-    {text: CT_MEALS, value: CT_MEALS},
-    {text: CT_HOLIDAY, value: CT_HOLIDAY},
-    {text: CT_PICNIC, value: CT_PICNIC},
-    {text: CT_UNITY_DAY, value: CT_UNITY_DAY},
-    {text: CT_VIRTUAL_LESSON, value: CT_VIRTUAL_LESSON},
-];
+export const COLLECTION_TYPE = {
+    [CT_DAILY_LESSON]: {text: CT_DAILY_LESSON, value: 1},
+    [CT_SPECIAL_LESSON]: {text: CT_SPECIAL_LESSON, value: 2},
+    [CT_FRIENDS_GATHERINGS]: {text: CT_FRIENDS_GATHERINGS, value: 3},
+    [CT_CONGRESS]: {text: CT_CONGRESS, value: 4},
+    [CT_VIDEO_PROGRAM]: {text: CT_VIDEO_PROGRAM, value: 5},
+    [CT_LECTURE_SERIES]: {text: CT_LECTURE_SERIES, value: 6},
+    [CT_MEALS]: {text: CT_MEALS, value: 7},
+    [CT_HOLIDAY]: {text: CT_HOLIDAY, value: 8},
+    [CT_PICNIC]: {text: CT_PICNIC, value: 9},
+    [CT_UNITY_DAY]: {text: CT_UNITY_DAY, value: 10},
+    [CT_VIRTUAL_LESSON]: {text: CT_VIRTUAL_LESSON, value: 16},
+};
+export const COLLECTION_TYPE_OPTIONS = Array.from(Object.values(COLLECTION_TYPE));
 
 
 // Operation Types
