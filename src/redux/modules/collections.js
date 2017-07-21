@@ -3,7 +3,6 @@ import {createSelector} from 'reselect';
 import memoize from 'lodash/memoize';
 
 import {bulkMerge, merge, setMap} from '../utils';
-import {fromPairs, pick,identity} from 'lodash';
 
 /* Types */
 
@@ -59,32 +58,7 @@ const fetchItemUnits = createAction(FETCH_ITEM_UNITS);
 const fetchItemUnitsSuccess = createAction(FETCH_ITEM_UNITS_SUCCESS);
 const fetchItemUnitsFailure = createAction(FETCH_ITEM_UNITS_FAILURE);
 
-const create = createAction(CREATE, (parentID, state) => {
-        let i18nArr = Object.keys(state.labels)
-            .filter(i=>state.labels[i])
-            .map(i=>[i, {
-                language: i,
-                name: state.labels[i]
-            }]);
-        let properties = {
-            parent_id: parentID,
-            pattern: state.pattern,
-            start_day: state.start_day,
-            end_day: state.end_day,
-            country: state.country,
-            city: state.city,
-            full_address: state.full_address,
-        };
-        console.log(properties);
-        properties = pick(properties, identity);
-        console.log(properties);
-        return {
-            type_id: state.type_id,
-            properties: properties,
-            i18n: fromPairs(i18nArr)
-        };
-    }
-);
+const create = createAction(CREATE, params=> params);
 const createSuccess = createAction(CREATE_SUCCESS);
 const createFailure = createAction(CREATE_FAILURE);
 

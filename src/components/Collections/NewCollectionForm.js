@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
-import trim from 'lodash/trim';
-import fromPairs from 'lodash/fromPairs';
+import {fromPairs, trim} from 'lodash';
+
 import moment from 'moment';
 import {Button, Divider, Flag, Form, Header, Input, Dropdown, Segment, Select, Checkbox} from 'semantic-ui-react';
 import {
@@ -37,16 +37,13 @@ class NewCollectionForm extends Component {
     }
 
     getInitialState() {
+        let i18nArr = MAJOR_LANGUAGES.map(l => ([l, {language: l, name: '', description: ''}]));
+
         return {
             type_id: COLLECTION_TYPE[CT_CONGRESS].value,
             isActive: false,
             pattern: '',
-            labels: {
-                [LANG_HEBREW]: '',
-                [LANG_RUSSIAN]: '',
-                [LANG_ENGLISH]: '',
-                [LANG_SPANISH]: '',
-            },
+            i18n: fromPairs(i18nArr),
             submitted: false,
             errors: {},
             start_day: moment().format("YYYY-MM-DD"),
@@ -73,13 +70,14 @@ class NewCollectionForm extends Component {
         this.setState({pattern: value, errors});
     };
 
-    onLabelChange = (e, {value}, language) => {
-        const errors = this.state.errors;
-        if (errors.labels && value.trim() !== '') {
-            delete errors.labels;
+    onI18nChange = (e, {value}, language) => {
+        const {errors, i18n} = this.state;
+        if (errors.i18n && value.trim() !== '') {
+            delete errors.i18n;
         }
+        i18n[language].name = value;
 
-        this.setState({errors, labels: {...this.state.labels, [language]: value}});
+        this.setState({errors, i18n});
     };
 
     onCountryChange = (e, {value}) => {
@@ -88,12 +86,33 @@ class NewCollectionForm extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const parent = this.props.collection;
         if (!this.isValid()) {
             return;
         }
-        this.props.create(parent ? parent.id : null, this.state);
+        const {i18n, type_id} = this.state;
+
+        this.props.create({type_id, properties: this.prepareDataByTypeId(), i18n});
         this.setState({submitted: true});
+    };
+
+    prepareDataByTypeId = () => {
+        const parent = this.props.collection;
+        const {pattern, start_day, end_day, country, city, full_address, type_id, default_language} = this.state;
+
+        let properties = {
+            parent_id: parent ? parent.id : null,
+            pattern: pattern,
+        };
+        switch (type_id) {
+            case COLLECTION_TYPE[CT_CONGRESS].value:
+                Object.assign(properties, {start_day, end_day, country, city, full_address});
+                break;
+            case COLLECTION_TYPE[CT_VIDEO_PROGRAM].value:
+            case COLLECTION_TYPE[CT_VIRTUAL_LESSON].value:
+                properties.default_language = default_language;
+                break;
+        }
+        return properties;
     };
 
     isValid = () => {
@@ -134,6 +153,7 @@ class NewCollectionForm extends Component {
                     <Form.Field error={!!errors.start_day}>
                         <label htmlFor="start_day">Start day*</label>
                         <DayPickerInput
+                            style={{width: '100%', zIndex: 1000}}
                             placeholder="YYYY-MM-DD"
                             format="YYYY-MM-DD"
                             value={moment(start_day).format("YYYY-MM-DD")}
@@ -146,6 +166,7 @@ class NewCollectionForm extends Component {
                     <Form.Field error={!!errors.end_day}>
                         <label htmlFor="end_day">End day*</label>
                         <DayPickerInput
+                            style={{width: '100%', zIndex: 1000}}
                             placeholder="YYYY-MM-DD"
                             format="YYYY-MM-DD"
                             value={moment(end_day).format("YYYY-MM-DD")}
@@ -194,7 +215,9 @@ class NewCollectionForm extends Component {
                 {LANGUAGES[default_language].text}
                 <LanguageSelector
                     exclude={[default_language]}
-                    onSelect={ l => { this.setState({ default_language: l })}}
+                    onSelect={ l => {
+                        this.setState({default_language: l})
+                    }}
                     text="Select default language"/>
             </div>
         );
@@ -216,7 +239,7 @@ class NewCollectionForm extends Component {
 
     render() {
         const {wip, err} = this.props;
-        const {submitted, errors, isActive, pattern, labels} = this.state;
+        const {submitted, errors, isActive, pattern, i18n} = this.state;
         return (
             <Segment.Group>
                 <Segment basic>
@@ -253,8 +276,8 @@ class NewCollectionForm extends Component {
                                 <Input
                                     id="he.name"
                                     placeholder="Label in Hebrew"
-                                    value={labels[LANG_HEBREW]}
-                                    onChange={(e, x) => this.onLabelChange(e, x, LANG_HEBREW)}
+                                    value={i18n[LANG_HEBREW].name}
+                                    onChange={(e, x) => this.onI18nChange(e, x, LANG_HEBREW)}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -262,8 +285,8 @@ class NewCollectionForm extends Component {
                                 <Input
                                     id="ru.name"
                                     placeholder="Label in Russian"
-                                    value={labels[LANG_RUSSIAN]}
-                                    onChange={(e, x) => this.onLabelChange(e, x, LANG_RUSSIAN)}
+                                    value={i18n[LANG_RUSSIAN].name}
+                                    onChange={(e, x) => this.onI18nChange(e, x, LANG_RUSSIAN)}
                                 />
                             </Form.Field>
                         </Form.Group>
@@ -273,8 +296,8 @@ class NewCollectionForm extends Component {
                                 <Input
                                     id="en.name"
                                     placeholder="Label in English"
-                                    value={labels[LANG_ENGLISH]}
-                                    onChange={(e, x) => this.onLabelChange(e, x, LANG_ENGLISH)}
+                                    value={i18n[LANG_ENGLISH].name}
+                                    onChange={(e, x) => this.onI18nChange(e, x, LANG_ENGLISH)}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -282,8 +305,8 @@ class NewCollectionForm extends Component {
                                 <Input
                                     id="es.name"
                                     placeholder="Label in Spanish"
-                                    value={labels[LANG_SPANISH]}
-                                    onChange={(e, x) => this.onLabelChange(e, x, LANG_SPANISH)}
+                                    value={i18n[LANG_SPANISH].name}
+                                    onChange={(e, x) => this.onI18nChange(e, x, LANG_SPANISH)}
                                 />
                             </Form.Field>
                         </Form.Group>
