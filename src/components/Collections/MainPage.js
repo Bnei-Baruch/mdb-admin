@@ -43,7 +43,7 @@ class CollectionsMainPage extends Component {
 
     state = {
         showFilters: false,
-        newCollection: true,
+        newCollection: false,
     };
 
     toggleFilters = () => this.setState({showFilters: !this.state.showFilters});
