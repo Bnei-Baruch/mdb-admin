@@ -23,8 +23,8 @@ import './collections.css';
 class NewCollectionForm extends Component {
     static propTypes = {
         create: PropTypes.func.isRequired,
-        wip: PropTypes.bool.isRequired,
-        err: PropTypes.bool,
+        wipOfCreate: PropTypes.bool.isRequired,
+        errOfCreate: PropTypes.bool,
         collection: shapes.Collection,
     };
 
@@ -48,7 +48,7 @@ class NewCollectionForm extends Component {
             submitted: false,
             errors: {},
             start_day: moment().format("YYYY-MM-DD"),
-            end_day: null,
+            end_day: moment().add(1, 'days').format("YYYY-MM-DD"),
             country: '',
             city: '',
             full_address: '',
@@ -82,7 +82,10 @@ class NewCollectionForm extends Component {
     };
 
     onCountryChange = (e, {value}) => {
-        this.setState({country: value});
+        const errors = this.state.errors;
+        delete errors.country;
+
+        this.setState({country: value, errors});
     };
 
     handleSubmit = (e) => {
@@ -239,7 +242,7 @@ class NewCollectionForm extends Component {
     };
 
     render() {
-        const {wip, err} = this.props;
+        const {wipOfCreate, errOfCreate} = this.props;
         const {submitted, errors, isActive, pattern, i18n} = this.state;
         return (
             <Segment.Group>
@@ -279,7 +282,7 @@ class NewCollectionForm extends Component {
                                     placeholder="Label in Hebrew"
                                     value={i18n[LANG_HEBREW].name}
                                     onChange={(e, x) => this.onI18nChange(e, x, LANG_HEBREW)}
-                                />
+                                    />
                             </Form.Field>
                             <Form.Field>
                                 <label htmlFor="ru.name"><Flag name="ru"/>Russian</label>
@@ -288,7 +291,7 @@ class NewCollectionForm extends Component {
                                     placeholder="Label in Russian"
                                     value={i18n[LANG_RUSSIAN].name}
                                     onChange={(e, x) => this.onI18nChange(e, x, LANG_RUSSIAN)}
-                                />
+                                    />
                             </Form.Field>
                         </Form.Group>
                         <Form.Group widths="equal">
@@ -299,7 +302,7 @@ class NewCollectionForm extends Component {
                                     placeholder="Label in English"
                                     value={i18n[LANG_ENGLISH].name}
                                     onChange={(e, x) => this.onI18nChange(e, x, LANG_ENGLISH)}
-                                />
+                                    />
                             </Form.Field>
                             <Form.Field>
                                 <label htmlFor="es.name"><Flag name="es"/>Spanish</label>
@@ -308,7 +311,7 @@ class NewCollectionForm extends Component {
                                     placeholder="Label in Spanish"
                                     value={i18n[LANG_SPANISH].name}
                                     onChange={(e, x) => this.onI18nChange(e, x, LANG_SPANISH)}
-                                />
+                                    />
                             </Form.Field>
                         </Form.Group>
                         {this.renderByType()}
@@ -316,26 +319,26 @@ class NewCollectionForm extends Component {
                 </Segment>
 
                 <Segment clearing attached="bottom" size="tiny">
-                    {submitted && err ?
+                    {submitted && errOfCreate ?
                         <Header
                             inverted
-                            content={formatError(err)}
+                            content={formatError(errOfCreate)}
                             color="red"
                             icon="warning sign"
                             floated="left"
                             size="tiny"
                             style={{marginTop: '0.2rem', marginBottom: '0'}}
-                        />
+                            />
                         : null}
                     <Button
                         primary
                         content="Save"
                         size="tiny"
                         floated="right"
-                        loading={wip}
-                        disabled={wip}
+                        loading={wipOfCreate}
+                        disabled={wipOfCreate}
                         onClick={this.handleSubmit}
-                    />
+                        />
                 </Segment>
             </Segment.Group>
         );

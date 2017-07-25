@@ -28,6 +28,8 @@ class CollectionsMainPage extends Component {
         items: PropTypes.arrayOf(shapes.Collection),
         wip: PropTypes.bool,
         err: shapes.Error,
+        wipOfCreate: PropTypes.bool,
+        errOfCreate: shapes.Error,
         onPageChange: PropTypes.func.isRequired,
         onFiltersChange: PropTypes.func.isRequired,
         onFiltersHydrated: PropTypes.func.isRequired,
@@ -39,12 +41,24 @@ class CollectionsMainPage extends Component {
         total: 0,
         wip: false,
         err: null,
+        wipOfCreate: false,
+        errOfCreate: null
     };
 
     state = {
         showFilters: false,
         newCollection: false,
     };
+
+
+    componentWillReceiveProps(nextProps) {
+        const {wipOfCreate} = this.props;
+        const nWip = nextProps.wipOfCreate;
+        const nErr = nextProps.errOfCreate;
+        if (wipOfCreate && !nWip && !nErr) {
+            this.toggleNewCollection();
+        }
+    }
 
     toggleFilters = () => this.setState({showFilters: !this.state.showFilters});
 

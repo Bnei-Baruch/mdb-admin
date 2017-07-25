@@ -66,6 +66,8 @@ const mapState = (state) => {
     const denormIDs = collections.denormIDs(state.collections);
     return {
         ...status,
+        wipOfCreate: collections.getWIP(state.collections, 'create'),
+        errOfCreate: collections.getError(state.collections, 'create'),
         items: Array.isArray(status.items) && status.items.length > 0 ?
             denormIDs(status.items) :
             EMPTY_ARRAY,

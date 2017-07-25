@@ -67,9 +67,6 @@ const create = createAction(CREATE, params=> params);
 const createSuccess = createAction(CREATE_SUCCESS);
 const createFailure = createAction(CREATE_FAILURE);
 
-const changeSecurityLevel = createAction(CHANGE_SECURITY_LEVEL);
-const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
-const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const updateI18n = createAction(UPDATE_I18N, (id, i18n) => ({id, i18n}));
 const updateI18nSuccess = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure = createAction(UPDATE_I18N_FAILURE);
@@ -79,10 +76,6 @@ const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const changeActive = createAction(CHANGE_ACTIVE);
 const changeActiveSuccess = createAction(CHANGE_ACTIVE_SUCCESS);
 const changeActiveFailure = createAction(CHANGE_ACTIVE_FAILURE);
-
-const create = createAction(CREATE);
-const createSuccess = createAction(CREATE_SUCCESS);
-const createFailure = createAction(CREATE_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
