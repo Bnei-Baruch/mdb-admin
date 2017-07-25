@@ -34,7 +34,7 @@ const fetchItem        = createAction(FETCH_ITEM);
 const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
 const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
 
-const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL);
+const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 

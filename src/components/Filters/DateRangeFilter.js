@@ -258,7 +258,13 @@ class DateFilter extends Component {
               <Grid>
                 <Grid.Row>
                   <Grid.Column width={16}>
-                    <Dropdown fluid options={datePresetsOptions} item value={datePreset} onChange={this.handleDatePresetsChange} />
+                    <Dropdown
+                      fluid
+                      item
+                      options={datePresetsOptions}
+                      value={datePreset}
+                      onChange={this.handleDatePresetsChange}
+                    />
                     <Divider />
                   </Grid.Column>
                 </Grid.Row>

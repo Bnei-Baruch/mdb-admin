@@ -100,16 +100,18 @@ export const OP_SEND = 'send';
 export const OP_CONVERT = 'convert';
 export const OP_UPLOAD = 'upload';
 export const OP_IMPORT_KMEDIA = 'import_kmedia';
+export const OP_SIRTUTIM      = 'sirtutim';
 
 export const OPERATION_TYPE_BY_ID = {
-    1: OP_CAPTURE_START,
-    2: OP_CAPTURE_STOP,
-    3: OP_DEMUX,
-    4: OP_SEND,
-    5: OP_UPLOAD,
-    6: OP_TRIM,
-    7: OP_IMPORT_KMEDIA,
-    8: OP_CONVERT,
+  1: OP_CAPTURE_START,
+  2: OP_CAPTURE_STOP,
+  3: OP_DEMUX,
+  4: OP_SEND,
+  5: OP_UPLOAD,
+  6: OP_TRIM,
+  7: OP_IMPORT_KMEDIA,
+  8: OP_CONVERT,
+  9: OP_SIRTUTIM,
 };
 
 // Source Types

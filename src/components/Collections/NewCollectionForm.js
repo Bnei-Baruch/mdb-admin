@@ -18,6 +18,7 @@ import {countries} from '../../helpers/countries';
 import * as shapes from '../shapes';
 import {formatError, isValidPattern} from '../../helpers/utils';
 import LanguageSelector from '../shared/LanguageSelector';
+import './collections.css';
 
 class NewCollectionForm extends Component {
     static propTypes = {
