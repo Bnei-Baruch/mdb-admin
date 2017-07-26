@@ -60,9 +60,11 @@ class CollectionsMainPage extends Component {
     }
   }
 
-  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
+  toggleFilters = () =>
+    this.setState({ showFilters: !this.state.showFilters });
 
-  toggleNewCollection = () => this.setState({ newCollection: !this.state.newCollection });
+  toggleNewCollection = () =>
+    this.setState({ newCollection: !this.state.newCollection });
 
   render() {
     const { showFilters, newCollection } = this.state;

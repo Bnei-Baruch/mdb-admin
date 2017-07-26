@@ -13,9 +13,25 @@ class CollectionsContainer extends Component {
 
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
+    wipOfCreate: PropTypes.bool,
+    errOfCreate: shapes.Error,
     fetchList: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
   };
+
+  static defaultProps = {
+    wipOfCreate: false,
+    errOfCreate: null
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const { wipOfCreate } = this.props;
+    const nWip            = nextProps.wipOfCreate;
+    const nErr            = nextProps.errOfCreate;
+    if (wipOfCreate && !nWip && !nErr) {
+      this.askForData(this.getPageNo());
+    }
+  }
 
   getPageNo = (search) => {
     let page = 0;
