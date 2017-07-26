@@ -355,3 +355,5 @@ export const ALL_FILE_TYPES = [
   MT_BANNER,
   MT_PRESENTATION,
 ];
+
+export const DATE_FORMAT = 'YYYY-MM-DD';

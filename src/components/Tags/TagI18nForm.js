@@ -44,7 +44,8 @@ class TagI18nForm extends Component {
     this.setState({ i18n });
   };
 
-  addLanguage = (language) => {
+  addLanguage = (e, data) => {
+    const language = data.value;
     const i18n     = this.state.i18n;
     i18n[language] = { language, label: '' };
     this.setState({ i18n });
@@ -128,7 +129,13 @@ class TagI18nForm extends Component {
             <Header content="Translations" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <LanguageSelector exclude={exclude} onSelect={this.addLanguage} />
+            <LanguageSelector
+              item
+              scrolling
+              text="Add Language"
+              exclude={exclude}
+              onChange={this.addLanguage}
+            />
           </Menu.Menu>
         </Menu>
 
