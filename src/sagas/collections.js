@@ -24,14 +24,13 @@ function* fetchItemUnits(action) {
   }
 }
 
-
 function* create(action) {
-    try {
-        const resp = yield call(api.post, '/rest/collections/', action.payload);
-        yield put(actions.createSuccess(resp.data));
-    } catch (err) {
-        yield put(actions.createFailure(err));
-    }
+  try {
+    const resp = yield call(api.post, '/rest/collections/', action.payload);
+    yield put(actions.createSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.createFailure(err));
+  }
 }
 
 function* updateI18n(action) {
