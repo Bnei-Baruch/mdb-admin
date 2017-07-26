@@ -33,6 +33,7 @@ class CollectionsMainPage extends Component {
     onPageChange: PropTypes.func.isRequired,
     onFiltersChange: PropTypes.func.isRequired,
     onFiltersHydrated: PropTypes.func.isRequired,
+    create: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -66,7 +67,20 @@ class CollectionsMainPage extends Component {
   render() {
     const { showFilters, newCollection } = this.state;
 
-    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated } = this.props;
+    const
+      {
+        pageNo,
+        total,
+        items,
+        wip,
+        wipOfCreate,
+        err,
+        errOfCreate,
+        onPageChange,
+        onFiltersChange,
+        onFiltersHydrated,
+        create,
+      } = this.props;
 
     return (
       <div>
@@ -141,7 +155,7 @@ class CollectionsMainPage extends Component {
         >
           <Modal.Header>Create New Collection</Modal.Header>
           <Modal.Content>
-            <NewCollectionForm {...this.props} />
+            <NewCollectionForm wip={wipOfCreate} err={errOfCreate} create={create} />
           </Modal.Content>
         </Modal>
       </div>

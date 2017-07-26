@@ -6,8 +6,8 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Button, Checkbox, Divider, Dropdown, Flag, Form, Header, Input, Segment, Select } from 'semantic-ui-react';
 
 import {
-  COLLECTION_TYPE,
   COLLECTION_TYPE_OPTIONS,
+  COLLECTION_TYPES,
   CT_CONGRESS,
   CT_VIDEO_PROGRAM,
   CT_VIRTUAL_LESSON,
@@ -19,7 +19,6 @@ import {
   MAJOR_LANGUAGES
 } from '../../helpers/consts';
 import { countries } from '../../helpers/countries';
-import * as shapes from '../shapes';
 import { formatError, isValidPattern } from '../../helpers/utils';
 import LanguageSelector from '../shared/LanguageSelector';
 import './collections.css';
@@ -27,13 +26,13 @@ import './collections.css';
 class NewCollectionForm extends Component {
   static propTypes = {
     create: PropTypes.func.isRequired,
-    wipOfCreate: PropTypes.bool.isRequired,
-    errOfCreate: PropTypes.bool,
-    collection: shapes.Collection,
+    wip: PropTypes.bool.isRequired,
+    err: PropTypes.bool,
   };
 
   static defaultProps = {
-    collection: null
+    wip: false,
+    err: null,
   };
 
   constructor(props) {
@@ -45,7 +44,7 @@ class NewCollectionForm extends Component {
     const i18nArr = MAJOR_LANGUAGES.map(l => ([l, { language: l, name: '', description: '' }]));
 
     return {
-      type_id: COLLECTION_TYPE[CT_CONGRESS].value,
+      type_id: COLLECTION_TYPES[CT_CONGRESS].value,
       isActive: false,
       pattern: '',
       i18n: fromPairs(i18nArr),
@@ -56,12 +55,9 @@ class NewCollectionForm extends Component {
       country: '',
       city: '',
       full_address: '',
-      default_language: LANG_HEBREW
+      default_language: LANG_HEBREW,
     };
   }
-
-  changeTypeId = (e, { value }) => this.setState({ type_id: value });
-  toggleActive = () => this.setState({ isActive: !this.state.isActive });
 
   onPatternChange = (e, { value }) => {
     const errors = this.state.errors;
@@ -91,36 +87,49 @@ class NewCollectionForm extends Component {
     this.setState({ country: value, errors });
   };
 
+  handleTypeChange = (e, data) => this.setState({ type_id: data.value });
+
+  toggleActive = () => this.setState({ isActive: !this.state.isActive });
+
   handleSubmit = (e) => {
     e.preventDefault();
     if (!this.isValid()) {
       return;
     }
-    const { i18n, type_id } = this.state;
 
-    this.props.create({ type_id, properties: this.prepareDataByTypeId(), i18n });
+    const { i18n, type_id: typeID } = this.state;
+    const properties                = this.prepareDataByTypeId();
+    this.props.create(typeID, properties, i18n);
+
     this.setState({ submitted: true });
   };
 
   prepareDataByTypeId = () => {
-    const parent = this.props.collection;
+    const state = this.state;
 
-    const { pattern, start_day, end_day, country, city, full_address, type_id, default_language } = this.state;
-
-    const properties = {
-      pattern,
-      parent_id: parent ? parent.id : null,
+    // common properties to all types
+    const data = {
+      pattern: state.pattern,
     };
-    switch (type_id) {
-    case COLLECTION_TYPE[CT_CONGRESS].value:
-      Object.assign(properties, { start_day, end_day, country, city, full_address });
+
+    // per type specific properties
+    switch (state.type_id) {
+    case COLLECTION_TYPES[CT_CONGRESS].value:
+      data.start_date   = state.start_day;
+      data.end_date     = state.end_day;
+      data.country      = state.country;
+      data.city         = state.city;
+      data.full_address = state.full_address;
       break;
-    case COLLECTION_TYPE[CT_VIDEO_PROGRAM].value:
-    case COLLECTION_TYPE[CT_VIRTUAL_LESSON].value:
-      properties.default_language = default_language;
+    case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
+    case COLLECTION_TYPES[CT_VIRTUAL_LESSON].value:
+      data.default_language = state.default_language;
+      break;
+    default:
       break;
     }
-    return properties;
+
+    return data;
   };
 
   isValid = () => {
@@ -131,7 +140,7 @@ class NewCollectionForm extends Component {
     }
 
     let requiredFields = { pattern };
-    if (type_id === COLLECTION_TYPE[CT_CONGRESS].value) {
+    if (type_id === COLLECTION_TYPES[CT_CONGRESS].value) {
       requiredFields = Object.assign(requiredFields, { start_day, end_day, country });
     }
     const _errors = Object.keys(requiredFields)
@@ -196,12 +205,12 @@ class NewCollectionForm extends Component {
           <Form.Field error={!!errors.country}>
             <label htmlFor="country">Country*</label>
             <Dropdown
-              placeholder="Select Country"
               fluid
               search
               selection
-              onChange={this.onCountryChange}
+              placeholder="Select Country"
               options={countries}
+              onChange={this.onCountryChange}
             />
           </Form.Field>
           <Form.Field error={!!errors.city}>
@@ -228,27 +237,26 @@ class NewCollectionForm extends Component {
   };
 
   renderDefaultLanguage = () => {
-    const default_language = this.state.default_language;
+    const defaultLanguage = this.state.default_language;
     return (
       <div>
-        <Flag name={LANGUAGES[default_language].flag} />
-        {LANGUAGES[default_language].text}
+        <Flag name={LANGUAGES[defaultLanguage].flag} />
+        {LANGUAGES[defaultLanguage].text}
         <LanguageSelector
-          exclude={[default_language]}
-          onSelect={l => this.setState({ default_language: l })}
           text="Select default language"
+          exclude={[defaultLanguage]}
+          onSelect={l => this.setState({ default_language: l })}
         />
       </div>
     );
   };
 
   renderByType = () => {
-    const { type_id } = this.state;
-    switch (type_id) {
-    case COLLECTION_TYPE[CT_CONGRESS].value:
-      return (this.renderCongressFields());
-    case COLLECTION_TYPE[CT_VIDEO_PROGRAM].value:
-    case COLLECTION_TYPE[CT_VIRTUAL_LESSON].value:
+    switch (this.state.type_id) {
+    case COLLECTION_TYPES[CT_CONGRESS].value:
+      return this.renderCongressFields();
+    case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
+    case COLLECTION_TYPES[CT_VIRTUAL_LESSON].value:
       return this.renderDefaultLanguage();
     default:
       return null;
@@ -256,8 +264,9 @@ class NewCollectionForm extends Component {
   };
 
   render() {
-    const { wipOfCreate, errOfCreate }                   = this.props;
+    const { wip, err }                                   = this.props;
     const { submitted, errors, isActive, pattern, i18n } = this.state;
+
     return (
       <Segment.Group>
         <Segment basic>
@@ -267,9 +276,9 @@ class NewCollectionForm extends Component {
                 <label htmlFor="type_id">Collection type</label>
                 <Select
                   id="type_id"
-                  onChange={this.changeTypeId}
                   placeholder="Select collection type"
                   options={COLLECTION_TYPE_OPTIONS}
+                  onChange={this.handleTypeChange}
                 />
               </Form.Field>
               <Form.Field widths={7} error={!!errors.pattern}>
@@ -290,10 +299,12 @@ class NewCollectionForm extends Component {
                 <Checkbox id="active" checked={isActive} onChange={this.toggleActive} />
               </Form.Field>
             </Form.Group>
+
             <Divider horizontal section>Translations</Divider>
+
             <Form.Group widths="equal">
               <Form.Field>
-                <label htmlFor="he.name"><Flag name="ru" />Hebrew</label>
+                <label htmlFor="he.name"><Flag name="il" />Hebrew</label>
                 <Input
                   id="he.name"
                   placeholder="Label in Hebrew"
@@ -336,10 +347,10 @@ class NewCollectionForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && errOfCreate ?
+          {submitted && err ?
             <Header
               inverted
-              content={formatError(errOfCreate)}
+              content={formatError(err)}
               color="red"
               icon="warning sign"
               floated="left"
@@ -352,8 +363,8 @@ class NewCollectionForm extends Component {
             content="Save"
             size="tiny"
             floated="right"
-            loading={wipOfCreate}
-            disabled={wipOfCreate}
+            loading={wip}
+            disabled={wip}
             onClick={this.handleSubmit}
           />
         </Segment>

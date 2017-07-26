@@ -75,7 +75,7 @@ export const CONTENT_TYPE_BY_ID = {
 };
 
 // Collection types
-export const COLLECTION_TYPE = {
+export const COLLECTION_TYPES = {
   [CT_DAILY_LESSON]: { text: CT_DAILY_LESSON, value: 1 },
   [CT_SPECIAL_LESSON]: { text: CT_SPECIAL_LESSON, value: 2 },
   [CT_FRIENDS_GATHERINGS]: { text: CT_FRIENDS_GATHERINGS, value: 3 },
@@ -89,7 +89,7 @@ export const COLLECTION_TYPE = {
   [CT_VIRTUAL_LESSON]: { text: CT_VIRTUAL_LESSON, value: 16 },
 };
 
-export const COLLECTION_TYPE_OPTIONS = Array.from(Object.values(COLLECTION_TYPE));
+export const COLLECTION_TYPE_OPTIONS = Array.from(Object.values(COLLECTION_TYPES));
 
 // Operation Types
 export const OP_CAPTURE_START = 'capture_start';

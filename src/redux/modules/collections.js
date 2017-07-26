@@ -70,7 +70,11 @@ const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const changeActive               = createAction(CHANGE_ACTIVE);
 const changeActiveSuccess        = createAction(CHANGE_ACTIVE_SUCCESS);
 const changeActiveFailure        = createAction(CHANGE_ACTIVE_FAILURE);
-const create                     = createAction(CREATE, params => params);
+const create                     = createAction(CREATE, (typeID, properties, i18n) => ({
+  type_id: typeID,
+  properties,
+  i18n
+}));
 const createSuccess              = createAction(CREATE_SUCCESS);
 const createFailure              = createAction(CREATE_FAILURE);
 

@@ -24,15 +24,6 @@ function* fetchItemUnits(action) {
   }
 }
 
-function* create(action) {
-  try {
-    const resp = yield call(api.post, '/rest/collections/', action.payload);
-    yield put(actions.createSuccess(resp.data));
-  } catch (err) {
-    yield put(actions.createFailure(err));
-  }
-}
-
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
@@ -60,6 +51,15 @@ function* changeActive(action) {
     yield put(actions.changeActiveSuccess(resp.data));
   } catch (err) {
     yield put(actions.changeActiveFailure(err));
+  }
+}
+
+function* create(action) {
+  try {
+    const resp = yield call(api.post, '/rest/collections/', action.payload);
+    yield put(actions.createSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.createFailure(err));
   }
 }
 
