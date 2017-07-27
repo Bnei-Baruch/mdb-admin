@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { bulkMerge, merge, setMap } from '../utils';
+import { bulkMerge, del, merge, setMap } from '../utils';
 
 /* Types */
 
@@ -25,6 +25,9 @@ const CHANGE_ACTIVE_FAILURE         = 'Collections/CHANGE_ACTIVE_FAILURE';
 const CREATE                        = 'Collections/CREATE';
 const CREATE_SUCCESS                = 'Collections/CREATE_SUCCESS';
 const CREATE_FAILURE                = 'Collections/CREATE_FAILURE';
+const DELETE                        = 'Collections/DELETE';
+const DELETE_SUCCESS                = 'Collections/DELETE_SUCCESS';
+const DELETE_FAILURE                = 'Collections/DELETE_FAILURE';
 
 const RECEIVE_ITEMS = 'Collections/RECEIVE_ITEMS';
 
@@ -48,6 +51,9 @@ export const types = {
   CREATE,
   CREATE_SUCCESS,
   CREATE_FAILURE,
+  DELETE,
+  DELETE_SUCCESS,
+  DELETE_FAILURE,
 
   RECEIVE_ITEMS,
 };
@@ -77,6 +83,9 @@ const create                     = createAction(CREATE, (typeID, properties, i18
 }));
 const createSuccess              = createAction(CREATE_SUCCESS);
 const createFailure              = createAction(CREATE_FAILURE);
+const deleteC                    = createAction(DELETE);
+const deleteSuccess              = createAction(DELETE_SUCCESS);
+const deleteFailure              = createAction(DELETE_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
@@ -100,6 +109,9 @@ export const actions = {
   create,
   createSuccess,
   createFailure,
+  deleteC,
+  deleteSuccess,
+  deleteFailure,
 
   receiveItems,
 };
@@ -126,6 +138,9 @@ const keys = new Map([
   [CREATE, 'create'],
   [CREATE_SUCCESS, 'create'],
   [CREATE_FAILURE, 'create'],
+  [DELETE, 'delete'],
+  [DELETE_SUCCESS, 'delete'],
+  [DELETE_FAILURE, 'delete'],
 ]);
 
 const initialState = {
@@ -166,6 +181,9 @@ const onSuccess = (state, action) => {
       content_units: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.content_unit.id })),
     });
     break;
+  case DELETE_SUCCESS:
+    byID = del(state.byID, action.payload);
+    break;
   default:
     byID = state.byID;
   }
@@ -203,6 +221,9 @@ export const reducer = handleActions({
   [CREATE]: onRequest,
   [CREATE_SUCCESS]: onSuccess,
   [CREATE_FAILURE]: onFailure,
+  [DELETE]: onRequest,
+  [DELETE_SUCCESS]: onSuccess,
+  [DELETE_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 

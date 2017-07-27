@@ -8,12 +8,14 @@ const SET_PAGE           = 'Lists/SET_PAGE';
 const FETCH_LIST         = 'Lists/FETCH_LIST';
 const FETCH_LIST_SUCCESS = 'Lists/FETCH_LIST_SUCCESS';
 const FETCH_LIST_FAILURE = 'Lists/FETCH_LIST_FAILURE';
+const REMOVE_ITEM        = 'Lists/REMOVE_ITEM';
 
 export const types = {
   SET_PAGE,
   FETCH_LIST,
   FETCH_LIST_SUCCESS,
   FETCH_LIST_FAILURE,
+  REMOVE_ITEM,
 };
 
 /* Actions */
@@ -22,12 +24,14 @@ const setPage          = createAction(SET_PAGE, (namespace, pageNo) => ({ namesp
 const fetchList        = createAction(FETCH_LIST, (namespace, pageNo) => ({ namespace, pageNo }));
 const fetchListSuccess = createAction(FETCH_LIST_SUCCESS, (namespace, total, data) => ({ namespace, total, data }));
 const fetchListFailure = createAction(FETCH_LIST_FAILURE, (namespace, err) => ({ namespace, err }));
+const removeItem       = createAction(REMOVE_ITEM, (namespace, id) => ({ namespace, id }));
 
 export const actions = {
   setPage,
   fetchList,
   fetchListSuccess,
   fetchListFailure,
+  removeItem,
 };
 
 /* Reducer */
@@ -66,11 +70,36 @@ const onSuccess = (state, action) => ({
     })),
 });
 
+const onRemoveItem = (state, action) => {
+  const { namespace, id } = action.payload;
+
+  const status = state.byNS.get(namespace);
+  if (!status) {
+    return state;
+  }
+
+  const items = status.items;
+  const idx   = items.indexOf(id);
+  if (idx === -1) {
+    return state;
+  }
+
+  return {
+    ...state,
+    byNS: update(state.byNS, namespace,
+      x => ({
+        ...x,
+        items: items.slice(0, idx).concat(items.slice(idx + 1)),
+      })),
+  };
+};
+
 export const reducer = handleActions({
   [SET_PAGE]: onSetPage,
   [FETCH_LIST]: onRequest,
   [FETCH_LIST_FAILURE]: onFailure,
   [FETCH_LIST_SUCCESS]: onSuccess,
+  [REMOVE_ITEM]: onRemoveItem,
 }, initialState);
 
 /* Selectors */

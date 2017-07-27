@@ -24,3 +24,9 @@ export const bulkMerge = (m, a) => {
   });
   return freezeMap(nm);
 };
+
+export const del = (m, k) => {
+  const nm = new Map(m);
+  nm.delete(k);
+  return freezeMap(nm);
+};

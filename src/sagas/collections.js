@@ -1,7 +1,11 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
+
+import { NS_COLLECTIONS } from '../helpers/consts';
+import api from '../helpers/apiClient';
 import { actions, types } from '../redux/modules/collections';
 import { actions as units } from '../redux/modules/content_units';
-import api from '../helpers/apiClient';
+import { actions as lists } from '../redux/modules/lists';
 
 function* fetchItem(action) {
   try {
@@ -63,6 +67,18 @@ function* create(action) {
   }
 }
 
+function* deleteC(action) {
+  const id = action.payload;
+  try {
+    yield call(api.delete, `/rest/collections/${id}/`);
+    yield put(lists.removeItem(NS_COLLECTIONS, id));
+    yield put(actions.deleteSuccess(id));
+    yield put(push('/collections'));
+  } catch (err) {
+    yield put(actions.deleteFailure(err));
+  }
+}
+
 function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
@@ -87,6 +103,10 @@ function* watchCreate() {
   yield takeEvery(types.CREATE, create);
 }
 
+function* watchDelete() {
+  yield takeEvery(types.DELETE, deleteC);
+}
+
 export const sagas = [
   watchFetchItem,
   watchFetchItemUnits,
@@ -94,4 +114,5 @@ export const sagas = [
   watchChangeSecurityLevel,
   watchChangeActive,
   watchCreate,
+  watchDelete,
 ];

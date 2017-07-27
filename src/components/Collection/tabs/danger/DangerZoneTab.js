@@ -14,6 +14,7 @@ class DangerZoneTab extends Component {
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
     changeActive: PropTypes.func.isRequired,
+    deleteC: PropTypes.func.isRequired,
     collection: shapes.Collection,
     status: shapes.AsyncStatusMap,
   };
@@ -51,6 +52,11 @@ class DangerZoneTab extends Component {
   handleChangeActive = () => {
     const { collection, changeActive } = this.props;
     changeActive(collection.id);
+  };
+
+  handleDelete = () => {
+    const { collection, deleteC } = this.props;
+    deleteC(collection.id);
   };
 
   hideChangeSecurityLevelModal = () => {
@@ -138,6 +144,36 @@ class DangerZoneTab extends Component {
                     }
                   </List.Content>
                 </List.Item>
+                <List.Item>
+                  <List.Content floated="right">
+                    {
+                      status.delete.wip ?
+                        <Icon name="spinner" loading /> :
+                        null
+                    }
+                    <Button
+                      color="red"
+                      content="Delete"
+                      onClick={this.handleDelete}
+                    />
+                  </List.Content>
+                  <List.Content>
+                    <List.Header>
+                      Delete Permanently
+                    </List.Header>
+                    BE CAREFUL, there is no going back !
+                    {
+                      status.delete.err ?
+                        <Header
+                          content={formatError(status.delete.err)}
+                          icon={{ name: 'warning sign' }}
+                          color="red"
+                          size="tiny"
+                        /> :
+                        null
+                    }
+                  </List.Content>
+                </List.Item>
               </List>
             </Segment>
             <Modal
@@ -166,7 +202,7 @@ class DangerZoneTab extends Component {
 }
 
 const mapState = (state) => {
-  const status = ['changeSecurityLevel', 'changeActive']
+  const status = ['changeSecurityLevel', 'changeActive', 'delete']
     .reduce((acc, val) => {
       acc[val] = {
         wip: selectors.getWIP(state.collections, val),
@@ -182,6 +218,7 @@ function mapDispatch(dispatch) {
   return bindActionCreators({
     changeSecurityLevel: actions.changeSecurityLevel,
     changeActive: actions.changeActive,
+    deleteC: actions.deleteC,
   }, dispatch);
 }
 
