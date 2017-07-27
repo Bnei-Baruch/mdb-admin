@@ -34,8 +34,9 @@ class ContentTypeFilter extends Component {
         selection
         fluid
         placeholder="Content Type"
-        onChange={this.handleChange}
         options={options}
+        onChange={this.handleChange}
+        selectOnBlur={false}
       />
     );
   }

@@ -33,8 +33,9 @@ class SecureFilter extends Component {
         selection
         fluid
         placeholder="Security Level"
-        onChange={this.handleChange}
         options={options}
+        onChange={this.handleChange}
+        selectOnBlur={false}
       />
     );
   }

@@ -79,6 +79,7 @@ class DangerZoneTab extends Component {
                         options={options}
                         value={options[0].value}
                         onChange={this.handleChangeSecure}
+                        selectOnBlur={false}
                       />
                     </Button.Group>
                   </List.Content>

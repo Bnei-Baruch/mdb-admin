@@ -261,9 +261,10 @@ class DateFilter extends Component {
                     <Dropdown
                       fluid
                       item
-                      options={datePresetsOptions}
                       value={datePreset}
+                      options={datePresetsOptions}
                       onChange={this.handleDatePresetsChange}
+                      selectOnBlur={false}
                     />
                     <Divider />
                   </Grid.Column>

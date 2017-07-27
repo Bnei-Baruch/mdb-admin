@@ -34,8 +34,9 @@ class OperationTypeFilter extends Component {
         selection
         fluid
         placeholder="Operation Type"
-        onChange={this.handleChange}
         options={options}
+        onChange={this.handleChange}
+        selectOnBlur={false}
       />
     );
   }
