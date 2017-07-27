@@ -29,6 +29,7 @@ class DangerZoneTab extends Component {
     changedActive: null,
     modals: {
       confirmChangeSecurityLevel: false,
+      confirmDelete: false,
     },
   };
 
@@ -54,9 +55,17 @@ class DangerZoneTab extends Component {
     changeActive(collection.id);
   };
 
-  handleDelete = () => {
+  handleDelete = () => this.setState({
+    modals: {
+      ...this.state.modals,
+      confirmDelete: true
+    }
+  });
+
+  handleConfirmDelete = () => {
     const { collection, deleteC } = this.props;
     deleteC(collection.id);
+    this.hideDeleteModal();
   };
 
   hideChangeSecurityLevelModal = () => {
@@ -65,6 +74,15 @@ class DangerZoneTab extends Component {
       modals: {
         ...this.state.modals,
         confirmChangeSecurityLevel: false,
+      }
+    });
+  };
+
+  hideDeleteModal = () => {
+    this.setState({
+      modals: {
+        ...this.state.modals,
+        confirmDelete: false,
       }
     });
   };
@@ -190,6 +208,24 @@ class DangerZoneTab extends Component {
                   <Icon name="remove" /> No
                 </Button>
                 <Button color="red" inverted onClick={this.handleConfirmChangeSecure}>
+                  <Icon name="checkmark" /> Yes
+                </Button>
+              </Modal.Actions>
+            </Modal>
+            <Modal
+              basic
+              size="small"
+              open={this.state.modals.confirmDelete}
+            >
+              <Header icon="trash" content="Delete collection" />
+              <Modal.Content>
+                <p>Are you sure you want to permanently delete this collection?</p>
+              </Modal.Content>
+              <Modal.Actions>
+                <Button basic color="green" inverted onClick={this.hideDeleteModal}>
+                  <Icon name="remove" /> No
+                </Button>
+                <Button color="red" inverted onClick={this.handleConfirmDelete}>
                   <Icon name="checkmark" /> Yes
                 </Button>
               </Modal.Actions>
