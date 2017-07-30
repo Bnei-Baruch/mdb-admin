@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { Button, Checkbox, Divider, Flag, Form, Header, Input, Message, Segment } from 'semantic-ui-react';
+import { Button, Divider, Form, Header, Message, Segment } from 'semantic-ui-react';
 
 import {
   COLLECTION_TYPE_OPTIONS,
@@ -16,15 +15,19 @@ import {
   CT_VIDEO_PROGRAM,
   CT_VIRTUAL_LESSON,
   DATE_FORMAT,
-  LANG_ENGLISH,
-  LANG_HEBREW,
-  LANG_RUSSIAN,
-  LANG_SPANISH,
   MAJOR_LANGUAGES
 } from '../../helpers/consts';
 import { countries } from '../../helpers/countries';
 import { formatError, isValidPattern } from '../../helpers/utils';
-import LanguageSelector from '../shared/LanguageSelector';
+import {
+  DateRangeField,
+  FilenamePatternField,
+  FilmDateField,
+  LanguageField,
+  LocationField,
+  MajorLangsI18nField,
+  ToggleField
+} from '../shared/Fields';
 import './collections.css';
 
 class NewCollectionForm extends Component {
@@ -55,9 +58,9 @@ class NewCollectionForm extends Component {
       i18n,
       pattern: '',
       active: true,
-      start_date: moment().format(DATE_FORMAT),
-      end_date: moment().add(1, 'days').format(DATE_FORMAT),
-      film_date: moment().format(DATE_FORMAT),
+      start_date: moment(),
+      end_date: moment().add(1, 'days'),
+      film_date: moment(),
       country: '',
       city: '',
       full_address: '',
@@ -112,16 +115,11 @@ class NewCollectionForm extends Component {
   handleTypeChange = (e, data) =>
     this.setState({ type_id: data.value });
 
-  handleI18nChange = (e, data) => {
-    const { id, value } = data;
-    const language      = id.substring(0, 2);
-
-    const { errors, i18n } = this.state;
-    if (errors.i18n && value.trim() !== '') {
+  handleI18nChange = (i18n) => {
+    const { errors } = this.state;
+    if (!MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
       delete errors.i18n;
     }
-    i18n[language].name = value;
-
     this.setState({ errors, i18n });
   };
 
@@ -144,16 +142,16 @@ class NewCollectionForm extends Component {
   handleDefaultLanguageChange = (e, data) =>
     this.setState({ default_language: data.value });
 
-  handleStartDateChange = (date) => {
-    const errors = this.state.errors;
-    delete errors.start_date;
-    this.setState({ start_date: date, errors });
-  };
-
-  handleEndDateChange = (date) => {
-    const errors = this.state.errors;
-    delete errors.end_date;
-    this.setState({ end_date: date, errors });
+  handleDateRangeChange = (range) => {
+    const { start, end } = range;
+    const errors         = this.state.errors;
+    if (start) {
+      delete errors.start_date;
+    }
+    if (end) {
+      delete errors.end_date;
+    }
+    this.setState({ start_date: start, end_date: end, errors });
   };
 
   handleFilmDateChange = (date) => {
@@ -162,22 +160,19 @@ class NewCollectionForm extends Component {
     this.setState({ film_date: date, errors });
   };
 
-  handleCountryChange = (e, data) => {
-    const errors = this.state.errors;
-    delete errors.country;
-    this.setState({ country: data.value, errors });
-  };
-
-  handleCityChange = (e, data) => {
-    const errors = this.state.errors;
-    delete errors.city;
-    this.setState({ city: data.value, errors });
-  };
-
-  handleFullAddressChange = (e, data) => {
-    const errors = this.state.errors;
-    delete errors.full_address;
-    this.setState({ full_address: data.value, errors });
+  handleLocationChange = (location) => {
+    const { country, city, fullAddress } = location;
+    const errors                         = this.state.errors;
+    if (country) {
+      delete errors.country;
+    }
+    if (city) {
+      delete errors.city;
+    }
+    if (fullAddress) {
+      delete errors.full_address;
+    }
+    this.setState({ country, city, full_address: fullAddress, errors });
   };
 
   handleSubmit = (e) => {
@@ -188,6 +183,7 @@ class NewCollectionForm extends Component {
 
     const { i18n, type_id: typeID } = this.state;
 
+    // clean i18n
     const cleanI18n = MAJOR_LANGUAGES.reduce((acc, val) => {
       if (i18n[val].name.trim() !== '') {
         acc[val] = { ...i18n[val], language: val };
@@ -195,6 +191,7 @@ class NewCollectionForm extends Component {
       return acc;
     }, {});
 
+    // clean properties
     const properties      = this.getPropertiesFromState();
     const cleanProperties = Object.entries(properties).reduce((acc, val) => {
       const [k, v] = val;
@@ -202,6 +199,8 @@ class NewCollectionForm extends Component {
         if (v.trim() !== '') {
           acc[k] = v.trim();
         }
+      } else if (moment.isMoment(v)) {
+        acc[k] = v.format(DATE_FORMAT);
       } else if (v !== null && typeof v !== 'undefined') {
         acc[k] = v;
       }
@@ -220,7 +219,7 @@ class NewCollectionForm extends Component {
 
     const errors = Object.entries(required).reduce((acc, val) => {
       const [k, v] = val;
-      if (!v || v.trim() === '') {
+      if (!v || (typeof v === 'string' && v.trim() === '')) {
         acc[k] = true;
       }
       return acc;
@@ -241,163 +240,75 @@ class NewCollectionForm extends Component {
     return true;
   };
 
-  renderPatternField = () => {
-    const { pattern, errors } = this.state;
+  renderPatternField = () => (
+    <FilenamePatternField
+      required
+      value={this.state.pattern}
+      err={this.state.errors.pattern}
+      onChange={this.handlePatternChange}
+    />
+  );
 
-    return (
-      <Form.Field required error={errors.pattern} width={10}>
-        <label htmlFor="pattern">Pattern</label>
-        <Input
-          id="pattern"
-          placeholder="Pattern"
-          value={pattern}
-          onChange={this.handlePatternChange}
-        />
-        <small className="helper">
-          Used in physical file names.
-          English words separated with &lsquo;-&rsquo;
-        </small>
-      </Form.Field>
-    );
-  };
+  renderActiveField = () => (
+    <ToggleField
+      name="active"
+      value={this.state.active}
+      onChange={this.handleActiveChange}
+    />
+  );
 
-  renderActiveField = () => {
-    const active = this.state.active;
-    return (
-      <Form.Field>
-        <label htmlFor="active">Active</label>
-        <Checkbox
-          toggle
-          id="active"
-          checked={active}
-          onChange={this.handleActiveChange}
-        />
-      </Form.Field>
-    );
-  };
+  renderDefaultLanguageField = () => (
+    <LanguageField
+      name="default_language"
+      value={this.state.default_language}
+      onChange={this.handleDefaultLanguageChange}
+      width={4}
+    />
+  );
 
-  renderDefaultLanguageField = () => {
-    const defaultLanguage = this.state.default_language;
-    return (
-      <Form.Field width={4}>
-        <label htmlFor="default_language">Default Language</label>
-        <LanguageSelector
-          selection
-          id="default_language"
-          value={defaultLanguage}
-          onChange={this.handleDefaultLanguageChange}
-        />
-      </Form.Field>
-    );
-  };
-
-  renderFilmDateField = () => {
-    const { film_date: filmDate, errors } = this.state;
-
-    const dayPickerProps = {
-      firstDayOfWeek: 0,
-    };
-
-    return (
-      <Form.Field required error={!!errors.film_date} width={6}>
-        <label htmlFor="film_date">Film Date</label>
-        <DayPickerInput
-          id="film_date"
-          placeholder={DATE_FORMAT}
-          format={DATE_FORMAT}
-          value={moment(filmDate).format(DATE_FORMAT)}
-          onDayChange={this.handleFilmDateChange}
-          dayPickerProps={dayPickerProps}
-          style={{ width: '100%', zIndex: 1000 }}
-        />
-      </Form.Field>
-    );
-  };
+  renderFilmDateField = () => (
+    <FilmDateField
+      value={this.state.film_date}
+      err={this.state.errors.film_date}
+      onChange={this.handleFilmDateChange}
+      required
+      width={6}
+    />
+  );
 
   renderDateRangeFields = () => {
-    const { start_date, end_date, errors } = this.state;
-
-    const dayPickerStartProps = {
-      firstDayOfWeek: 0,
-      disabledDays: {
-        after: moment(end_date).toDate(),
-      },
-    };
-
-    const dayPickerEndProps = {
-      firstDayOfWeek: 0,
-      disabledDays: {
-        before: moment(start_date).toDate(),
-      },
+    const { start_date: start, end_date: end, errors } = this.state;
+    const err                                          = {
+      start: errors.start_date,
+      end: errors.end_date
     };
 
     return (
-      <Form.Group widths="equal">
-        <Form.Field required error={!!errors.start_date}>
-          <label htmlFor="start_date">Start Date</label>
-          <DayPickerInput
-            id="start_date"
-            placeholder={DATE_FORMAT}
-            format={DATE_FORMAT}
-            value={moment(start_date).format(DATE_FORMAT)}
-            onDayChange={this.handleStartDateChange}
-            dayPickerProps={dayPickerStartProps}
-            style={{ width: '100%', zIndex: 1000 }}
-          />
-        </Form.Field>
-        <Form.Field required error={!!errors.end_date}>
-          <label htmlFor="end_date">End Date</label>
-          <DayPickerInput
-            id="end_date"
-            placeholder={DATE_FORMAT}
-            format={DATE_FORMAT}
-            value={moment(end_date).format(DATE_FORMAT)}
-            onDayChange={this.handleEndDateChange}
-            dayPickerProps={dayPickerEndProps}
-            style={{ width: '100%', zIndex: 1000 }}
-          />
-        </Form.Field>
-      </Form.Group>
+      <DateRangeField
+        start={start}
+        end={end}
+        err={err}
+        onChange={this.handleDateRangeChange}
+      />
     );
   };
 
   renderLocationFields = () => {
-    const { city, full_address: fullAddress, errors } = this.state;
+    const { country, city, full_address: fullAddress, errors } = this.state;
+    const err                                                  = {
+      country: errors.country,
+      city: errors.city,
+      fullAddress: errors.full_address,
+    };
 
     return (
-      <div>
-        <Form.Group widths="equal">
-          <Form.Dropdown
-            fluid
-            search
-            selection
-            required
-            label="Country"
-            placeholder="Country"
-            options={countries}
-            error={errors.country}
-            onChange={this.handleCountryChange}
-          />
-          <Form.Field required error={errors.city}>
-            <label htmlFor="city">City</label>
-            <Input
-              id="city"
-              placeholder="City"
-              value={city}
-              onChange={this.handleCityChange}
-            />
-          </Form.Field>
-        </Form.Group>
-        <Form.Field required error={errors.full_address}>
-          <label htmlFor="full_address">Full Address</label>
-          <Input
-            id="full_address"
-            placeholder="Full Address"
-            value={fullAddress}
-            onChange={this.handleFullAddressChange}
-          />
-        </Form.Field>
-      </div>
+      <LocationField
+        country={country}
+        city={city}
+        fullAddress={fullAddress}
+        err={err}
+        onChange={this.handleLocationChange}
+      />
     );
   };
 
@@ -460,51 +371,14 @@ class NewCollectionForm extends Component {
     return (
       <div>
         <Divider horizontal section>Properties</Divider>
-
         {properties}
 
         <Divider horizontal section>Translations</Divider>
-
-        <Form.Group widths="equal">
-          <Form.Field>
-            <label htmlFor="he.name"><Flag name="il" />Hebrew</label>
-            <Input
-              id="he.name"
-              placeholder="Name in Hebrew"
-              value={i18n[LANG_HEBREW].name}
-              onChange={this.handleI18nChange}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor="ru.name"><Flag name="ru" />Russian</label>
-            <Input
-              id="ru.name"
-              placeholder="Name in Russian"
-              value={i18n[LANG_RUSSIAN].name}
-              onChange={this.handleI18nChange}
-            />
-          </Form.Field>
-        </Form.Group>
-        <Form.Group widths="equal">
-          <Form.Field>
-            <label htmlFor="en.name"><Flag name="us" />English</label>
-            <Input
-              id="en.name"
-              placeholder="Name in English"
-              value={i18n[LANG_ENGLISH].name}
-              onChange={this.handleI18nChange}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor="es.name"><Flag name="es" />Spanish</label>
-            <Input
-              id="es.name"
-              placeholder="Name in Spanish"
-              value={i18n[LANG_SPANISH].name}
-              onChange={this.handleI18nChange}
-            />
-          </Form.Field>
-        </Form.Group>
+        <MajorLangsI18nField
+          i18n={i18n}
+          err={errors.i18n}
+          onChange={this.handleI18nChange}
+        />
         {
           errors.i18n ?
             <Message negative content="At least one translation is required" /> :
