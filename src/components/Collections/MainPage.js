@@ -10,8 +10,8 @@ import FilterTags from '../Filters/FilterTags/FilterTags';
 import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
+import CreateCollectionForm from '../shared/Forms/Collection/CreateCollectionForm';
 import CollectionsList from './List';
-import NewCollectionForm from './NewCollectionForm';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
 
@@ -157,7 +157,7 @@ class CollectionsMainPage extends Component {
         >
           <Modal.Header>Create New Collection</Modal.Header>
           <Modal.Content>
-            <NewCollectionForm wip={wipOfCreate} err={errOfCreate} create={create} />
+            <CreateCollectionForm wip={wipOfCreate} err={errOfCreate} create={create} />
           </Modal.Content>
         </Modal>
       </div>

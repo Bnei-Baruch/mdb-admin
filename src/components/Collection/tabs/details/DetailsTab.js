@@ -2,8 +2,8 @@ import React from 'react';
 import { Divider, Grid } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
-import Properties from '../../../shared/Properties';
 import Details from './Details';
+import Properties from './Properties';
 import I18nForm from './I18nForm';
 
 const DetailsTab = (props) => {
@@ -18,7 +18,7 @@ const DetailsTab = (props) => {
         <Grid.Column width={8}>
           <Details collection={collection} />
           <Divider horizontal hidden />
-          <Properties properties={collection.properties} />
+          <Properties collection={collection} />
         </Grid.Column>
         <Grid.Column width={8}>
           <I18nForm collection={collection} />

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button, Divider, Form, Header, Message, Segment } from 'semantic-ui-react';
+import { Button, Header, Segment } from 'semantic-ui-react';
 
 import {
-  COLLECTION_TYPE_OPTIONS,
   COLLECTION_TYPES,
   CT_CONGRESS,
   CT_DAILY_LESSON,
@@ -14,25 +13,22 @@ import {
   CT_UNITY_DAY,
   CT_VIDEO_PROGRAM,
   CT_VIRTUAL_LESSON,
-  DATE_FORMAT,
-  MAJOR_LANGUAGES
-} from '../../helpers/consts';
-import { countries } from '../../helpers/countries';
-import { formatError, isValidPattern } from '../../helpers/utils';
+  DATE_FORMAT
+} from '../../../../helpers/consts';
+import { countries } from '../../../../helpers/countries';
+import { formatError, isValidPattern } from '../../../../helpers/utils';
 import {
   DateRangeField,
   FilenamePatternField,
   FilmDateField,
   LanguageField,
   LocationField,
-  MajorLangsI18nField,
   ToggleField
-} from '../shared/Fields';
+} from '../../Fields';
 import './collections.css';
 
-class NewCollectionForm extends Component {
+class BaseCollectionForm extends Component {
   static propTypes = {
-    create: PropTypes.func.isRequired,
     wip: PropTypes.bool.isRequired,
     err: PropTypes.bool,
   };
@@ -48,23 +44,7 @@ class NewCollectionForm extends Component {
   }
 
   getInitialState() {
-    const i18n = MAJOR_LANGUAGES.reduce((acc, val) => {
-      acc[val] = { name: '' };
-      return acc;
-    }, {});
-
     return {
-      type_id: null,
-      i18n,
-      pattern: '',
-      active: true,
-      start_date: moment(),
-      end_date: moment().add(1, 'days'),
-      film_date: moment(),
-      country: '',
-      city: '',
-      full_address: '',
-      default_language: '',
       submitted: false,
       errors: {},
     };
@@ -110,17 +90,6 @@ class NewCollectionForm extends Component {
     }
 
     return data;
-  };
-
-  handleTypeChange = (e, data) =>
-    this.setState({ type_id: data.value });
-
-  handleI18nChange = (i18n) => {
-    const { errors } = this.state;
-    if (!MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
-      delete errors.i18n;
-    }
-    this.setState({ errors, i18n });
   };
 
   handlePatternChange = (e, data) => {
@@ -175,25 +144,14 @@ class NewCollectionForm extends Component {
     this.setState({ country, city, full_address: fullAddress, errors });
   };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    if (!this.isValid()) {
-      return;
-    }
+  // eslint-disable-next-line class-methods-use-this
+  cleanI18n() {
+    return null;
+  }
 
-    const { i18n, type_id: typeID } = this.state;
-
-    // clean i18n
-    const cleanI18n = MAJOR_LANGUAGES.reduce((acc, val) => {
-      if (i18n[val].name.trim() !== '') {
-        acc[val] = { ...i18n[val], language: val };
-      }
-      return acc;
-    }, {});
-
-    // clean properties
-    const properties      = this.getPropertiesFromState();
-    const cleanProperties = Object.entries(properties).reduce((acc, val) => {
+  cleanProperties() {
+    const properties = this.getPropertiesFromState();
+    return Object.entries(properties).reduce((acc, val) => {
       const [k, v] = val;
       if (typeof v === 'string') {
         if (v.trim() !== '') {
@@ -206,30 +164,42 @@ class NewCollectionForm extends Component {
       }
       return acc;
     }, {});
+  }
 
-    this.props.create(typeID, cleanProperties, cleanI18n);
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (!this.isValid()) {
+      return;
+    }
+
+    const properties = this.cleanProperties();
+    const i18n       = this.cleanI18n();
+    this.doSubmit(this.state.type_id, properties, i18n);
     this.setState({ submitted: true });
   };
 
-  isValid = () => {
+  // eslint-disable-next-line class-methods-use-this
+  doSubmit(typeID, properties, i18n) {
+    throw new Error('Not Implemented');
+  }
+
+  validate() {
     // validate required fields (most of them are...)
     const required = this.getPropertiesFromState();
     delete required.active;
     delete required.default_language;
 
-    const errors = Object.entries(required).reduce((acc, val) => {
+    return Object.entries(required).reduce((acc, val) => {
       const [k, v] = val;
       if (!v || (typeof v === 'string' && v.trim() === '')) {
         acc[k] = true;
       }
       return acc;
     }, {});
+  }
 
-    // validate at least one valid translation
-    const i18n = this.state.i18n;
-    if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
-      errors.i18n = true;
-    }
+  isValid() {
+    const errors = this.validate();
 
     // do we have any error ?
     if (Object.values(errors).some(x => x)) {
@@ -238,7 +208,7 @@ class NewCollectionForm extends Component {
     }
 
     return true;
-  };
+  }
 
   renderPatternField = () => (
     <FilenamePatternField
@@ -340,53 +310,29 @@ class NewCollectionForm extends Component {
     </div>
   );
 
-  renderByType = () => {
-    const { type_id: typeID, i18n, errors } = this.state;
-    if (!typeID) {
-      return null;
-    }
-
-    let properties = null;
-    switch (typeID) {
+  renderProperties = () => {
+    switch (this.state.type_id) {
     case COLLECTION_TYPES[CT_DAILY_LESSON].value:
     case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
-      properties = this.renderDailyLesson();
-      break;
+      return this.renderDailyLesson();
     case COLLECTION_TYPES[CT_CONGRESS].value:
-      properties = this.renderCongress();
-      break;
+      return this.renderCongress();
     case COLLECTION_TYPES[CT_HOLIDAY].value:
     case COLLECTION_TYPES[CT_PICNIC].value:
     case COLLECTION_TYPES[CT_UNITY_DAY].value:
-      properties = this.renderPicnic();
-      break;
+      return this.renderPicnic();
     case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
     case COLLECTION_TYPES[CT_VIRTUAL_LESSON].value:
-      properties = this.renderVideoProgram();
-      break;
+      return this.renderVideoProgram();
     default:
-      break;
+      return null;
     }
-
-    return (
-      <div>
-        <Divider horizontal section>Properties</Divider>
-        {properties}
-
-        <Divider horizontal section>Translations</Divider>
-        <MajorLangsI18nField
-          i18n={i18n}
-          err={errors.i18n}
-          onChange={this.handleI18nChange}
-        />
-        {
-          errors.i18n ?
-            <Message negative content="At least one translation is required" /> :
-            null
-        }
-      </div>
-    );
   };
+
+  // eslint-disable-next-line class-methods-use-this
+  renderForm() {
+    throw new Error('Not Implemented');
+  }
 
   render() {
     const { wip, err }  = this.props;
@@ -395,18 +341,7 @@ class NewCollectionForm extends Component {
     return (
       <Segment.Group>
         <Segment basic>
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Dropdown
-              search
-              selection
-              inline
-              label="Content Type"
-              placeholder="Content Type"
-              options={COLLECTION_TYPE_OPTIONS}
-              onChange={this.handleTypeChange}
-            />
-            {this.renderByType()}
-          </Form>
+          {this.renderForm()}
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
@@ -436,4 +371,4 @@ class NewCollectionForm extends Component {
   }
 }
 
-export default NewCollectionForm;
+export default BaseCollectionForm;
