@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Checkbox, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
 
 import { EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
@@ -13,7 +13,6 @@ class DangerZoneTab extends Component {
 
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
-    changeActive: PropTypes.func.isRequired,
     deleteC: PropTypes.func.isRequired,
     collection: shapes.Collection,
     status: shapes.AsyncStatusMap,
@@ -26,7 +25,6 @@ class DangerZoneTab extends Component {
 
   state = {
     changedSecure: null,
-    changedActive: null,
     modals: {
       confirmChangeSecurityLevel: false,
       confirmDelete: false,
@@ -48,11 +46,6 @@ class DangerZoneTab extends Component {
     const level                               = this.state.changedSecure;
     changeSecurityLevel(collection.id, level);
     this.hideChangeSecurityLevelModal();
-  };
-
-  handleChangeActive = () => {
-    const { collection, changeActive } = this.props;
-    changeActive(collection.id);
   };
 
   handleDelete = () => this.setState({
@@ -89,8 +82,6 @@ class DangerZoneTab extends Component {
 
   render() {
     const { collection, status } = this.props;
-    const properties             = collection.properties || {};
-    const isActive               = Object.prototype.hasOwnProperty.call(properties, 'active') ? properties.active : true;
     const options                = Object.keys(SECURITY_LEVELS)
       .map(k => SECURITY_LEVELS[k])
       .filter(x => x.value !== collection.secure);
@@ -124,37 +115,6 @@ class DangerZoneTab extends Component {
                       status.changeSecurityLevel.err ?
                         <Header
                           content={formatError(status.changeSecurityLevel.err)}
-                          icon={{ name: 'warning sign' }}
-                          color="red"
-                          size="tiny"
-                        /> :
-                        null
-                    }
-                  </List.Content>
-                </List.Item>
-                <List.Item>
-                  <List.Content floated="right">
-                    {
-                      status.changeActive.wip ?
-                        <Icon name="spinner" loading /> :
-                        null
-                    }
-                    <Checkbox
-                      toggle
-                      checked={isActive}
-                      label={isActive ? 'active' : 'inactive'}
-                      onClick={this.handleChangeActive}
-                    />
-                  </List.Content>
-                  <List.Content>
-                    <List.Header>
-                      Change Active Mode
-                    </List.Header>
-                    Active collections are available for selection in BB studio, rename tool.
-                    {
-                      status.changeActive.err ?
-                        <Header
-                          content={formatError(status.changeActive.err)}
                           icon={{ name: 'warning sign' }}
                           color="red"
                           size="tiny"
@@ -239,7 +199,7 @@ class DangerZoneTab extends Component {
 }
 
 const mapState = (state) => {
-  const status = ['changeSecurityLevel', 'changeActive', 'delete']
+  const status = ['changeSecurityLevel', 'delete']
     .reduce((acc, val) => {
       acc[val] = {
         wip: selectors.getWIP(state.collections, val),
@@ -254,7 +214,6 @@ const mapState = (state) => {
 function mapDispatch(dispatch) {
   return bindActionCreators({
     changeSecurityLevel: actions.changeSecurityLevel,
-    changeActive: actions.changeActive,
     deleteC: actions.deleteC,
   }, dispatch);
 }
