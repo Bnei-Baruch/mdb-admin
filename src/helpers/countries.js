@@ -720,7 +720,7 @@ export const countries = [
     value: 'RO'
   },
   {
-    text: 'Russian Federation',
+    text: 'Russia',
     value: 'RU'
   },
   {
