@@ -10,6 +10,7 @@ import MainPage from './MainPage';
 class Container extends Component {
 
   static propTypes = {
+    location: shapes.HistoryLocation.isRequired,
     match: shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
   };
