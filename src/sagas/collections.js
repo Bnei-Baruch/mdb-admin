@@ -48,6 +48,27 @@ function* updateProperties(action) {
   }
 }
 
+function* updateItemUnitProperties(action) {
+  try {
+    const { id, cuId, name, order } = action.payload;
+    let properties = name || order;
+    const resp               = yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, { properties });
+    yield put(actions.updatePropertiesSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.updatePropertiesFailure(err));
+  }
+}
+function* deleteItemUnit(action) {
+  try {
+    const { id, cuId, name, order } = action.payload;
+    let properties = name || order;
+    const resp               = yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, { properties });
+    yield put(actions.updatePropertiesSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.updatePropertiesFailure(err));
+  }
+}
+
 function* changeSecurityLevel(action) {
   try {
     const { id, level } = action.payload;
@@ -105,6 +126,10 @@ function* watchupdateProperties() {
   yield takeEvery(types.UPDATE_PROPERTIES, updateProperties);
 }
 
+function* watchUpdateItemUnitProperties() {
+  yield takeEvery(types.UPDATE_ITEM_UNIT_PROPERTIES, updateItemUnitProperties);
+}
+
 function* watchChangeSecurityLevel() {
   yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
 }
@@ -126,6 +151,7 @@ export const sagas = [
   watchFetchItemUnits,
   watchUpdateI18n,
   watchupdateProperties,
+  watchUpdateItemUnitProperties,
   watchChangeSecurityLevel,
   watchChangeActive,
   watchCreate,

@@ -12,6 +12,9 @@ const FETCH_ITEM_FAILURE       = 'Collections/FETCH_ITEM_FAILURE';
 const FETCH_ITEM_UNITS         = 'Collections/FETCH_ITEM_UNITS';
 const FETCH_ITEM_UNITS_SUCCESS = 'Collections/FETCH_ITEM_UNITS_SUCCESS';
 const FETCH_ITEM_UNITS_FAILURE = 'Collections/FETCH_ITEM_UNITS_FAILURE';
+const UPDATE_ITEM_UNIT_PROPERTIES         = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES';
+const UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS';
+const UPDATE_ITEM_UNIT_PROPERTIES_FAILURE = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES_FAILURE';
 
 const UPDATE_I18N                   = 'Collections/UPDATE_I18N';
 const UPDATE_I18N_SUCCESS           = 'Collections/UPDATE_I18N_SUCCESS';
@@ -41,6 +44,9 @@ export const types = {
   FETCH_ITEM_UNITS,
   FETCH_ITEM_UNITS_SUCCESS,
   FETCH_ITEM_UNITS_FAILURE,
+  UPDATE_ITEM_UNIT_PROPERTIES,
+  UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS,
+  UPDATE_ITEM_UNIT_PROPERTIES_FAILURE,
 
   UPDATE_I18N,
   UPDATE_I18N_SUCCESS,
@@ -72,6 +78,10 @@ const fetchItemFailure      = createAction(FETCH_ITEM_FAILURE);
 const fetchItemUnits        = createAction(FETCH_ITEM_UNITS);
 const fetchItemUnitsSuccess = createAction(FETCH_ITEM_UNITS_SUCCESS);
 const fetchItemUnitsFailure = createAction(FETCH_ITEM_UNITS_FAILURE);
+const updateItemUnitProperties        = createAction(UPDATE_ITEM_UNIT_PROPERTIES, (id, cuId, properties) => ({ id,cuId, properties }));
+const updateItemUnitPropertiesSuccess = createAction(UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS);
+const updateItemUnitPropertiesFailure = createAction(UPDATE_ITEM_UNIT_PROPERTIES_FAILURE);
+
 
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
@@ -105,6 +115,9 @@ export const actions = {
   fetchItemUnits,
   fetchItemUnitsSuccess,
   fetchItemUnitsFailure,
+  updateItemUnitProperties,
+  updateItemUnitPropertiesSuccess,
+  updateItemUnitPropertiesFailure,
 
   updateI18n,
   updateI18nSuccess,
@@ -137,6 +150,9 @@ const keys = new Map([
   [FETCH_ITEM_UNITS, 'fetchItemUnits'],
   [FETCH_ITEM_UNITS_SUCCESS, 'fetchItemUnits'],
   [FETCH_ITEM_UNITS_FAILURE, 'fetchItemUnits'],
+  [UPDATE_ITEM_UNIT_PROPERTIES, 'updateItemUnitProperties'],
+  [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS, 'updateItemUnitProperties'],
+  [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE, 'updateItemUnitProperties'],
 
   [UPDATE_I18N, 'updateI18n'],
   [UPDATE_I18N_SUCCESS, 'updateI18n'],
@@ -189,6 +205,7 @@ const onSuccess = (state, action) => {
   case CHANGE_SECURITY_LEVEL_SUCCESS:
   case CHANGE_ACTIVE_SUCCESS:
   case CREATE_SUCCESS:
+  case UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ITEM_UNITS_SUCCESS:
@@ -224,6 +241,9 @@ export const reducer = handleActions({
   [FETCH_ITEM_UNITS]: onRequest,
   [FETCH_ITEM_UNITS_SUCCESS]: onSuccess,
   [FETCH_ITEM_UNITS_FAILURE]: onFailure,
+  [UPDATE_ITEM_UNIT_PROPERTIES]: onRequest,
+  [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS]: onSuccess,
+  [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE]: onFailure,
 
   [UPDATE_I18N]: onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
