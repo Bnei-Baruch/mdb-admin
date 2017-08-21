@@ -23,13 +23,14 @@ class Units extends PureComponent {
     collection: shapes.Collection,
     wip: PropTypes.bool,
     err: shapes.Error,
+    selectedCUIndex: PropTypes.int
   };
 
   saveAssociationNum = (id, cuId, val) => {
     this.props.updateItemUnitProperties(id, cuId, { name: val });
   };
 
-  renderItem = (item) => {
+  renderItem = (item, index) => {
     const collection = this.props.collection;
     const unit = item.content_unit;
     let properties = extractI18n(unit.i18n, ['name'])[0];
@@ -51,7 +52,7 @@ class Units extends PureComponent {
     }
 
     return (
-      <Table.Row key={unit.id}>
+      <Table.Row key={unit.id} onClick={()=>this.props.selectCUIndex(index)}>
         <Table.Cell collapsing>
           <Link to={`/content_units/${unit.id}`}>
             {unit.id}
@@ -99,7 +100,7 @@ class Units extends PureComponent {
         <LoadingSplash text="Loading content units" /> :
         <Message>No content units found for this collection</Message>;
     } else {
-      content = (<Table columns={8}>
+      content = (<Table columns={8} celled selectable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>ID</Table.HeaderCell>
@@ -114,7 +115,7 @@ class Units extends PureComponent {
         </Table.Header>
         <Table.Body>
           {
-            units.map(x => this.renderItem(x))
+            units.map((x, i) => this.renderItem(x, i))
           }
         </Table.Body>
       </Table>);
