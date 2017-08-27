@@ -5,6 +5,7 @@ import * as shapes from '../../../shapes';
 import Properties from '../../../shared/Properties';
 import Details from './Details';
 import Player from './Player';
+import Storages from './Storages';
 
 const DetailsTab = (props) => {
   const file = props.file;
@@ -15,13 +16,15 @@ const DetailsTab = (props) => {
   return (
     <Grid stackable>
       <Grid.Row>
-        <Grid.Column width={10}>
+        <Grid.Column width={8}>
           <Details file={file} />
           <Divider horizontal hidden />
           <Properties properties={file.properties} />
         </Grid.Column>
-        <Grid.Column width={6} textAlign="center">
+        <Grid.Column width={8} >
           <Player file={file} />
+          <Divider horizontal hidden />
+          <Storages file={file} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

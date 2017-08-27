@@ -122,7 +122,7 @@ const BaseCollectionContentUnit = {
 export const CollectionContentUnit = PropTypes.shape(BaseCollectionContentUnit);
 
 BaseContentUnit.collections = PropTypes.arrayOf(CollectionContentUnit);
-export const ContentUnit = PropTypes.shape(BaseContentUnit);
+export const ContentUnit    = PropTypes.shape(BaseContentUnit);
 
 BaseCollection.content_units = PropTypes.arrayOf(CollectionContentUnit);
 export const Collection      = PropTypes.shape(BaseCollection);
@@ -159,6 +159,15 @@ export const Tag = PropTypes.shape({
 export const Hierarchy = PropTypes.shape({
   roots: PropTypes.arrayOf(PropTypes.number),
   childMap: PropTypes.instanceOf(Map),  // ID => [...IDs]
+});
+
+export const Storage = PropTypes.shape({
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  country: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
+  access: PropTypes.oneOf(['local', 'internet']),
+  status: PropTypes.oneOf(['online', 'nearline', 'offline']),
 });
 
 export const filterConfigShape = PropTypes.shape({
