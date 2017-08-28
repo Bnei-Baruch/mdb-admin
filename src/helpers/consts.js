@@ -101,6 +101,7 @@ export const OP_CONVERT       = 'convert';
 export const OP_UPLOAD        = 'upload';
 export const OP_IMPORT_KMEDIA = 'import_kmedia';
 export const OP_SIRTUTIM      = 'sirtutim';
+export const OP_INSERT        = 'insert';
 
 export const OPERATION_TYPE_BY_ID = {
   1: OP_CAPTURE_START,
@@ -112,6 +113,7 @@ export const OPERATION_TYPE_BY_ID = {
   7: OP_IMPORT_KMEDIA,
   8: OP_CONVERT,
   9: OP_SIRTUTIM,
+  10: OP_INSERT,
 };
 
 // Source Types
