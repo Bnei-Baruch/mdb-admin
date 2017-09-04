@@ -51,7 +51,7 @@ function* updateProperties(action) {
 function* updateItemUnitProperties(action) {
   try {
     const { id, cuId, properties } = action.payload;
-    const resp               = yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, { properties });
+    const resp               = yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, properties);
     yield put(actions.updatePropertiesSuccess(resp.data));
   } catch (err) {
     yield put(actions.updatePropertiesFailure(err));
@@ -61,7 +61,7 @@ function* deleteItemUnit(action) {
   try {
     const { id, cuId, name, order } = action.payload;
     let properties = name || order;
-    const resp               = yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, { properties });
+    const resp               = yield call(api.delete, `/rest/collections/${id}/content_units/${cuId}`);
     yield put(actions.updatePropertiesSuccess(resp.data));
   } catch (err) {
     yield put(actions.updatePropertiesFailure(err));

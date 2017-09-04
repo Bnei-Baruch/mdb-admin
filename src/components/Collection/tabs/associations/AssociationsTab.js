@@ -92,7 +92,7 @@ class AssociationsTab extends Component {
                 </Button.Group>
                 <Grid stackable>
                     <Grid.Row>
-                        <Grid.Column width={8}>
+                        <Grid.Column>
                             <Units
                                 selectCUIndex={this.selectCUIndex}
                                 selectedCUIndex={selectedCUIndex}

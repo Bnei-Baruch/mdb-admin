@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Grid,Table } from 'semantic-ui-react';
+import { Button, Input, Grid,Table,Form } from 'semantic-ui-react';
 
 class EditDeleteField extends PureComponent {
 
@@ -59,53 +59,47 @@ class EditDeleteField extends PureComponent {
         const { isViewMode, value, error } = this.state;
 
 
-        let viewMode = (<Table.Row>
-            <Table.Cell> {value}</Table.Cell >
-            <Table.Cell collapsing>
-                <Button
-                    bordered
-                    compact
-                    icon="pencil"
-                    onClick={() => this.setMode(false)}
-                    />
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <Button
-                    bordered
-                    compact
-                    icon="trash"
-                    onClick={this.props.remove}
-                    />
-            </Table.Cell>
-        </Table.Row>);
+        let viewMode = (<Form>
+            <Form.Group>
+                <Form.Field>
+                </Form.Field>
+            <Form.Label>{value}</Form.Label>
+            <Button
+                bordered
+                compact
+                icon="pencil"
+                onClick={() => this.setMode(false)}
+                />
+            <Button
+                bordered
+                compact
+                icon="trash"
+                onClick={this.props.remove}
+                />
+        </Form.Group></Form>);
 
-        let editMode = (<Table.Row>
-            <Table.Cell>
+        let editMode = (<Form>
+            <Form.Group>
                 <Input value={value}
                        error={error}
+                       width={10}
                        onChange={this.onInputChange}/>
-            </Table.Cell >
-            <Table.Cell collapsing>
                 <Button
                     bordered
                     icon="checkmark"
                     color="green"
                     onClick={this.save}
                     />
-            </Table.Cell>
-            <Table.Cell collapsing>
                 <Button
                     bordered
                     icon="remove"
                     color="red"
                     onClick={this.restore}
                     />
-            </Table.Cell>
-        </Table.Row>);
+            </Form.Group>
+        </Form>);
 
-        return (<Table collapsing compact><Table.Body>
-            {isViewMode ? viewMode : editMode}
-        </Table.Body></Table>);
+        return (isViewMode ? viewMode : editMode);
     }
 }
 

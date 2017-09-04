@@ -55,27 +55,27 @@ class Units extends PureComponent {
 
         return (
             <Table.Row key={unit.id} onClick={()=>selectCUIndex(index)} active={selectedCUIndex === index}>
-                <Table.Cell collapsing>
+                <Table.Cell>
                     <Link to={`/content_units/${unit.id}`}>
                         {unit.id}
                     </Link>
                 </Table.Cell>
-                <Table.Cell collapsing>
+                <Table.Cell>
                     {unit.uid}
                 </Table.Cell>
-                <Table.Cell collapsing>
+                <Table.Cell>
                     {CONTENT_TYPE_BY_ID[unit.type_id]}
                 </Table.Cell>
                 <Table.Cell>
                     {properties}
                 </Table.Cell>
-                <Table.Cell collapsing>
+                <Table.Cell>
                     {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
                 </Table.Cell>
-                <Table.Cell collapsing textAlign="center">
+                <Table.Cell textAlign="center">
                     <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color}/>
                 </Table.Cell>
-                <Table.Cell collapsing textAlign="center">
+                <Table.Cell textAlign="center">
                     {
                         unit.published ?
                             <Icon name="checkmark" color="green"/> :
@@ -102,7 +102,7 @@ class Units extends PureComponent {
                 <LoadingSplash text="Loading content units"/> :
                 <Message>No content units found for this collection</Message>;
         } else {
-            content = (<Table columns={8} celled selectable>
+            content = (<Table celled selectable>
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>ID</Table.HeaderCell>
