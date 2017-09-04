@@ -50,8 +50,7 @@ function* updateProperties(action) {
 
 function* updateItemUnitProperties(action) {
   try {
-    const { id, cuId, name, order } = action.payload;
-    let properties = name || order;
+    const { id, cuId, properties } = action.payload;
     const resp               = yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, { properties });
     yield put(actions.updatePropertiesSuccess(resp.data));
   } catch (err) {
