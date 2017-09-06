@@ -24,15 +24,20 @@ class Units extends PureComponent {
         wip: PropTypes.bool,
         err: shapes.Error,
         selectCUIndex: PropTypes.func,
-        selectedCUIndex: PropTypes.int,
+        deleteItemUnit: PropTypes.func,
+        selectedCUIndex: PropTypes.number,
     };
 
     saveAssociationNum = (id, cuId, val) => {
         this.props.updateItemUnitProperties(id, cuId, {name: val});
     };
 
+    _deleteItemUnit = (id, cuId) => {
+        this.props.deleteItemUnit(id, cuId);
+    };
+
     renderItem = (item, index) => {
-        const {collection, selectCUIndex, selectedCUIndex} = this.props;
+        const {collection, selectCUIndex, selectedCUIndex, deleteItemUnit} = this.props;
         const unit = item.content_unit;
         let properties = extractI18n(unit.i18n, ['name'])[0];
 
@@ -86,7 +91,7 @@ class Units extends PureComponent {
                     <EditDeleteField
                         value={item.name}
                         save={(val) => this.saveAssociationNum(collection.id, unit.id, val)}
-                        remove={(val) => alert('remove')}/>
+                        remove={()=>this._deleteItemUnit(collection.id, unit.id)}/>
                 </Table.Cell>
             </Table.Row>
         );

@@ -73,8 +73,7 @@ class AssociationsTab extends Component {
 
     render() {
         const {selectedCUIndex} = this.state;
-            return (<div>
-
+        return (<div>
                 <Menu borderless size="large">
                     <Menu.Item header>
                         <Header content="Associated Content Units" size="medium" color="blue"/>
@@ -121,6 +120,7 @@ function mapDispatch(dispatch) {
     return bindActionCreators({
         fetchItemUnits: actions.fetchItemUnits,
         updateItemUnitProperties: actions.updateItemUnitProperties,
+        deleteItemUnit: actions.deleteItemUnit,
     }, dispatch);
 }
 

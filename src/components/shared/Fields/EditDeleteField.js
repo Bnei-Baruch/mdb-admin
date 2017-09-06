@@ -60,42 +60,43 @@ class EditDeleteField extends PureComponent {
 
 
         let viewMode = (<Form>
-            <Form.Group>
-                <Form.Field>
+            <Form.Group inline>
+                <Form.Field label={value} width={6}></Form.Field>
+                <Form.Field width={4}>
+                    <Button
+                        compact
+                        icon="pencil"
+                        onClick={() => this.setMode(false)}/>
                 </Form.Field>
-            <Form.Label>{value}</Form.Label>
-            <Button
-                bordered
-                compact
-                icon="pencil"
-                onClick={() => this.setMode(false)}
-                />
-            <Button
-                bordered
-                compact
-                icon="trash"
-                onClick={this.props.remove}
-                />
-        </Form.Group></Form>);
+                <Form.Field width={4}>
+                    <Button
+                        compact
+                        icon="trash"
+                        onClick={this.props.remove}/>
+                </Form.Field>
+            </Form.Group></Form>);
 
         let editMode = (<Form>
-            <Form.Group>
-                <Input value={value}
-                       error={error}
-                       width={10}
-                       onChange={this.onInputChange}/>
-                <Button
-                    bordered
-                    icon="checkmark"
-                    color="green"
-                    onClick={this.save}
-                    />
-                <Button
-                    bordered
-                    icon="remove"
-                    color="red"
-                    onClick={this.restore}
-                    />
+            <Form.Group inline>
+                <Form.Field width={6}>
+                    <Input value={value}
+                           error={error}
+                           onChange={this.onInputChange}/>
+                </Form.Field>
+
+                <Form.Field width={4}>
+                    <Button
+                        icon="checkmark"
+                        color="green"
+                        onClick={this.save}/>
+                </Form.Field>
+
+                <Form.Field width={4}>
+                    <Button
+                        icon="remove"
+                        color="red"
+                        onClick={this.restore}/>
+                </Form.Field>
             </Form.Group>
         </Form>);
 
