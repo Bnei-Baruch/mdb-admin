@@ -12,116 +12,140 @@ import Units from './Units';
 
 class AssociationsTab extends Component {
 
-    static propTypes = {
-        updateItemUnitProperties: PropTypes.func.isRequired,
-        fetchItemUnits: PropTypes.func.isRequired,
-        collection: shapes.Collection,
-    };
+  static propTypes = {
+    updateItemUnitProperties: PropTypes.func.isRequired,
+    fetchItemUnits: PropTypes.func.isRequired,
+    collection: shapes.Collection,
+  };
 
-    static defaultProps = {
-        collection: null,
-    };
+  static defaultProps = {
+    collection: null,
+  };
 
-    state = {
-        selectedCUIndex: null
-    };
+  state = {
+    selectedCU: []
+  };
 
-    constructor(props) {
-        super(props);
-        this.selectCUIndex = this.selectCUIndex.bind(this);
+  constructor(props) {
+    super(props);
+    this.selectCUIndex = this.selectCUIndex.bind(this);
+  }
+
+  componentDidMount() {
+    const { collection } = this.props;
+    if (collection) {
+      this.askForData(collection.id);
     }
+  }
 
-    componentDidMount() {
-        const { collection } = this.props;
-        if (collection) {
-            this.askForData(collection.id);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.collection && !this.props.collection && nextProps.collection.id !== this.props.collection.id) {
+      this.askForData(nextProps.collection.id);
+    }
+  }
+
+  askForData(id) {
+    this.props.fetchItemUnits(id);
+  }
+
+  updatePosition(isUp) {
+    const { units } = this.props;
+    const { selectedCU } = this.state;
+    let grouped = this.groupPermanent(selectedCU);
+    grouped.forEach((g) => {
+      if (g.length === 0) {
+        return;
+      }
+      let cuIndex = isUp ? g[g.length - 1].index++ : g[0].index--;
+      let _cu = units[cuIndex].content_unit;
+      _cu.position = isUp ? g[0].position : g[g.length - 1].position;
+      this.saveCUPosition(_cu);
+      g.forEach((cu) => {
+        cu.property = isUp ? ++cu.property : --cu.property;
+        this.saveCUPosition(cu);
+      });
+    });
+  }
+
+  groupPermanent(data) {
+    return data.reduce((result, cu, i, arr) => {
+      cu.index === arr[i + 1] ? result[0].push(cu) : result.unshift([cu]);
+      return result;
+    }, [[]]);
+  }
+
+  saveCUPosition(contentUnit) {
+    const { collection } = this.props;
+    this.props.updateItemUnitProperties(collection.id, contentUnit.id, { position: contentUnit.position });
+  }
+
+  selectCUIndex(index, data, checked) {
+    let selectedCU = this.state.selectedCU;
+    const cu = data;
+    cu.index = index;
+    if (checked) {
+      selectedCU.push(cu);
+    } else {
+      selectedCU.some((cu, i, arr) => {
+        if (cu.content_unit_id === data.content_unit_id) {
+          return arr.splice(i, 1);
         }
+      });
     }
+    this.setState({ selectedCU });
+  }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.collection && !this.props.collection && nextProps.collection.id !== this.props.collection.id) {
-            this.askForData(nextProps.collection.id);
-        }
-    }
-
-    askForData(id) {
-        this.props.fetchItemUnits(id);
-    }
-
-    updatePriority(dir) {
-        const { units } = this.props;
-        const { selectedCUIndex } = this.state;
-
-        let currentCU = Object.assign({}, units[selectedCUIndex]);
-        let nextCU = Object.assign({}, units[selectedCUIndex + dir]);
-        const nextCUId = nextCU.content_unit_id;
-        nextCU.content_unit_id = currentCU.content_unit_id;
-        currentCU.content_unit_id = nextCUId;
-
-        this.saveCUPriority(currentCU);
-        this.saveCUPriority(nextCU);
-    }
-
-    saveCUPriority(contentUnit) {
-        const { collection } = this.props;
-        this.props.updateItemUnitProperties(collection.id, contentUnit.content_unit.id, {cuId: contentUnit.content_unit_id});
-    }
-
-    selectCUIndex(index) {
-        this.setState({selectedCUIndex: index});
-    }
-
-    render() {
-        const {selectedCUIndex} = this.state;
-        return (<div>
-                <Menu borderless size="large">
-                    <Menu.Item header>
-                        <Header content="Associated Content Units" size="medium" color="blue"/>
-                    </Menu.Item>
-                    <Menu.Menu position="right">
-                        <Menu.Item onClick={() => this.setState({ editMode: false })}>
-                            <Icon name="plus"/> New Association
-                        </Menu.Item>
-                    </Menu.Menu>
-                </Menu>
-                <Button.Group>
-                    <Button icon="arrow up" basic color="black" onClick={() => this.updatePriority(-1)}/>
-                    <Button icon="arrow down" basic color="black" onClick={() => this.updatePriority(1)}/>
-                    <Button icon="trash" basic color="black"/>
-                </Button.Group>
-                <Grid stackable>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Units
-                                selectCUIndex={this.selectCUIndex}
-                                selectedCUIndex={selectedCUIndex}
-                                {...this.props} />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </div>
-        );
-    }
+  render() {
+    const selectedCU = this.state.selectedCU;
+    return (<div>
+        <Menu borderless size="large">
+          <Menu.Item header>
+            <Header content="Associated Content Units" size="medium" color="blue" />
+          </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item onClick={() => this.setState({ editMode: false })}>
+              <Icon name="plus" /> New Association
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
+        <Button.Group>
+          <Button icon="arrow up" basic color="black" onClick={() => this.updatePosition()} />
+          <Button icon="arrow down" basic color="black" onClick={() => this.updatePosition(true)} />
+          <Button icon="trash" basic color="black" />
+        </Button.Group>
+        <Grid stackable>
+          <Grid.Row>
+            <Grid.Column>
+              <Units
+                selectCUIndex={this.selectCUIndex}
+                selectedCU={selectedCU}
+                {...this.props} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
+    );
+  }
 }
 
 const mapState = (state, ownProps) => {
-    const { collection = EMPTY_OBJECT } = ownProps;
-    const unitIDs = collection.content_units;
-    const denormCCUs = units.denormCCUs(state.content_units);
+  const { collection = EMPTY_OBJECT } = ownProps;
+  const unitIDs = collection.content_units;
+  const denormCCUs = units.denormCCUs(state.content_units);
 
-    return {
-        units: unitIDs ? denormCCUs(unitIDs) : EMPTY_ARRAY,
-        wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
-        err: selectors.getError(state.collections, 'fetchItemUnits'),
-    };
+  return {
+    units: unitIDs ? denormCCUs(unitIDs) : EMPTY_ARRAY,
+    wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
+    err: selectors.getError(state.collections, 'fetchItemUnits'),
+  };
 };
 
 function mapDispatch(dispatch) {
-    return bindActionCreators({
-        fetchItemUnits: actions.fetchItemUnits,
-        updateItemUnitProperties: actions.updateItemUnitProperties,
-        deleteItemUnit: actions.deleteItemUnit,
-    }, dispatch);
+  return bindActionCreators({
+    fetchItemUnits: actions.fetchItemUnits,
+    updateItemUnitProperties: actions.updateItemUnitProperties,
+    deleteItemUnit: actions.deleteItemUnit,
+  }, dispatch);
 }
 
 export default connect(mapState, mapDispatch)(AssociationsTab);
