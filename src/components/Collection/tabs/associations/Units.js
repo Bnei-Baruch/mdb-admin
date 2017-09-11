@@ -66,7 +66,7 @@ class Units extends PureComponent {
         <Table.Cell>
           <Checkbox
             type="checkbox"
-            onChange={(event, data) => this.checkHandler(index, unit, data.checked)}
+            onChange={(event, data) => this.checkHandler(index, item, data.checked)}
             checked={this.props.selectedCU.find((cu) => {
               cu.content_unit_id === unit.id;
             })}></Checkbox>

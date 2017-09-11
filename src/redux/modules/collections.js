@@ -228,7 +228,7 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
-      content_units: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.content_unit.id })),
+      content_units: action.payload.data.map(x => ({ name: x.name, position: x.position, content_unit_id: x.content_unit.id })),
     });
     break;
   case DELETE_SUCCESS:

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Grid, Menu, Icon, Header, Button } from 'semantic-ui-react';
+import orderBy from 'lodash/orderBy';
 
 import * as shapes from '../../../shapes';
 import { actions, selectors } from '../../../../redux/modules/collections';
@@ -56,12 +57,14 @@ class AssociationsTab extends Component {
       if (g.length === 0) {
         return;
       }
-      let cuIndex  = isUp ? g[g.length - 1].index++ : g[0].index--;
-      let _cu      = units[cuIndex].content_unit;
+      //get index of item that must to move
+      let cuIndex = !isUp ? g[g.length - 1].index - 1 : g[0].index + 1;
+      let _cu     = units[cuIndex];
+
       _cu.position = isUp ? g[0].position : g[g.length - 1].position;
       this.saveCUPosition(_cu);
       g.forEach((cu) => {
-        cu.property = isUp ? ++cu.property : --cu.property;
+        cu.position = isUp ? cu.position + 1 : cu.position - 1;
         this.saveCUPosition(cu);
       });
     });
@@ -76,7 +79,7 @@ class AssociationsTab extends Component {
 
   saveCUPosition(contentUnit) {
     const { collection } = this.props;
-    this.props.updateItemUnitProperties(collection.id, contentUnit.id, { position: contentUnit.position });
+    this.props.updateItemUnitProperties(collection.id, contentUnit.content_unit_id, { position: contentUnit.position });
   }
 
   selectCUIndex(index, data, checked) {
@@ -109,8 +112,8 @@ class AssociationsTab extends Component {
           </Menu.Menu>
         </Menu>
         <Button.Group>
-          <Button icon="arrow up" basic color="black" onClick={() => this.updatePosition()} />
-          <Button icon="arrow down" basic color="black" onClick={() => this.updatePosition(true)} />
+          <Button icon="arrow up" basic color="black" onClick={() => this.updatePosition(true)} />
+          <Button icon="arrow down" basic color="black" onClick={() => this.updatePosition()} />
           <Button icon="trash" basic color="black" />
         </Button.Group>
         <Grid stackable>
@@ -134,7 +137,7 @@ const mapState = (state, ownProps) => {
   const denormCCUs                    = units.denormCCUs(state.content_units);
 
   return {
-    units: unitIDs ? denormCCUs(unitIDs) : EMPTY_ARRAY,
+    units: unitIDs ? orderBy(denormCCUs(unitIDs), 'position', 'desc') : EMPTY_ARRAY,
     wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
     err: selectors.getError(state.collections, 'fetchItemUnits'),
   };
