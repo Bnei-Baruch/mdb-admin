@@ -40,17 +40,17 @@ class Units extends PureComponent {
     this.props.selectCUIndex(index, unit, checked);
     this.setState({ checked: checked });
   };
-  renderItem = (item, index) => {
+  renderItem   = (item, index) => {
     const { collection, deleteItemUnit } = this.props;
-    const unit = item.content_unit;
-    let properties = extractI18n(unit.i18n, ['name'])[0];
+    const unit                           = item.content_unit;
+    let properties                       = extractI18n(unit.i18n, ['name'])[0];
 
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
       case CT_SPECIAL_LESSON:
       case CT_DAILY_LESSON: {
         const { film_date: filmDate, number } = unit.properties;
-        properties = filmDate;
+        properties                            = filmDate;
         if (number) {
           properties += `, number ${number}`;
         }
@@ -67,7 +67,9 @@ class Units extends PureComponent {
           <Checkbox
             type="checkbox"
             onChange={(event, data) => this.checkHandler(index, unit, data.checked)}
-            checked={this.props.selectedCU.find((cu)=>{cu.content_unit_id === unit.id})}></Checkbox>
+            checked={this.props.selectedCU.find((cu) => {
+              cu.content_unit_id === unit.id;
+            })}></Checkbox>
         </Table.Cell>
         <Table.Cell>
           <Link to={`/content_units/${unit.id}`}>
@@ -108,7 +110,7 @@ class Units extends PureComponent {
 
   render() {
     const { units, wip, err } = this.props;
-    let content = '';
+    let content               = '';
     if (err) {
       content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     } else if (units.length === 0) {

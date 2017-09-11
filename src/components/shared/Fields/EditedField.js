@@ -4,7 +4,7 @@ import { Button, Input, Grid, Table, Form } from 'semantic-ui-react';
 
 class EditedField extends PureComponent {
 
-  static  propTypes = {
+  static  propTypes   = {
     remove: PropTypes.func,
     save: PropTypes.func,
     value: PropTypes.string

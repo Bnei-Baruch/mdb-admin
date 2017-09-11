@@ -49,15 +49,15 @@ class AssociationsTab extends Component {
   }
 
   updatePosition(isUp) {
-    const { units } = this.props;
+    const { units }      = this.props;
     const { selectedCU } = this.state;
-    let grouped = this.groupPermanent(selectedCU);
+    let grouped          = this.groupPermanent(selectedCU);
     grouped.forEach((g) => {
       if (g.length === 0) {
         return;
       }
-      let cuIndex = isUp ? g[g.length - 1].index++ : g[0].index--;
-      let _cu = units[cuIndex].content_unit;
+      let cuIndex  = isUp ? g[g.length - 1].index++ : g[0].index--;
+      let _cu      = units[cuIndex].content_unit;
       _cu.position = isUp ? g[0].position : g[g.length - 1].position;
       this.saveCUPosition(_cu);
       g.forEach((cu) => {
@@ -81,8 +81,8 @@ class AssociationsTab extends Component {
 
   selectCUIndex(index, data, checked) {
     let selectedCU = this.state.selectedCU;
-    const cu = data;
-    cu.index = index;
+    const cu       = data;
+    cu.index       = index;
     if (checked) {
       selectedCU.push(cu);
     } else {
@@ -130,8 +130,8 @@ class AssociationsTab extends Component {
 
 const mapState = (state, ownProps) => {
   const { collection = EMPTY_OBJECT } = ownProps;
-  const unitIDs = collection.content_units;
-  const denormCCUs = units.denormCCUs(state.content_units);
+  const unitIDs                       = collection.content_units;
+  const denormCCUs                    = units.denormCCUs(state.content_units);
 
   return {
     units: unitIDs ? denormCCUs(unitIDs) : EMPTY_ARRAY,
