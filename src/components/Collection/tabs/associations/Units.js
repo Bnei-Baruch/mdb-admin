@@ -101,8 +101,7 @@ class Units extends PureComponent {
         <Table.Cell>
           <EditedField
             value={item.name}
-            save={(val) => this.saveAssociationNum(collection.id, unit.id, val)}
-            remove={() => deleteItemUnit(collection.id, unit.id)} />
+            save={(val) => this.saveAssociationNum(collection.id, unit.id, val)}/>
         </Table.Cell>
       </Table.Row>
     );
