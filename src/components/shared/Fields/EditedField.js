@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Grid, Table, Form } from 'semantic-ui-react';
+import { Button, Input, Form } from 'semantic-ui-react';
 
 class EditedField extends PureComponent {
 
@@ -53,27 +53,29 @@ class EditedField extends PureComponent {
     const { isViewMode, value, error } = this.state;
 
     let viewMode = (<Form>
-      <Form.Group widths='equal' inline>
+      <Form.Group inline>
         <Form.Field label={value} width={10}></Form.Field>
         <Form.Field>
           <Button
             floated="right"
             icon="pencil"
+            size="small"
             onClick={() => this.setMode(false)} />
         </Form.Field>
       </Form.Group></Form>);
 
     let editMode = (<Form>
-      <Form.Group widths='equal' inline>
+      <Form.Group inline>
         <Form.Field width={10}>
           <Input value={value}
                  error={error}
                  onChange={this.onInputChange} />
         </Form.Field>
-        <Form.Field>
+        <Form.Field width={4}>
           <Button
             floated="right"
             icon="checkmark"
+            size="small"
             color="green"
             onClick={this.save} />
         </Form.Field>
