@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Grid, Menu, Icon, Header, Button } from 'semantic-ui-react';
+import { Grid, Menu, Icon, Header, Button, Sticky } from 'semantic-ui-react';
 import orderBy from 'lodash/orderBy';
 
 import * as shapes from '../../../shapes';
@@ -10,6 +10,8 @@ import { actions, selectors } from '../../../../redux/modules/collections';
 import { selectors as units } from '../../../../redux/modules/content_units';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import Units from './Units';
+import NewAssociations from './NewAssociations';
+import './style.css';
 
 class AssociationsTab extends Component {
 
@@ -24,7 +26,7 @@ class AssociationsTab extends Component {
   };
 
   state = {
-    selectedCU: []
+    selectedCU: [],
   };
 
   constructor(props) {
@@ -56,7 +58,7 @@ class AssociationsTab extends Component {
 
     let cuIndex            = isUp ? selectedCU[0].index - 1 : selectedCU[0].index + 1;
     let _cu                = units[cuIndex];
-    let _newPosition       = (_basePosition === _cu.position) ? (isUp ? _basePosition++ : _basePosition--) : _cu.position;
+    let _newPosition       = (_basePosition === _cu.position) ? (isUp ? _basePosition + 1 : _basePosition - 1) : _cu.position;
     selectedCU[0].position = _newPosition;
     _cu.position           = _basePosition;
     this.saveCUPosition(_cu);
@@ -81,16 +83,21 @@ class AssociationsTab extends Component {
      });*/
   }
 
-  groupPermanent(data) {
+  /*groupPermanent(data) {
     return data.reduce((result, cu, i, arr) => {
       cu.index === arr[i + 1] ? result[0].push(cu) : result.unshift([cu]);
       return result;
     }, [[]]);
+  }*/
+
+  saveCUPosition(cu) {
+    this.saveProperties(cu.content_unit_id, { position: cu.position });
   }
 
-  saveCUPosition(contentUnit) {
-    const { collection } = this.props;
-    this.props.updateItemUnitProperties(collection.id, contentUnit.content_unit_id, { position: contentUnit.position });
+  saveProperties(cuId, properties) {
+    const { collection, updateItemUnitProperties } = this.props;
+    updateItemUnitProperties(collection.id, cuId, properties);
+
   }
 
   selectCUIndex(index, data, checked) {
@@ -100,9 +107,10 @@ class AssociationsTab extends Component {
     if (checked) {
       selectedCU.push(cu);
     } else {
-      selectedCU.some((cu, i, arr) => {
+      selectedCU.some((cu, i) => {
         if (cu.content_unit_id === data.content_unit_id) {
-          return arr.splice(i, 1);
+          selectedCU.splice(i, 1);
+          return true;
         }
       });
     }
@@ -116,10 +124,10 @@ class AssociationsTab extends Component {
   }
 
   render() {
-    const selectedCU = this.state.selectedCU;
-    const { units }  = this.props;
-    let isLast       = selectedCU.length === 0 || selectedCU[selectedCU.length - 1].index >= units[units.length - 1].index;
-    let isFirst      = selectedCU.length === 0 || selectedCU[0].index <= units[0].index;
+    const { selectedCU, editMode } = this.state;
+    const { units }                = this.props;
+    let isLast                     = selectedCU.length === 0 || selectedCU[selectedCU.length - 1].index >= units[units.length - 1].index;
+    let isFirst                    = selectedCU.length === 0 || selectedCU[0].index <= units[0].index;
 
     return (<div>
         <Menu borderless size="large">
@@ -132,33 +140,47 @@ class AssociationsTab extends Component {
             </Menu.Item>
           </Menu.Menu>
         </Menu>
+        <div ref={this.handleContextRef}>
+          <Sticky className={'stickyMenu'}>
 
-        <Button.Group>
-          <Button icon="arrow up"
-                  basic
-                  color="black"
-                  disabled={isFirst}
-                  onClick={() => this.updatePosition(true)} />
-          <Button icon="arrow down"
-                  disabled={isLast}
-                  basic color="black"
-                  onClick={() => this.updatePosition()} />
-          <Button icon="trash" basic color="black"
-                  disabled={selectedCU.length === 0}
-                  onClick={() => {
-                    this.deleteCollectionUnits();
-                  }} />
-        </Button.Group>
-        <Grid stackable>
-          <Grid.Row>
-            <Grid.Column>
-              <Units
-                selectCUIndex={this.selectCUIndex}
-                selectedCU={selectedCU}
-                {...this.props} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+            <Button.Group>
+              <Button icon="arrow up"
+                      basic
+                      color="black"
+                      disabled={isFirst || selectedCU.length > 1}
+                      onClick={() => this.updatePosition(true)} />
+              <Button icon="arrow down"
+                      disabled={isLast || selectedCU.length > 1}
+                      basic color="black"
+                      onClick={() => this.updatePosition()} />
+              <Button icon="trash" basic color="black"
+                      disabled={selectedCU.length === 0}
+                      onClick={() => {
+                        this.deleteCollectionUnits();
+                      }} />
+
+            </Button.Group>
+          </Sticky>
+          <Grid stackable>
+            <Grid.Row>
+              <Grid.Column>
+                if(editMode){
+                <Units
+                  {...this.props}
+                  selectCUIndex={this.selectCUIndex}
+                  selectedCU={selectedCU} />
+              } else {
+                <NewAssociations
+                  {...this.props}
+                  selectCUIndex={this.selectCUIndex}
+                  selectedCU={selectedCU}
+                  saveProperties={this.saveProperties} />
+              }
+
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </div>
       </div>
     );
   }
@@ -173,6 +195,8 @@ const mapState = (state, ownProps) => {
     units: unitIDs ? orderBy(denormCCUs(unitIDs), 'position', 'desc') : EMPTY_ARRAY,
     wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
     err: selectors.getError(state.collections, 'fetchItemUnits'),
+    errDeleteCu: selectors.getError(state.collections, 'deleteItemUnit'),
+    errUpdateCu: selectors.getError(state.collections, 'updateItemUnitProperties'),
   };
 };
 

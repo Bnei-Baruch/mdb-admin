@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Icon, Table, Checkbox, List, Menu, Message, Segment } from 'semantic-ui-react';
+import { Icon, Table, Checkbox, Message } from 'semantic-ui-react';
 
 import {
   CONTENT_TYPE_BY_ID,
@@ -23,6 +23,8 @@ class Units extends PureComponent {
     collection: shapes.Collection,
     wip: PropTypes.bool,
     err: shapes.Error,
+    errDeleteCu: shapes.Error,
+    errUpdateCu: shapes.Error,
     selectCUIndex: PropTypes.func,
     deleteItemUnit: PropTypes.func,
     selectedCU: PropTypes.arrayOf(PropTypes.object),
@@ -32,6 +34,20 @@ class Units extends PureComponent {
     checked: false
   };
 
+  itemsMustUpdate = [];
+
+  componentWillUpdate() {
+    const { selectCUIndex } = this.props;
+    if (this.itemsMustUpdate.length === 0) {
+      return;
+    }
+    this.itemsMustUpdate.forEach(cu => {
+      selectCUIndex(cu.index, cu, false);
+      selectCUIndex(cu.index, cu, true);
+    });
+    this.itemsMustUpdate.splice(0);
+  }
+
   saveAssociationNum = (id, cuId, val) => {
     this.props.updateItemUnitProperties(id, cuId, { name: val });
   };
@@ -40,10 +56,21 @@ class Units extends PureComponent {
     this.props.selectCUIndex(index, unit, checked);
     this.setState({ checked: checked });
   };
-  renderItem   = (item, index) => {
-    const { collection, deleteItemUnit } = this.props;
-    const unit                           = item.content_unit;
-    let properties                       = extractI18n(unit.i18n, ['name'])[0];
+
+  updateIndexForSelected = (item, index) => {
+
+    if (!item.index || item.index === index) {
+      return;
+    }
+    this.itemsMustUpdate.push({ ...item, index });
+  };
+
+  renderItem = (item, index) => {
+    const { collection, errUpdateCu, errDeleteCu } = this.props;
+    const unit                                     = item.content_unit;
+    let properties                                 = extractI18n(unit.i18n, ['name'])[0];
+    this.updateIndexForSelected(item, index);
+    let error = errDeleteCu ? errDeleteCu : errUpdateCu;
 
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
@@ -62,7 +89,7 @@ class Units extends PureComponent {
     }
 
     return (
-      <Table.Row key={unit.id}>
+      <Table.Row key={unit.id} error={error && error.content_units_id === unit.id} title={error ? formatError(error) : ''}>
         <Table.Cell>
           <Checkbox
             type="checkbox"
@@ -73,7 +100,7 @@ class Units extends PureComponent {
         </Table.Cell>
         <Table.Cell>
           <Link to={`/content_units/${unit.id}`}>
-            {unit.id}
+            {item.position}
           </Link>
         </Table.Cell>
         <Table.Cell>
@@ -101,7 +128,7 @@ class Units extends PureComponent {
         <Table.Cell>
           <EditedField
             value={item.name}
-            save={(val) => this.saveAssociationNum(collection.id, unit.id, val)}/>
+            save={(val) => this.saveAssociationNum(collection.id, unit.id, val)} />
         </Table.Cell>
       </Table.Row>
     );
