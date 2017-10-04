@@ -19,13 +19,11 @@ const dataReceivers = {
 };
 
 function* fetchList(action) {
-  const { namespace, pageNo, parent } = action.payload;
+  const { namespace, pageNo } = action.payload;
   const filters               = yield select(state => filterSelectors.getFilters(state.filters, namespace));
   const params                = filtersTransformer.toApiParams(filters);
-  const url = parent ? `/rest/${namespace}/ ${parent}` : `/rest/${namespace}/`;
-
   try {
-    const resp = yield call(api.get, url, { params: { page_no: pageNo, ...params } });
+    const resp = yield call(api.get, `/rest/${namespace}/`, { params: { page_no: pageNo, ...params } });
     yield put(dataReceivers[namespace](resp.data.data));
     yield put(actions.fetchListSuccess(namespace, resp.data.total, resp.data.data));
   } catch (err) {
