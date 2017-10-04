@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { bulkMerge, del, merge, setMap } from '../utils';
+import { bulkMerge, del, merge, setMap, update } from '../utils';
 
 /* Types */
 
@@ -225,15 +225,32 @@ const onSuccess = (state, action) => {
   case UPDATE_PROPERTIES_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
+  case UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS:
+    byID = update(state.byID, action.payload.id, coll => {
+      return {
+        ...coll,
+        content_units: coll.content_units.map(x => (x.content_unit_id !== action.payload.cuId ? x : { ...x, ...action.payload.properties })),
+      };
+    });
+    break;
   case FETCH_ITEM_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
-      content_units: action.payload.data.map(x => ({ name: x.name, position: x.position, content_unit_id: x.content_unit.id })),
+      content_units: action.payload.data.map(x => ({
+        name: x.name,
+        position: x.position,
+        content_unit_id: x.content_unit.id
+      })),
     });
     break;
   case DELETE_SUCCESS:
-  case DELETE_ITEM_UNIT_SUCCESS:
     byID = del(state.byID, action.payload);
+    break;
+  case DELETE_ITEM_UNIT_SUCCESS:
+    byID = update(state.byID, action.payload.id, x => ({
+      ...x,
+      content_units: x.content_units.filter(cu => cu.content_unit_id !== action.payload.cuId)
+    }));
     break;
   default:
     byID = state.byID;

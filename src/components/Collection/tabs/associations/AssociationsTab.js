@@ -31,7 +31,7 @@ class AssociationsTab extends Component {
 
   constructor(props) {
     super(props);
-    this.selectCUIndex = this.selectCUIndex.bind(this);
+    this.selectCU = this.selectCU.bind(this);
   }
 
   componentDidMount() {
@@ -55,8 +55,9 @@ class AssociationsTab extends Component {
     const { units }      = this.props;
     const { selectedCU } = this.state;
     let _basePosition    = selectedCU[0].position;
+    let currentIndex     = units.findIndex(cu => selectedCU[0].content_unit_id === cu.content_unit_id);
 
-    let cuIndex            = isUp ? selectedCU[0].index - 1 : selectedCU[0].index + 1;
+    let cuIndex            = isUp ? currentIndex - 1 : currentIndex + 1;
     let _cu                = units[cuIndex];
     let _newPosition       = (_basePosition === _cu.position) ? (isUp ? _basePosition + 1 : _basePosition - 1) : _cu.position;
     selectedCU[0].position = _newPosition;
@@ -100,10 +101,9 @@ class AssociationsTab extends Component {
 
   }
 
-  selectCUIndex(index, data, checked) {
+  selectCU(data, checked) {
     let selectedCU = this.state.selectedCU;
     const cu       = data;
-    cu.index       = index;
     if (checked) {
       selectedCU.push(cu);
     } else {
@@ -126,8 +126,8 @@ class AssociationsTab extends Component {
   render() {
     const { selectedCU, editMode } = this.state;
     const { units }                = this.props;
-    let isLast                     = selectedCU.length === 0 || selectedCU[selectedCU.length - 1].index >= units[units.length - 1].index;
-    let isFirst                    = selectedCU.length === 0 || selectedCU[0].index <= units[0].index;
+    let isLast                     = selectedCU.length === 0 || selectedCU[selectedCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
+    let isFirst                    = selectedCU.length === 0 || selectedCU[0].content_unit_id === units[0].content_unit_id;
 
     return (<div>
         <Menu borderless size="large">
@@ -164,18 +164,10 @@ class AssociationsTab extends Component {
           <Grid stackable>
             <Grid.Row>
               <Grid.Column>
-                if(editMode){
                 <Units
                   {...this.props}
-                  selectCUIndex={this.selectCUIndex}
+                  selectCU={this.selectCU}
                   selectedCU={selectedCU} />
-              } else {
-                <NewAssociations
-                  {...this.props}
-                  selectCUIndex={this.selectCUIndex}
-                  selectedCU={selectedCU}
-                  saveProperties={this.saveProperties} />
-              }
 
               </Grid.Column>
             </Grid.Row>
