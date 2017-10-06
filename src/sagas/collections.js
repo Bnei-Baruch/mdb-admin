@@ -48,6 +48,16 @@ function* updateProperties(action) {
   }
 }
 
+function* associateUnit(action) {
+  const { id, cuId } = action.payload;
+  try {
+    yield call(api.put, `/rest/collections/${id}/content_units`);
+    yield put(actions.associateUnitSuccess({id, cuId}));
+  } catch (err) {
+    yield put(actions.associateUnitFailure({...err, content_units_id: cuId}));
+  }
+}
+
 function* updateItemUnitProperties(action) {
   const { id, cuId, properties } = action.payload;
   try {
@@ -125,6 +135,9 @@ function* watchupdateProperties() {
   yield takeEvery(types.UPDATE_PROPERTIES, updateProperties);
 }
 
+function* watchAssociateUnit() {
+  yield takeEvery(types.ASSOCIATE_UNIT, associateUnit);
+}
 function* watchUpdateItemUnitProperties() {
   yield takeEvery(types.UPDATE_ITEM_UNIT_PROPERTIES, updateItemUnitProperties);
 }
@@ -152,6 +165,7 @@ function* watchDelete() {
 export const sagas = [
   watchFetchItem,
   watchFetchItemUnits,
+  watchAssociateUnit,
   watchUpdateI18n,
   watchupdateProperties,
   watchUpdateItemUnitProperties,

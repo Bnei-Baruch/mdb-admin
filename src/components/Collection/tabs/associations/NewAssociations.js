@@ -1,169 +1,114 @@
-import React, { PureComponent } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
-import { Icon, Table, Checkbox, Message } from 'semantic-ui-react';
+import { Grid, Header, Icon, Label, Menu, Segment, Button } from 'semantic-ui-react';
 
-import {
-  CONTENT_TYPE_BY_ID,
-  CT_DAILY_LESSON,
-  CT_SPECIAL_LESSON,
-  SECURITY_LEVELS
-} from '../../../../helpers/consts';
-import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
+import { EMPTY_ARRAY, NS_COLLECTION_UNITS } from '../../../../helpers/consts';
+import { formatError } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
-import EditedField from '../../../shared/Fields/EditedField';
+import FiltersHydrator from '../../../Filters/FiltersHydrator/FiltersHydrator';
+import FilterTags from '../../../Filters/FilterTags/FilterTags';
+import TabsMenu from '../../../shared/TabsMenu';
+import Pagination from '../../../shared/Pagination';
+import ResultsPageHeader from '../../../shared/ResultsPageHeader';
+import ContentUnitList from './NewAssociationsList';
+import DateRange from './filters/DateRange';
+import Others from './filters/Others';
+
+const filterTabs = [
+  { name: 'Date Range', element: DateRange },
+  { name: 'Others', element: Others },
+];
 
 class NewAssociations extends PureComponent {
 
   static propTypes = {
-    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
-    updateItemUnitProperties: PropTypes.func,
-    collection: shapes.Collection,
+    pageNo: PropTypes.number,
+    total: PropTypes.number,
+    items: PropTypes.arrayOf(shapes.ContentUnit),
     wip: PropTypes.bool,
     err: shapes.Error,
-    errDeleteCu: shapes.Error,
-    errUpdateCu: shapes.Error,
-    selectCUIndex: PropTypes.func,
-    deleteItemUnit: PropTypes.func,
-    selectedCU: PropTypes.arrayOf(PropTypes.object),
+    onPageChange: PropTypes.func.isRequired,
+    onFiltersChange: PropTypes.func.isRequired,
+    onFiltersHydrated: PropTypes.func.isRequired,
   };
 
-  itemsMustUpdate = [];
-
-  componentWillUpdate() {
-    const { selectCUIndex } = this.props;
-    if (this.itemsMustUpdate.length === 0) {
-      return;
-    }
-    this.itemsMustUpdate.forEach(cu => {
-      selectCUIndex(cu.index, cu, false);
-      selectCUIndex(cu.index, cu, true);
-    });
-    this.itemsMustUpdate.splice(0);
-  }
-
-  saveAssociationNum = (id, cuId, val) => {
-    this.props.updateItemUnitProperties(id, cuId, { name: val });
+  static defaultProps = {
+    items: EMPTY_ARRAY,
+    pageNo: 1,
+    total: 0,
+    wip: false,
+    err: null,
   };
 
-  checkHandler = (index, unit, checked) => {
-    this.props.selectCUIndex(index, unit, checked);
-    this.setState({ checked: checked });
+  state = {
+    showFilters: false,
   };
 
-  updateIndexForSelected = (item, index) => {
+  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
 
-    if (!item.index || item.index === index) {
-      return;
-    }
-    this.itemsMustUpdate.push({ ...item, index });
-  };
-
-  renderItem = (item, index) => {
-    const { collection, errUpdateCu, errDeleteCu } = this.props;
-    const unit                                     = item.content_unit;
-    let properties                                 = extractI18n(unit.i18n, ['name'])[0];
-    this.updateIndexForSelected(item, index);
-    let error = errDeleteCu ? errDeleteCu : errUpdateCu;
-
-    if (!properties) {
-      switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
-      case CT_SPECIAL_LESSON:
-      case CT_DAILY_LESSON: {
-        const { film_date: filmDate, number } = unit.properties;
-        properties                            = filmDate;
-        if (number) {
-          properties += `, number ${number}`;
-        }
-        break;
-      }
-      default:
-        properties = unit.properties ? unit.properties.film_date : '';
-      }
-    }
-
-    return (
-      <Table.Row key={unit.id} error={error && error.content_units_id === unit.id} title={error ? formatError(error) : ''}>
-        <Table.Cell>
-          <Checkbox
-            type="checkbox"
-            onChange={(event, data) => this.checkHandler(index, item, data.checked)}
-            checked={this.props.selectedCU.find((cu) => {
-              cu.content_unit_id === unit.id;
-            })}></Checkbox>
-        </Table.Cell>
-        <Table.Cell>
-          <Link to={`/content_units/${unit.id}`}>
-            {item.position}
-          </Link>
-        </Table.Cell>
-        <Table.Cell>
-          {unit.uid}
-        </Table.Cell>
-        <Table.Cell>
-          {CONTENT_TYPE_BY_ID[unit.type_id]}
-        </Table.Cell>
-        <Table.Cell>
-          {properties}
-        </Table.Cell>
-        <Table.Cell>
-          {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
-        </Table.Cell>
-        <Table.Cell textAlign="center">
-          <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
-        </Table.Cell>
-        <Table.Cell textAlign="center">
-          {
-            unit.published ?
-              <Icon name="checkmark" color="green" /> :
-              <Icon name="ban" color="red" />
-          }
-        </Table.Cell>
-        <Table.Cell>
-          <EditedField
-            value={item.name}
-            save={(val) => this.saveAssociationNum(collection.id, unit.id, val)} />
-        </Table.Cell>
-      </Table.Row>
-    );
-  };
 
   render() {
-    const { units, wip, err } = this.props;
-    let content               = '';
-    let header                = '';
+    const { showFilters } = this.state;
 
-    if (err) {
-      content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
-    } else if (units.length === 0) {
-      content = wip ?
-        <LoadingSplash text="Loading content units" /> :
-        <Message>No content units found for this collection</Message>;
-    } else {
-      content = (<Table celled selectable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>ID</Table.HeaderCell>
-            <Table.HeaderCell>UID</Table.HeaderCell>
-            <Table.HeaderCell>Type</Table.HeaderCell>
-            <Table.HeaderCell>Properties</Table.HeaderCell>
-            <Table.HeaderCell>Created At</Table.HeaderCell>
-            <Table.HeaderCell>Secure</Table.HeaderCell>
-            <Table.HeaderCell>Published</Table.HeaderCell>
-            <Table.HeaderCell>Association No.</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {
-            units.map((x, i) => this.renderItem(x, i))
-          }
-        </Table.Body>
-      </Table>);
-    }
-    return (<div>{header + content}</div>);
+    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, selectedCU, selectCU, associate} = this.props;
+
+    return (
+      <div>
+        <Segment clearing vertical secondary>
+          Associate content units to this collection
+          <Button floated='right' icon="close" content='Cancel' />
+        </Segment>
+
+        <Segment clearing vertical>
+          <Button floated='right' content='Associate content units to this collection' color="blue"  onClick={associate} />
+          <Button floated='right' onClick={this.toggleFilters} color="blue" inverted>
+            <Icon name="filter" />
+            {showFilters ? 'Hide' : 'Show'} Filters
+          </Button>
+        </Segment>
+
+        <FiltersHydrator namespace={NS_COLLECTION_UNITS} onHydrated={onFiltersHydrated} />
+
+        <Grid>
+          <Grid.Row>
+            <Grid.Column>
+              {
+                showFilters ?
+                  <div>
+                    <TabsMenu items={filterTabs} onFilterApplication={onFiltersChange} />
+                    <br />
+                  </div> :
+                  null
+              }
+              <FilterTags namespace={NS_COLLECTION_UNITS} onClose={onFiltersChange} />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <div style={{ textAlign: 'right' }}>
+                {
+                  wip ?
+                    <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
+                    null
+                }
+                {
+                  err ?
+                    <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
+                    null
+                }
+                <ResultsPageHeader pageNo={pageNo} total={total} />
+                &nbsp;&nbsp;
+                <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
+              </div>
+              <ContentUnitList
+                items={items}
+                selectedCU={selectedCU}
+                selectCU={selectCU} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
+    );
   }
 }
 

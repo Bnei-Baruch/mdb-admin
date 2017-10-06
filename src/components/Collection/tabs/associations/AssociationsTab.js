@@ -10,7 +10,7 @@ import { actions, selectors } from '../../../../redux/modules/collections';
 import { selectors as units } from '../../../../redux/modules/content_units';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import Units from './Units';
-import NewAssociations from './NewAssociations';
+import NewAssociationsContainer from './NewAssociationsContainer';
 import './style.css';
 
 class AssociationsTab extends Component {
@@ -27,6 +27,7 @@ class AssociationsTab extends Component {
 
   state = {
     selectedCU: [],
+    editMode: true
   };
 
   constructor(props) {
@@ -103,14 +104,16 @@ class AssociationsTab extends Component {
     const { units }                = this.props;
     let isLast                     = selectedCU.length === 0 || selectedCU[selectedCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
     let isFirst                    = selectedCU.length === 0 || selectedCU[0].content_unit_id === units[0].content_unit_id;
-
+    if (editMode) {
+      return (<NewAssociationsContainer></NewAssociationsContainer>);
+    }
     return (<div>
         <Menu borderless size="large">
           <Menu.Item header>
             <Header content="Associated Content Units" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item onClick={() => this.setState({ editMode: false })}>
+            <Menu.Item onClick={() => this.setState({ editMode: true })}>
               <Icon name="plus" /> New Association
             </Menu.Item>
           </Menu.Menu>
