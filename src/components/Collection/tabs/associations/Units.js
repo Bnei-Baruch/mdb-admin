@@ -93,7 +93,7 @@ class Units extends PureComponent {
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell>
-          {moment.utc(unit.properties.duration).format('YYYY-MM-DD HH:mm:ss')}
+          {moment.utc(unit.properties.duration).format('HH:mm:ss')}
         </Table.Cell>
         <Table.Cell textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
@@ -133,6 +133,7 @@ class Units extends PureComponent {
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
+            <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>
             <Table.HeaderCell>Association No.</Table.HeaderCell>
