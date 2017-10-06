@@ -34,8 +34,8 @@ class Units extends PureComponent {
     checked: false
   };
 
-  saveAssociationNum = (id, cuId, val) => {
-    this.props.updateItemUnitProperties(id, cuId, { name: val });
+  saveAssociationNum = (id, item, val) => {
+    this.props.updateItemUnitProperties(id, item.content_unit_id, { name: val, position: item.position });
   };
 
   checkHandler = (unit, checked) => {
@@ -84,13 +84,16 @@ class Units extends PureComponent {
           {unit.uid}
         </Table.Cell>
         <Table.Cell>
-          {CONTENT_TYPE_BY_ID[unit.type_id]}
-        </Table.Cell>
-        <Table.Cell>
           {properties}
         </Table.Cell>
         <Table.Cell>
+          {CONTENT_TYPE_BY_ID[unit.type_id]}
+        </Table.Cell>
+        <Table.Cell>
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+        </Table.Cell>
+        <Table.Cell>
+          {moment.utc(unit.properties.duration).format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
@@ -105,7 +108,7 @@ class Units extends PureComponent {
         <Table.Cell>
           <EditedField
             value={item.name}
-            save={(val) => this.saveAssociationNum(collection.id, unit.id, val)} />
+            save={(val) => this.saveAssociationNum(collection.id, item, val)} />
         </Table.Cell>
       </Table.Row>
     );
@@ -127,8 +130,8 @@ class Units extends PureComponent {
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
+            <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
-            <Table.HeaderCell>Properties</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>

@@ -92,7 +92,7 @@ class AssociationsTab extends Component {
   }*/
 
   saveCUPosition(cu) {
-    this.saveProperties(cu.content_unit_id, { position: cu.position });
+    this.saveProperties(cu.content_unit_id, { position: cu.position, name: cu.name });
   }
 
   saveProperties(cuId, properties) {
