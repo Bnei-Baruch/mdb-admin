@@ -93,7 +93,7 @@ class Units extends PureComponent {
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell>
-          {moment.utc(unit.properties.duration).format('HH:mm:ss')}
+          {moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss')}
         </Table.Cell>
         <Table.Cell textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
