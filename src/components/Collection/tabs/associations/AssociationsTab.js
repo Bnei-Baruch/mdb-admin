@@ -64,32 +64,7 @@ class AssociationsTab extends Component {
     _cu.position           = _basePosition;
     this.saveCUPosition(_cu);
     this.saveCUPosition(selectedCU[0]);
-
-    /*let grouped          = this.groupPermanent(selectedCU);
-     grouped.forEach((g) => {
-     if (g.length === 0) {
-     return;
-     }
-     //get index of item that must to move
-     let cuIndex = !isUp ? g[g.length - 1].index + 1 : g[0].index - 1;
-     let _cu     = units[cuIndex];
-     const _basePosition = _cu.position;
-
-     _cu.position = !isUp ? g[0].position : g[g.length - 1].position;
-     this.saveCUPosition(_cu);
-     g.forEach((cu, i, arr) => {
-     cu.position = isUp ? _basePosition + i : _basePosition - (arr.length - i);
-     this.saveCUPosition(cu);
-     });
-     });*/
   }
-
-  /*groupPermanent(data) {
-    return data.reduce((result, cu, i, arr) => {
-      cu.index === arr[i + 1] ? result[0].push(cu) : result.unshift([cu]);
-      return result;
-    }, [[]]);
-  }*/
 
   saveCUPosition(cu) {
     this.saveProperties(cu.content_unit_id, { position: cu.position, name: cu.name });
