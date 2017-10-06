@@ -11,7 +11,7 @@ import {
   SECURITY_LEVELS
 } from '../../../../helpers/consts';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
+import { extractI18n, formatError } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import EditedField from '../../../shared/Fields/EditedField';
 
