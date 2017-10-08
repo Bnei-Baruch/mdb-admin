@@ -11,11 +11,11 @@ import {
   SECURITY_LEVELS
 } from '../../../../helpers/consts';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { extractI18n, formatError } from '../../../../helpers/utils';
+import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import EditedField from '../../../shared/Fields/EditedField';
 
-class Units extends PureComponent {
+class NewAssociations extends PureComponent {
 
   static propTypes = {
     units: PropTypes.arrayOf(shapes.CollectionContentUnit),
@@ -25,29 +25,48 @@ class Units extends PureComponent {
     err: shapes.Error,
     errDeleteCu: shapes.Error,
     errUpdateCu: shapes.Error,
-    selectCU: PropTypes.func,
+    selectCUIndex: PropTypes.func,
     deleteItemUnit: PropTypes.func,
     selectedCU: PropTypes.arrayOf(PropTypes.object),
   };
 
-  state = {
-    checked: false
+  itemsMustUpdate = [];
+
+  componentWillUpdate() {
+    const { selectCUIndex } = this.props;
+    if (this.itemsMustUpdate.length === 0) {
+      return;
+    }
+    this.itemsMustUpdate.forEach(cu => {
+      selectCUIndex(cu.index, cu, false);
+      selectCUIndex(cu.index, cu, true);
+    });
+    this.itemsMustUpdate.splice(0);
+  }
+
+  saveAssociationNum = (id, cuId, val) => {
+    this.props.updateItemUnitProperties(id, cuId, { name: val });
   };
 
-  saveAssociationNum = (id, item, val) => {
-    this.props.updateItemUnitProperties(id, item.content_unit_id, { name: val, position: item.position });
-  };
-
-  checkHandler = (unit, checked) => {
-    this.props.selectCU(unit, checked);
+  checkHandler = (index, unit, checked) => {
+    this.props.selectCUIndex(index, unit, checked);
     this.setState({ checked: checked });
   };
 
-  renderItem = (item) => {
+  updateIndexForSelected = (item, index) => {
+
+    if (!item.index || item.index === index) {
+      return;
+    }
+    this.itemsMustUpdate.push({ ...item, index });
+  };
+
+  renderItem = (item, index) => {
     const { collection, errUpdateCu, errDeleteCu } = this.props;
     const unit                                     = item.content_unit;
     let properties                                 = extractI18n(unit.i18n, ['name'])[0];
-    let error                                      = errDeleteCu ? errDeleteCu : errUpdateCu;
+    this.updateIndexForSelected(item, index);
+    let error = errDeleteCu ? errDeleteCu : errUpdateCu;
 
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
@@ -70,30 +89,27 @@ class Units extends PureComponent {
         <Table.Cell>
           <Checkbox
             type="checkbox"
-            onChange={(event, data) => this.checkHandler(item, data.checked)}
+            onChange={(event, data) => this.checkHandler(index, item, data.checked)}
             checked={this.props.selectedCU.find((cu) => {
               cu.content_unit_id === unit.id;
             })}></Checkbox>
         </Table.Cell>
         <Table.Cell>
           <Link to={`/content_units/${unit.id}`}>
-            {unit.id}
+            {item.position}
           </Link>
         </Table.Cell>
         <Table.Cell>
           {unit.uid}
         </Table.Cell>
         <Table.Cell>
-          {properties}
-        </Table.Cell>
-        <Table.Cell>
           {CONTENT_TYPE_BY_ID[unit.type_id]}
         </Table.Cell>
         <Table.Cell>
-          {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+          {properties}
         </Table.Cell>
         <Table.Cell>
-          {moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss')}
+          {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
@@ -108,7 +124,7 @@ class Units extends PureComponent {
         <Table.Cell>
           <EditedField
             value={item.name}
-            save={(val) => this.saveAssociationNum(collection.id, item, val)} />
+            save={(val) => this.saveAssociationNum(collection.id, unit.id, val)} />
         </Table.Cell>
       </Table.Row>
     );
@@ -117,6 +133,8 @@ class Units extends PureComponent {
   render() {
     const { units, wip, err } = this.props;
     let content               = '';
+    let header                = '';
+
     if (err) {
       content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     } else if (units.length === 0) {
@@ -130,10 +148,9 @@ class Units extends PureComponent {
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
+            <Table.HeaderCell>Properties</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
-            <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>
             <Table.HeaderCell>Association No.</Table.HeaderCell>
@@ -141,13 +158,13 @@ class Units extends PureComponent {
         </Table.Header>
         <Table.Body>
           {
-            units.map(x => this.renderItem(x))
+            units.map((x, i) => this.renderItem(x, i))
           }
         </Table.Body>
       </Table>);
     }
-    return (content);
+    return (<div>{header + content}</div>);
   }
 }
 
-export default Units;
+export default NewAssociations;

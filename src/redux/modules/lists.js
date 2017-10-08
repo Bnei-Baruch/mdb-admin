@@ -21,7 +21,7 @@ export const types = {
 /* Actions */
 
 const setPage          = createAction(SET_PAGE, (namespace, pageNo) => ({ namespace, pageNo }));
-const fetchList        = createAction(FETCH_LIST, (namespace, pageNo) => ({ namespace, pageNo }));
+const fetchList        = createAction(FETCH_LIST, (namespace, pageNo, parent) => ({ namespace, pageNo, parent }));
 const fetchListSuccess = createAction(FETCH_LIST_SUCCESS, (namespace, total, data) => ({ namespace, total, data }));
 const fetchListFailure = createAction(FETCH_LIST_FAILURE, (namespace, err) => ({ namespace, err }));
 const removeItem       = createAction(REMOVE_ITEM, (namespace, id) => ({ namespace, id }));
