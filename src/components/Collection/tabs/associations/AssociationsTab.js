@@ -100,12 +100,13 @@ class AssociationsTab extends Component {
   }
 
   render() {
-    const { selectedCU, editMode } = this.state;
-    const { units }                = this.props;
-    let isLast                     = selectedCU.length === 0 || selectedCU[selectedCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
-    let isFirst                    = selectedCU.length === 0 || selectedCU[0].content_unit_id === units[0].content_unit_id;
+    const { selectedCU, editMode, content_units_ids } = this.state;
+    const { units }                                   = this.props;
+    let isLast                                        = selectedCU.length === 0 || selectedCU[selectedCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
+    let isFirst                                       = selectedCU.length === 0 || selectedCU[0].content_unit_id === units[0].content_unit_id;
     if (editMode) {
-      return (<NewAssociationsContainer></NewAssociationsContainer>);
+      return (<NewAssociationsContainer
+        associatedCUIds={content_units_ids}></NewAssociationsContainer>);
     }
     return (<div>
         <Menu borderless size="large">
@@ -163,6 +164,7 @@ const mapState = (state, ownProps) => {
 
   return {
     units: unitIDs ? orderBy(denormCCUs(unitIDs), 'position', 'desc') : EMPTY_ARRAY,
+    content_units_ids: collection.content_units ? new Map(collection.content_units.map(x => [x.content_unit_id, true])) : new Map(),
     wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
     err: selectors.getError(state.collections, 'fetchItemUnits'),
     errDeleteCu: selectors.getError(state.collections, 'deleteItemUnit'),

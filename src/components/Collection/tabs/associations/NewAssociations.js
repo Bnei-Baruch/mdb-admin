@@ -101,6 +101,7 @@ class NewAssociations extends PureComponent {
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
               <ContentUnitList
+                {...this.props}
                 items={items}
                 selectedCU={selectedCU}
                 selectCU={selectCU} />

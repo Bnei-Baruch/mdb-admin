@@ -15,6 +15,9 @@ const FETCH_ITEM_UNITS_FAILURE            = 'Collections/FETCH_ITEM_UNITS_FAILUR
 const UPDATE_ITEM_UNIT_PROPERTIES         = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES';
 const UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS';
 const UPDATE_ITEM_UNIT_PROPERTIES_FAILURE = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES_FAILURE';
+const ASSOCIATE_UNIT         = 'Collections/ASSOCIATE_UNIT_PROPERTIES';
+const ASSOCIATE_UNIT_SUCCESS = 'Collections/ASSOCIATE_UNIT_SUCCESS';
+const ASSOCIATE_UNIT_FAILURE = 'Collections/ASSOCIATE_UNIT_FAILURE';
 const DELETE_ITEM_UNIT                    = 'Collections/DELETE_ITEM_UNIT';
 const DELETE_ITEM_UNIT_SUCCESS            = 'Collections/DELETE_ITEM_UNIT_SUCCESS';
 const DELETE_ITEM_UNIT_FAILURE            = 'Collections/DELETE_ITEM_UNIT_FAILURE';
@@ -94,6 +97,13 @@ const updateItemUnitProperties        = createAction(UPDATE_ITEM_UNIT_PROPERTIES
 }));
 const updateItemUnitPropertiesSuccess = createAction(UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS);
 const updateItemUnitPropertiesFailure = createAction(UPDATE_ITEM_UNIT_PROPERTIES_FAILURE);
+const associateUnit        = createAction(ASSOCIATE_UNIT, (id, cuId, properties) => ({
+  id,
+  cuId,
+  properties
+}));
+const associateUnitSuccess = createAction(ASSOCIATE_UNIT_SUCCESS);
+const associateUnitFailure = createAction(ASSOCIATE_UNIT_FAILURE);
 const deleteItemUnit                  = createAction(DELETE_ITEM_UNIT, (id, cuId) => ({ id, cuId }));
 const deleteItemUnitSuccess           = createAction(DELETE_ITEM_UNIT_SUCCESS);
 const deleteItemUnitFailure           = createAction(DELETE_ITEM_UNIT_FAILURE);
@@ -133,6 +143,9 @@ export const actions = {
   updateItemUnitProperties,
   updateItemUnitPropertiesSuccess,
   updateItemUnitPropertiesFailure,
+  associateUnit,
+  associateUnitSuccess,
+  associateUnitFailure,
   deleteItemUnit,
   deleteItemUnitSuccess,
   deleteItemUnitFailure,
@@ -171,6 +184,9 @@ const keys = new Map([
   [UPDATE_ITEM_UNIT_PROPERTIES, 'updateItemUnitProperties'],
   [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS, 'updateItemUnitProperties'],
   [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE, 'updateItemUnitProperties'],
+  [ASSOCIATE_UNIT, 'associateUnit'],
+  [ASSOCIATE_UNIT_SUCCESS, 'associateUnit'],
+  [ASSOCIATE_UNIT_FAILURE, 'associateUnit'],
   [DELETE_ITEM_UNIT, 'deleteItemUnit'],
   [DELETE_ITEM_UNIT_SUCCESS, 'deleteItemUnit'],
   [DELETE_ITEM_UNIT_FAILURE, 'deleteItemUnit'],
@@ -282,6 +298,9 @@ export const reducer = handleActions({
   [UPDATE_ITEM_UNIT_PROPERTIES]: onRequest,
   [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS]: onSuccess,
   [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE]: onFailure,
+  [ASSOCIATE_UNIT]: onRequest,
+  [ASSOCIATE_UNIT_SUCCESS]: onSuccess,
+  [ASSOCIATE_UNIT_FAILURE]: onFailure,
   [DELETE_ITEM_UNIT]: onRequest,
   [DELETE_ITEM_UNIT_SUCCESS]: onSuccess,
   [DELETE_ITEM_UNIT_FAILURE]: onFailure,
