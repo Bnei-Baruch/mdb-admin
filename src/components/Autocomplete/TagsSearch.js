@@ -69,12 +69,12 @@ class TagsSearch extends Component {
   }, 150);
 
   handleResultSelect = (e, data) => {
-    this.props.onSelect(data);
+    this.props.onSelect(data.result);
     this.resetComponent();
   };
 
-  handleSearchChange = (e, query) => {
-    this.setState({ query });
+  handleSearchChange = (e, data) => {
+    this.setState({ query: data.value });
     this.doFilter();
   };
 
