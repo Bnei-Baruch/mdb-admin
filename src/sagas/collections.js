@@ -52,9 +52,9 @@ function* updateItemUnitProperties(action) {
   const { id, cuId, properties } = action.payload;
   try {
     yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, properties);
-    yield put(actions.updateItemUnitPropertiesSuccess({id, cuId, properties}));
+    yield put(actions.updateItemUnitPropertiesSuccess({ id, cuId, properties }));
   } catch (err) {
-    yield put(actions.updateItemUnitPropertiesFailure({...err, content_units_id: cuId}));
+    yield put(actions.updateItemUnitPropertiesFailure({ ...err, content_units_id: cuId }));
   }
 }
 
@@ -62,9 +62,9 @@ function* deleteItemUnit(action) {
   const { id, cuId } = action.payload;
   try {
     yield call(api.delete, `/rest/collections/${id}/content_units/${cuId}`);
-    yield put(actions.deleteItemUnitSuccess({id, cuId}));
+    yield put(actions.deleteItemUnitSuccess({ id, cuId }));
   } catch (err) {
-    yield put(actions.deleteItemUnitFailure({...err, content_units_id: cuId}));
+    yield put(actions.deleteItemUnitFailure({ ...err, content_units_id: cuId }));
   }
 }
 

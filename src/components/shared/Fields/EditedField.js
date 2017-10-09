@@ -1,88 +1,79 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Form } from 'semantic-ui-react';
+import noop from 'lodash/noop';
+import { Button, Form, Input } from 'semantic-ui-react';
 
 class EditedField extends PureComponent {
 
-  static  propTypes   = {
-    remove: PropTypes.func,
-    save: PropTypes.func,
+  static propTypes = {
+    onSave: PropTypes.func,
     value: PropTypes.string
   };
+
   static defaultProps = {
-    remove: null,
-    save: null,
+    onSave: noop,
+    value: ''
   };
 
   constructor(props) {
     super(props);
     this.state = {
       value: props.value,
-      pattern: '',
-      error: false,
       isViewMode: true
     };
   }
 
-  onInputChange = (e, { value }) => {
-    let error = false;
-    if (!value && value !== '0') {
-      value = this.state.value;
-      error = true;
-      return this.setState({ error });
-    }
+  handleInputChange = (e, data) =>
+    this.setState({ value: data.value });
 
-    this.setState({ value, error });
+  handleSave = () => {
+    const { value } = this.state;
+    this.props.onSave(value);
+    this.setState({ isViewMode: true });
   };
 
-  save = () => {
-    const { value, error } = this.state;
-    if (error) {
-      return;
-    }
-
-    this.props.save(value);
-    this.setMode();
-  };
-
-  setMode = (isView = true) => {
-    this.setState({ isViewMode: isView });
-  };
+  setEditMode = () =>
+    this.setState({ isViewMode: false });
 
   render() {
-    const { isViewMode, value, error } = this.state;
+    const { isViewMode, value } = this.state;
 
-    let viewMode = (<Form>
-      <Form.Group inline>
-        <Form.Field label={value} width={10}></Form.Field>
-        <Form.Field>
-          <Button
-            floated="right"
-            icon="pencil"
-            size="small"
-            onClick={() => this.setMode(false)} />
-        </Form.Field>
-      </Form.Group></Form>);
+    if (isViewMode) {
+      return (
+        <Form>
+          <Form.Group inline>
+            <Form.Field label={value} width={10} />
+            <Form.Field>
+              <Button
+                floated="right"
+                icon="pencil"
+                size="small"
+                onClick={this.setEditMode}
+              />
+            </Form.Field>
+          </Form.Group>
+        </Form>
+      );
+    }
 
-    let editMode = (<Form>
-      <Form.Group inline>
-        <Form.Field width={10}>
-          <Input value={value}
-                 error={error}
-                 onChange={this.onInputChange} />
-        </Form.Field>
-        <Form.Field width={4}>
-          <Button
-            floated="right"
-            icon="checkmark"
-            size="small"
-            color="green"
-            onClick={this.save} />
-        </Form.Field>
-      </Form.Group>
-    </Form>);
-
-    return (isViewMode ? viewMode : editMode);
+    return (
+      <Form>
+        <Form.Group inline>
+          <Form.Field width={10}>
+            <Input value={value} onChange={this.handleInputChange} />
+          </Form.Field>
+          <Form.Field width={4}>
+            <Button
+              floated="right"
+              icon="checkmark"
+              size="small"
+              color="green"
+              onClick={this.handleSave}
+            />
+          </Form.Field>
+        </Form.Group>
+      </Form>
+    );
   }
 }
 

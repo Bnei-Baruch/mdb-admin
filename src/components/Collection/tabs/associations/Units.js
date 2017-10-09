@@ -2,53 +2,64 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Icon, Table, Checkbox, Message } from 'semantic-ui-react';
+import { Checkbox, Icon, Message, Table } from 'semantic-ui-react';
 
 import {
   CONTENT_TYPE_BY_ID,
   CT_DAILY_LESSON,
   CT_SPECIAL_LESSON,
+  EMPTY_ARRAY,
   SECURITY_LEVELS
 } from '../../../../helpers/consts';
-import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
+import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import EditedField from '../../../shared/Fields/EditedField';
 
 class Units extends PureComponent {
 
   static propTypes = {
-    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
-    updateItemUnitProperties: PropTypes.func,
     collection: shapes.Collection,
+    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
+    selectedCU: PropTypes.arrayOf(PropTypes.object),
+    updateItemUnitProperties: PropTypes.func.isRequired,
+    onSelectionChange: PropTypes.func.isRequired,
     wip: PropTypes.bool,
     err: shapes.Error,
     errDeleteCu: shapes.Error,
     errUpdateCu: shapes.Error,
-    selectCU: PropTypes.func,
-    deleteItemUnit: PropTypes.func,
-    selectedCU: PropTypes.arrayOf(PropTypes.object),
+  };
+
+  static defaultProps = {
+    collection: null,
+    units: EMPTY_ARRAY,
+    selectedCU: EMPTY_ARRAY,
+    wip: false,
+    err: null,
+    errDeleteCu: null,
+    errUpdateCu: null,
   };
 
   state = {
     checked: false
   };
 
-  saveAssociationNum = (id, item, val) => {
+  saveCCUName = (id, item, val) => {
     this.props.updateItemUnitProperties(id, item.content_unit_id, { name: val, position: item.position });
   };
 
-  checkHandler = (unit, checked) => {
-    this.props.selectCU(unit, checked);
-    this.setState({ checked: checked });
+  handleSelectionChange = (unit, data) => {
+    const checked = data.checked;
+    this.props.onSelectionChange(unit, checked);
+    this.setState({ checked });
   };
 
   renderItem = (item) => {
-    const { collection, errUpdateCu, errDeleteCu } = this.props;
-    const unit                                     = item.content_unit;
-    let properties                                 = extractI18n(unit.i18n, ['name'])[0];
-    let error                                      = errDeleteCu ? errDeleteCu : errUpdateCu;
+    const { collection, errUpdateCu, errDeleteCu, selectedCU } = this.props;
+    const unit                                                 = item.content_unit;
+    const error                                                = errDeleteCu || errUpdateCu;
 
+    let properties = extractI18n(unit.i18n, ['name'])[0];
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
       case CT_SPECIAL_LESSON:
@@ -66,39 +77,42 @@ class Units extends PureComponent {
     }
 
     return (
-      <Table.Row key={unit.id} error={error && error.content_units_id === unit.id} title={error ? formatError(error) : ''}>
-        <Table.Cell>
+      <Table.Row
+        key={unit.id}
+        error={error && error.content_units_id === unit.id}
+        title={error ? formatError(error) : ''}
+      >
+        <Table.Cell collapsing>
           <Checkbox
             type="checkbox"
-            onChange={(event, data) => this.checkHandler(item, data.checked)}
-            checked={this.props.selectedCU.find((cu) => {
-              cu.content_unit_id === unit.id;
-            })}></Checkbox>
+            onChange={(e, data) => this.handleSelectionChange(item, data)}
+            checked={selectedCU.findIndex(cu => cu.content_unit_id === unit.id) !== -1}
+          />
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell collapsing>
           <Link to={`/content_units/${unit.id}`}>
             {unit.id}
           </Link>
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell collapsing>
           {unit.uid}
         </Table.Cell>
         <Table.Cell>
           {properties}
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell collapsing>
           {CONTENT_TYPE_BY_ID[unit.type_id]}
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell collapsing>
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell collapsing>
           {moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss')}
         </Table.Cell>
-        <Table.Cell textAlign="center">
+        <Table.Cell textAlign="center" collapsing>
           <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
         </Table.Cell>
-        <Table.Cell textAlign="center">
+        <Table.Cell textAlign="center" collapsing>
           {
             unit.published ?
               <Icon name="checkmark" color="green" /> :
@@ -108,7 +122,8 @@ class Units extends PureComponent {
         <Table.Cell>
           <EditedField
             value={item.name}
-            save={(val) => this.saveAssociationNum(collection.id, item, val)} />
+            onSave={val => this.saveCCUName(collection.id, item, val)}
+          />
         </Table.Cell>
       </Table.Row>
     );
@@ -116,18 +131,22 @@ class Units extends PureComponent {
 
   render() {
     const { units, wip, err } = this.props;
-    let content               = '';
+
     if (err) {
-      content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
-    } else if (units.length === 0) {
-      content = wip ?
+      return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
+    }
+
+    if (units.length === 0) {
+      return wip ?
         <LoadingSplash text="Loading content units" /> :
         <Message>No content units found for this collection</Message>;
-    } else {
-      content = (<Table celled selectable>
+    }
+
+    return (
+      <Table celled selectable compact size="small">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell />
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
@@ -140,13 +159,10 @@ class Units extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {
-            units.map(x => this.renderItem(x))
-          }
+          {units.map(this.renderItem)}
         </Table.Body>
-      </Table>);
-    }
-    return (content);
+      </Table>
+    );
   }
 }
 

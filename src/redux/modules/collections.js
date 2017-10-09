@@ -6,37 +6,37 @@ import { bulkMerge, del, merge, setMap, update } from '../utils';
 
 /* Types */
 
-const FETCH_ITEM                          = 'Collections/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS                  = 'Collections/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE                  = 'Collections/FETCH_ITEM_FAILURE';
-const FETCH_ITEM_UNITS                    = 'Collections/FETCH_ITEM_UNITS';
-const FETCH_ITEM_UNITS_SUCCESS            = 'Collections/FETCH_ITEM_UNITS_SUCCESS';
-const FETCH_ITEM_UNITS_FAILURE            = 'Collections/FETCH_ITEM_UNITS_FAILURE';
+const FETCH_ITEM               = 'Collections/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS       = 'Collections/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE       = 'Collections/FETCH_ITEM_FAILURE';
+const FETCH_ITEM_UNITS         = 'Collections/FETCH_ITEM_UNITS';
+const FETCH_ITEM_UNITS_SUCCESS = 'Collections/FETCH_ITEM_UNITS_SUCCESS';
+const FETCH_ITEM_UNITS_FAILURE = 'Collections/FETCH_ITEM_UNITS_FAILURE';
+
+const UPDATE_I18N                         = 'Collections/UPDATE_I18N';
+const UPDATE_I18N_SUCCESS                 = 'Collections/UPDATE_I18N_SUCCESS';
+const UPDATE_I18N_FAILURE                 = 'Collections/UPDATE_I18N_FAILURE';
+const UPDATE_PROPERTIES                   = 'Collections/UPDATE_PROPERTIES';
+const UPDATE_PROPERTIES_SUCCESS           = 'Collections/UPDATE_PROPERTIES_SUCCESS';
+const UPDATE_PROPERTIES_FAILURE           = 'Collections/UPDATE_PROPERTIES_FAILURE';
+const CHANGE_SECURITY_LEVEL               = 'Collections/CHANGE_SECURITY_LEVEL';
+const CHANGE_SECURITY_LEVEL_SUCCESS       = 'Collections/CHANGE_SECURITY_LEVEL_SUCCESS';
+const CHANGE_SECURITY_LEVEL_FAILURE       = 'Collections/CHANGE_SECURITY_LEVEL_FAILURE';
+const CHANGE_ACTIVE                       = 'Collections/CHANGE_ACTIVE';
+const CHANGE_ACTIVE_SUCCESS               = 'Collections/CHANGE_ACTIVE_SUCCESS';
+const CHANGE_ACTIVE_FAILURE               = 'Collections/CHANGE_ACTIVE_FAILURE';
+const CREATE                              = 'Collections/CREATE';
+const CREATE_SUCCESS                      = 'Collections/CREATE_SUCCESS';
+const CREATE_FAILURE                      = 'Collections/CREATE_FAILURE';
+const DELETE                              = 'Collections/DELETE';
+const DELETE_SUCCESS                      = 'Collections/DELETE_SUCCESS';
+const DELETE_FAILURE                      = 'Collections/DELETE_FAILURE';
 const UPDATE_ITEM_UNIT_PROPERTIES         = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES';
 const UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS';
 const UPDATE_ITEM_UNIT_PROPERTIES_FAILURE = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES_FAILURE';
 const DELETE_ITEM_UNIT                    = 'Collections/DELETE_ITEM_UNIT';
 const DELETE_ITEM_UNIT_SUCCESS            = 'Collections/DELETE_ITEM_UNIT_SUCCESS';
 const DELETE_ITEM_UNIT_FAILURE            = 'Collections/DELETE_ITEM_UNIT_FAILURE';
-
-const UPDATE_I18N                   = 'Collections/UPDATE_I18N';
-const UPDATE_I18N_SUCCESS           = 'Collections/UPDATE_I18N_SUCCESS';
-const UPDATE_I18N_FAILURE           = 'Collections/UPDATE_I18N_FAILURE';
-const UPDATE_PROPERTIES             = 'Collections/UPDATE_PROPERTIES';
-const UPDATE_PROPERTIES_SUCCESS     = 'Collections/UPDATE_PROPERTIES_SUCCESS';
-const UPDATE_PROPERTIES_FAILURE     = 'Collections/UPDATE_PROPERTIES_FAILURE';
-const CHANGE_SECURITY_LEVEL         = 'Collections/CHANGE_SECURITY_LEVEL';
-const CHANGE_SECURITY_LEVEL_SUCCESS = 'Collections/CHANGE_SECURITY_LEVEL_SUCCESS';
-const CHANGE_SECURITY_LEVEL_FAILURE = 'Collections/CHANGE_SECURITY_LEVEL_FAILURE';
-const CHANGE_ACTIVE                 = 'Collections/CHANGE_ACTIVE';
-const CHANGE_ACTIVE_SUCCESS         = 'Collections/CHANGE_ACTIVE_SUCCESS';
-const CHANGE_ACTIVE_FAILURE         = 'Collections/CHANGE_ACTIVE_FAILURE';
-const CREATE                        = 'Collections/CREATE';
-const CREATE_SUCCESS                = 'Collections/CREATE_SUCCESS';
-const CREATE_FAILURE                = 'Collections/CREATE_FAILURE';
-const DELETE                        = 'Collections/DELETE';
-const DELETE_SUCCESS                = 'Collections/DELETE_SUCCESS';
-const DELETE_FAILURE                = 'Collections/DELETE_FAILURE';
 
 const RECEIVE_ITEMS = 'Collections/RECEIVE_ITEMS';
 
@@ -47,12 +47,6 @@ export const types = {
   FETCH_ITEM_UNITS,
   FETCH_ITEM_UNITS_SUCCESS,
   FETCH_ITEM_UNITS_FAILURE,
-  UPDATE_ITEM_UNIT_PROPERTIES,
-  UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS,
-  UPDATE_ITEM_UNIT_PROPERTIES_FAILURE,
-  DELETE_ITEM_UNIT,
-  DELETE_ITEM_UNIT_SUCCESS,
-  DELETE_ITEM_UNIT_FAILURE,
 
   UPDATE_I18N,
   UPDATE_I18N_SUCCESS,
@@ -72,18 +66,47 @@ export const types = {
   DELETE,
   DELETE_SUCCESS,
   DELETE_FAILURE,
+  UPDATE_ITEM_UNIT_PROPERTIES,
+  UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS,
+  UPDATE_ITEM_UNIT_PROPERTIES_FAILURE,
+  DELETE_ITEM_UNIT,
+  DELETE_ITEM_UNIT_SUCCESS,
+  DELETE_ITEM_UNIT_FAILURE,
 
   RECEIVE_ITEMS,
 };
 
 /* Actions */
 
-const fetchItem                       = createAction(FETCH_ITEM);
-const fetchItemSuccess                = createAction(FETCH_ITEM_SUCCESS);
-const fetchItemFailure                = createAction(FETCH_ITEM_FAILURE);
-const fetchItemUnits                  = createAction(FETCH_ITEM_UNITS);
-const fetchItemUnitsSuccess           = createAction(FETCH_ITEM_UNITS_SUCCESS);
-const fetchItemUnitsFailure           = createAction(FETCH_ITEM_UNITS_FAILURE);
+const fetchItem             = createAction(FETCH_ITEM);
+const fetchItemSuccess      = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure      = createAction(FETCH_ITEM_FAILURE);
+const fetchItemUnits        = createAction(FETCH_ITEM_UNITS);
+const fetchItemUnitsSuccess = createAction(FETCH_ITEM_UNITS_SUCCESS);
+const fetchItemUnitsFailure = createAction(FETCH_ITEM_UNITS_FAILURE);
+
+const updateI18n                      = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
+const updateI18nSuccess               = createAction(UPDATE_I18N_SUCCESS);
+const updateI18nFailure               = createAction(UPDATE_I18N_FAILURE);
+const updateProperties                = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
+const updatePropertiesSuccess         = createAction(UPDATE_PROPERTIES_SUCCESS);
+const updatePropertiesFailure         = createAction(UPDATE_PROPERTIES_FAILURE);
+const changeSecurityLevel             = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
+const changeSecurityLevelSuccess      = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
+const changeSecurityLevelFailure      = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
+const changeActive                    = createAction(CHANGE_ACTIVE);
+const changeActiveSuccess             = createAction(CHANGE_ACTIVE_SUCCESS);
+const changeActiveFailure             = createAction(CHANGE_ACTIVE_FAILURE);
+const create                          = createAction(CREATE, (typeID, properties, i18n) => ({
+  type_id: typeID,
+  properties,
+  i18n
+}));
+const createSuccess                   = createAction(CREATE_SUCCESS);
+const createFailure                   = createAction(CREATE_FAILURE);
+const deleteC                         = createAction(DELETE);
+const deleteSuccess                   = createAction(DELETE_SUCCESS);
+const deleteFailure                   = createAction(DELETE_FAILURE);
 const updateItemUnitProperties        = createAction(UPDATE_ITEM_UNIT_PROPERTIES, (id, cuId, properties) => ({
   id,
   cuId,
@@ -95,29 +118,6 @@ const deleteItemUnit                  = createAction(DELETE_ITEM_UNIT, (id, cuId
 const deleteItemUnitSuccess           = createAction(DELETE_ITEM_UNIT_SUCCESS);
 const deleteItemUnitFailure           = createAction(DELETE_ITEM_UNIT_FAILURE);
 
-const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
-const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
-const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
-const updateProperties           = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
-const updatePropertiesSuccess    = createAction(UPDATE_PROPERTIES_SUCCESS);
-const updatePropertiesFailure    = createAction(UPDATE_PROPERTIES_FAILURE);
-const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
-const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
-const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
-const changeActive               = createAction(CHANGE_ACTIVE);
-const changeActiveSuccess        = createAction(CHANGE_ACTIVE_SUCCESS);
-const changeActiveFailure        = createAction(CHANGE_ACTIVE_FAILURE);
-const create                     = createAction(CREATE, (typeID, properties, i18n) => ({
-  type_id: typeID,
-  properties,
-  i18n
-}));
-const createSuccess              = createAction(CREATE_SUCCESS);
-const createFailure              = createAction(CREATE_FAILURE);
-const deleteC                    = createAction(DELETE);
-const deleteSuccess              = createAction(DELETE_SUCCESS);
-const deleteFailure              = createAction(DELETE_FAILURE);
-
 const receiveItems = createAction(RECEIVE_ITEMS);
 
 export const actions = {
@@ -127,12 +127,6 @@ export const actions = {
   fetchItemUnits,
   fetchItemUnitsSuccess,
   fetchItemUnitsFailure,
-  updateItemUnitProperties,
-  updateItemUnitPropertiesSuccess,
-  updateItemUnitPropertiesFailure,
-  deleteItemUnit,
-  deleteItemUnitSuccess,
-  deleteItemUnitFailure,
 
   updateI18n,
   updateI18nSuccess,
@@ -152,6 +146,12 @@ export const actions = {
   deleteC,
   deleteSuccess,
   deleteFailure,
+  updateItemUnitProperties,
+  updateItemUnitPropertiesSuccess,
+  updateItemUnitPropertiesFailure,
+  deleteItemUnit,
+  deleteItemUnitSuccess,
+  deleteItemUnitFailure,
 
   receiveItems,
 };
@@ -165,12 +165,6 @@ const keys = new Map([
   [FETCH_ITEM_UNITS, 'fetchItemUnits'],
   [FETCH_ITEM_UNITS_SUCCESS, 'fetchItemUnits'],
   [FETCH_ITEM_UNITS_FAILURE, 'fetchItemUnits'],
-  [UPDATE_ITEM_UNIT_PROPERTIES, 'updateItemUnitProperties'],
-  [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS, 'updateItemUnitProperties'],
-  [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE, 'updateItemUnitProperties'],
-  [DELETE_ITEM_UNIT, 'deleteItemUnit'],
-  [DELETE_ITEM_UNIT_SUCCESS, 'deleteItemUnit'],
-  [DELETE_ITEM_UNIT_FAILURE, 'deleteItemUnit'],
 
   [UPDATE_I18N, 'updateI18n'],
   [UPDATE_I18N_SUCCESS, 'updateI18n'],
@@ -190,6 +184,12 @@ const keys = new Map([
   [DELETE, 'delete'],
   [DELETE_SUCCESS, 'delete'],
   [DELETE_FAILURE, 'delete'],
+  [UPDATE_ITEM_UNIT_PROPERTIES, 'updateItemUnitProperties'],
+  [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS, 'updateItemUnitProperties'],
+  [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE, 'updateItemUnitProperties'],
+  [DELETE_ITEM_UNIT, 'deleteItemUnit'],
+  [DELETE_ITEM_UNIT_SUCCESS, 'deleteItemUnit'],
+  [DELETE_ITEM_UNIT_FAILURE, 'deleteItemUnit'],
 ]);
 
 const initialState = {
@@ -225,14 +225,6 @@ const onSuccess = (state, action) => {
   case UPDATE_PROPERTIES_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
-  case UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS:
-    byID = update(state.byID, action.payload.id, coll => {
-      return {
-        ...coll,
-        content_units: coll.content_units.map(x => (x.content_unit_id !== action.payload.cuId ? x : { ...x, ...action.payload.properties })),
-      };
-    });
-    break;
   case FETCH_ITEM_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
@@ -245,6 +237,13 @@ const onSuccess = (state, action) => {
     break;
   case DELETE_SUCCESS:
     byID = del(state.byID, action.payload);
+    break;
+  case UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS:
+    byID = update(state.byID, action.payload.id, coll => ({
+      ...coll,
+      content_units: coll.content_units.map(x =>
+        (x.content_unit_id !== action.payload.cuId ? x : { ...x, ...action.payload.properties })),
+    }));
     break;
   case DELETE_ITEM_UNIT_SUCCESS:
     byID = update(state.byID, action.payload.id, x => ({
@@ -276,12 +275,6 @@ export const reducer = handleActions({
   [FETCH_ITEM_UNITS]: onRequest,
   [FETCH_ITEM_UNITS_SUCCESS]: onSuccess,
   [FETCH_ITEM_UNITS_FAILURE]: onFailure,
-  [UPDATE_ITEM_UNIT_PROPERTIES]: onRequest,
-  [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS]: onSuccess,
-  [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE]: onFailure,
-  [DELETE_ITEM_UNIT]: onRequest,
-  [DELETE_ITEM_UNIT_SUCCESS]: onSuccess,
-  [DELETE_ITEM_UNIT_FAILURE]: onFailure,
 
   [UPDATE_I18N]: onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
@@ -301,6 +294,12 @@ export const reducer = handleActions({
   [DELETE]: onRequest,
   [DELETE_SUCCESS]: onSuccess,
   [DELETE_FAILURE]: onFailure,
+  [UPDATE_ITEM_UNIT_PROPERTIES]: onRequest,
+  [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS]: onSuccess,
+  [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE]: onFailure,
+  [DELETE_ITEM_UNIT]: onRequest,
+  [DELETE_ITEM_UNIT_SUCCESS]: onSuccess,
+  [DELETE_ITEM_UNIT_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 

@@ -124,7 +124,7 @@ class NewAssociations extends PureComponent {
         <Table.Cell>
           <EditedField
             value={item.name}
-            save={(val) => this.saveAssociationNum(collection.id, unit.id, val)} />
+            onSave={(val) => this.saveAssociationNum(collection.id, unit.id, val)} />
         </Table.Cell>
       </Table.Row>
     );
