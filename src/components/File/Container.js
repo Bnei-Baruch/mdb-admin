@@ -12,6 +12,7 @@ class FileContainer extends Component {
   static propTypes = {
     match: shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
+    fetchItemStorages: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -34,6 +35,7 @@ class FileContainer extends Component {
     }
 
     this.props.fetchItem(x);
+    this.props.fetchItemStorages(x);
   }
 
   render() {
@@ -48,7 +50,10 @@ const mapState = (state, props) => ({
 });
 
 function mapDispatch(dispatch) {
-  return bindActionCreators({ fetchItem: actions.fetchItem }, dispatch);
+  return bindActionCreators({
+    fetchItem: actions.fetchItem,
+    fetchItemStorages: actions.fetchItemStorages,
+  }, dispatch);
 }
 
 export default connect(mapState, mapDispatch)(FileContainer);

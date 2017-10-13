@@ -6,9 +6,12 @@ import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
 
-const FETCH_ITEM         = 'Files/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS = 'Files/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE = 'Files/FETCH_ITEM_FAILURE';
+const FETCH_ITEM                  = 'Files/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS          = 'Files/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE          = 'Files/FETCH_ITEM_FAILURE';
+const FETCH_ITEM_STORAGES         = 'Files/FETCH_ITEM_STORAGES';
+const FETCH_ITEM_STORAGES_SUCCESS = 'Files/FETCH_ITEM_STORAGES_SUCCESS';
+const FETCH_ITEM_STORAGES_FAILURE = 'Files/FETCH_ITEM_STORAGES_FAILURE';
 
 const CHANGE_SECURITY_LEVEL         = 'Files/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'Files/CHANGE_SECURITY_LEVEL_SUCCESS';
@@ -20,6 +23,9 @@ export const types = {
   FETCH_ITEM,
   FETCH_ITEM_SUCCESS,
   FETCH_ITEM_FAILURE,
+  FETCH_ITEM_STORAGES,
+  FETCH_ITEM_STORAGES_SUCCESS,
+  FETCH_ITEM_STORAGES_FAILURE,
 
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
@@ -30,9 +36,12 @@ export const types = {
 
 /* Actions */
 
-const fetchItem        = createAction(FETCH_ITEM);
-const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
-const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
+const fetchItem                = createAction(FETCH_ITEM);
+const fetchItemSuccess         = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure         = createAction(FETCH_ITEM_FAILURE);
+const fetchItemStorages        = createAction(FETCH_ITEM_STORAGES);
+const fetchItemStoragesSuccess = createAction(FETCH_ITEM_STORAGES_SUCCESS);
+const fetchItemStoragesFailure = createAction(FETCH_ITEM_STORAGES_FAILURE);
 
 const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
@@ -44,6 +53,9 @@ export const actions = {
   fetchItem,
   fetchItemSuccess,
   fetchItemFailure,
+  fetchItemStorages,
+  fetchItemStoragesSuccess,
+  fetchItemStoragesFailure,
 
   changeSecurityLevel,
   changeSecurityLevelSuccess,
@@ -58,6 +70,9 @@ const keys = new Map([
   [FETCH_ITEM, 'fetchItem'],
   [FETCH_ITEM_SUCCESS, 'fetchItem'],
   [FETCH_ITEM_FAILURE, 'fetchItem'],
+  [FETCH_ITEM_STORAGES, 'fetchStorages'],
+  [FETCH_ITEM_STORAGES_SUCCESS, 'fetchStorages'],
+  [FETCH_ITEM_STORAGES_FAILURE, 'fetchStorages'],
 
   [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
   [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
@@ -93,6 +108,12 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
+  case FETCH_ITEM_STORAGES_SUCCESS:
+    byID = merge(state.byID, {
+      id: action.payload.id,
+      storages: action.payload.data.map(x => x.id),
+    });
+    break;
   default:
     byID = state.byID;
   }
@@ -114,6 +135,9 @@ export const reducer = handleActions({
   [FETCH_ITEM]: onRequest,
   [FETCH_ITEM_SUCCESS]: onSuccess,
   [FETCH_ITEM_FAILURE]: onFailure,
+  [FETCH_ITEM_STORAGES]: onRequest,
+  [FETCH_ITEM_STORAGES_SUCCESS]: onSuccess,
+  [FETCH_ITEM_STORAGES_FAILURE]: onFailure,
 
   [CHANGE_SECURITY_LEVEL]: onRequest,
   [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
