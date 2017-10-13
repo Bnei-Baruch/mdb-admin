@@ -25,11 +25,6 @@ class AssociationsContainer extends Component {
     selectedCU: []
   };
 
-  constructor(props) {
-    super(props);
-    this.selectCU = this.selectCU.bind(this);
-  }
-
   componentDidMount() {
     const { collection } = this.props;
     if (collection) {
@@ -38,7 +33,8 @@ class AssociationsContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.collection && !this.props.collection && nextProps.collection.id !== this.props.collection.id) {
+    if (nextProps.collection && !this.props.collection &&
+      nextProps.collection.id !== this.props.collection.id) {
       this.askForData(nextProps.collection.id);
     }
   }
@@ -47,89 +43,94 @@ class AssociationsContainer extends Component {
     this.props.fetchItemUnits(id);
   }
 
-  updatePosition(isUp) {
+  updatePosition = (isUp) => {
     const { units }      = this.props;
     const { selectedCU } = this.state;
-    let _basePosition    = selectedCU[0].position;
-    let currentIndex     = units.findIndex(cu => selectedCU[0].content_unit_id === cu.content_unit_id);
+    const basePosition   = selectedCU[0].position;
+    const currentIndex   = units.findIndex(cu => selectedCU[0].content_unit_id === cu.content_unit_id);
+    const cuIndex        = currentIndex + (isUp ? -1 : 1);
+    const cu             = units[cuIndex];
 
-    let cuIndex            = isUp ? currentIndex - 1 : currentIndex + 1;
-    let _cu                = units[cuIndex];
-    let _newPosition       = (_basePosition === _cu.position) ? (isUp ? _basePosition + 1 : _basePosition - 1) : _cu.position;
-    selectedCU[0].position = _newPosition;
-    _cu.position           = _basePosition;
-    this.saveCUPosition(_cu);
+    let newPosition = cu.position;
+    if (basePosition === cu.position) {
+      newPosition = isUp ? basePosition + 1 : basePosition - 1;
+    }
+
+    selectedCU[0].position = newPosition;
+    cu.position            = basePosition;
+    this.saveCUPosition(cu);
     this.saveCUPosition(selectedCU[0]);
-  }
+  };
 
-  saveCUPosition(cu) {
+  saveCUPosition = (cu) => {
     this.saveProperties(cu.content_unit_id, { position: cu.position, name: cu.name });
-  }
+  };
 
-  saveProperties(cuId, properties) {
+  saveProperties = (cuId, properties) => {
     const { collection, updateItemUnitProperties } = this.props;
     updateItemUnitProperties(collection.id, cuId, properties);
+  };
 
-  }
-
-  selectCU(data, checked) {
-    let selectedCU = this.state.selectedCU;
-    const cu       = data;
+  handleSelectionChange = (cu, checked) => {
+    const selectedCU = this.state.selectedCU;
     if (checked) {
-      selectedCU.push(cu);
+      this.setState({ selectedCU: [...selectedCU, cu] });
     } else {
-      selectedCU.some((cu, i) => {
-        if (cu.content_unit_id === data.content_unit_id) {
-          selectedCU.splice(i, 1);
-          return true;
-        }
-      });
+      this.setState({ selectedCU: selectedCU.filter(x => x.content_unit_id !== cu.content_unit_id) });
     }
-    this.setState({ selectedCU });
-  }
+  };
 
-  deleteCollectionUnits() {
+  deleteCollectionUnits = () => {
     const { selectedCU }                 = this.state;
     const { collection, deleteItemUnit } = this.props;
-    selectedCU.forEach((cu) => deleteItemUnit(collection.id, cu.content_unit_id));
-  }
+    selectedCU.forEach(cu => deleteItemUnit(collection.id, cu.content_unit_id));
+  };
 
   render() {
     const { selectedCU }         = this.state;
     const { units, setEditMode } = this.props;
-    let isLast                   = selectedCU.length === 0 || selectedCU[selectedCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
-    let isFirst                  = selectedCU.length === 0 || selectedCU[0].content_unit_id === units[0].content_unit_id;
+    const isLast                 = selectedCU.length === 0 ||
+      selectedCU[selectedCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
+    const isFirst                = selectedCU.length === 0 ||
+      selectedCU[0].content_unit_id === units[0].content_unit_id;
 
-    return (<div>
+
+    return (
+      <div>
         <Menu borderless size="large">
           <Menu.Item header>
             <Header content="Associated Content Units" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item onClick={()=>setEditMode(true)}>
+            <Menu.Item  onClick={() => setEditMode(true)}>
               <Icon name="plus" /> New Association
             </Menu.Item>
           </Menu.Menu>
         </Menu>
-        <div ref={this.handleContextRef}>
+        <div>
           <Sticky className={'stickyMenu'}>
-
             <Button.Group>
-              <Button icon="arrow up"
-                      basic
-                      color="black"
-                      disabled={isFirst || selectedCU.length > 1}
-                      onClick={() => this.updatePosition(true)} />
-              <Button icon="arrow down"
-                      disabled={isLast || selectedCU.length > 1}
-                      basic color="black"
-                      onClick={() => this.updatePosition()} />
-              <Button icon="trash" basic color="black"
-                      disabled={selectedCU.length === 0}
-                      onClick={() => {
-                        this.deleteCollectionUnits();
-                      }} />
-
+              <Button
+                basic
+                icon="arrow up"
+                color="black"
+                disabled={isFirst || selectedCU.length > 1}
+                onClick={() => this.updatePosition(true)}
+              />
+              <Button
+                basic
+                icon="arrow down"
+                disabled={isLast || selectedCU.length > 1}
+                color="black"
+                onClick={() => this.updatePosition(false)}
+              />
+              <Button
+                basic
+                icon="trash"
+                color="black"
+                disabled={selectedCU.length === 0}
+                onClick={this.deleteCollectionUnits}
+              />
             </Button.Group>
           </Sticky>
           <Grid stackable>
@@ -137,8 +138,9 @@ class AssociationsContainer extends Component {
               <Grid.Column>
                 <Units
                   {...this.props}
-                  selectCU={this.selectCU}
-                  selectedCU={selectedCU} />
+                  selectedCU={selectedCU}
+                  onSelectionChange={this.handleSelectionChange}
+                />
               </Grid.Column>
             </Grid.Row>
           </Grid>
