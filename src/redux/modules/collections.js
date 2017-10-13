@@ -15,9 +15,9 @@ const FETCH_ITEM_UNITS_FAILURE            = 'Collections/FETCH_ITEM_UNITS_FAILUR
 const UPDATE_ITEM_UNIT_PROPERTIES         = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES';
 const UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS';
 const UPDATE_ITEM_UNIT_PROPERTIES_FAILURE = 'Collections/UPDATE_ITEM_UNIT_PROPERTIES_FAILURE';
-const ASSOCIATE_UNIT         = 'Collections/ASSOCIATE_UNIT_PROPERTIES';
-const ASSOCIATE_UNIT_SUCCESS = 'Collections/ASSOCIATE_UNIT_SUCCESS';
-const ASSOCIATE_UNIT_FAILURE = 'Collections/ASSOCIATE_UNIT_FAILURE';
+const ASSOCIATE_UNIT                      = 'Collections/ASSOCIATE_UNIT_PROPERTIES';
+const ASSOCIATE_UNIT_SUCCESS              = 'Collections/ASSOCIATE_UNIT_SUCCESS';
+const ASSOCIATE_UNIT_FAILURE              = 'Collections/ASSOCIATE_UNIT_FAILURE';
 const DELETE_ITEM_UNIT                    = 'Collections/DELETE_ITEM_UNIT';
 const DELETE_ITEM_UNIT_SUCCESS            = 'Collections/DELETE_ITEM_UNIT_SUCCESS';
 const DELETE_ITEM_UNIT_FAILURE            = 'Collections/DELETE_ITEM_UNIT_FAILURE';
@@ -97,13 +97,9 @@ const updateItemUnitProperties        = createAction(UPDATE_ITEM_UNIT_PROPERTIES
 }));
 const updateItemUnitPropertiesSuccess = createAction(UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS);
 const updateItemUnitPropertiesFailure = createAction(UPDATE_ITEM_UNIT_PROPERTIES_FAILURE);
-const associateUnit        = createAction(ASSOCIATE_UNIT, (id, cuId, properties) => ({
-  id,
-  cuId,
-  properties
-}));
-const associateUnitSuccess = createAction(ASSOCIATE_UNIT_SUCCESS);
-const associateUnitFailure = createAction(ASSOCIATE_UNIT_FAILURE);
+const associateUnit                   = createAction(ASSOCIATE_UNIT, (id, properties) => ({ id, properties }));
+const associateUnitSuccess            = createAction(ASSOCIATE_UNIT_SUCCESS);
+const associateUnitFailure            = createAction(ASSOCIATE_UNIT_FAILURE);
 const deleteItemUnit                  = createAction(DELETE_ITEM_UNIT, (id, cuId) => ({ id, cuId }));
 const deleteItemUnitSuccess           = createAction(DELETE_ITEM_UNIT_SUCCESS);
 const deleteItemUnitFailure           = createAction(DELETE_ITEM_UNIT_FAILURE);
@@ -266,6 +262,12 @@ const onSuccess = (state, action) => {
     byID = del(state.byID, action.payload);
     break;
   case DELETE_ITEM_UNIT_SUCCESS:
+    byID = update(state.byID, action.payload.id, x => ({
+      ...x,
+      content_units: x.content_units.filter(cu => cu.content_unit_id !== action.payload.cuId)
+    }));
+    break;
+  case ASSOCIATE_UNIT_SUCCESS:
     byID = update(state.byID, action.payload.id, x => ({
       ...x,
       content_units: x.content_units.filter(cu => cu.content_unit_id !== action.payload.cuId)

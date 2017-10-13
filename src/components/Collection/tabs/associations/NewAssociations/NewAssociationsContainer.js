@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { actions, selectors } from '../../../../redux/modules/lists';
-import { selectors as units } from '../../../../redux/modules/content_units';
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS } from '../../../../helpers/consts';
-import * as shapes from '../../../shapes';
+import { actions, selectors } from '../../../../../redux/modules/lists';
+import { actions as collectionActions } from '../../../../../redux/modules/collections';
+import { selectors as units } from '../../../../../redux/modules/content_units';
+import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
 import NewAssociations from './NewAssociations';
 
 class ContentUnitsContainer extends Component {
@@ -60,9 +60,12 @@ class ContentUnitsContainer extends Component {
   };
 
   associate = () => {
-
     const { selectedCU } = this.state;
-    const { selectCU } = this.props;
+    const collectionId   = this.props.collection.id;
+    selectedCU.forEach((cu) => {
+      this.props.associateUnit(collectionId, { content_unit_id: cu.id, name: '', position: 0 });
+
+    });
   };
 
   render() {
@@ -93,6 +96,7 @@ function mapDispatch(dispatch) {
   return bindActionCreators({
     fetchList: actions.fetchList,
     setPage: actions.setPage,
+    associateUnit: collectionActions.associateUnit,
   }, dispatch);
 }
 

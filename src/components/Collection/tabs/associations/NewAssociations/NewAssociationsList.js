@@ -4,9 +4,9 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Icon, Table, Checkbox } from 'semantic-ui-react';
 
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, SECURITY_LEVELS } from '../../../../helpers/consts';
-import { extractI18n } from '../../../../helpers/utils';
-import * as shapes from '../../../shapes';
+import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, SECURITY_LEVELS } from '../../../../../helpers/consts';
+import { extractI18n } from '../../../../../helpers/utils';
+import * as shapes from '../../../../shapes';
 
 class FilesList extends PureComponent {
 

@@ -2,17 +2,17 @@ import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header, Icon, Label, Menu, Segment, Button } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_COLLECTION_UNITS } from '../../../../helpers/consts';
-import { formatError } from '../../../../helpers/utils';
-import * as shapes from '../../../shapes';
-import FiltersHydrator from '../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../Filters/FilterTags/FilterTags';
-import TabsMenu from '../../../shared/TabsMenu';
-import Pagination from '../../../shared/Pagination';
-import ResultsPageHeader from '../../../shared/ResultsPageHeader';
+import { EMPTY_ARRAY, NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
+import { formatError } from '../../../../../helpers/utils';
+import * as shapes from '../../../../shapes';
+import FiltersHydrator from '../../../../Filters/FiltersHydrator/FiltersHydrator';
+import FilterTags from '../../../../Filters/FilterTags/FilterTags';
+import TabsMenu from '../../../../shared/TabsMenu';
+import Pagination from '../../../../shared/Pagination';
+import ResultsPageHeader from '../../../../shared/ResultsPageHeader';
 import ContentUnitList from './NewAssociationsList';
-import DateRange from './filters/DateRange';
-import Others from './filters/Others';
+import DateRange from '../filters/DateRange';
+import Others from '../filters/Others';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
@@ -46,21 +46,24 @@ class NewAssociations extends PureComponent {
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
 
-
   render() {
     const { showFilters } = this.state;
 
-    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, selectedCU, selectCU, associate} = this.props;
+    const { pageNo, total, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, associate, setEditMode } = this.props;
 
     return (
       <div>
         <Segment clearing vertical secondary>
           Associate content units to this collection
-          <Button floated='right' icon="close" content='Cancel' />
+          <Button
+            onClick={()=>setEditMode(false)}
+            floated='right'
+            icon='close'
+            content='Cancel' />
         </Segment>
 
         <Segment clearing vertical>
-          <Button floated='right' content='Associate content units to this collection' color="blue"  onClick={associate} />
+          <Button floated='right' content='Associate content units to this collection' color="blue" onClick={associate} />
           <Button floated='right' onClick={this.toggleFilters} color="blue" inverted>
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
@@ -100,11 +103,7 @@ class NewAssociations extends PureComponent {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <ContentUnitList
-                {...this.props}
-                items={items}
-                selectedCU={selectedCU}
-                selectCU={selectCU} />
+              <ContentUnitList  {...this.props} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
