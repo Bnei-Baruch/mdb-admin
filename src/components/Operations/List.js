@@ -32,6 +32,9 @@ class FilesList extends PureComponent {
       if (item.properties.workflow_id) {
         type += ` [${item.properties.workflow_id}]`;
       }
+      if (item.properties.message) {
+        type += ` [${item.properties.message}]`;
+      }
     }
 
     return (
@@ -73,7 +76,7 @@ class FilesList extends PureComponent {
         </Table.Header>
         <Table.Body>
           {
-            items.map(x => this.renderItem(x))
+            items.map(this.renderItem)
           }
         </Table.Body>
       </Table>
