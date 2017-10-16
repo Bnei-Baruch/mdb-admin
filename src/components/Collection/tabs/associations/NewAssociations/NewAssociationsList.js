@@ -13,8 +13,8 @@ class FilesList extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(shapes.ContentUnit),
     selectCU: PropTypes.func,
-    selectedCU: PropTypes.arrayOf(PropTypes.object),
-    associatedCUIds: PropTypes.map,
+    selectedCCU: PropTypes.arrayOf(PropTypes.object),
+    associatedCUIds: PropTypes.object,
   };
 
   static defaultProps = {
@@ -35,7 +35,7 @@ class FilesList extends PureComponent {
           <Checkbox
             type="checkbox"
             onChange={(event, data) => this.checkHandler(unit, data.checked)}
-            checked={this.props.selectedCU.find((cu) => {
+            checked={this.props.selectedCCU.find((cu) => {
               cu.content_unit_id === unit.id;
             })}></Checkbox>
         </Table.Cell>

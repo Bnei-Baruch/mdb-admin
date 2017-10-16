@@ -22,7 +22,7 @@ class AssociationsContainer extends Component {
   };
 
   state = {
-    selectedCU: []
+    selectedCCU: []
   };
 
   componentDidMount() {
@@ -45,9 +45,9 @@ class AssociationsContainer extends Component {
 
   updatePosition = (isUp) => {
     const { units }      = this.props;
-    const { selectedCU } = this.state;
-    const basePosition   = selectedCU[0].position;
-    const currentIndex   = units.findIndex(cu => selectedCU[0].content_unit_id === cu.content_unit_id);
+    const { selectedCCU } = this.state;
+    const basePosition   = selectedCCU[0].position;
+    const currentIndex   = units.findIndex(cu => selectedCCU[0].content_unit_id === cu.content_unit_id);
     const cuIndex        = currentIndex + (isUp ? -1 : 1);
     const cu             = units[cuIndex];
 
@@ -56,10 +56,10 @@ class AssociationsContainer extends Component {
       newPosition = isUp ? basePosition + 1 : basePosition - 1;
     }
 
-    selectedCU[0].position = newPosition;
+    selectedCCU[0].position = newPosition;
     cu.position            = basePosition;
     this.saveCUPosition(cu);
-    this.saveCUPosition(selectedCU[0]);
+    this.saveCUPosition(selectedCCU[0]);
   };
 
   saveCUPosition = (cu) => {
@@ -72,27 +72,27 @@ class AssociationsContainer extends Component {
   };
 
   handleSelectionChange = (cu, checked) => {
-    const selectedCU = this.state.selectedCU;
+    const selectedCCU = this.state.selectedCCU;
     if (checked) {
-      this.setState({ selectedCU: [...selectedCU, cu] });
+      this.setState({ selectedCCU: [...selectedCCU, cu] });
     } else {
-      this.setState({ selectedCU: selectedCU.filter(x => x.content_unit_id !== cu.content_unit_id) });
+      this.setState({ selectedCCU: selectedCCU.filter(x => x.content_unit_id !== cu.content_unit_id) });
     }
   };
 
   deleteCollectionUnits = () => {
-    const { selectedCU }                 = this.state;
+    const { selectedCCU }                 = this.state;
     const { collection, deleteItemUnit } = this.props;
-    selectedCU.forEach(cu => deleteItemUnit(collection.id, cu.content_unit_id));
+    selectedCCU.forEach(cu => deleteItemUnit(collection.id, cu.content_unit_id));
   };
 
   render() {
-    const { selectedCU }         = this.state;
+    const { selectedCCU }         = this.state;
     const { units, setEditMode } = this.props;
-    const isLast                 = selectedCU.length === 0 ||
-      selectedCU[selectedCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
-    const isFirst                = selectedCU.length === 0 ||
-      selectedCU[0].content_unit_id === units[0].content_unit_id;
+    const isLast                 = selectedCCU.length === 0 ||
+      selectedCCU[selectedCCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
+    const isFirst                = selectedCCU.length === 0 ||
+      selectedCCU[0].content_unit_id === units[0].content_unit_id;
 
 
     return (
@@ -114,13 +114,13 @@ class AssociationsContainer extends Component {
                 basic
                 icon="arrow up"
                 color="black"
-                disabled={isFirst || selectedCU.length > 1}
+                disabled={isFirst || selectedCCU.length > 1}
                 onClick={() => this.updatePosition(true)}
               />
               <Button
                 basic
                 icon="arrow down"
-                disabled={isLast || selectedCU.length > 1}
+                disabled={isLast || selectedCCU.length > 1}
                 color="black"
                 onClick={() => this.updatePosition(false)}
               />
@@ -128,7 +128,7 @@ class AssociationsContainer extends Component {
                 basic
                 icon="trash"
                 color="black"
-                disabled={selectedCU.length === 0}
+                disabled={selectedCCU.length === 0}
                 onClick={this.deleteCollectionUnits}
               />
             </Button.Group>
@@ -138,7 +138,7 @@ class AssociationsContainer extends Component {
               <Grid.Column>
                 <Units
                   {...this.props}
-                  selectedCU={selectedCU}
+                  selectedCCU={selectedCCU}
                   onSelectionChange={this.handleSelectionChange}
                 />
               </Grid.Column>

@@ -49,22 +49,28 @@ class NewAssociations extends PureComponent {
   render() {
     const { showFilters } = this.state;
 
-    const { pageNo, total, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, associate, setEditMode } = this.props;
+    const { pageNo, total, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, associate, setEditMode, selectedCCU } = this.props;
 
     return (
       <div>
         <Segment clearing vertical secondary>
           Associate content units to this collection
           <Button
-            onClick={()=>setEditMode(false)}
+            onClick={() => setEditMode(false)}
             floated='right'
             icon='close'
             content='Cancel' />
         </Segment>
 
         <Segment clearing vertical>
-          <Button floated='right' content='Associate content units to this collection' color="blue" onClick={associate} />
-          <Button floated='right' onClick={this.toggleFilters} color="blue" inverted>
+          <Button onClick={associate}
+                  floated='right'
+                  content='Associate content units to this collection'
+                  color="blue" />
+          <Button onClick={this.toggleFilters}
+                  color="blue"
+                  floated='right'
+                  inverted>
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>

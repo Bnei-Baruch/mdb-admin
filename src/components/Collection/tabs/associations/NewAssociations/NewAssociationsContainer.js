@@ -18,7 +18,7 @@ class ContentUnitsContainer extends Component {
 
   state = {
     pageNo: 1,
-    selectedCU: []
+    selectedCCU: []
   };
 
   constructor(props) {
@@ -44,34 +44,38 @@ class ContentUnitsContainer extends Component {
   };
 
   selectCU = (data, checked) => {
-    let selectedCU = this.state.selectedCU;
-    const cu       = data;
+    const selectedCCU = this.state.selectedCCU;
+    const cu         = data;
     if (checked) {
-      selectedCU.push(cu);
+      selectedCCU.push(cu);
     } else {
-      selectedCU.some((cu, i) => {
+      selectedCCU.some((cu, i) => {
         if (cu.content_unit_id === data.content_unit_id) {
-          selectedCU.splice(i, 1);
+          selectedCCU.splice(i, 1);
           return true;
         }
       });
     }
-    this.setState({ selectedCU });
+    this.setState({ selectedCCU });
   };
 
   associate = () => {
-    const { selectedCU } = this.state;
-    const collectionId   = this.props.collection.id;
-    selectedCU.forEach((cu) => {
-      this.props.associateUnit(collectionId, { content_unit_id: cu.id, name: '', position: 0 });
-
+    const { selectedCCU }              = this.state;
+    const { collection, setEditMode } = this.props;
+    if (selectedCCU.length === 0) {
+      return;
+    }
+    selectedCCU.forEach((ccu) => {
+      this.props.associateUnit(collection.id, { ccu: ccu, name: '', position: 0 });
     });
+    setEditMode(false);
   };
 
   render() {
+    const { selectedCCU } = this.state;
     return (<NewAssociations
       {...this.props}
-      selectedCU={this.state.selectedCU}
+      selectedCCU={selectedCCU}
       selectCU={this.selectCU}
       onPageChange={this.handlePageChange}
       onFiltersChange={this.handleFiltersChange}
@@ -86,9 +90,7 @@ const mapState = (state) => {
   const denormIDs = units.denormIDs(state.content_units);
   return {
     ...status,
-    items: Array.isArray(status.items) && status.items.length > 0 ?
-      denormIDs(status.items) :
-      EMPTY_ARRAY,
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
   };
 };
 
