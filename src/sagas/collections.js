@@ -49,32 +49,32 @@ function* updateProperties(action) {
 }
 
 function* associateUnit(action) {
-  const { id, properties } = action.payload;
+  const { id, properties, ccu } = action.payload;
   try {
     yield call(api.post, `/rest/collections/${id}/content_units/`, properties);
-    yield put(actions.associateUnitSuccess({ id, properties }));
+    yield put(actions.associateUnitSuccess({ id, ccu }));
   } catch (err) {
     yield put(actions.associateUnitFailure({ ...err, content_units_id: properties.content_unit_id }));
   }
 }
 
 function* updateItemUnitProperties(action) {
-  const { id, cuId, properties } = action.payload;
+  const { id, ccuId, properties } = action.payload;
   try {
-    yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, properties);
-    yield put(actions.updateItemUnitPropertiesSuccess({ id, cuId, properties }));
+    yield call(api.put, `/rest/collections/${id}/content_units/${ccuId}`, properties);
+    yield put(actions.updateItemUnitPropertiesSuccess({ id, ccuId, properties }));
   } catch (err) {
-    yield put(actions.updateItemUnitPropertiesFailure({ ...err, content_units_id: cuId }));
+    yield put(actions.updateItemUnitPropertiesFailure({ ...err, content_units_id: ccuId }));
   }
 }
 
 function* deleteItemUnit(action) {
-  const { id, cuId } = action.payload;
+  const { id, ccuId } = action.payload;
   try {
-    yield call(api.delete, `/rest/collections/${id}/content_units/${cuId}`);
-    yield put(actions.deleteItemUnitSuccess({ id, cuId }));
+    yield call(api.delete, `/rest/collections/${id}/content_units/${ccuId}`);
+    yield put(actions.deleteItemUnitSuccess({ id, ccuId }));
   } catch (err) {
-    yield put(actions.deleteItemUnitFailure({ ...err, content_units_id: cuId }));
+    yield put(actions.deleteItemUnitFailure({ ...err, content_units_id: ccuId }));
   }
 }
 

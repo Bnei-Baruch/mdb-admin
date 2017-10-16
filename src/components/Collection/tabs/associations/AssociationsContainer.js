@@ -66,9 +66,9 @@ class AssociationsContainer extends Component {
     this.saveProperties(cu.content_unit_id, { position: cu.position, name: cu.name });
   };
 
-  saveProperties = (cuId, properties) => {
+  saveProperties = (ccuId, properties) => {
     const { collection, updateItemUnitProperties } = this.props;
-    updateItemUnitProperties(collection.id, cuId, properties);
+    updateItemUnitProperties(collection.id, ccuId, properties);
   };
 
   handleSelectionChange = (cu, checked) => {

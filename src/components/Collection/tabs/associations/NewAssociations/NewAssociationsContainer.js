@@ -45,12 +45,12 @@ class ContentUnitsContainer extends Component {
 
   selectCCU = (data, checked) => {
     const selectedCCU = this.state.selectedCCU;
-    const cu         = data;
+    const ccu         = data;
     if (checked) {
-      selectedCCU.push(cu);
+      selectedCCU.push(ccu);
     } else {
-      selectedCCU.some((cu, i) => {
-        if (cu.content_unit_id === data.content_unit_id) {
+      selectedCCU.some((ccu, i) => {
+        if (ccu.content_unit_id === data.content_unit_id) {
           selectedCCU.splice(i, 1);
           return true;
         }
@@ -60,13 +60,13 @@ class ContentUnitsContainer extends Component {
   };
 
   associate = () => {
-    const { selectedCCU }              = this.state;
+    const { selectedCCU }             = this.state;
     const { collection, setEditMode } = this.props;
     if (selectedCCU.length === 0) {
       return;
     }
     selectedCCU.forEach((ccu) => {
-      this.props.associateUnit(collection.id, { ccu: ccu, name: '', position: 0 });
+      this.props.associateUnit(collection.id, ccu, { content_unit_id: ccu.id, name: '', position: 0 });
     });
     setEditMode(false);
   };

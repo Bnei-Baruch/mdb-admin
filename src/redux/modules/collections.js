@@ -116,14 +116,14 @@ const associateUnitFailure            = createAction(ASSOCIATE_UNIT_FAILURE);
 const deleteC                         = createAction(DELETE);
 const deleteSuccess                   = createAction(DELETE_SUCCESS);
 const deleteFailure                   = createAction(DELETE_FAILURE);
-const updateItemUnitProperties        = createAction(UPDATE_ITEM_UNIT_PROPERTIES, (id, cuId, properties) => ({
+const updateItemUnitProperties        = createAction(UPDATE_ITEM_UNIT_PROPERTIES, (id, ccuId, properties) => ({
   id,
-  cuId,
+  ccuId,
   properties
 }));
 const updateItemUnitPropertiesSuccess = createAction(UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS);
 const updateItemUnitPropertiesFailure = createAction(UPDATE_ITEM_UNIT_PROPERTIES_FAILURE);
-const deleteItemUnit                  = createAction(DELETE_ITEM_UNIT, (id, cuId) => ({ id, cuId }));
+const deleteItemUnit                  = createAction(DELETE_ITEM_UNIT, (id, ccuId) => ({ id, ccuId }));
 const deleteItemUnitSuccess           = createAction(DELETE_ITEM_UNIT_SUCCESS);
 const deleteItemUnitFailure           = createAction(DELETE_ITEM_UNIT_FAILURE);
 
@@ -257,19 +257,19 @@ const onSuccess = (state, action) => {
     byID = update(state.byID, action.payload.id, coll => ({
       ...coll,
       content_units: coll.content_units.map(x =>
-        (x.content_unit_id !== action.payload.cuId ? x : { ...x, ...action.payload.properties })),
+        (x.content_unit_id !== action.payload.ccuId ? x : { ...x, ...action.payload.properties })),
     }));
     break;
   case DELETE_ITEM_UNIT_SUCCESS:
     byID = update(state.byID, action.payload.id, x => ({
       ...x,
-      content_units: x.content_units.filter(cu => cu.content_unit_id !== action.payload.cuId)
+      content_units: x.content_units.filter(cu => cu.content_unit_id !== action.payload.ccuId)
     }));
     break;
   case ASSOCIATE_UNIT_SUCCESS:
     byID = update(state.byID, action.payload.id, x => ({
       ...x,
-      content_units: x.content_units.filter(cu => cu.content_unit_id !== action.payload.cuId)
+      content_units: x.content_units.filter(cu => cu.content_unit_id !== action.payload.ccuId)
     }));
     break;
   default:
