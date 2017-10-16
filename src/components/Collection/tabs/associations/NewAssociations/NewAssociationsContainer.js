@@ -66,7 +66,7 @@ class ContentUnitsContainer extends Component {
       return;
     }
     selectedCCU.forEach((ccu) => {
-      this.props.associateUnit(collection.id, ccu, { content_unit_id: ccu.id, name: '', position: 0 });
+      this.props.associateUnit(collection.id, { content_unit_id: ccu.id, name: '', position: 0 });
     });
     setEditMode(false);
   };

@@ -49,10 +49,10 @@ function* updateProperties(action) {
 }
 
 function* associateUnit(action) {
-  const { id, properties, ccu } = action.payload;
+  const { id, properties } = action.payload;
   try {
     yield call(api.post, `/rest/collections/${id}/content_units/`, properties);
-    yield put(actions.associateUnitSuccess({ id, ccu }));
+    yield put(actions.associateUnitSuccess({ id, properties }));
   } catch (err) {
     yield put(actions.associateUnitFailure({ ...err, content_units_id: properties.content_unit_id }));
   }

@@ -269,7 +269,7 @@ const onSuccess = (state, action) => {
   case ASSOCIATE_UNIT_SUCCESS:
     byID = update(state.byID, action.payload.id, x => ({
       ...x,
-      content_units: x.content_units.filter(ccu => ccu.content_unit_id !== action.payload.ccuId)
+      content_units: [...x.content_units, action.payload.properties]
     }));
     break;
   default:
