@@ -195,7 +195,7 @@ class FilesHierarchy extends Component {
         <Header
           size="small"
           className={classnames({
-            'cu-files-item': true,
+            'ccu-files-item': true,
             active: currentFile && id === currentFile.id
           })}
           onClick={e => this.handlePlay(e, file)}

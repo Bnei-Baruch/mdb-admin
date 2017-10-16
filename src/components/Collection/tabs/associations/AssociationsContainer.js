@@ -44,26 +44,26 @@ class AssociationsContainer extends Component {
   }
 
   updatePosition = (isUp) => {
-    const { units }      = this.props;
+    const { units }       = this.props;
     const { selectedCCU } = this.state;
-    const basePosition   = selectedCCU[0].position;
-    const currentIndex   = units.findIndex(cu => selectedCCU[0].content_unit_id === cu.content_unit_id);
-    const cuIndex        = currentIndex + (isUp ? -1 : 1);
-    const cu             = units[cuIndex];
+    const basePosition    = selectedCCU[0].position;
+    const currentIndex    = units.findIndex(ccu => selectedCCU[0].content_unit_id === ccu.content_unit_id);
+    const cuIndex         = currentIndex + (isUp ? -1 : 1);
+    const ccu             = units[cuIndex];
 
-    let newPosition = cu.position;
-    if (basePosition === cu.position) {
+    let newPosition = ccu.position;
+    if (basePosition === ccu.position) {
       newPosition = isUp ? basePosition + 1 : basePosition - 1;
     }
 
     selectedCCU[0].position = newPosition;
-    cu.position            = basePosition;
-    this.saveCUPosition(cu);
+    ccu.position            = basePosition;
+    this.saveCUPosition(ccu);
     this.saveCUPosition(selectedCCU[0]);
   };
 
-  saveCUPosition = (cu) => {
-    this.saveProperties(cu.content_unit_id, { position: cu.position, name: cu.name });
+  saveCUPosition = (ccu) => {
+    this.saveProperties(ccu.content_unit_id, { position: ccu.position, name: ccu.name });
   };
 
   saveProperties = (ccuId, properties) => {
@@ -71,29 +71,28 @@ class AssociationsContainer extends Component {
     updateItemUnitProperties(collection.id, ccuId, properties);
   };
 
-  handleSelectionChange = (cu, checked) => {
+  handleSelectionChange = (ccu, checked) => {
     const selectedCCU = this.state.selectedCCU;
     if (checked) {
-      this.setState({ selectedCCU: [...selectedCCU, cu] });
+      this.setState({ selectedCCU: [...selectedCCU, ccu] });
     } else {
-      this.setState({ selectedCCU: selectedCCU.filter(x => x.content_unit_id !== cu.content_unit_id) });
+      this.setState({ selectedCCU: selectedCCU.filter(x => x.content_unit_id !== ccu.content_unit_id) });
     }
   };
 
   deleteCollectionUnits = () => {
-    const { selectedCCU }                 = this.state;
+    const { selectedCCU }                = this.state;
     const { collection, deleteItemUnit } = this.props;
-    selectedCCU.forEach(cu => deleteItemUnit(collection.id, cu.content_unit_id));
+    selectedCCU.forEach(ccu => deleteItemUnit(collection.id, ccu.content_unit_id));
   };
 
   render() {
-    const { selectedCCU }         = this.state;
+    const { selectedCCU }        = this.state;
     const { units, setEditMode } = this.props;
     const isLast                 = selectedCCU.length === 0 ||
       selectedCCU[selectedCCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
     const isFirst                = selectedCCU.length === 0 ||
       selectedCCU[0].content_unit_id === units[0].content_unit_id;
-
 
     return (
       <div>
@@ -102,7 +101,7 @@ class AssociationsContainer extends Component {
             <Header content="Associated Content Units" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item  onClick={() => setEditMode(true)}>
+            <Menu.Item onClick={() => setEditMode(true)}>
               <Icon name="plus" /> New Association
             </Menu.Item>
           </Menu.Menu>

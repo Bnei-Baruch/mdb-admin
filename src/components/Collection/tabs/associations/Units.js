@@ -86,7 +86,7 @@ class Units extends PureComponent {
           <Checkbox
             type="checkbox"
             onChange={(e, data) => this.handleSelectionChange(item, data)}
-            checked={selectedCCU.findIndex(cu => cu.content_unit_id === unit.id) !== -1}
+            checked={selectedCCU.findIndex(ccu => ccu.content_unit_id === unit.id) !== -1}
           />
         </Table.Cell>
         <Table.Cell collapsing>

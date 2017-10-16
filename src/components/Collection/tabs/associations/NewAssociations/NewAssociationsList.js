@@ -35,8 +35,8 @@ class FilesList extends PureComponent {
           <Checkbox
             type="checkbox"
             onChange={(event, data) => this.checkHandler(unit, data.checked)}
-            checked={this.props.selectedCCU.find((cu) => {
-              cu.content_unit_id === unit.id;
+            checked={this.props.selectedCCU.find((ccu) => {
+              ccu.content_unit_id === unit.id;
             })}></Checkbox>
         </Table.Cell>
         <Table.Cell>
