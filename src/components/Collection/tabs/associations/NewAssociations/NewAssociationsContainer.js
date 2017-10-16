@@ -23,7 +23,7 @@ class ContentUnitsContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.selectCU = this.selectCU.bind(this);
+    this.selectCCU = this.selectCCU.bind(this);
   }
 
   handlePageChange = (pageNo) => {
@@ -43,7 +43,7 @@ class ContentUnitsContainer extends Component {
     this.props.fetchList(NS_COLLECTION_UNITS, pageNo);
   };
 
-  selectCU = (data, checked) => {
+  selectCCU = (data, checked) => {
     const selectedCCU = this.state.selectedCCU;
     const cu         = data;
     if (checked) {
@@ -76,7 +76,7 @@ class ContentUnitsContainer extends Component {
     return (<NewAssociations
       {...this.props}
       selectedCCU={selectedCCU}
-      selectCU={this.selectCU}
+      selectCCU={this.selectCCU}
       onPageChange={this.handlePageChange}
       onFiltersChange={this.handleFiltersChange}
       onFiltersHydrated={this.handleFiltersHydrated}

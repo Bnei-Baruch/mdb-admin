@@ -49,7 +49,7 @@ class NewAssociations extends PureComponent {
   render() {
     const { showFilters } = this.state;
 
-    const { pageNo, total, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, associate, setEditMode, selectedCCU } = this.props;
+    const { pageNo, total, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, associate, setEditMode } = this.props;
 
     return (
       <div>

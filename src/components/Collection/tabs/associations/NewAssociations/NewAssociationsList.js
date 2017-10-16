@@ -12,7 +12,7 @@ class FilesList extends PureComponent {
 
   static propTypes = {
     items: PropTypes.arrayOf(shapes.ContentUnit),
-    selectCU: PropTypes.func,
+    selectCCU: PropTypes.func,
     selectedCCU: PropTypes.arrayOf(PropTypes.object),
     associatedCUIds: PropTypes.object,
   };
@@ -22,7 +22,7 @@ class FilesList extends PureComponent {
   };
 
   checkHandler = (unit, checked) => {
-    this.props.selectCU(unit, checked);
+    this.props.selectCCU(unit, checked);
     this.setState({ checked: checked });
   };
 
