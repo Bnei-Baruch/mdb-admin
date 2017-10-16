@@ -24,7 +24,7 @@ class AssociationsTab extends Component {
   };
 
   state = {
-    editMode: true
+    editMode: false
   };
 
   componentDidMount() {

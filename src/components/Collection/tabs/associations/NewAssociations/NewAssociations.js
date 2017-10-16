@@ -53,13 +53,15 @@ class NewAssociations extends PureComponent {
 
     return (
       <div>
-        <Segment clearing vertical secondary>
-          Associate content units to this collection
-          <Button
-            onClick={() => setEditMode(false)}
-            floated='right'
-            icon='close'
-            content='Cancel' />
+        <Segment clearing secondary size={'large'}>
+          <div>
+            Associate content units to this collection
+            <Button
+              onClick={() => setEditMode(false)}
+              floated='right'
+              icon='close'
+              content='Cancel' />
+          </div>
         </Segment>
 
         <Segment clearing vertical>
