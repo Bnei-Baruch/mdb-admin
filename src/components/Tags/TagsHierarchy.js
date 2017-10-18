@@ -91,7 +91,8 @@ class TagsHierarchy extends Component {
         <FrownSplash text="No tags found in DB" subtext="Come on, go ahead and add some !" />;
     }
 
-    const root = getTagById(this.state.shownRoot);
+    const root       = getTagById(this.state.shownRoot);
+    const rootChilds = hierarchy.childMap.get(root.id);
 
     return (
       <Grid>
@@ -99,7 +100,11 @@ class TagsHierarchy extends Component {
           {/* main content */}
           <Grid.Column stretched width={12}>
             <List relaxed divided className="rtl-dir">
-              {hierarchy.childMap.get(root.id).map(x => this.renderNode(getTagById(x)))}
+              {
+                Array.isArray(rootChilds) && rootChilds.length > 0 ?
+                  rootChilds.map(x => this.renderNode(getTagById(x))) :
+                  <Header sub color="grey">This tag has no children</Header>
+              }
             </List>
           </Grid.Column>
 
