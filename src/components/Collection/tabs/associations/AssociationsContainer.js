@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -33,6 +34,9 @@ class AssociationsContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.units.length > 0 && nextProps.units.length > this.props.units.length) {
+      ReactDom.findDOMNode(this).scrollIntoView(false);
+    }
     if (nextProps.collection && !this.props.collection &&
       nextProps.collection.id !== this.props.collection.id) {
       this.askForData(nextProps.collection.id);

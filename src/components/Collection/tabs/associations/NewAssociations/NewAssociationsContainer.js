@@ -32,13 +32,6 @@ class ContentUnitsContainer extends Component {
     this.askForData(pageNo);
   };
 
-  handleFiltersChange = () => this.handlePageChange(1);
-
-  handleFiltersHydrated = () => {
-    // const {pageNo} = this.state;
-    this.handlePageChange(1);
-  };
-
   askForData = (pageNo) => {
     this.props.fetchList(NS_COLLECTION_UNITS, pageNo);
   };
@@ -78,8 +71,8 @@ class ContentUnitsContainer extends Component {
       selectedCCU={selectedCCU}
       selectCCU={this.selectCCU}
       onPageChange={this.handlePageChange}
-      onFiltersChange={this.handleFiltersChange}
-      onFiltersHydrated={this.handleFiltersHydrated}
+      onFiltersChange={() => this.handlePageChange(1)}
+      onFiltersHydrated={() => this.handlePageChange(1)}
       associate={this.associate}
     />);
   }
