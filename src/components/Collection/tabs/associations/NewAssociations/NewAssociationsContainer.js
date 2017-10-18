@@ -53,13 +53,15 @@ class ContentUnitsContainer extends Component {
   };
 
   associate = () => {
-    const { selectedCCU }             = this.state;
-    const { collection, setEditMode } = this.props;
+    const { selectedCCU }                    = this.state;
+    const { collection, setEditMode, units } = this.props;
+    let lastPosition                         = (units[0] ? units[0].position : 0) || 0;
     if (selectedCCU.length === 0) {
       return;
     }
     selectedCCU.forEach((ccu) => {
-      this.props.associateUnit(collection.id, { content_unit_id: ccu.id, name: '', position: 0 });
+      lastPosition++;
+      this.props.associateUnit(collection.id, { content_unit_id: ccu.id, name: '', position: lastPosition });
     });
     setEditMode(false);
   };
