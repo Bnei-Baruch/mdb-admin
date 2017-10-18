@@ -89,9 +89,9 @@ class AssociationsContainer extends Component {
   render() {
     const { selectedCCU }        = this.state;
     const { units, setEditMode } = this.props;
-    const isLast                 = selectedCCU.length === 0 ||
+    const isLast                 = selectedCCU.length === 0 || units.length === 0 ||
       selectedCCU[selectedCCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
-    const isFirst                = selectedCCU.length === 0 ||
+    const isFirst                = selectedCCU.length === 0 || units.length === 0 ||
       selectedCCU[0].content_unit_id === units[0].content_unit_id;
 
     return (
