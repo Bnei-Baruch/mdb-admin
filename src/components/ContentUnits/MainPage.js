@@ -34,6 +34,7 @@ class ContentUnitMainPage extends Component {
     onPageChange: PropTypes.func.isRequired,
     onFiltersChange: PropTypes.func.isRequired,
     onFiltersHydrated: PropTypes.func.isRequired,
+    create: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -48,6 +49,7 @@ class ContentUnitMainPage extends Component {
 
   state = {
     showFilters: false,
+    showNewCCU: true,
   };
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
@@ -56,7 +58,7 @@ class ContentUnitMainPage extends Component {
   render() {
     const { showFilters, showNewCCU } = this.state;
 
-    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, wipOfCreate, errOfCreate, } = this.props;
+    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, wipOfCreate, errOfCreate, create} = this.props;
 
 
     return (
@@ -118,7 +120,7 @@ class ContentUnitMainPage extends Component {
           closeIcon
           size="small"
           open={showNewCCU}
-          onClose={this.toggleNewCCU()}
+          onClose={this.toggleNewCCU}
         >
           <Modal.Header>Create New Content Unit</Modal.Header>
           <Modal.Content>
