@@ -21,7 +21,7 @@ class Units extends PureComponent {
   static propTypes = {
     collection: shapes.Collection,
     units: PropTypes.arrayOf(shapes.CollectionContentUnit),
-    selectedCU: PropTypes.arrayOf(PropTypes.object),
+    selectedCCU: PropTypes.arrayOf(PropTypes.object),
     updateItemUnitProperties: PropTypes.func.isRequired,
     onSelectionChange: PropTypes.func.isRequired,
     wip: PropTypes.bool,
@@ -33,7 +33,7 @@ class Units extends PureComponent {
   static defaultProps = {
     collection: null,
     units: EMPTY_ARRAY,
-    selectedCU: EMPTY_ARRAY,
+    selectedCCU: EMPTY_ARRAY,
     wip: false,
     err: null,
     errDeleteCu: null,
@@ -55,7 +55,7 @@ class Units extends PureComponent {
   };
 
   renderItem = (item) => {
-    const { collection, errUpdateCu, errDeleteCu, selectedCU } = this.props;
+    const { collection, errUpdateCu, errDeleteCu, selectedCCU } = this.props;
     const unit                                                 = item.content_unit;
     const error                                                = errDeleteCu || errUpdateCu;
 
@@ -86,7 +86,7 @@ class Units extends PureComponent {
           <Checkbox
             type="checkbox"
             onChange={(e, data) => this.handleSelectionChange(item, data)}
-            checked={selectedCU.findIndex(cu => cu.content_unit_id === unit.id) !== -1}
+            checked={selectedCCU.findIndex(ccu => ccu.content_unit_id === unit.id) !== -1}
           />
         </Table.Cell>
         <Table.Cell collapsing>

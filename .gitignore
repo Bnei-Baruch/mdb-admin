@@ -17,5 +17,6 @@ yarn-debug.log*
 yarn-error.log*
 .vcode
 .idea
+.editorconfig
 *.swp
 .vcode/

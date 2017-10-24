@@ -48,23 +48,33 @@ function* updateProperties(action) {
   }
 }
 
-function* updateItemUnitProperties(action) {
-  const { id, cuId, properties } = action.payload;
+function* associateUnit(action) {
+  const { id, properties } = action.payload;
   try {
-    yield call(api.put, `/rest/collections/${id}/content_units/${cuId}`, properties);
-    yield put(actions.updateItemUnitPropertiesSuccess({ id, cuId, properties }));
+    yield call(api.post, `/rest/collections/${id}/content_units/`, properties);
+    yield put(actions.associateUnitSuccess({ id, properties }));
   } catch (err) {
-    yield put(actions.updateItemUnitPropertiesFailure({ ...err, content_units_id: cuId }));
+    yield put(actions.associateUnitFailure({ ...err, content_units_id: properties.content_unit_id }));
+  }
+}
+
+function* updateItemUnitProperties(action) {
+  const { id, ccuId, properties } = action.payload;
+  try {
+    yield call(api.put, `/rest/collections/${id}/content_units/${ccuId}`, properties);
+    yield put(actions.updateItemUnitPropertiesSuccess({ id, ccuId, properties }));
+  } catch (err) {
+    yield put(actions.updateItemUnitPropertiesFailure({ ...err, content_units_id: ccuId }));
   }
 }
 
 function* deleteItemUnit(action) {
-  const { id, cuId } = action.payload;
+  const { id, ccuId } = action.payload;
   try {
-    yield call(api.delete, `/rest/collections/${id}/content_units/${cuId}`);
-    yield put(actions.deleteItemUnitSuccess({ id, cuId }));
+    yield call(api.delete, `/rest/collections/${id}/content_units/${ccuId}`);
+    yield put(actions.deleteItemUnitSuccess({ id, ccuId }));
   } catch (err) {
-    yield put(actions.deleteItemUnitFailure({ ...err, content_units_id: cuId }));
+    yield put(actions.deleteItemUnitFailure({ ...err, content_units_id: ccuId }));
   }
 }
 
@@ -125,6 +135,10 @@ function* watchupdateProperties() {
   yield takeEvery(types.UPDATE_PROPERTIES, updateProperties);
 }
 
+function* watchAssociateUnit() {
+  yield takeEvery(types.ASSOCIATE_UNIT, associateUnit);
+}
+
 function* watchUpdateItemUnitProperties() {
   yield takeEvery(types.UPDATE_ITEM_UNIT_PROPERTIES, updateItemUnitProperties);
 }
@@ -152,6 +166,7 @@ function* watchDelete() {
 export const sagas = [
   watchFetchItem,
   watchFetchItemUnits,
+  watchAssociateUnit,
   watchUpdateI18n,
   watchupdateProperties,
   watchUpdateItemUnitProperties,

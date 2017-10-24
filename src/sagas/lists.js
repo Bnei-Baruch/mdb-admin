@@ -7,13 +7,14 @@ import { actions as units } from '../redux/modules/content_units';
 import { actions as files } from '../redux/modules/files';
 import { actions as operations } from '../redux/modules/operations';
 import { selectors as filterSelectors } from '../redux/modules/filters';
-import { NS_COLLECTIONS, NS_FILES, NS_OPERATIONS, NS_UNITS } from '../helpers/consts';
+import { NS_COLLECTIONS, NS_FILES, NS_OPERATIONS, NS_UNITS, NS_COLLECTION_UNITS } from '../helpers/consts';
 import { filtersTransformer } from '../filters';
 import { updateQuery } from './helpers/url';
 
 const dataReceivers = {
   [NS_COLLECTIONS]: collections.receiveItems,
   [NS_UNITS]: units.receiveItems,
+  [NS_COLLECTION_UNITS]: units.receiveItems,
   [NS_FILES]: files.receiveItems,
   [NS_OPERATIONS]: operations.receiveItems,
 };
@@ -22,8 +23,9 @@ function* fetchList(action) {
   const { namespace, pageNo } = action.payload;
   const filters               = yield select(state => filterSelectors.getFilters(state.filters, namespace));
   const params                = filtersTransformer.toApiParams(filters);
+  let urlParam = (namespace === NS_COLLECTION_UNITS) ? NS_UNITS : namespace;
   try {
-    const resp = yield call(api.get, `/rest/${namespace}/`, { params: { page_no: pageNo, ...params } });
+    const resp = yield call(api.get, `/rest/${urlParam}/`, { params: { page_no: pageNo, ...params } });
     yield put(dataReceivers[namespace](resp.data.data));
     yield put(actions.fetchListSuccess(namespace, resp.data.total, resp.data.data));
   } catch (err) {

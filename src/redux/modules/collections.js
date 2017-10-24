@@ -28,6 +28,9 @@ const CHANGE_ACTIVE_FAILURE               = 'Collections/CHANGE_ACTIVE_FAILURE';
 const CREATE                              = 'Collections/CREATE';
 const CREATE_SUCCESS                      = 'Collections/CREATE_SUCCESS';
 const CREATE_FAILURE                      = 'Collections/CREATE_FAILURE';
+const ASSOCIATE_UNIT                      = 'Collections/ASSOCIATE_UNIT_PROPERTIES';
+const ASSOCIATE_UNIT_SUCCESS              = 'Collections/ASSOCIATE_UNIT_SUCCESS';
+const ASSOCIATE_UNIT_FAILURE              = 'Collections/ASSOCIATE_UNIT_FAILURE';
 const DELETE                              = 'Collections/DELETE';
 const DELETE_SUCCESS                      = 'Collections/DELETE_SUCCESS';
 const DELETE_FAILURE                      = 'Collections/DELETE_FAILURE';
@@ -54,6 +57,9 @@ export const types = {
   UPDATE_PROPERTIES,
   UPDATE_PROPERTIES_SUCCESS,
   UPDATE_PROPERTIES_FAILURE,
+  ASSOCIATE_UNIT,
+  ASSOCIATE_UNIT_SUCCESS,
+  ASSOCIATE_UNIT_FAILURE,
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
   CHANGE_SECURITY_LEVEL_FAILURE,
@@ -104,17 +110,20 @@ const create                          = createAction(CREATE, (typeID, properties
 }));
 const createSuccess                   = createAction(CREATE_SUCCESS);
 const createFailure                   = createAction(CREATE_FAILURE);
+const associateUnit                   = createAction(ASSOCIATE_UNIT, (id, properties) => ({ id, properties }));
+const associateUnitSuccess            = createAction(ASSOCIATE_UNIT_SUCCESS);
+const associateUnitFailure            = createAction(ASSOCIATE_UNIT_FAILURE);
 const deleteC                         = createAction(DELETE);
 const deleteSuccess                   = createAction(DELETE_SUCCESS);
 const deleteFailure                   = createAction(DELETE_FAILURE);
-const updateItemUnitProperties        = createAction(UPDATE_ITEM_UNIT_PROPERTIES, (id, cuId, properties) => ({
+const updateItemUnitProperties        = createAction(UPDATE_ITEM_UNIT_PROPERTIES, (id, ccuId, properties) => ({
   id,
-  cuId,
+  ccuId,
   properties
 }));
 const updateItemUnitPropertiesSuccess = createAction(UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS);
 const updateItemUnitPropertiesFailure = createAction(UPDATE_ITEM_UNIT_PROPERTIES_FAILURE);
-const deleteItemUnit                  = createAction(DELETE_ITEM_UNIT, (id, cuId) => ({ id, cuId }));
+const deleteItemUnit                  = createAction(DELETE_ITEM_UNIT, (id, ccuId) => ({ id, ccuId }));
 const deleteItemUnitSuccess           = createAction(DELETE_ITEM_UNIT_SUCCESS);
 const deleteItemUnitFailure           = createAction(DELETE_ITEM_UNIT_FAILURE);
 
@@ -143,6 +152,9 @@ export const actions = {
   create,
   createSuccess,
   createFailure,
+  associateUnit,
+  associateUnitSuccess,
+  associateUnitFailure,
   deleteC,
   deleteSuccess,
   deleteFailure,
@@ -181,6 +193,9 @@ const keys = new Map([
   [CREATE, 'create'],
   [CREATE_SUCCESS, 'create'],
   [CREATE_FAILURE, 'create'],
+  [ASSOCIATE_UNIT, 'associateUnit'],
+  [ASSOCIATE_UNIT_SUCCESS, 'associateUnit'],
+  [ASSOCIATE_UNIT_FAILURE, 'associateUnit'],
   [DELETE, 'delete'],
   [DELETE_SUCCESS, 'delete'],
   [DELETE_FAILURE, 'delete'],
@@ -242,14 +257,22 @@ const onSuccess = (state, action) => {
     byID = update(state.byID, action.payload.id, coll => ({
       ...coll,
       content_units: coll.content_units.map(x =>
-        (x.content_unit_id !== action.payload.cuId ? x : { ...x, ...action.payload.properties })),
+        (x.content_unit_id !== action.payload.ccuId ? x : { ...x, ...action.payload.properties })),
     }));
     break;
   case DELETE_ITEM_UNIT_SUCCESS:
     byID = update(state.byID, action.payload.id, x => ({
       ...x,
-      content_units: x.content_units.filter(cu => cu.content_unit_id !== action.payload.cuId)
+      content_units: x.content_units.filter(ccu => ccu.content_unit_id !== action.payload.ccuId)
     }));
+
+    break;
+  case ASSOCIATE_UNIT_SUCCESS:
+    byID = update(state.byID, action.payload.id, x => ({
+      ...x,
+      content_units: [...x.content_units || [], action.payload.properties]
+    }));
+
     break;
   default:
     byID = state.byID;
@@ -291,6 +314,9 @@ export const reducer = handleActions({
   [CREATE]: onRequest,
   [CREATE_SUCCESS]: onSuccess,
   [CREATE_FAILURE]: onFailure,
+  [ASSOCIATE_UNIT]: onRequest,
+  [ASSOCIATE_UNIT_SUCCESS]: onSuccess,
+  [ASSOCIATE_UNIT_FAILURE]: onFailure,
   [DELETE]: onRequest,
   [DELETE_SUCCESS]: onSuccess,
   [DELETE_FAILURE]: onFailure,
