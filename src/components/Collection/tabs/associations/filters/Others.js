@@ -4,6 +4,7 @@ import { Grid, Header, Segment } from 'semantic-ui-react';
 
 import { NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
 import { ContentTypeFilter, PublishedFilter, SecureFilter } from '../../../../Filters/filterComponents';
+
 const Others = props => (
   <Segment>
     <Grid>

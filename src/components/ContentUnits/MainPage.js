@@ -119,7 +119,7 @@ class ContentUnitMainPage extends Component {
         <Modal
           closeIcon
           size="small"
-          open={showNewCCU}
+          open={false && showNewCCU}
           onClose={this.toggleNewCCU}
         >
           <Modal.Header>Create New Content Unit</Modal.Header>

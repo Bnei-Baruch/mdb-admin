@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 
-import * as shapes from '../../../shapes';
+import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/collections';
 import { selectors as units } from '../../../../redux/modules/content_units';
-import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
+import * as shapes from '../../../shapes';
 import AssociationsContainer from './AssociationsContainer';
 import NewAssociationsContainer from './NewAssociations/NewAssociationsContainer';
 import './style.css';
@@ -44,13 +44,14 @@ class AssociationsTab extends Component {
     this.props.fetchItemUnits(id);
   }
 
+  setEditMode = editMode =>
+    this.setState({ editMode });
+
   render() {
-    const { editMode } = this.state;
-    const props        = { ...this.props, setEditMode: (r) => this.setState({ editMode: r }) };
-    if (editMode) {
-      return (<NewAssociationsContainer {...props} />);
+    if (this.state.editMode) {
+      return (<NewAssociationsContainer {...this.props} setEditMode={this.setEditMode} />);
     }
-    return (<AssociationsContainer {...props} />);
+    return (<AssociationsContainer {...this.props} setEditMode={this.setEditMode} />);
   }
 }
 
@@ -60,8 +61,10 @@ const mapState = (state, ownProps) => {
   const denormCCUs                    = units.denormCCUs(state.content_units);
 
   return {
-    units: unitIDs ? orderBy(denormCCUs(unitIDs), 'position', 'desc') : EMPTY_ARRAY,
-    associatedCUIds: collection.content_units ? new Map(collection.content_units.map(x => [x.content_unit_id, true])) : new Map(),
+    units: unitIDs ? orderBy(denormCCUs(unitIDs), 'position') : EMPTY_ARRAY,
+    associatedCUIds: collection.content_units ?
+      new Map(collection.content_units.map(x => [x.content_unit_id, true])) :
+      new Map(),
     wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
     err: selectors.getError(state.collections, 'fetchItemUnits'),
   };

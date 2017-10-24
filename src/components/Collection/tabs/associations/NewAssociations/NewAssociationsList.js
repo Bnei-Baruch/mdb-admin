@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Icon, Table, Checkbox } from 'semantic-ui-react';
+import { Checkbox, Icon, Table } from 'semantic-ui-react';
 
 import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, SECURITY_LEVELS } from '../../../../../helpers/consts';
 import { extractI18n } from '../../../../../helpers/utils';
@@ -12,8 +12,8 @@ class FilesList extends PureComponent {
 
   static propTypes = {
     items: PropTypes.arrayOf(shapes.ContentUnit),
-    selectCCU: PropTypes.func,
     selectedCCU: PropTypes.arrayOf(PropTypes.object),
+    selectCCU: PropTypes.func,
     associatedCUIds: PropTypes.object,
   };
 
@@ -23,11 +23,11 @@ class FilesList extends PureComponent {
 
   checkHandler = (unit, checked) => {
     this.props.selectCCU(unit, checked);
-    this.setState({ checked: checked });
+    this.setState({ checked });
   };
 
-  renderItem = unit => {
-    let properties = extractI18n(unit.i18n, ['name'])[0];
+  renderItem = (unit) => {
+    const properties = extractI18n(unit.i18n, ['name'])[0];
 
     return (
       <Table.Row key={unit.id} disabled={this.props.associatedCUIds.has(unit.id)}>
@@ -35,9 +35,8 @@ class FilesList extends PureComponent {
           <Checkbox
             type="checkbox"
             onChange={(event, data) => this.checkHandler(unit, data.checked)}
-            checked={this.props.selectedCCU.find((ccu) => {
-              ccu.content_unit_id === unit.id;
-            })}></Checkbox>
+            checked={this.props.selectedCCU.find(ccu => ccu.content_unit_id === unit.id)}
+          />
         </Table.Cell>
         <Table.Cell>
           <Link to={`/content_units/${unit.id}`}>
@@ -74,13 +73,11 @@ class FilesList extends PureComponent {
   };
 
   render() {
-    const { items } = this.props;
-
     return (
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell />
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
@@ -92,9 +89,7 @@ class FilesList extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {
-            items.map(x => this.renderItem(x))
-          }
+          {this.props.items.map(this.renderItem)}
         </Table.Body>
       </Table>
     );

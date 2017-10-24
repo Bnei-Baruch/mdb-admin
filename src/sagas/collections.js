@@ -131,7 +131,7 @@ function* watchUpdateI18n() {
   yield takeEvery(types.UPDATE_I18N, updateI18n);
 }
 
-function* watchupdateProperties() {
+function* watchUpdateProperties() {
   yield takeEvery(types.UPDATE_PROPERTIES, updateProperties);
 }
 
@@ -168,7 +168,7 @@ export const sagas = [
   watchFetchItemUnits,
   watchAssociateUnit,
   watchUpdateI18n,
-  watchupdateProperties,
+  watchUpdateProperties,
   watchUpdateItemUnitProperties,
   watchDeleteItemUnit,
   watchChangeSecurityLevel,

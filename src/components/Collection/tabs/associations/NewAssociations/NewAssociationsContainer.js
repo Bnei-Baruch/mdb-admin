@@ -2,18 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import delay from 'lodash/delay';
 
+import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { actions as collectionActions } from '../../../../../redux/modules/collections';
-import { selectors as units } from '../../../../../redux/modules/content_units';
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
+import { selectors as unitsSelectors } from '../../../../../redux/modules/content_units';
+import * as shapes from '../../../../shapes';
 import NewAssociations from './NewAssociations';
 
 class ContentUnitsContainer extends Component {
 
   static propTypes = {
+    collection: shapes.Collection,
+    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
     fetchList: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
+    associateUnit: PropTypes.func.isRequired,
+    setEditMode: PropTypes.func.isRequired,
   };
 
   state = {
@@ -32,15 +38,22 @@ class ContentUnitsContainer extends Component {
     this.askForData(pageNo);
   };
 
+  handleFiltersChange = () => {
+    this.handlePageChange(1);
+  };
+
+  handleFiltersHydrated = () => {
+    this.handlePageChange(1);
+  };
+
   askForData = (pageNo) => {
     this.props.fetchList(NS_COLLECTION_UNITS, pageNo);
   };
 
   selectCCU = (data, checked) => {
     const selectedCCU = this.state.selectedCCU;
-    const ccu         = data;
     if (checked) {
-      selectedCCU.push(ccu);
+      selectedCCU.push(data);
     } else {
       selectedCCU.some((ccu, i) => {
         if (ccu.content_unit_id === data.content_unit_id) {
@@ -53,36 +66,41 @@ class ContentUnitsContainer extends Component {
   };
 
   associate = () => {
-    const { selectedCCU }                    = this.state;
-    const { collection, setEditMode, units } = this.props;
-    let lastPosition                         = (units[0] ? units[0].position : 0) || 0;
+    const { selectedCCU }       = this.state;
+    const { collection, units } = this.props;
+    let lastPosition            = units.length > 0 ? units[units.length - 1].position : 0;
     if (selectedCCU.length === 0) {
       return;
     }
+
     selectedCCU.forEach((ccu) => {
       lastPosition++;
       this.props.associateUnit(collection.id, { content_unit_id: ccu.id, name: '', position: lastPosition });
     });
-    setEditMode(false);
+
+    // we delay here to allow the server to update
+    // before we go back to view mode (which will re-fetch associations)
+    delay(this.props.setEditMode, Math.min(50 * selectedCCU.length, 500), false);
   };
 
   render() {
-    const { selectedCCU } = this.state;
-    return (<NewAssociations
-      {...this.props}
-      selectedCCU={selectedCCU}
-      selectCCU={this.selectCCU}
-      onPageChange={this.handlePageChange}
-      onFiltersChange={() => this.handlePageChange(1)}
-      onFiltersHydrated={() => this.handlePageChange(1)}
-      associate={this.associate}
-    />);
+    return (
+      <NewAssociations
+        {...this.props}
+        selectedCCU={this.state.selectedCCU}
+        selectCCU={this.selectCCU}
+        onPageChange={this.handlePageChange}
+        onFiltersChange={this.handleFiltersChange}
+        onFiltersHydrated={this.handleFiltersHydrated}
+        associate={this.associate}
+      />
+    );
   }
 }
 
 const mapState = (state) => {
   const status    = selectors.getNamespaceState(state.lists, NS_COLLECTION_UNITS) || EMPTY_OBJECT;
-  const denormIDs = units.denormIDs(state.content_units);
+  const denormIDs = unitsSelectors.denormIDs(state.content_units);
   return {
     ...status,
     items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,

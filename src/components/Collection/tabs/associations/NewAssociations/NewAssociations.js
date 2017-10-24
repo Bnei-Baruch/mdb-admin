@@ -1,6 +1,6 @@
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Icon, Label, Menu, Segment, Button } from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
 import { formatError } from '../../../../../helpers/utils';
@@ -27,9 +27,11 @@ class NewAssociations extends PureComponent {
     items: PropTypes.arrayOf(shapes.ContentUnit),
     wip: PropTypes.bool,
     err: shapes.Error,
+    associate: PropTypes.func.isRequired,
     onPageChange: PropTypes.func.isRequired,
     onFiltersChange: PropTypes.func.isRequired,
     onFiltersHydrated: PropTypes.func.isRequired,
+    setEditMode: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -44,35 +46,53 @@ class NewAssociations extends PureComponent {
     showFilters: false,
   };
 
-  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
+  toggleFilters = () =>
+    this.setState({ showFilters: !this.state.showFilters });
+
+  handleViewMode = () =>
+    this.props.setEditMode(false);
 
   render() {
     const { showFilters } = this.state;
 
-    const { pageNo, total, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, associate, setEditMode } = this.props;
+    const {
+            pageNo,
+            total,
+            wip,
+            err,
+            onPageChange,
+            onFiltersChange,
+            onFiltersHydrated,
+            associate,
+          } = this.props;
 
     return (
       <div>
-        <Segment clearing secondary size={'large'}>
+        <Segment clearing secondary size="large">
           <div>
             Associate content units to this collection
             <Button
-              onClick={() => setEditMode(false)}
-              floated='right'
-              icon='close'
-              content='Cancel' />
+              onClick={this.handleViewMode}
+              floated="right"
+              icon="close"
+              content="Cancel"
+            />
           </div>
         </Segment>
 
         <Segment clearing vertical>
-          <Button onClick={associate}
-                  floated='right'
-                  content='Associate content units to this collection'
-                  color="blue" />
-          <Button onClick={this.toggleFilters}
-                  color="blue"
-                  floated='right'
-                  inverted>
+          <Button
+            onClick={associate}
+            floated="right"
+            content="Associate content units to this collection"
+            color="blue"
+          />
+          <Button
+            onClick={this.toggleFilters}
+            color="blue"
+            floated="right"
+            inverted
+          >
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
@@ -111,7 +131,7 @@ class NewAssociations extends PureComponent {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <ContentUnitList  {...this.props} />
+              <ContentUnitList {...this.props} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

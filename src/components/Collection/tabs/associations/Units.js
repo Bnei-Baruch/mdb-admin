@@ -155,7 +155,7 @@ class Units extends PureComponent {
             <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>
-            <Table.HeaderCell>Association No.</Table.HeaderCell>
+            <Table.HeaderCell>Association Name</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

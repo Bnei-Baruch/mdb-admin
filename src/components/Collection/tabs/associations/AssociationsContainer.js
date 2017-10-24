@@ -3,23 +3,28 @@ import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Grid, Menu, Icon, Header, Button, Sticky } from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, Menu, Sticky } from 'semantic-ui-react';
 
-import * as shapes from '../../../shapes';
+import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/collections';
+import * as shapes from '../../../shapes';
 import Units from './Units';
 import './style.css';
 
 class AssociationsContainer extends Component {
 
   static propTypes = {
+    collection: shapes.Collection,
+    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
     updateItemUnitProperties: PropTypes.func.isRequired,
     fetchItemUnits: PropTypes.func.isRequired,
-    collection: shapes.Collection,
+    deleteItemUnit: PropTypes.func.isRequired,
+    setEditMode: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     collection: null,
+    units: EMPTY_ARRAY,
   };
 
   state = {
@@ -90,12 +95,22 @@ class AssociationsContainer extends Component {
     selectedCCU.forEach(ccu => deleteItemUnit(collection.id, ccu.content_unit_id));
   };
 
+  handleNewAssociation = () =>
+    this.props.setEditMode(true);
+
+  handlePositionUP = () =>
+    this.updatePosition(true);
+
+  handlePositionDown = () =>
+    this.updatePosition(false);
+
   render() {
-    const { selectedCCU }        = this.state;
-    const { units, setEditMode } = this.props;
-    const isLast                 = selectedCCU.length === 0 || units.length === 0 ||
+    const { selectedCCU } = this.state;
+    const { units }       = this.props;
+
+    const isLast  = selectedCCU.length === 0 || units.length === 0 ||
       selectedCCU[selectedCCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
-    const isFirst                = selectedCCU.length === 0 || units.length === 0 ||
+    const isFirst = selectedCCU.length === 0 || units.length === 0 ||
       selectedCCU[0].content_unit_id === units[0].content_unit_id;
 
     return (
@@ -105,7 +120,7 @@ class AssociationsContainer extends Component {
             <Header content="Associated Content Units" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item onClick={() => setEditMode(true)}>
+            <Menu.Item onClick={this.handleNewAssociation}>
               <Icon name="plus" /> New Association
             </Menu.Item>
           </Menu.Menu>
@@ -118,14 +133,14 @@ class AssociationsContainer extends Component {
                 icon="arrow up"
                 color="black"
                 disabled={isFirst || selectedCCU.length > 1}
-                onClick={() => this.updatePosition(true)}
+                onClick={this.handlePositionUP}
               />
               <Button
                 basic
                 icon="arrow down"
                 disabled={isLast || selectedCCU.length > 1}
                 color="black"
-                onClick={() => this.updatePosition(false)}
+                onClick={this.handlePositionDown}
               />
               <Button
                 basic
@@ -153,12 +168,10 @@ class AssociationsContainer extends Component {
   }
 }
 
-const mapState = (state) => {
-  return {
-    errDeleteCu: selectors.getError(state.collections, 'deleteItemUnit'),
-    errUpdateCu: selectors.getError(state.collections, 'updateItemUnitProperties'),
-  };
-};
+const mapState = state => ({
+  errDeleteCu: selectors.getError(state.collections, 'deleteItemUnit'),
+  errUpdateCu: selectors.getError(state.collections, 'updateItemUnitProperties'),
+});
 
 function mapDispatch(dispatch) {
   return bindActionCreators({
