@@ -5,14 +5,17 @@ import { Button, Header, Segment } from 'semantic-ui-react';
 
 import {
   COLLECTION_TYPES,
+  CT_CHILDREN_LESSONS,
   CT_CONGRESS,
   CT_DAILY_LESSON,
   CT_HOLIDAY,
+  CT_LECTURE_SERIES,
   CT_PICNIC,
   CT_SPECIAL_LESSON,
   CT_UNITY_DAY,
   CT_VIDEO_PROGRAM,
-  CT_VIRTUAL_LESSON,
+  CT_VIRTUAL_LESSONS,
+  CT_WOMEN_LESSONS,
   DATE_FORMAT
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
@@ -80,7 +83,10 @@ class BaseCollectionForm extends Component {
       data.end_date   = state.end_date;
       break;
     case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
-    case COLLECTION_TYPES[CT_VIRTUAL_LESSON].value:
+    case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
+    case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
+    case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
+    case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
       data.pattern          = state.pattern;
       data.active           = state.active;
       data.default_language = state.default_language;
@@ -248,7 +254,8 @@ class BaseCollectionForm extends Component {
 
   renderDateRangeFields = () => {
     const { start_date: start, end_date: end, errors } = this.state;
-    const err                                          = {
+
+    const err = {
       start: errors.start_date,
       end: errors.end_date
     };
@@ -265,7 +272,8 @@ class BaseCollectionForm extends Component {
 
   renderLocationFields = () => {
     const { country, city, full_address: fullAddress, errors } = this.state;
-    const err                                                  = {
+
+    const err = {
       country: errors.country,
       city: errors.city,
       fullAddress: errors.full_address,
@@ -322,7 +330,10 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_UNITY_DAY].value:
       return this.renderPicnic();
     case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
-    case COLLECTION_TYPES[CT_VIRTUAL_LESSON].value:
+    case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
+    case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
+    case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
+    case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
       return this.renderVideoProgram();
     default:
       return null;

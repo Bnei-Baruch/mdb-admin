@@ -25,6 +25,9 @@ export const CT_FRIENDS_GATHERINGS = 'FRIENDS_GATHERINGS';
 export const CT_CONGRESS           = 'CONGRESS';
 export const CT_VIDEO_PROGRAM      = 'VIDEO_PROGRAM';
 export const CT_LECTURE_SERIES     = 'LECTURE_SERIES';
+export const CT_CHILDREN_LESSONS   = 'CHILDREN_LESSONS';
+export const CT_WOMEN_LESSONS      = 'WOMEN_LESSONS';
+export const CT_VIRTUAL_LESSONS    = 'VIRTUAL_LESSONS';
 export const CT_MEALS              = 'MEALS';
 export const CT_HOLIDAY            = 'HOLIDAY';
 export const CT_PICNIC             = 'PICNIC';
@@ -33,8 +36,8 @@ export const CT_UNITY_DAY          = 'UNITY_DAY';
 // Content Unit Types
 export const CT_LESSON_PART           = 'LESSON_PART';
 export const CT_LECTURE               = 'LECTURE';
-export const CT_CHILDREN_LESSON_PART  = 'CHILDREN_LESSON_PART';
-export const CT_WOMEN_LESSON_PART     = 'WOMEN_LESSON_PART';
+export const CT_CHILDREN_LESSON       = 'CHILDREN_LESSON';
+export const CT_WOMEN_LESSON          = 'WOMEN_LESSON';
 export const CT_VIRTUAL_LESSON        = 'VIRTUAL_LESSON';
 export const CT_FRIENDS_GATHERING     = 'FRIENDS_GATHERING';
 export const CT_MEAL                  = 'MEAL';
@@ -60,8 +63,8 @@ export const CONTENT_TYPE_BY_ID = {
   10: CT_UNITY_DAY,
   11: CT_LESSON_PART,
   12: CT_LECTURE,
-  13: CT_CHILDREN_LESSON_PART,
-  14: CT_WOMEN_LESSON_PART,
+  13: CT_CHILDREN_LESSON,
+  14: CT_WOMEN_LESSON,
   16: CT_VIRTUAL_LESSON,
   18: CT_FRIENDS_GATHERING,
   19: CT_MEAL,
@@ -73,6 +76,9 @@ export const CONTENT_TYPE_BY_ID = {
   29: CT_CLIP,
   30: CT_TRAINING,
   31: CT_KITEI_MAKOR,
+  32: CT_VIRTUAL_LESSONS,
+  33: CT_CHILDREN_LESSONS,
+  34: CT_WOMEN_LESSONS,
 };
 
 // Collection types
@@ -87,7 +93,9 @@ export const COLLECTION_TYPES = {
   [CT_HOLIDAY]: { text: CT_HOLIDAY, value: 8 },
   [CT_PICNIC]: { text: CT_PICNIC, value: 9 },
   [CT_UNITY_DAY]: { text: CT_UNITY_DAY, value: 10 },
-  [CT_VIRTUAL_LESSON]: { text: CT_VIRTUAL_LESSON, value: 16 },
+  [CT_VIRTUAL_LESSONS]: { text: CT_VIRTUAL_LESSONS, value: 32 },
+  [CT_CHILDREN_LESSONS]: { text: CT_CHILDREN_LESSONS, value: 33 },
+  [CT_WOMEN_LESSONS]: { text: CT_WOMEN_LESSONS, value: 34 },
 };
 
 export const COLLECTION_TYPE_OPTIONS = Array.from(Object.values(COLLECTION_TYPES));
