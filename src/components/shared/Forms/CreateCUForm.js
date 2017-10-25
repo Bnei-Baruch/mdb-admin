@@ -7,7 +7,7 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES, DATE_FORMAT } from '../../../helpers/consts';
 import { MajorLangsI18nField, FilmDateField } from '../../shared/Fields';
 
-class CreateCCUForm extends Component {
+class CreateCUForm extends Component {
   static propTypes = {
     create: PropTypes.func.isRequired,
   };
@@ -125,4 +125,4 @@ class CreateCCUForm extends Component {
   }
 }
 
-export default CreateCCUForm;
+export default CreateCUForm;
