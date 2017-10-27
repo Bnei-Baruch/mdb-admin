@@ -21,9 +21,9 @@ const FETCH_ITEM_SOURCES_FAILURE     = 'ContentUnits/FETCH_ITEM_SOURCES_FAILURE'
 const FETCH_ITEM_TAGS                = 'ContentUnits/FETCH_ITEM_TAGS';
 const FETCH_ITEM_TAGS_SUCCESS        = 'ContentUnits/FETCH_ITEM_TAGS_SUCCESS';
 const FETCH_ITEM_TAGS_FAILURE        = 'ContentUnits/FETCH_ITEM_TAGS_FAILURE';
-const FETCH_ITEM_PERSONS                = 'ContentUnits/FETCH_ITEM_PERSONS';
-const FETCH_ITEM_PERSONS_SUCCESS        = 'ContentUnits/FETCH_ITEM_PERSONS_SUCCESS';
-const FETCH_ITEM_PERSONS_FAILURE        = 'ContentUnits/FETCH_ITEM_PERSONS_FAILURE';
+const FETCH_ITEM_PERSONS             = 'ContentUnits/FETCH_ITEM_PERSONS';
+const FETCH_ITEM_PERSONS_SUCCESS     = 'ContentUnits/FETCH_ITEM_PERSONS_SUCCESS';
+const FETCH_ITEM_PERSONS_FAILURE     = 'ContentUnits/FETCH_ITEM_PERSONS_FAILURE';
 
 const CHANGE_SECURITY_LEVEL         = 'ContentUnits/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'ContentUnits/CHANGE_SECURITY_LEVEL_SUCCESS';
@@ -105,9 +105,9 @@ const fetchItemSourcesFailure     = createAction(FETCH_ITEM_SOURCES_FAILURE);
 const fetchItemTags               = createAction(FETCH_ITEM_TAGS);
 const fetchItemTagsSuccess        = createAction(FETCH_ITEM_TAGS_SUCCESS);
 const fetchItemTagsFailure        = createAction(FETCH_ITEM_TAGS_FAILURE);
-const fetchItemPersons               = createAction(FETCH_ITEM_PERSONS);
-const fetchItemPersonsSuccess        = createAction(FETCH_ITEM_PERSONS_SUCCESS);
-const fetchItemPersonsFailure        = createAction(FETCH_ITEM_PERSONS_FAILURE);
+const fetchItemPersons            = createAction(FETCH_ITEM_PERSONS);
+const fetchItemPersonsSuccess     = createAction(FETCH_ITEM_PERSONS_SUCCESS);
+const fetchItemPersonsFailure     = createAction(FETCH_ITEM_PERSONS_FAILURE);
 
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
@@ -287,7 +287,7 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_PERSONS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
-      persons: action.payload.data.map(x => x.id),
+      persons: action.payload.data//action.payload.data.map(x => x.id),
     });
     break;
   default:

@@ -15,7 +15,6 @@ import PersonsList from './List';
 import Others from './filters/Others';
 
 const filterTabs = [
-  { name: 'Date Range', element: DateRange },
   { name: 'Others', element: Others },
 ];
 
@@ -47,7 +46,7 @@ class PersonsMainPage extends Component {
 
   state = {
     showFilters: false,
-    newPatron: false,
+    newPerson: false,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -55,18 +54,18 @@ class PersonsMainPage extends Component {
     const nWip            = nextProps.wipOfCreate;
     const nErr            = nextProps.errOfCreate;
     if (wipOfCreate && !nWip && !nErr) {
-      this.toggleNewPatron();
+      this.toggleNewPerson();
     }
   }
 
   toggleFilters = () =>
     this.setState({ showFilters: !this.state.showFilters });
 
-  toggleNewPatron = () =>
-    this.setState({ newPatron: !this.state.newPatron });
+  toggleNewPerson = () =>
+    this.setState({ newPerson: !this.state.newPerson });
 
   render() {
-    const { showFilters, newPatron } = this.state;
+    const { showFilters, newPerson } = this.state;
 
     const
       {

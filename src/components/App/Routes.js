@@ -11,6 +11,7 @@ import Operation from '../Operation/Container';
 import Operations from '../Operations/Container';
 import Tags from '../Tags/TagsContainer';
 import Tag from '../Tags/TagContainer';
+import Persons from '../Persons/Container';
 import Sources from '../Sources/SourcesContainer';
 import Source from '../Sources/SourceContainer';
 import Welcome from '../Welcome/Welcome';
@@ -31,6 +32,7 @@ const Routes = () => (
     <Route exact path="/tags/:id" component={Tag} />
     <Route exact path="/sources" component={Sources} />
     <Route exact path="/sources/:id" component={Source} />
+    <Route exact path="/persons" component={Persons} />
     <Route exact path="/design" component={Design} />
     <Route render={() => <h1>Page not found</h1>} />
   </Switch>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PERSONS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';
-import { actions as personActions, selectors as persons } from '../../redux/modules/Persons';
+import { actions as personActions, selectors as persons } from '../../redux/modules/persons';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
@@ -82,7 +82,7 @@ const mapState = (state) => {
   const denormIDs = persons.denormIDs(state.persons);
   return {
     ...status,
-    wipOfCreate: Persons.getWIP(state.persons, 'create'),
+    wipOfCreate: persons.getWIP(state.persons, 'create'),
     errOfCreate: persons.getError(state.persons, 'create'),
     items: Array.isArray(status.items) && status.items.length > 0 ?
       denormIDs(status.items) :
