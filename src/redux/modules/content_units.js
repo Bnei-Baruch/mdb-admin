@@ -21,6 +21,9 @@ const FETCH_ITEM_SOURCES_FAILURE     = 'ContentUnits/FETCH_ITEM_SOURCES_FAILURE'
 const FETCH_ITEM_TAGS                = 'ContentUnits/FETCH_ITEM_TAGS';
 const FETCH_ITEM_TAGS_SUCCESS        = 'ContentUnits/FETCH_ITEM_TAGS_SUCCESS';
 const FETCH_ITEM_TAGS_FAILURE        = 'ContentUnits/FETCH_ITEM_TAGS_FAILURE';
+const FETCH_ITEM_PERSONS                = 'ContentUnits/FETCH_ITEM_PERSONS';
+const FETCH_ITEM_PERSONS_SUCCESS        = 'ContentUnits/FETCH_ITEM_PERSONS_SUCCESS';
+const FETCH_ITEM_PERSONS_FAILURE        = 'ContentUnits/FETCH_ITEM_PERSONS_FAILURE';
 
 const CHANGE_SECURITY_LEVEL         = 'ContentUnits/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'ContentUnits/CHANGE_SECURITY_LEVEL_SUCCESS';
@@ -59,6 +62,9 @@ export const types = {
   FETCH_ITEM_TAGS,
   FETCH_ITEM_TAGS_SUCCESS,
   FETCH_ITEM_TAGS_FAILURE,
+  FETCH_ITEM_PERSONS,
+  FETCH_ITEM_PERSONS_SUCCESS,
+  FETCH_ITEM_PERSONS_FAILURE,
 
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
@@ -99,6 +105,9 @@ const fetchItemSourcesFailure     = createAction(FETCH_ITEM_SOURCES_FAILURE);
 const fetchItemTags               = createAction(FETCH_ITEM_TAGS);
 const fetchItemTagsSuccess        = createAction(FETCH_ITEM_TAGS_SUCCESS);
 const fetchItemTagsFailure        = createAction(FETCH_ITEM_TAGS_FAILURE);
+const fetchItemPersons               = createAction(FETCH_ITEM_PERSONS);
+const fetchItemPersonsSuccess        = createAction(FETCH_ITEM_PERSONS_SUCCESS);
+const fetchItemPersonsFailure        = createAction(FETCH_ITEM_PERSONS_FAILURE);
 
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
@@ -137,6 +146,9 @@ export const actions = {
   fetchItemTags,
   fetchItemTagsSuccess,
   fetchItemTagsFailure,
+  fetchItemPersons,
+  fetchItemPersonsSuccess,
+  fetchItemPersonsFailure,
 
   updateI18n,
   updateI18nSuccess,
@@ -178,6 +190,9 @@ const keys = new Map([
   [FETCH_ITEM_TAGS, 'fetchItemTags'],
   [FETCH_ITEM_TAGS_SUCCESS, 'fetchItemTags'],
   [FETCH_ITEM_TAGS_FAILURE, 'fetchItemTags'],
+  [FETCH_ITEM_PERSONS, 'fetchItemPersons'],
+  [FETCH_ITEM_PERSONS_SUCCESS, 'fetchItemPersons'],
+  [FETCH_ITEM_PERSONS_FAILURE, 'fetchItemPersons'],
 
   [UPDATE_I18N, 'updateI18n'],
   [UPDATE_I18N_SUCCESS, 'updateI18n'],
@@ -269,6 +284,12 @@ const onSuccess = (state, action) => {
     byID = update(state.byID, action.payload.id,
       x => ({ ...x, tags: x.tags.filter(t => t !== action.payload.tagID) }));
     break;
+  case FETCH_ITEM_PERSONS_SUCCESS:
+    byID = merge(state.byID, {
+      id: action.payload.id,
+      persons: action.payload.data.map(x => x.id),
+    });
+    break;
   default:
     byID = state.byID;
   }
@@ -302,6 +323,9 @@ export const reducer = handleActions({
   [FETCH_ITEM_TAGS]: onRequest,
   [FETCH_ITEM_TAGS_SUCCESS]: onSuccess,
   [FETCH_ITEM_TAGS_FAILURE]: onFailure,
+  [FETCH_ITEM_PERSONS]: onRequest,
+  [FETCH_ITEM_PERSONS_SUCCESS]: onSuccess,
+  [FETCH_ITEM_PERSONS_FAILURE]: onFailure,
 
   [UPDATE_I18N]: onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
