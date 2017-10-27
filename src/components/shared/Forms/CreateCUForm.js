@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Divider, Form, Message } from 'semantic-ui-react';
+import { Divider, Form, Message, Segment, Button, Header } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 
 import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES, DATE_FORMAT } from '../../../helpers/consts';
@@ -10,17 +10,25 @@ import { MajorLangsI18nField, FilmDateField } from '../../shared/Fields';
 class CreateCUForm extends Component {
   static propTypes = {
     create: PropTypes.func.isRequired,
+    wip: PropTypes.bool.isRequired,
+    err: PropTypes.bool,
   };
-         state     = {
-           type_id: null,
-           i18n: MAJOR_LANGUAGES.reduce((acc, val) => {
-             acc[val] = { name: '' };
-             return acc;
-           }, {}),
-           capture_date: moment(),
-           film_date: moment(),
-           errors: {},
-         };
+
+  static defaultProps = {
+    wip: false,
+    err: null,
+  };
+
+  state = {
+    type_id: COLLECTION_TYPE_OPTIONS.CT_DAILY_LESSON,
+    i18n: MAJOR_LANGUAGES.reduce((acc, val) => {
+      acc[val] = { name: '' };
+      return acc;
+    }, {}),
+    capture_date: moment(),
+    film_date: moment(),
+    submitted: false,
+  };
 
   handleI18nChange = (i18n) => {
     const { errors } = this.state;
@@ -49,6 +57,7 @@ class CreateCUForm extends Component {
       return;
     }
     this.props.create(type_id, properties, i18n);
+    this.setState({ submitted: true });
   }
 
   validate() {
@@ -67,17 +76,6 @@ class CreateCUForm extends Component {
     }
     return (
       <div>
-        <Divider horizontal section>Translations</Divider>
-        <MajorLangsI18nField
-          i18n={i18n}
-          err={errors.i18n}
-          onChange={this.handleI18nChange}
-        />
-        {
-          errors.i18n ?
-            <Message negative content="At least one translation is required" /> :
-            null
-        }
 
         <Divider horizontal section>Properties</Divider>
         <Form.Group widths="equal">
@@ -101,6 +99,18 @@ class CreateCUForm extends Component {
             required
           />
         </Form.Group>
+
+        <Divider horizontal section>Translations</Divider>
+        <MajorLangsI18nField
+          i18n={i18n}
+          err={errors.i18n}
+          onChange={this.handleI18nChange}
+        />
+        {
+          errors.i18n ?
+            <Message negative content="At least one translation is required" /> :
+            null
+        }
       </div>);
   }
 
@@ -108,18 +118,42 @@ class CreateCUForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-
-        <Form.Dropdown
-          search
-          selection
-          inline
-          label="Content Type"
-          placeholder="Content Type"
-          options={COLLECTION_TYPE_OPTIONS}
-          onChange={this.handleTypeChange}
-        />
-
-        {this.fieldsByTypeId()}
+        <Segment.Group>
+          <Segment basic>
+            <Form.Dropdown
+              search
+              selection
+              inline
+              label="Content Type"
+              placeholder="Content Type"
+              options={COLLECTION_TYPE_OPTIONS}
+              onChange={this.handleTypeChange}
+            />
+            {this.fieldsByTypeId()}
+          </Segment>
+          <Segment clearing attached="bottom" size="tiny">
+            {submitted && err ?
+              <Header
+                inverted
+                content={formatError(err)}
+                color="red"
+                icon="warning sign"
+                floated="left"
+                size="tiny"
+                style={{ marginTop: '0.2rem', marginBottom: '0' }}
+              />
+              : null}
+            <Button
+              primary
+              content="Save"
+              size="tiny"
+              floated="right"
+              loading={wip}
+              disabled={wip}
+              onClick={this.handleSubmit}
+            />
+          </Segment>
+        </Segment.Group>
       </Form>
     );
   }

@@ -57,6 +57,16 @@ function* fetchItemTags(action) {
   }
 }
 
+
+function* create(action) {
+  try {
+    const resp = yield call(api.post, '/rest/content_units/', action.payload);
+    yield put(actions.createSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.createFailure(err));
+  }
+}
+
 function* changeSecurityLevel(action) {
   try {
     const { id, level } = action.payload;
@@ -137,6 +147,10 @@ function* watchFetchItemTags() {
   yield takeEvery(types.FETCH_ITEM_TAGS, fetchItemTags);
 }
 
+function* watchCreate() {
+  yield takeEvery(types.CREATE, create);
+}
+
 function* watchChangeSecurityLevel() {
   yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
 }
@@ -167,6 +181,7 @@ export const sagas = [
   watchFetchItemCollections,
   watchFetchItemSources,
   watchFetchItemTags,
+  watchCreate,
   watchChangeSecurityLevel,
   watchUpdateI18n,
   watchAddSource,

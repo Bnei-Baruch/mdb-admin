@@ -43,8 +43,11 @@ class ContentUnitsContainer extends Component {
     this.handlePageChange(pageNoFromLocation);
   };
 
-  askForData = (pageNo) => {
+  askForData = pageNo =>
     this.props.fetchList(NS_UNITS, pageNo);
+
+  createCU = () => {
+    //this.props.fetchList(NS_UNITS, pageNo);
   };
 
   render() {
@@ -53,6 +56,7 @@ class ContentUnitsContainer extends Component {
     return (
       <MainPage
         {...rest}
+        create={this.createCU}
         onPageChange={this.handlePageChange}
         onFiltersChange={this.handleFiltersChange}
         onFiltersHydrated={this.handleFiltersHydrated}
