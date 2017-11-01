@@ -10,6 +10,7 @@ import { MajorLangsI18nField, FilmDateField } from '../../shared/Fields';
 class CreateCUForm extends Component {
   static propTypes = {
     create: PropTypes.func.isRequired,
+    toggleModal: PropTypes.func.isRequired,
     wip: PropTypes.bool.isRequired,
     err: PropTypes.bool,
   };
@@ -28,6 +29,7 @@ class CreateCUForm extends Component {
     capture_date: moment(),
     film_date: moment(),
     submitted: false,
+    errors: {},
   };
 
   handleI18nChange = (i18n) => {
@@ -52,24 +54,24 @@ class CreateCUForm extends Component {
     this.setState({ capture_date: date, errors });
   };
 
-  doSubmit(type_id, properties, i18n) {
+  handleSubmit = (type_id, properties, i18n) => {
     if (!this.validate()) {
       return;
     }
     this.props.create(type_id, properties, i18n);
     this.setState({ submitted: true });
-  }
+  };
 
-  validate() {
+  validate = () => {
     const { errors, i18n } = this.state;
     if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }
 
     return errors;
-  }
+  };
 
-  fieldsByTypeId() {
+  fieldsByTypeId = () => {
     const { type_id, i18n, errors, capture_date, film_date } = this.state;
     if (!type_id) {
       return;
@@ -112,9 +114,14 @@ class CreateCUForm extends Component {
             null
         }
       </div>);
-  }
+  };
 
   render() {
+    const { wip, err, formatError, toggleModal } = this.props;
+
+    if (this.state.submitted && !err) {
+      return toggleModal();
+    }
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -132,7 +139,7 @@ class CreateCUForm extends Component {
             {this.fieldsByTypeId()}
           </Segment>
           <Segment clearing attached="bottom" size="tiny">
-            {submitted && err ?
+            {this.state.submitted && err ?
               <Header
                 inverted
                 content={formatError(err)}
@@ -143,14 +150,13 @@ class CreateCUForm extends Component {
                 style={{ marginTop: '0.2rem', marginBottom: '0' }}
               />
               : null}
-            <Button
+            <Form.Button
               primary
               content="Save"
               size="tiny"
               floated="right"
               loading={wip}
               disabled={wip}
-              onClick={this.handleSubmit}
             />
           </Segment>
         </Segment.Group>

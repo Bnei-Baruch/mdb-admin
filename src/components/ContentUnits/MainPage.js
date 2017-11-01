@@ -49,7 +49,7 @@ class ContentUnitMainPage extends Component {
 
   state = {
     showFilters: false,
-    showNewCU: true,
+    showNewCU: false,
   };
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
@@ -124,7 +124,7 @@ class ContentUnitMainPage extends Component {
         >
           <Modal.Header>Create New Content Unit</Modal.Header>
           <Modal.Content>
-            <CreateCUForm wip={wipOfCreate} err={errOfCreate} create={create} />
+            <CreateCUForm wip={wipOfCreate} err={errOfCreate} create={create} toggleModal={this.toggleNewCU} />
           </Modal.Content>
         </Modal>
       </div>
