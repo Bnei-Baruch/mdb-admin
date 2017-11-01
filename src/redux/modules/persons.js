@@ -114,16 +114,9 @@ const getPersonById           = state => id => state.byID.get(id);
 const getWIP                  = state => key => state.wip.get(key);
 const getError                = state => key => state.errors.get(key);
 const getPersonsList          = createSelector(getPersons, persons => Array.from(persons.values()));
-const getPersonByCollectionId = createSelector(getPersonsList, getPersonById,
-  (persons, byId) => {
-    const pairs = persons.reduce((acc, val) => acc.concat(val.sources.map(x => [x, val.id])), []);
-    const m     = new Map(pairs);
-    return memoize(id => byId(m.get(id)));
-  });
 
 export const selectors = {
   getWIP,
   getError,
   getPersonsList,
-  getPersonByCollectionId,
 };
