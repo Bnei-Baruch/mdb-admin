@@ -111,17 +111,26 @@ const BaseCollection = {
   i18n: PropTypes.objectOf(CollectionI18n),
 };
 
-const BaseCollectionContentUnit = {
+export const CollectionContentUnit = PropTypes.shape({
   collection_id: PropTypes.number,
   collection: PropTypes.shape(BaseCollection),
   content_unit_id: PropTypes.number,
   content_unit: PropTypes.shape(BaseContentUnit),
   name: PropTypes.string,
-};
+  position: PropTypes.number,
+});
 
-export const CollectionContentUnit = PropTypes.shape(BaseCollectionContentUnit);
+export const ContentUnitDerivation = PropTypes.shape({
+  source_id: PropTypes.number,
+  source: PropTypes.shape(BaseContentUnit),
+  derived_id: PropTypes.number,
+  derived: PropTypes.shape(BaseContentUnit),
+  name: PropTypes.string,
+});
 
 BaseContentUnit.collections = PropTypes.arrayOf(CollectionContentUnit);
+BaseContentUnit.derivatives = PropTypes.arrayOf(ContentUnitDerivation);
+BaseContentUnit.origins     = PropTypes.arrayOf(ContentUnitDerivation);
 export const ContentUnit    = PropTypes.shape(BaseContentUnit);
 
 BaseCollection.content_units = PropTypes.arrayOf(CollectionContentUnit);
