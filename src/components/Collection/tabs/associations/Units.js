@@ -56,8 +56,8 @@ class Units extends PureComponent {
 
   renderItem = (item) => {
     const { collection, errUpdateCu, errDeleteCu, selectedCCU } = this.props;
-    const unit                                                 = item.content_unit;
-    const error                                                = errDeleteCu || errUpdateCu;
+    const unit                                                  = item.content_unit;
+    const error                                                 = errDeleteCu || errUpdateCu;
 
     let properties = extractI18n(unit.i18n, ['name'])[0];
     if (!properties) {
@@ -107,7 +107,11 @@ class Units extends PureComponent {
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss')}
+          {
+            unit.properties && unit.properties.duration ?
+              moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
+              '??'
+          }
         </Table.Cell>
         <Table.Cell textAlign="center" collapsing>
           <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
