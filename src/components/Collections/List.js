@@ -7,6 +7,7 @@ import { Icon, Table } from 'semantic-ui-react';
 import {
   CONTENT_TYPE_BY_ID,
   CT_DAILY_LESSON,
+  CT_HOLIDAY,
   CT_SPECIAL_LESSON,
   EMPTY_ARRAY,
   SECURITY_LEVELS
@@ -18,6 +19,7 @@ class CollectionsList extends PureComponent {
 
   static propTypes = {
     items: PropTypes.arrayOf(shapes.Collection),
+    getTagByUID: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -35,6 +37,14 @@ class CollectionsList extends PureComponent {
         properties                            = filmDate;
         if (number) {
           properties += `, number ${number}`;
+        }
+        break;
+      }
+      case CT_HOLIDAY: {
+        const tag  = this.props.getTagByUID(item.properties.holiday_tag);
+        properties = tag ? extractI18n(tag.i18n, ['label'])[0] : tag;
+        if (item.properties.start_date) {
+          properties += `  ${item.properties.start_date.substring(0, 4)}`;
         }
         break;
       }
@@ -93,9 +103,7 @@ class CollectionsList extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {
-            items.map(x => this.renderItem(x))
-          }
+          {items.map(this.renderItem)}
         </Table.Body>
       </Table>
     );

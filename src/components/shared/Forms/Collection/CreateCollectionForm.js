@@ -33,6 +33,7 @@ class CreateCollectionForm extends BaseCollectionForm {
       city: '',
       full_address: '',
       default_language: '',
+      holiday_tag: '',
     };
   }
 

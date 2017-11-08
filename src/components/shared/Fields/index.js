@@ -5,4 +5,5 @@ export { default as ToggleField } from './ToggleField';
 export { default as LanguageField } from './Language';
 export { default as LocationField } from './Location';
 export { default as NameField } from './Name';
+export { default as HolidayField } from './Holiday';
 export { default as MajorLangsI18nField } from './MajorLangsI18n';

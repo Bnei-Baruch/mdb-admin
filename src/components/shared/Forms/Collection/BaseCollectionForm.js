@@ -24,9 +24,10 @@ import {
   DateRangeField,
   FilenamePatternField,
   FilmDateField,
+  HolidayField,
   LanguageField,
   LocationField,
-  ToggleField
+  ToggleField,
 } from '../../Fields';
 import './collections.css';
 
@@ -75,6 +76,10 @@ class BaseCollectionForm extends Component {
       data.full_address = state.full_address;
       break;
     case COLLECTION_TYPES[CT_HOLIDAY].value:
+      data.holiday_tag = state.holiday_tag;
+      data.start_date  = state.start_date;
+      data.end_date    = state.end_date;
+      break;
     case COLLECTION_TYPES[CT_PICNIC].value:
     case COLLECTION_TYPES[CT_UNITY_DAY].value:
       data.pattern    = state.pattern;
@@ -148,6 +153,12 @@ class BaseCollectionForm extends Component {
       delete errors.full_address;
     }
     this.setState({ country, city, full_address: fullAddress, errors });
+  };
+
+  handleHolidayChange = (e, data) => {
+    const errors = this.state.errors;
+    delete errors.holiday_tag;
+    this.setState({ holiday_tag: data.value, errors });
   };
 
   // eslint-disable-next-line class-methods-use-this
@@ -290,6 +301,16 @@ class BaseCollectionForm extends Component {
     );
   };
 
+  renderHolidayField = () => (
+    <HolidayField
+      value={this.state.holiday_tag}
+      err={this.state.errors.holiday_tag}
+      onChange={this.handleHolidayChange}
+      required
+      width={6}
+    />
+  );
+
   renderDailyLesson = () =>
     (this.renderFilmDateField());
 
@@ -310,6 +331,13 @@ class BaseCollectionForm extends Component {
     </div>
   );
 
+  renderHoliday = () => (
+    <div>
+      {this.renderHolidayField()}
+      {this.renderDateRangeFields()}
+    </div>
+  );
+
   renderPicnic = () => (
     <div>
       {this.renderPatternField()}
@@ -326,6 +354,7 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_CONGRESS].value:
       return this.renderCongress();
     case COLLECTION_TYPES[CT_HOLIDAY].value:
+      return this.renderHoliday();
     case COLLECTION_TYPES[CT_PICNIC].value:
     case COLLECTION_TYPES[CT_UNITY_DAY].value:
       return this.renderPicnic();
