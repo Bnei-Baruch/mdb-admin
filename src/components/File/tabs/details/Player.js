@@ -17,7 +17,7 @@ const Player = (props) => {
     <div>
       {
         ['audio', 'video'].includes(types.type) ?
-          <JWPlayer playerId="file-details" file={physicalFile(file, true)} /> :
+          <JWPlayer playerId="file-details" file={physicalFile(file, true)} isAutoPlay={false}/> :
           null
       }
       <br />
