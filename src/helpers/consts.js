@@ -32,6 +32,7 @@ export const CT_MEALS              = 'MEALS';
 export const CT_HOLIDAY            = 'HOLIDAY';
 export const CT_PICNIC             = 'PICNIC';
 export const CT_UNITY_DAY          = 'UNITY_DAY';
+export const CT_CLIPS              = 'CLIPS';
 
 // Content Unit Types
 export const CT_LESSON_PART           = 'LESSON_PART';
@@ -79,6 +80,7 @@ export const CONTENT_TYPE_BY_ID = {
   32: CT_VIRTUAL_LESSONS,
   33: CT_CHILDREN_LESSONS,
   34: CT_WOMEN_LESSONS,
+  35: CT_CLIPS,
 };
 
 // Collection types
@@ -96,6 +98,7 @@ export const COLLECTION_TYPES = {
   [CT_VIRTUAL_LESSONS]: { text: CT_VIRTUAL_LESSONS, value: 32 },
   [CT_CHILDREN_LESSONS]: { text: CT_CHILDREN_LESSONS, value: 33 },
   [CT_WOMEN_LESSONS]: { text: CT_WOMEN_LESSONS, value: 34 },
+  [CT_CLIPS]: { text: CT_CLIPS, value: 35 },
 };
 
 export const COLLECTION_TYPE_OPTIONS = Array.from(Object.values(COLLECTION_TYPES));
