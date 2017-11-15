@@ -67,6 +67,16 @@ function* create(action) {
   }
 }
 
+function* updateProperties(action) {
+  try {
+    const { id, properties } = action.payload;
+    const resp               = yield call(api.put, `/rest/content_units/${id}/`, { properties });
+    yield put(actions.updatePropertiesSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.updatePropertiesFailure(err));
+  }
+}
+
 function* changeSecurityLevel(action) {
   try {
     const { id, level } = action.payload;
@@ -151,6 +161,10 @@ function* watchCreate() {
   yield takeEvery(types.CREATE, create);
 }
 
+function* watchUpdateProperties() {
+  yield takeEvery(types.UPDATE_PROPERTIES, updateProperties);
+}
+
 function* watchChangeSecurityLevel() {
   yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
 }
@@ -182,6 +196,7 @@ export const sagas = [
   watchFetchItemSources,
   watchFetchItemTags,
   watchCreate,
+  watchUpdateProperties,
   watchChangeSecurityLevel,
   watchUpdateI18n,
   watchAddSource,
