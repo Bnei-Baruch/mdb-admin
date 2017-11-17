@@ -15,7 +15,7 @@ const DetailsTab = (props) => {
   const notEditableProperties = DetailsTab.getEditableProperties(unit.properties).reduce((result, p) => {
     delete result[p];
     return result;
-  }, unit.properties);
+  }, Object.assign({}, unit.properties));
   const editableProperties    = DetailsTab.getEditableProperties(unit.properties).reduce((result, p) => {
     result[p] = unit.properties[p];
     return result;
