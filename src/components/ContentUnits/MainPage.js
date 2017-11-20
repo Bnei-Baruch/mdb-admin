@@ -53,13 +53,14 @@ class ContentUnitMainPage extends Component {
   };
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
-  toggleNewCU  = () => this.setState({ showNewCU: !this.state.showNewCU });
+  toggleNewCU   = () => {
+    this.setState({ showNewCU: !this.state.showNewCU });
+  };
 
   render() {
     const { showFilters, showNewCU } = this.state;
 
-    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, wipOfCreate, errOfCreate, create} = this.props;
-
+    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, wipOfCreate, errOfCreate, create } = this.props;
 
     return (
       <div>

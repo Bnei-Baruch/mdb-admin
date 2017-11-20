@@ -23,7 +23,7 @@ class CreateCUForm extends Component {
   state = {
     type_id: COLLECTION_TYPE_OPTIONS.CT_DAILY_LESSON,
     i18n: MAJOR_LANGUAGES.reduce((acc, val) => {
-      acc[val] = { name: '' };
+      acc[val] = { name: '', language: val };
       return acc;
     }, {}),
     capture_date: moment(),
@@ -54,12 +54,19 @@ class CreateCUForm extends Component {
     this.setState({ capture_date: date, errors });
   };
 
-  handleSubmit = (type_id, properties, i18n) => {
+  handleSubmit = () => {
+    const { create, toggleModal }                    = this.props;
+    const { type_id, capture_date, film_date, i18n } = this.state;
     if (!this.validate()) {
       return;
     }
-    this.props.create(type_id, properties, i18n);
+    create({ type_id, i18n, properties: { capture_date, film_date } });
     this.setState({ submitted: true });
+
+    if (!this.props.err) {
+      this.setState({ type_id: null });
+      toggleModal();
+    }
   };
 
   validate = () => {
@@ -80,7 +87,7 @@ class CreateCUForm extends Component {
       <div>
 
         <Divider horizontal section>Properties</Divider>
-        <Form.Group widths="equal">
+        <Form.Group>
 
           <Form.Field
             required
@@ -117,11 +124,7 @@ class CreateCUForm extends Component {
   };
 
   render() {
-    const { wip, err, formatError, toggleModal } = this.props;
-
-    if (this.state.submitted && !err) {
-      return toggleModal();
-    }
+    const { wip, err, formatError } = this.props;
 
     return (
       <Form onSubmit={this.handleSubmit}>

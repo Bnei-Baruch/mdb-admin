@@ -57,7 +57,6 @@ function* fetchItemTags(action) {
   }
 }
 
-
 function* create(action) {
   try {
     const resp = yield call(api.post, '/rest/content_units/', action.payload);

@@ -26,9 +26,9 @@ const CREATE                        = 'ContentUnits/CREATE';
 const CREATE_SUCCESS                = 'ContentUnits/CREATE_SUCCESS';
 const CREATE_FAILURE                = 'ContentUnits/CREATE_FAILURE';
 const CHANGE_SECURITY_LEVEL         = 'ContentUnits/CHANGE_SECURITY_LEVEL';
-const UPDATE_PROPERTIES                   = 'ContentUnits/UPDATE_PROPERTIES';
-const UPDATE_PROPERTIES_SUCCESS           = 'ContentUnits/UPDATE_PROPERTIES_SUCCESS';
-const UPDATE_PROPERTIES_FAILURE           = 'ContentUnits/UPDATE_PROPERTIES_FAILURE';
+const UPDATE_PROPERTIES             = 'ContentUnits/UPDATE_PROPERTIES';
+const UPDATE_PROPERTIES_SUCCESS     = 'ContentUnits/UPDATE_PROPERTIES_SUCCESS';
+const UPDATE_PROPERTIES_FAILURE     = 'ContentUnits/UPDATE_PROPERTIES_FAILURE';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'ContentUnits/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'ContentUnits/CHANGE_SECURITY_LEVEL_FAILURE';
 const UPDATE_I18N                   = 'ContentUnits/UPDATE_I18N';
@@ -67,6 +67,8 @@ export const types = {
   FETCH_ITEM_TAGS_FAILURE,
 
   CREATE,
+  CREATE_SUCCESS,
+  CREATE_FAILURE,
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
   CHANGE_SECURITY_LEVEL_FAILURE,
@@ -111,9 +113,11 @@ const fetchItemTagsSuccess        = createAction(FETCH_ITEM_TAGS_SUCCESS);
 const fetchItemTagsFailure        = createAction(FETCH_ITEM_TAGS_FAILURE);
 
 const create                     = createAction(CREATE, (cu) => (cu));
-const updateProperties                = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
-const updatePropertiesSuccess         = createAction(UPDATE_PROPERTIES_SUCCESS);
-const updatePropertiesFailure         = createAction(UPDATE_PROPERTIES_FAILURE);
+const createSuccess              = createAction(CREATE_SUCCESS);
+const createFailure              = createAction(CREATE_FAILURE);
+const updateProperties           = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
+const updatePropertiesSuccess    = createAction(UPDATE_PROPERTIES_SUCCESS);
+const updatePropertiesFailure    = createAction(UPDATE_PROPERTIES_FAILURE);
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
@@ -153,6 +157,8 @@ export const actions = {
   fetchItemTagsFailure,
 
   create,
+  createSuccess,
+  createFailure,
   updateProperties,
   updatePropertiesSuccess,
   updatePropertiesFailure,
