@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Divider, Form, Message, Segment, Button, Header } from 'semantic-ui-react';
+import { Divider, Form, Message, Segment, Menu, Header, Flag } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
+import LanguageSelector from '../../shared/LanguageSelector';
 
-import { CU_TYPES, MAJOR_LANGUAGES, DATE_FORMAT } from '../../../helpers/consts';
+import { CU_TYPES, MAJOR_LANGUAGES, DATE_FORMAT, LANGUAGES } from '../../../helpers/consts';
 import { MajorLangsI18nField, FilmDateField } from '../../shared/Fields';
 
 class CreateCUForm extends Component {
@@ -30,6 +31,7 @@ class CreateCUForm extends Component {
     film_date: moment(),
     submitted: false,
     errors: {},
+    original_language: '',
   };
 
   handleI18nChange = (i18n) => {
@@ -70,11 +72,15 @@ class CreateCUForm extends Component {
   };
 
   validate = () => {
-    const { errors, i18n } = this.state;
+    const { errors, i18n, original_language } = this.state;
+    if (!original_language || original_language.trim() === '') {
+      errors.original_language = true;
+      this.setState({ errors });
+      return false;
+    }
     if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }
-
     if (Object.values(errors).some(x => x)) {
       this.setState({ errors });
       return false;
@@ -82,11 +88,27 @@ class CreateCUForm extends Component {
     return true;
   };
 
+  handleChangeLanguage = (e, { value }) => {
+    const errors = this.state.errors;
+    delete errors.original_language;
+    this.setState({ original_language: value });
+  };
+
   fieldsByTypeId = () => {
-    const { type_id, i18n, errors, capture_date, film_date } = this.state;
+    const { type_id, i18n, errors, capture_date, film_date, original_language } = this.state;
     if (!type_id) {
       return;
     }
+
+    let currentLang = 'Please select';
+
+    if (original_language) {
+      currentLang = (<div>
+        <Flag name={LANGUAGES[original_language].flag} />
+        {LANGUAGES[original_language].text}
+      </div>);
+    }
+
     return (
       <div>
 
@@ -107,10 +129,29 @@ class CreateCUForm extends Component {
           </Form.Field>
           <FilmDateField
             value={film_date}
-            err={this.state.errors.film_date}
+            err={errors.film_date}
             onChange={this.handleFilmDateChange}
             required
           />
+          <Form.Field
+            required
+            error={errors.original_language}>
+            <label>Original language</label>
+            <Menu borderless size="small" compact>
+              <Menu.Item>
+                {currentLang}
+              </Menu.Item>
+              <Menu.Menu position="right">
+                <LanguageSelector
+                  item
+                  scrolling
+                  text="Change Language"
+                  exclude={[original_language]}
+                  onChange={this.handleChangeLanguage}
+                />
+              </Menu.Menu>
+            </Menu>
+          </Form.Field>
         </Form.Group>
 
         <Divider horizontal section>Translations</Divider>
