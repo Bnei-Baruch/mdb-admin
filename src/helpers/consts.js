@@ -89,6 +89,24 @@ export const COLLECTION_TYPES = {
   [CT_UNITY_DAY]: { text: CT_UNITY_DAY, value: 10 },
   [CT_VIRTUAL_LESSON]: { text: CT_VIRTUAL_LESSON, value: 16 },
 };
+// Collection types
+export const CU_TYPES = {
+  [CT_LESSON_PART]:{text: CT_LESSON_PART, value: 1},
+  [CT_LECTURE]:{text: CT_LECTURE, value: 2},
+  [CT_CHILDREN_LESSON_PART]:{text: CT_CHILDREN_LESSON_PART, value: 3},
+  [CT_WOMEN_LESSON_PART]:{text: CT_WOMEN_LESSON_PART, value: 4},
+  [CT_VIRTUAL_LESSON]:{text: CT_VIRTUAL_LESSON, value: 5},
+  [CT_FRIENDS_GATHERING]:{text: CT_FRIENDS_GATHERING, value: 6},
+  [CT_MEAL]:{text: CT_MEAL, value: 7},
+  [CT_VIDEO_PROGRAM_CHAPTER]:{text: CT_VIDEO_PROGRAM_CHAPTER, value: 8},
+  [CT_FULL_LESSON]:{text: CT_FULL_LESSON, value: 9},
+  [CT_TEXT]:{text: CT_TEXT, value: 10},
+  [CT_UNKNOWN]:{text: CT_UNKNOWN, value: 11},
+  [CT_EVENT_PART]:{text: CT_EVENT_PART, value: 12},
+  [CT_CLIP]:{text: CT_CLIP, value: 13},
+  [CT_TRAINING]:{text: CT_TRAINING, value: 14},
+  [CT_KITEI_MAKOR]:{text: CT_KITEI_MAKOR, value: 15},
+};
 
 export const COLLECTION_TYPE_OPTIONS = Array.from(Object.values(COLLECTION_TYPES));
 

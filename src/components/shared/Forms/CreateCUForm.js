@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Divider, Form, Message, Segment, Button, Header } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 
-import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES, DATE_FORMAT } from '../../../helpers/consts';
+import { CU_TYPES, MAJOR_LANGUAGES, DATE_FORMAT } from '../../../helpers/consts';
 import { MajorLangsI18nField, FilmDateField } from '../../shared/Fields';
 
 class CreateCUForm extends Component {
@@ -21,7 +21,7 @@ class CreateCUForm extends Component {
   };
 
   state = {
-    type_id: COLLECTION_TYPE_OPTIONS.CT_DAILY_LESSON,
+    type_id: CU_TYPES.CT_LESSON_PART,
     i18n: MAJOR_LANGUAGES.reduce((acc, val) => {
       acc[val] = { name: '', language: val };
       return acc;
@@ -136,7 +136,7 @@ class CreateCUForm extends Component {
               inline
               label="Content Type"
               placeholder="Content Type"
-              options={COLLECTION_TYPE_OPTIONS}
+              options={CU_TYPES}
               onChange={this.handleTypeChange}
             />
             {this.fieldsByTypeId()}
