@@ -5,7 +5,7 @@ import { Divider, Form, Message, Segment, Menu, Header, Flag } from 'semantic-ui
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import LanguageSelector from '../../shared/LanguageSelector';
 
-import { CU_TYPES, MAJOR_LANGUAGES, DATE_FORMAT, LANGUAGES } from '../../../helpers/consts';
+import { CU_TYPE_OPTIONS, MAJOR_LANGUAGES, DATE_FORMAT, LANGUAGES } from '../../../helpers/consts';
 import { MajorLangsI18nField, FilmDateField } from '../../shared/Fields';
 
 class CreateCUForm extends Component {
@@ -22,7 +22,7 @@ class CreateCUForm extends Component {
   };
 
   state = {
-    type_id: CU_TYPES.CT_LESSON_PART,
+    type_id: '',
     i18n: MAJOR_LANGUAGES.reduce((acc, val) => {
       acc[val] = { name: '', language: val };
       return acc;
@@ -181,7 +181,7 @@ class CreateCUForm extends Component {
               inline
               label="Content Type"
               placeholder="Content Type"
-              options={CU_TYPES}
+              options={CU_TYPE_OPTIONS}
               onChange={this.handleTypeChange}
             />
             {this.fieldsByTypeId()}

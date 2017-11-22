@@ -109,6 +109,7 @@ export const CU_TYPES = {
 };
 
 export const COLLECTION_TYPE_OPTIONS = Array.from(Object.values(COLLECTION_TYPES));
+export const CU_TYPE_OPTIONS = Array.from(Object.values(CU_TYPES));
 
 // Operation Types
 export const OP_CAPTURE_START = 'capture_start';
