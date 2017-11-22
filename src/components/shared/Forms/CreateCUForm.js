@@ -75,7 +75,11 @@ class CreateCUForm extends Component {
       errors.i18n = true;
     }
 
-    return errors;
+    if (Object.values(errors).some(x => x)) {
+      this.setState({ errors });
+      return false;
+    }
+    return true;
   };
 
   fieldsByTypeId = () => {
