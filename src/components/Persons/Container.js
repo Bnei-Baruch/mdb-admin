@@ -21,7 +21,7 @@ class PersonsContainer extends Component {
 
   static defaultProps = {
     wipOfCreate: false,
-    errOfCreate: null
+    errOfCreate: null,
   };
 
   componentWillReceiveProps(nextProps) {

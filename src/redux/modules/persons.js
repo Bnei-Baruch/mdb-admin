@@ -109,14 +109,15 @@ export const reducer = handleActions({
 
 /* Selectors */
 
-const getPersons              = state => state.byID;
-const getPersonById           = state => id => state.byID.get(id);
-const getWIP                  = state => key => state.wip.get(key);
-const getError                = state => key => state.errors.get(key);
-const getPersonsList          = createSelector(getPersons, persons => Array.from(persons.values()));
-
+const getPersons       = state => state.byID;
+const getPersonById    = state => id => state.byID.get(id);
+const getWIP           = state => key => state.wip.get(key);
+const getError         = state => key => state.errors.get(key);
+const getPersonsList   = createSelector(getPersons, persons => Array.from(persons.values()));
+const denormIDs        = createSelector(getPersons, byID => memoize(ids => ids.map(id => byID.get(id))));
 export const selectors = {
   getWIP,
   getError,
   getPersonsList,
+  denormIDs,
 };
