@@ -2,24 +2,21 @@ import React from 'react';
 import { Divider, Grid } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
-import Properties from '../../../shared/Properties';
+import ReadonlyProperties from '../../../shared/Properties';
 import Details from './Details';
-import PropertiesForm from './PropertiesForm';
+import PropertiesForm from './Properties';
 import I18nForm from './I18nForm';
+
+const editableProperties = ['film_date', 'original_language'];
 
 const DetailsTab = (props) => {
   const unit = props.unit;
   if (!unit) {
     return null;
   }
-  const notEditableProperties = DetailsTab.getEditableProperties(unit.properties).reduce((result, p) => {
-    delete result[p];
-    return result;
-  }, Object.assign({}, unit.properties));
-  const editableProperties    = DetailsTab.getEditableProperties(unit.properties).reduce((result, p) => {
-    result[p] = unit.properties[p];
-    return result;
-  }, {});
+
+  const readonlyProperties = Object.assign({}, unit.properties);
+  editableProperties.forEach(x => (delete readonlyProperties[x]));
 
   return (
     <Grid stackable>
@@ -27,9 +24,9 @@ const DetailsTab = (props) => {
         <Grid.Column width={8}>
           <Details unit={unit} />
           <Divider horizontal hidden />
-          <PropertiesForm properties={editableProperties} contentUnit={unit} />
+          <PropertiesForm unit={unit} />
           <Divider horizontal hidden />
-          <Properties properties={notEditableProperties} />
+          <ReadonlyProperties properties={readonlyProperties} />
         </Grid.Column>
         <Grid.Column width={8}>
           <I18nForm unit={unit} />
@@ -37,19 +34,6 @@ const DetailsTab = (props) => {
       </Grid.Row>
     </Grid>
   );
-};
-
-DetailsTab.getEditableProperties = (properties) => {
-  return Object.keys(properties).filter(p => {
-    switch (p) {
-    case 'film_date':
-    case 'duration':
-    case 'original_language':
-      return true;
-    default:
-      return false;
-    }
-  });
 };
 
 DetailsTab.propTypes = {

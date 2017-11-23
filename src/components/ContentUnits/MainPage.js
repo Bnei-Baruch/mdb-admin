@@ -10,11 +10,11 @@ import FilterTags from '../Filters/FilterTags/FilterTags';
 import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
+import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
 import ContentUnitList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
 
-import CreateCUForm from '../shared/Forms/CreateCUForm';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
@@ -52,15 +52,37 @@ class ContentUnitMainPage extends Component {
     showNewCU: false,
   };
 
-  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
-  toggleNewCU   = () => {
+  componentWillReceiveProps(nextProps) {
+    const { wipOfCreate } = this.props;
+    const nWip            = nextProps.wipOfCreate;
+    const nErr            = nextProps.errOfCreate;
+    if (wipOfCreate && !nWip && !nErr) {
+      this.toggleNewCU();
+    }
+  }
+
+  toggleFilters = () =>
+    this.setState({ showFilters: !this.state.showFilters });
+
+  toggleNewCU = () =>
     this.setState({ showNewCU: !this.state.showNewCU });
-  };
 
   render() {
     const { showFilters, showNewCU } = this.state;
 
-    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, wipOfCreate, errOfCreate, create } = this.props;
+    const {
+            pageNo,
+            total,
+            items,
+            wip,
+            err,
+            onPageChange,
+            onFiltersChange,
+            onFiltersHydrated,
+            wipOfCreate,
+            errOfCreate,
+            create
+          } = this.props;
 
     return (
       <div>
@@ -125,7 +147,7 @@ class ContentUnitMainPage extends Component {
         >
           <Modal.Header>Create New Content Unit</Modal.Header>
           <Modal.Content>
-            <CreateCUForm wip={wipOfCreate} err={errOfCreate} create={create} toggleModal={this.toggleNewCU} />
+            <CreateContentUnitForm wip={wipOfCreate} err={errOfCreate} create={create} />
           </Modal.Content>
         </Modal>
       </div>

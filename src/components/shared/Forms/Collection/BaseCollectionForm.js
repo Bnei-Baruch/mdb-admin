@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Button, Header, Segment } from 'semantic-ui-react';
 
 import {
@@ -15,11 +14,11 @@ import {
   CT_UNITY_DAY,
   CT_VIDEO_PROGRAM,
   CT_VIRTUAL_LESSONS,
-  CT_WOMEN_LESSONS,
-  DATE_FORMAT
+  CT_WOMEN_LESSONS
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
 import { formatError, isValidPattern } from '../../../../helpers/utils';
+import { cleanProperties } from '../utils';
 import {
   DateRangeField,
   FilenamePatternField,
@@ -166,30 +165,13 @@ class BaseCollectionForm extends Component {
     return null;
   }
 
-  cleanProperties() {
-    const properties = this.getPropertiesFromState();
-    return Object.entries(properties).reduce((acc, val) => {
-      const [k, v] = val;
-      if (typeof v === 'string') {
-        if (v.trim() !== '') {
-          acc[k] = v.trim();
-        }
-      } else if (moment.isMoment(v)) {
-        acc[k] = v.format(DATE_FORMAT);
-      } else if (v !== null && typeof v !== 'undefined') {
-        acc[k] = v;
-      }
-      return acc;
-    }, {});
-  }
-
   handleSubmit = (e) => {
     e.preventDefault();
     if (!this.isValid()) {
       return;
     }
 
-    const properties = this.cleanProperties();
+    const properties = cleanProperties(this.getPropertiesFromState());
     const i18n       = this.cleanI18n();
     this.doSubmit(this.state.type_id, properties, i18n);
     this.setState({ submitted: true });

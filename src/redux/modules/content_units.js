@@ -130,7 +130,11 @@ const fetchItemTags               = createAction(FETCH_ITEM_TAGS);
 const fetchItemTagsSuccess        = createAction(FETCH_ITEM_TAGS_SUCCESS);
 const fetchItemTagsFailure        = createAction(FETCH_ITEM_TAGS_FAILURE);
 
-const create                     = createAction(CREATE, (cu) => (cu));
+const create                          = createAction(CREATE, (typeID, properties, i18n) => ({
+  type_id: typeID,
+  properties,
+  i18n
+}));
 const createSuccess              = createAction(CREATE_SUCCESS);
 const createFailure              = createAction(CREATE_FAILURE);
 const updateProperties           = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
