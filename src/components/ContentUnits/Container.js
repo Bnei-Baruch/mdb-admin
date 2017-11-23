@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { actions, selectors } from '../../redux/modules/lists';
-import { selectors as units } from '../../redux/modules/content_units';
+import { selectors as units, actions as unitActions } from '../../redux/modules/content_units';
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNITS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
@@ -16,6 +16,11 @@ class ContentUnitsContainer extends Component {
     fetchList: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.createCU = this.createCU.bind(this);
+  }
 
   getPageNo = (search) => {
     let page = 0;
@@ -43,8 +48,11 @@ class ContentUnitsContainer extends Component {
     this.handlePageChange(pageNoFromLocation);
   };
 
-  askForData = (pageNo) => {
+  askForData = pageNo =>
     this.props.fetchList(NS_UNITS, pageNo);
+
+  createCU = (params) => {
+    this.props.create(params);
   };
 
   render() {
@@ -53,6 +61,7 @@ class ContentUnitsContainer extends Component {
     return (
       <MainPage
         {...rest}
+        create={this.createCU}
         onPageChange={this.handlePageChange}
         onFiltersChange={this.handleFiltersChange}
         onFiltersHydrated={this.handleFiltersHydrated}
@@ -76,6 +85,7 @@ function mapDispatch(dispatch) {
   return bindActionCreators({
     fetchList: actions.fetchList,
     setPage: actions.setPage,
+    create:unitActions.create,
   }, dispatch);
 }
 
