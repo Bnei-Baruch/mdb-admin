@@ -10,11 +10,11 @@ import FilterTags from '../Filters/FilterTags/FilterTags';
 import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
+import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
 import ContentUnitList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
 
-import CreateCCUForm from '../shared/Forms/CreateCCUForm';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
@@ -49,17 +49,40 @@ class ContentUnitMainPage extends Component {
 
   state = {
     showFilters: false,
-    showNewCCU: true,
+    showNewCU: false,
   };
 
-  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
-  toggleNewCCU  = () => this.setState({ showNewCCU: !this.state.showNewCCU });
+  componentWillReceiveProps(nextProps) {
+    const { wipOfCreate } = this.props;
+    const nWip            = nextProps.wipOfCreate;
+    const nErr            = nextProps.errOfCreate;
+    if (wipOfCreate && !nWip && !nErr) {
+      this.toggleNewCU();
+    }
+  }
+
+  toggleFilters = () =>
+    this.setState({ showFilters: !this.state.showFilters });
+
+  toggleNewCU = () =>
+    this.setState({ showNewCU: !this.state.showNewCU });
 
   render() {
-    const { showFilters, showNewCCU } = this.state;
+    const { showFilters, showNewCU } = this.state;
 
-    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated, wipOfCreate, errOfCreate, create} = this.props;
-
+    const {
+            pageNo,
+            total,
+            items,
+            wip,
+            err,
+            onPageChange,
+            onFiltersChange,
+            onFiltersHydrated,
+            wipOfCreate,
+            errOfCreate,
+            create
+          } = this.props;
 
     return (
       <div>
@@ -72,7 +95,7 @@ class ContentUnitMainPage extends Component {
               <Icon name="filter" />
               {showFilters ? 'Hide' : 'Show'} Filters
             </Menu.Item>
-            <Menu.Item onClick={this.toggleNewCCU}>
+            <Menu.Item onClick={this.toggleNewCU}>
               <Icon name="plus" />
               New Content Unit
             </Menu.Item>
@@ -119,12 +142,12 @@ class ContentUnitMainPage extends Component {
         <Modal
           closeIcon
           size="small"
-          open={false && showNewCCU}
-          onClose={this.toggleNewCCU}
+          open={showNewCU}
+          onClose={this.toggleNewCU}
         >
           <Modal.Header>Create New Content Unit</Modal.Header>
           <Modal.Content>
-            <CreateCCUForm wip={wipOfCreate} err={errOfCreate} create={create} />
+            <CreateContentUnitForm wip={wipOfCreate} err={errOfCreate} create={create} />
           </Modal.Content>
         </Modal>
       </div>

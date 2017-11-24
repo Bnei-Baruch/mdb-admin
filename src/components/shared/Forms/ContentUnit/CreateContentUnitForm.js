@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Divider, Form, Message } from 'semantic-ui-react';
 
-import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES } from '../../../../helpers/consts';
-import { MajorLangsI18nField } from '../../../shared/Fields';
-import BaseCollectionForm from './BaseCollectionForm';
+import { CONTENT_UNIT_TYPE_OPTIONS, MAJOR_LANGUAGES } from '../../../../helpers/consts';
+import { MajorLangsI18nField } from '../../Fields/index';
+import BaseContentUnitForm from './BaseContentUnitForm';
 
-class CreateCollectionForm extends BaseCollectionForm {
+class CreateContentUnitForm extends BaseContentUnitForm {
   static propTypes = {
     create: PropTypes.func.isRequired,
   };
@@ -24,16 +24,8 @@ class CreateCollectionForm extends BaseCollectionForm {
       ...state,
       type_id: null,
       i18n,
-      pattern: '',
-      active: true,
-      start_date: moment(),
-      end_date: moment().add(1, 'days'),
       film_date: moment(),
-      country: '',
-      city: '',
-      full_address: '',
-      default_language: '',
-      holiday_tag: '',
+      original_language: '',
     };
   }
 
@@ -81,7 +73,7 @@ class CreateCollectionForm extends BaseCollectionForm {
       inline
       label="Content Type"
       placeholder="Content Type"
-      options={COLLECTION_TYPE_OPTIONS}
+      options={CONTENT_UNIT_TYPE_OPTIONS}
       onChange={this.handleTypeChange}
     />
   );
@@ -118,6 +110,7 @@ class CreateCollectionForm extends BaseCollectionForm {
       </Form>
     );
   }
+
 }
 
-export default CreateCollectionForm;
+export default CreateContentUnitForm;

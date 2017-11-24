@@ -15,6 +15,12 @@ const FETCH_ITEM_FILES_FAILURE       = 'ContentUnits/FETCH_ITEM_FILES_FAILURE';
 const FETCH_ITEM_COLLECTIONS         = 'ContentUnits/FETCH_ITEM_COLLECTIONS';
 const FETCH_ITEM_COLLECTIONS_SUCCESS = 'ContentUnits/FETCH_ITEM_COLLECTIONS_SUCCESS';
 const FETCH_ITEM_COLLECTIONS_FAILURE = 'ContentUnits/FETCH_ITEM_COLLECTIONS_FAILURE';
+const FETCH_ITEM_DERIVATIVES         = 'ContentUnits/FETCH_ITEM_DERIVATIVES';
+const FETCH_ITEM_DERIVATIVES_SUCCESS = 'ContentUnits/FETCH_ITEM_DERIVATIVES_SUCCESS';
+const FETCH_ITEM_DERIVATIVES_FAILURE = 'ContentUnits/FETCH_ITEM_DERIVATIVES_FAILURE';
+const FETCH_ITEM_ORIGINS             = 'ContentUnits/FETCH_ITEM_ORIGINS';
+const FETCH_ITEM_ORIGINS_SUCCESS     = 'ContentUnits/FETCH_ITEM_ORIGINS_SUCCESS';
+const FETCH_ITEM_ORIGINS_FAILURE     = 'ContentUnits/FETCH_ITEM_ORIGINS_FAILURE';
 const FETCH_ITEM_SOURCES             = 'ContentUnits/FETCH_ITEM_SOURCES';
 const FETCH_ITEM_SOURCES_SUCCESS     = 'ContentUnits/FETCH_ITEM_SOURCES_SUCCESS';
 const FETCH_ITEM_SOURCES_FAILURE     = 'ContentUnits/FETCH_ITEM_SOURCES_FAILURE';
@@ -25,7 +31,13 @@ const FETCH_ITEM_PERSONS             = 'ContentUnits/FETCH_ITEM_PERSONS';
 const FETCH_ITEM_PERSONS_SUCCESS     = 'ContentUnits/FETCH_ITEM_PERSONS_SUCCESS';
 const FETCH_ITEM_PERSONS_FAILURE     = 'ContentUnits/FETCH_ITEM_PERSONS_FAILURE';
 
+const CREATE                        = 'ContentUnits/CREATE';
+const CREATE_SUCCESS                = 'ContentUnits/CREATE_SUCCESS';
+const CREATE_FAILURE                = 'ContentUnits/CREATE_FAILURE';
 const CHANGE_SECURITY_LEVEL         = 'ContentUnits/CHANGE_SECURITY_LEVEL';
+const UPDATE_PROPERTIES             = 'ContentUnits/UPDATE_PROPERTIES';
+const UPDATE_PROPERTIES_SUCCESS     = 'ContentUnits/UPDATE_PROPERTIES_SUCCESS';
+const UPDATE_PROPERTIES_FAILURE     = 'ContentUnits/UPDATE_PROPERTIES_FAILURE';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'ContentUnits/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'ContentUnits/CHANGE_SECURITY_LEVEL_FAILURE';
 const UPDATE_I18N                   = 'ContentUnits/UPDATE_I18N';
@@ -56,6 +68,12 @@ export const types = {
   FETCH_ITEM_COLLECTIONS,
   FETCH_ITEM_COLLECTIONS_SUCCESS,
   FETCH_ITEM_COLLECTIONS_FAILURE,
+  FETCH_ITEM_DERIVATIVES,
+  FETCH_ITEM_DERIVATIVES_SUCCESS,
+  FETCH_ITEM_DERIVATIVES_FAILURE,
+  FETCH_ITEM_ORIGINS,
+  FETCH_ITEM_ORIGINS_SUCCESS,
+  FETCH_ITEM_ORIGINS_FAILURE,
   FETCH_ITEM_SOURCES,
   FETCH_ITEM_SOURCES_SUCCESS,
   FETCH_ITEM_SOURCES_FAILURE,
@@ -66,12 +84,18 @@ export const types = {
   FETCH_ITEM_PERSONS_SUCCESS,
   FETCH_ITEM_PERSONS_FAILURE,
 
+  CREATE,
+  CREATE_SUCCESS,
+  CREATE_FAILURE,
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
   CHANGE_SECURITY_LEVEL_FAILURE,
   UPDATE_I18N,
   UPDATE_I18N_SUCCESS,
   UPDATE_I18N_FAILURE,
+  UPDATE_PROPERTIES,
+  UPDATE_PROPERTIES_SUCCESS,
+  UPDATE_PROPERTIES_FAILURE,
   ADD_SOURCE,
   ADD_SOURCE_SUCCESS,
   ADD_SOURCE_FAILURE,
@@ -99,6 +123,12 @@ const fetchItemFilesFailure       = createAction(FETCH_ITEM_FILES_FAILURE);
 const fetchItemCollections        = createAction(FETCH_ITEM_COLLECTIONS);
 const fetchItemCollectionsSuccess = createAction(FETCH_ITEM_COLLECTIONS_SUCCESS);
 const fetchItemCollectionsFailure = createAction(FETCH_ITEM_COLLECTIONS_FAILURE);
+const fetchItemDerivatives        = createAction(FETCH_ITEM_DERIVATIVES);
+const fetchItemDerivativesSuccess = createAction(FETCH_ITEM_DERIVATIVES_SUCCESS);
+const fetchItemDerivativesFailure = createAction(FETCH_ITEM_DERIVATIVES_FAILURE);
+const fetchItemOrigins            = createAction(FETCH_ITEM_ORIGINS);
+const fetchItemOriginsSuccess     = createAction(FETCH_ITEM_ORIGINS_SUCCESS);
+const fetchItemOriginsFailure     = createAction(FETCH_ITEM_ORIGINS_FAILURE);
 const fetchItemSources            = createAction(FETCH_ITEM_SOURCES);
 const fetchItemSourcesSuccess     = createAction(FETCH_ITEM_SOURCES_SUCCESS);
 const fetchItemSourcesFailure     = createAction(FETCH_ITEM_SOURCES_FAILURE);
@@ -109,6 +139,16 @@ const fetchItemPersons            = createAction(FETCH_ITEM_PERSONS);
 const fetchItemPersonsSuccess     = createAction(FETCH_ITEM_PERSONS_SUCCESS);
 const fetchItemPersonsFailure     = createAction(FETCH_ITEM_PERSONS_FAILURE);
 
+const create                          = createAction(CREATE, (typeID, properties, i18n) => ({
+  type_id: typeID,
+  properties,
+  i18n
+}));
+const createSuccess              = createAction(CREATE_SUCCESS);
+const createFailure              = createAction(CREATE_FAILURE);
+const updateProperties           = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
+const updatePropertiesSuccess    = createAction(UPDATE_PROPERTIES_SUCCESS);
+const updatePropertiesFailure    = createAction(UPDATE_PROPERTIES_FAILURE);
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
@@ -140,6 +180,12 @@ export const actions = {
   fetchItemCollections,
   fetchItemCollectionsSuccess,
   fetchItemCollectionsFailure,
+  fetchItemDerivatives,
+  fetchItemDerivativesSuccess,
+  fetchItemDerivativesFailure,
+  fetchItemOrigins,
+  fetchItemOriginsSuccess,
+  fetchItemOriginsFailure,
   fetchItemSources,
   fetchItemSourcesSuccess,
   fetchItemSourcesFailure,
@@ -150,6 +196,12 @@ export const actions = {
   fetchItemPersonsSuccess,
   fetchItemPersonsFailure,
 
+  create,
+  createSuccess,
+  createFailure,
+  updateProperties,
+  updatePropertiesSuccess,
+  updatePropertiesFailure,
   updateI18n,
   updateI18nSuccess,
   updateI18nFailure,
@@ -184,6 +236,12 @@ const keys = new Map([
   [FETCH_ITEM_COLLECTIONS, 'fetchItemCollections'],
   [FETCH_ITEM_COLLECTIONS_SUCCESS, 'fetchItemCollections'],
   [FETCH_ITEM_COLLECTIONS_FAILURE, 'fetchItemCollections'],
+  [FETCH_ITEM_DERIVATIVES, 'fetchItemDerivatives'],
+  [FETCH_ITEM_DERIVATIVES_SUCCESS, 'fetchItemDerivatives'],
+  [FETCH_ITEM_DERIVATIVES_FAILURE, 'fetchItemDerivatives'],
+  [FETCH_ITEM_ORIGINS, 'fetchItemOrigins'],
+  [FETCH_ITEM_ORIGINS_SUCCESS, 'fetchItemOrigins'],
+  [FETCH_ITEM_ORIGINS_FAILURE, 'fetchItemOrigins'],
   [FETCH_ITEM_SOURCES, 'fetchItemSources'],
   [FETCH_ITEM_SOURCES_SUCCESS, 'fetchItemSources'],
   [FETCH_ITEM_SOURCES_FAILURE, 'fetchItemSources'],
@@ -194,6 +252,12 @@ const keys = new Map([
   [FETCH_ITEM_PERSONS_SUCCESS, 'fetchItemPersons'],
   [FETCH_ITEM_PERSONS_FAILURE, 'fetchItemPersons'],
 
+  [CREATE, 'create'],
+  [CREATE_SUCCESS, 'create'],
+  [CREATE_FAILURE, 'create'],
+  [UPDATE_PROPERTIES, 'updateProperties'],
+  [UPDATE_PROPERTIES_SUCCESS, 'updateProperties'],
+  [UPDATE_PROPERTIES_FAILURE, 'updateProperties'],
   [UPDATE_I18N, 'updateI18n'],
   [UPDATE_I18N_SUCCESS, 'updateI18n'],
   [UPDATE_I18N_FAILURE, 'updateI18n'],
@@ -240,6 +304,8 @@ const onSuccess = (state, action) => {
   let byID;
   switch (action.type) {
   case FETCH_ITEM_SUCCESS:
+  case CREATE:
+  case UPDATE_PROPERTIES_SUCCESS:
   case UPDATE_I18N_SUCCESS:
   case CHANGE_SECURITY_LEVEL_SUCCESS:
     byID = merge(state.byID, action.payload);
@@ -254,6 +320,18 @@ const onSuccess = (state, action) => {
     byID = merge(state.byID, {
       id: action.payload.id,
       collections: action.payload.data.map(x => ({ name: x.name, collection_id: x.collection.id })),
+    });
+    break;
+  case FETCH_ITEM_DERIVATIVES_SUCCESS:
+    byID = merge(state.byID, {
+      id: action.payload.id,
+      derivatives: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.derived.id })),
+    });
+    break;
+  case FETCH_ITEM_ORIGINS_SUCCESS:
+    byID = merge(state.byID, {
+      id: action.payload.id,
+      origins: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.source.id })),
     });
     break;
   case FETCH_ITEM_SOURCES_SUCCESS:
@@ -317,6 +395,12 @@ export const reducer = handleActions({
   [FETCH_ITEM_COLLECTIONS]: onRequest,
   [FETCH_ITEM_COLLECTIONS_SUCCESS]: onSuccess,
   [FETCH_ITEM_COLLECTIONS_FAILURE]: onFailure,
+  [FETCH_ITEM_DERIVATIVES]: onRequest,
+  [FETCH_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
+  [FETCH_ITEM_DERIVATIVES_FAILURE]: onFailure,
+  [FETCH_ITEM_ORIGINS]: onRequest,
+  [FETCH_ITEM_ORIGINS_SUCCESS]: onSuccess,
+  [FETCH_ITEM_ORIGINS_FAILURE]: onFailure,
   [FETCH_ITEM_SOURCES]: onRequest,
   [FETCH_ITEM_SOURCES_SUCCESS]: onSuccess,
   [FETCH_ITEM_SOURCES_FAILURE]: onFailure,
@@ -327,6 +411,12 @@ export const reducer = handleActions({
   [FETCH_ITEM_PERSONS_SUCCESS]: onSuccess,
   [FETCH_ITEM_PERSONS_FAILURE]: onFailure,
 
+  [CREATE]: onRequest,
+  [CREATE_SUCCESS]: onSuccess,
+  [CREATE_FAILURE]: onFailure,
+  [UPDATE_PROPERTIES]: onRequest,
+  [UPDATE_PROPERTIES_SUCCESS]: onSuccess,
+  [UPDATE_PROPERTIES_FAILURE]: onFailure,
   [UPDATE_I18N]: onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
   [UPDATE_I18N_FAILURE]: onFailure,
@@ -363,10 +453,15 @@ const denormIDs = createSelector(getUnits, byID =>
 const denormCCUs = createSelector(getUnits, byID =>
   memoize(ccus => ccus.map(x => ({ ...x, content_unit: byID.get(x.content_unit_id) }))));
 
+// CUD = ContentUnitDerivation
+const denormCUDs = createSelector(getUnits, byID =>
+  memoize(cuds => cuds.map(x => ({ ...x, content_unit: byID.get(x.content_unit_id) }))));
+
 export const selectors = {
   getContentUnitById,
   getWIP,
   getError,
   denormIDs,
   denormCCUs,
+  denormCUDs,
 };

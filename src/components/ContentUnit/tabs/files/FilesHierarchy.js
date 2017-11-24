@@ -276,7 +276,7 @@ class FilesHierarchy extends Component {
                 {
                   currentFile ?
                     <div>
-                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} />
+                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false}/>
                       <br />
                       <Button
                         content="Download"

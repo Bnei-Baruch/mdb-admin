@@ -219,6 +219,18 @@ const getPathByID = createSelector(getTags, byID =>
     return path;
   }));
 
+const getTagByUID = state => (uid) => {
+  const it = state.byID.values();
+  let t    = it.next();
+  while (!t.done) {
+    if (t.value.uid === uid) {
+      return t.value;
+    }
+    t = it.next();
+  }
+  return null;
+};
+
 export const selectors = {
   getTags,
   getTagById,
@@ -227,4 +239,5 @@ export const selectors = {
   getError,
   denormIDs,
   getPathByID,
+  getTagByUID,
 };

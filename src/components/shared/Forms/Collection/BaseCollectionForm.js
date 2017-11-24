@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Button, Header, Segment } from 'semantic-ui-react';
 
 import {
@@ -15,18 +14,19 @@ import {
   CT_UNITY_DAY,
   CT_VIDEO_PROGRAM,
   CT_VIRTUAL_LESSONS,
-  CT_WOMEN_LESSONS,
-  DATE_FORMAT
+  CT_WOMEN_LESSONS
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
 import { formatError, isValidPattern } from '../../../../helpers/utils';
+import { cleanProperties } from '../utils';
 import {
   DateRangeField,
   FilenamePatternField,
   FilmDateField,
+  HolidayField,
   LanguageField,
   LocationField,
-  ToggleField
+  ToggleField,
 } from '../../Fields';
 import './collections.css';
 
@@ -75,6 +75,10 @@ class BaseCollectionForm extends Component {
       data.full_address = state.full_address;
       break;
     case COLLECTION_TYPES[CT_HOLIDAY].value:
+      data.holiday_tag = state.holiday_tag;
+      data.start_date  = state.start_date;
+      data.end_date    = state.end_date;
+      break;
     case COLLECTION_TYPES[CT_PICNIC].value:
     case COLLECTION_TYPES[CT_UNITY_DAY].value:
       data.pattern    = state.pattern;
@@ -150,26 +154,15 @@ class BaseCollectionForm extends Component {
     this.setState({ country, city, full_address: fullAddress, errors });
   };
 
+  handleHolidayChange = (e, data) => {
+    const errors = this.state.errors;
+    delete errors.holiday_tag;
+    this.setState({ holiday_tag: data.value, errors });
+  };
+
   // eslint-disable-next-line class-methods-use-this
   cleanI18n() {
     return null;
-  }
-
-  cleanProperties() {
-    const properties = this.getPropertiesFromState();
-    return Object.entries(properties).reduce((acc, val) => {
-      const [k, v] = val;
-      if (typeof v === 'string') {
-        if (v.trim() !== '') {
-          acc[k] = v.trim();
-        }
-      } else if (moment.isMoment(v)) {
-        acc[k] = v.format(DATE_FORMAT);
-      } else if (v !== null && typeof v !== 'undefined') {
-        acc[k] = v;
-      }
-      return acc;
-    }, {});
   }
 
   handleSubmit = (e) => {
@@ -178,7 +171,7 @@ class BaseCollectionForm extends Component {
       return;
     }
 
-    const properties = this.cleanProperties();
+    const properties = cleanProperties(this.getPropertiesFromState());
     const i18n       = this.cleanI18n();
     this.doSubmit(this.state.type_id, properties, i18n);
     this.setState({ submitted: true });
@@ -290,6 +283,16 @@ class BaseCollectionForm extends Component {
     );
   };
 
+  renderHolidayField = () => (
+    <HolidayField
+      value={this.state.holiday_tag}
+      err={this.state.errors.holiday_tag}
+      onChange={this.handleHolidayChange}
+      required
+      width={6}
+    />
+  );
+
   renderDailyLesson = () =>
     (this.renderFilmDateField());
 
@@ -310,6 +313,13 @@ class BaseCollectionForm extends Component {
     </div>
   );
 
+  renderHoliday = () => (
+    <div>
+      {this.renderHolidayField()}
+      {this.renderDateRangeFields()}
+    </div>
+  );
+
   renderPicnic = () => (
     <div>
       {this.renderPatternField()}
@@ -326,6 +336,7 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_CONGRESS].value:
       return this.renderCongress();
     case COLLECTION_TYPES[CT_HOLIDAY].value:
+      return this.renderHoliday();
     case COLLECTION_TYPES[CT_PICNIC].value:
     case COLLECTION_TYPES[CT_UNITY_DAY].value:
       return this.renderPicnic();

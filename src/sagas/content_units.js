@@ -37,6 +37,28 @@ function* fetchItemCollections(action) {
   }
 }
 
+function* fetchItemDerivatives(action) {
+  try {
+    const id   = action.payload;
+    const resp = yield call(api.get, `/rest/content_units/${id}/derivatives/`);
+    yield put(actions.receiveItems(resp.data.map(x => x.derived)));
+    yield put(actions.fetchItemDerivativesSuccess({ id, data: resp.data }));
+  } catch (err) {
+    yield put(actions.fetchItemDerivativesFailure(err));
+  }
+}
+
+function* fetchItemOrigins(action) {
+  try {
+    const id   = action.payload;
+    const resp = yield call(api.get, `/rest/content_units/${id}/origins/`);
+    yield put(actions.receiveItems(resp.data.map(x => x.source)));
+    yield put(actions.fetchItemOriginsSuccess({ id, data: resp.data }));
+  } catch (err) {
+    yield put(actions.fetchItemOriginsFailure(err));
+  }
+}
+
 function* fetchItemSources(action) {
   try {
     const id   = action.payload;
@@ -63,6 +85,25 @@ function* fetchItemPersons(action) {
     yield put(actions.fetchItemPersonsSuccess({ id, data: resp.data }));
   } catch (err) {
     yield put(actions.fetchItemPersonsFailure(err));
+  }
+}
+
+function* create(action) {
+  try {
+    const resp = yield call(api.post, '/rest/content_units/', action.payload);
+    yield put(actions.createSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.createFailure(err));
+  }
+}
+
+function* updateProperties(action) {
+  try {
+    const { id, properties } = action.payload;
+    const resp               = yield call(api.put, `/rest/content_units/${id}/`, { properties });
+    yield put(actions.updatePropertiesSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.updatePropertiesFailure(err));
   }
 }
 
@@ -138,6 +179,14 @@ function* watchFetchItemCollections() {
   yield takeEvery(types.FETCH_ITEM_COLLECTIONS, fetchItemCollections);
 }
 
+function* watchFetchItemDerivatives() {
+  yield takeEvery(types.FETCH_ITEM_DERIVATIVES, fetchItemDerivatives);
+}
+
+function* watchFetchItemOrigins() {
+  yield takeEvery(types.FETCH_ITEM_ORIGINS, fetchItemOrigins);
+}
+
 function* watchFetchItemSources() {
   yield takeEvery(types.FETCH_ITEM_SOURCES, fetchItemSources);
 }
@@ -147,6 +196,14 @@ function* watchFetchItemTags() {
 }
 function* watchFetchItemPersons() {
   yield takeEvery(types.FETCH_ITEM_PERSONS, fetchItemPersons);
+}
+
+function* watchCreate() {
+  yield takeEvery(types.CREATE, create);
+}
+
+function* watchUpdateProperties() {
+  yield takeEvery(types.UPDATE_PROPERTIES, updateProperties);
 }
 
 function* watchChangeSecurityLevel() {
@@ -177,9 +234,13 @@ export const sagas = [
   watchFetchItem,
   watchFetchItemFiles,
   watchFetchItemCollections,
+  watchFetchItemDerivatives,
+  watchFetchItemOrigins,
   watchFetchItemSources,
   watchFetchItemTags,
   watchFetchItemPersons,
+  watchCreate,
+  watchUpdateProperties,
   watchChangeSecurityLevel,
   watchUpdateI18n,
   watchAddSource,

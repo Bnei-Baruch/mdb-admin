@@ -2,9 +2,23 @@ import React from 'react';
 import { Divider, Grid } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
+import ReadonlyProperties from '../../../shared/Properties';
 import Details from './Details';
-import Properties from './Properties';
+import PropertiesForm from './Properties';
 import I18nForm from './I18nForm';
+
+const editableProperties = [
+  'pattern',
+  'active',
+  'start_date',
+  'end_date',
+  'film_date',
+  'default_language',
+  'country',
+  'city',
+  'full_address',
+  'holiday_tag'
+];
 
 const DetailsTab = (props) => {
   const collection = props.collection;
@@ -12,13 +26,18 @@ const DetailsTab = (props) => {
     return null;
   }
 
+  const readonlyProperties = Object.assign({}, collection.properties);
+  editableProperties.forEach(x => (delete readonlyProperties[x]));
+
   return (
     <Grid stackable>
       <Grid.Row>
         <Grid.Column width={8}>
           <Details collection={collection} />
           <Divider horizontal hidden />
-          <Properties collection={collection} />
+          <PropertiesForm collection={collection} />
+          <Divider horizontal hidden />
+          <ReadonlyProperties properties={readonlyProperties} />
         </Grid.Column>
         <Grid.Column width={8}>
           <I18nForm collection={collection} />

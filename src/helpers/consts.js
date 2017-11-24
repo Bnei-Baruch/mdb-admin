@@ -33,6 +33,7 @@ export const CT_MEALS              = 'MEALS';
 export const CT_HOLIDAY            = 'HOLIDAY';
 export const CT_PICNIC             = 'PICNIC';
 export const CT_UNITY_DAY          = 'UNITY_DAY';
+export const CT_CLIPS              = 'CLIPS';
 
 // Content Unit Types
 export const CT_LESSON_PART           = 'LESSON_PART';
@@ -80,6 +81,7 @@ export const CONTENT_TYPE_BY_ID = {
   32: CT_VIRTUAL_LESSONS,
   33: CT_CHILDREN_LESSONS,
   34: CT_WOMEN_LESSONS,
+  35: CT_CLIPS,
 };
 
 // Collection types
@@ -97,9 +99,30 @@ export const COLLECTION_TYPES = {
   [CT_VIRTUAL_LESSONS]: { text: CT_VIRTUAL_LESSONS, value: 32 },
   [CT_CHILDREN_LESSONS]: { text: CT_CHILDREN_LESSONS, value: 33 },
   [CT_WOMEN_LESSONS]: { text: CT_WOMEN_LESSONS, value: 34 },
+  [CT_CLIPS]: { text: CT_CLIPS, value: 35 },
 };
 
-export const COLLECTION_TYPE_OPTIONS = Array.from(Object.values(COLLECTION_TYPES));
+// Content Unit types
+export const CONTENT_UNIT_TYPES = {
+  [CT_LESSON_PART]: { text: CT_LESSON_PART, value: 11 },
+  [CT_LECTURE]: { text: CT_LECTURE, value: 12 },
+  [CT_CHILDREN_LESSON]: { text: CT_CHILDREN_LESSON, value: 13 },
+  [CT_WOMEN_LESSON]: { text: CT_WOMEN_LESSON, value: 14 },
+  [CT_VIRTUAL_LESSON]: { text: CT_VIRTUAL_LESSON, value: 16 },
+  [CT_FRIENDS_GATHERING]: { text: CT_FRIENDS_GATHERING, value: 18 },
+  [CT_MEAL]: { text: CT_MEAL, value: 19 },
+  [CT_VIDEO_PROGRAM_CHAPTER]: { text: CT_VIDEO_PROGRAM_CHAPTER, value: 20 },
+  [CT_FULL_LESSON]: { text: CT_FULL_LESSON, value: 21 },
+  [CT_TEXT]: { text: CT_TEXT, value: 22 },
+  [CT_UNKNOWN]: { text: CT_UNKNOWN, value: 27 },
+  [CT_EVENT_PART]: { text: CT_EVENT_PART, value: 28 },
+  [CT_CLIP]: { text: CT_CLIP, value: 29 },
+  [CT_TRAINING]: { text: CT_TRAINING, value: 30 },
+  [CT_KITEI_MAKOR]: { text: CT_KITEI_MAKOR, value: 31 },
+};
+
+export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
+export const CONTENT_UNIT_TYPE_OPTIONS = Array.from(Object.values(CONTENT_UNIT_TYPES));
 
 // Operation Types
 export const OP_CAPTURE_START = 'capture_start';

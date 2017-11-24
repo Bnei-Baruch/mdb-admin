@@ -28,7 +28,8 @@ class FilesTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.unit && !this.props.unit && nextProps.unit.id !== this.props.unit.id) {
+    if (((nextProps.unit && !this.props.unit) ||
+        (nextProps.unit && this.props.unit && nextProps.unit.id !== this.props.unit.id))) {
       this.askForData(nextProps.unit.id);
     }
   }

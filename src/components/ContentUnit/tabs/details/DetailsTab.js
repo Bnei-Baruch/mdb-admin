@@ -2,9 +2,12 @@ import React from 'react';
 import { Divider, Grid } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
-import Properties from '../../../shared/Properties';
+import ReadonlyProperties from '../../../shared/Properties';
 import Details from './Details';
+import PropertiesForm from './Properties';
 import I18nForm from './I18nForm';
+
+const editableProperties = ['film_date', 'original_language'];
 
 const DetailsTab = (props) => {
   const unit = props.unit;
@@ -12,13 +15,18 @@ const DetailsTab = (props) => {
     return null;
   }
 
+  const readonlyProperties = Object.assign({}, unit.properties);
+  editableProperties.forEach(x => (delete readonlyProperties[x]));
+
   return (
     <Grid stackable>
       <Grid.Row>
         <Grid.Column width={8}>
           <Details unit={unit} />
           <Divider horizontal hidden />
-          <Properties properties={unit.properties} />
+          <PropertiesForm unit={unit} />
+          <Divider horizontal hidden />
+          <ReadonlyProperties properties={readonlyProperties} />
         </Grid.Column>
         <Grid.Column width={8}>
           <I18nForm unit={unit} />
@@ -37,4 +45,3 @@ DetailsTab.defaultProps = {
 };
 
 export default DetailsTab;
-

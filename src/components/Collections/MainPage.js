@@ -34,6 +34,7 @@ class CollectionsMainPage extends Component {
     onFiltersChange: PropTypes.func.isRequired,
     onFiltersHydrated: PropTypes.func.isRequired,
     create: PropTypes.func.isRequired,
+    getTagByUID: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -82,6 +83,7 @@ class CollectionsMainPage extends Component {
         onFiltersChange,
         onFiltersHydrated,
         create,
+        getTagByUID,
       } = this.props;
 
     return (
@@ -145,7 +147,7 @@ class CollectionsMainPage extends Component {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <CollectionsList items={items} />
+              <CollectionsList items={items} getTagByUID={getTagByUID} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
