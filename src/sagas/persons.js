@@ -12,12 +12,23 @@ function* fetchItem(action) {
     yield put(actions.fetchItemFailure(err));
   }
 }
+
 function* create(action) {
   try {
     const resp = yield call(api.post, '/rest/persons/', action.payload);
     yield put(actions.createSuccess(resp.data, action.payload.author));
   } catch (err) {
     yield put(actions.createFailure(err));
+  }
+}
+
+function* updateI18n(action) {
+  try {
+    const { id, i18n } = action.payload;
+    const resp         = yield call(api.put, `/rest/persons/${id}/i18n/`, i18n);
+    yield put(actions.updateI18nSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.updateI18nFailure(err));
   }
 }
 
@@ -29,7 +40,12 @@ function* watchCreate() {
   yield takeEvery(types.CREATE, create);
 }
 
+function* watchUpdateI18n() {
+  yield takeEvery(types.UPDATE_I18N, updateI18n);
+}
+
 export const sagas = [
   watchFetchItem,
   watchCreate,
+  watchUpdateI18n,
 ];
