@@ -2,39 +2,64 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { setMap } from '../utils';
-import { types as sources } from './sources';
+import { setMap,merge } from '../utils';
 
 /* Types */
 
-const FETCH_ALL         = 'Persons/FETCH_ALL';
-const FETCH_ALL_SUCCESS = 'Persons/FETCH_ALL_SUCCESS';
-const FETCH_ALL_FAILURE = 'Persons/FETCH_ALL_FAILURE';
+const FETCH_ITEM         = 'Persons/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS = 'Persons/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE = 'Persons/FETCH_ITEM_FAILURE';
+const CREATE            = 'Persons/CREATE';
+const CREATE_SUCCESS    = 'Persons/CREATE_SUCCESS';
+const CREATE_FAILURE    = 'Persons/CREATE_FAILURE';
+const RECEIVE_ITEMS = 'ContentUnits/RECEIVE_ITEMS';
 
 export const types = {
-  FETCH_ALL,
-  FETCH_ALL_SUCCESS,
-  FETCH_ALL_FAILURE,
+  FETCH_ITEM,
+  FETCH_ITEM_SUCCESS,
+  FETCH_ITEM_FAILURE,
+  CREATE,
+  CREATE_SUCCESS,
+  CREATE_FAILURE,
+
+  RECEIVE_ITEMS,
 };
 
 /* Actions */
 
-const fetchAll        = createAction(FETCH_ALL);
-const fetchAllSuccess = createAction(FETCH_ALL_SUCCESS);
-const fetchAllFailure = createAction(FETCH_ALL_FAILURE);
+const fetchItem        = createAction(FETCH_ITEM);
+const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
+const create          = createAction(CREATE, (typeID, properties, i18n) => ({
+  type_id: typeID,
+  properties,
+  i18n
+}));
+const createSuccess   = createAction(CREATE_SUCCESS);
+const createFailure   = createAction(CREATE_FAILURE);
+
+const receiveItems = createAction(RECEIVE_ITEMS);
 
 export const actions = {
-  fetchAll,
-  fetchAllSuccess,
-  fetchAllFailure,
+  fetchItem,
+  fetchItemSuccess,
+  fetchItemFailure,
+  create,
+  createSuccess,
+  createFailure,
+
+  receiveItems,
 };
 
 /* Reducer */
 
 const keys = new Map([
-  [FETCH_ALL, 'fetchPersons'],
-  [FETCH_ALL_SUCCESS, 'fetchPersons'],
-  [FETCH_ALL_FAILURE, 'fetchPersons'],
+  [FETCH_ITEM, 'fetchItem'],
+  [FETCH_ITEM_SUCCESS, 'fetchItem'],
+  [FETCH_ITEM_FAILURE, 'fetchItem'],
+  [CREATE, 'create'],
+  [CREATE_SUCCESS, 'create'],
+  [CREATE_FAILURE, 'create'],
 ]);
 
 const initialState = {
@@ -62,15 +87,9 @@ const onSuccess = (state, action) => {
 
   let byID;
   switch (action.type) {
-  case FETCH_ALL_SUCCESS:
-    byID = new Map(action.payload.data.map(x =>
-      [
-        x.id,
-        {
-          ...x,
-          sources: x.sources.map(y => y.id)
-        }
-      ]));
+  case CREATE:
+  case FETCH_ITEM_SUCCESS:
+    byID = merge(state.byID, action.payload);
     break;
   default:
     byID = state.byID;
@@ -84,40 +103,26 @@ const onSuccess = (state, action) => {
   };
 };
 
-const onNewSource = (state, action) => {
-  const { source, person } = action.payload;
-  if (!person) {
-    return state;
-  }
-
-  const a = { ...state.byID.get(person) };
-  a.sources.push(source.id);
-
-  return {
-    ...state,
-    byID: setMap(state.byID, person, a)
-  };
-};
-
 export const reducer = handleActions({
-  [FETCH_ALL]: onRequest,
-  [FETCH_ALL_SUCCESS]: onSuccess,
-  [FETCH_ALL_FAILURE]: onFailure,
+  [FETCH_ITEM]: onRequest,
+  [FETCH_ITEM_SUCCESS]: onSuccess,
+  [FETCH_ITEM_FAILURE]: onFailure,
 
-  [sources.CREATE_SUCCESS]: onNewSource,
+  [CREATE]: onRequest,
+  [CREATE_SUCCESS]: onSuccess,
+  [CREATE_FAILURE]: onFailure,
 }, initialState);
 
 /* Selectors */
 
 const getPersons       = state => state.byID;
 const getPersonById    = state => id => state.byID.get(id);
-const getWIP           = state => key => state.wip.get(key);
-const getError         = state => key => state.errors.get(key);
-const getPersonsList   = createSelector(getPersons, persons => Array.from(persons.values()));
+const getWIP           = (state, key) => state.wip.get(key);
+const getError         = (state, key) => state.errors.get(key);
 const denormIDs        = createSelector(getPersons, byID => memoize(ids => ids.map(id => byID.get(id))));
 export const selectors = {
   getWIP,
   getError,
-  getPersonsList,
   denormIDs,
+  getPersonById,
 };

@@ -1,22 +1,35 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 
 import { actions, types } from '../redux/modules/persons';
-import { types as system } from '../redux/modules/system';
 import api from '../helpers/apiClient';
 
-function* fetchAll(action) {
+function* fetchItem(action) {
   try {
-    const resp = yield call(api.get, '/rest/persons/');
-    yield put(actions.fetchAllSuccess(resp.data));
+    const id   = action.payload;
+    const resp = yield call(api.get, `/rest/persons/${id}/`);
+    yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
-    yield put(actions.fetchAllFailure(err));
+    yield put(actions.fetchItemFailure(err));
+  }
+}
+function* create(action) {
+  try {
+    const resp = yield call(api.post, '/rest/persons/', action.payload);
+    yield put(actions.createSuccess(resp.data, action.payload.author));
+  } catch (err) {
+    yield put(actions.createFailure(err));
   }
 }
 
-function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, system.INIT], fetchAll);
+function* watchFetchItem() {
+  yield takeEvery(types.FETCH_ITEM, fetchItem);
+}
+
+function* watchCreate() {
+  yield takeEvery(types.CREATE, create);
 }
 
 export const sagas = [
-  watchLastFetchAll,
+  watchFetchItem,
+  watchCreate,
 ];
