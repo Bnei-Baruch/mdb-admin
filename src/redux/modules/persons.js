@@ -2,17 +2,17 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { setMap,merge } from '../utils';
+import { setMap, merge, bulkMerge } from '../utils';
 
 /* Types */
 
 const FETCH_ITEM         = 'Persons/FETCH_ITEM';
 const FETCH_ITEM_SUCCESS = 'Persons/FETCH_ITEM_SUCCESS';
 const FETCH_ITEM_FAILURE = 'Persons/FETCH_ITEM_FAILURE';
-const CREATE            = 'Persons/CREATE';
-const CREATE_SUCCESS    = 'Persons/CREATE_SUCCESS';
-const CREATE_FAILURE    = 'Persons/CREATE_FAILURE';
-const RECEIVE_ITEMS = 'ContentUnits/RECEIVE_ITEMS';
+const CREATE             = 'Persons/CREATE';
+const CREATE_SUCCESS     = 'Persons/CREATE_SUCCESS';
+const CREATE_FAILURE     = 'Persons/CREATE_FAILURE';
+const RECEIVE_ITEMS      = 'ContentUnits/RECEIVE_ITEMS';
 
 export const types = {
   FETCH_ITEM,
@@ -30,13 +30,13 @@ export const types = {
 const fetchItem        = createAction(FETCH_ITEM);
 const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
 const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
-const create          = createAction(CREATE, (typeID, properties, i18n) => ({
+const create           = createAction(CREATE, (typeID, properties, i18n) => ({
   type_id: typeID,
   properties,
   i18n
 }));
-const createSuccess   = createAction(CREATE_SUCCESS);
-const createFailure   = createAction(CREATE_FAILURE);
+const createSuccess    = createAction(CREATE_SUCCESS);
+const createFailure    = createAction(CREATE_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
@@ -103,6 +103,11 @@ const onSuccess = (state, action) => {
   };
 };
 
+const onReceiveItems = (state, action) => ({
+  ...state,
+  byID: bulkMerge(state.byID, action.payload)
+});
+
 export const reducer = handleActions({
   [FETCH_ITEM]: onRequest,
   [FETCH_ITEM_SUCCESS]: onSuccess,
@@ -111,12 +116,14 @@ export const reducer = handleActions({
   [CREATE]: onRequest,
   [CREATE_SUCCESS]: onSuccess,
   [CREATE_FAILURE]: onFailure,
+
+  [RECEIVE_ITEMS]: onReceiveItems,
 }, initialState);
 
 /* Selectors */
 
 const getPersons       = state => state.byID;
-const getPersonById    = state => id => state.byID.get(id);
+const getPersonById    = (state, id) => state.byID.get(id);
 const getWIP           = (state, key) => state.wip.get(key);
 const getError         = (state, key) => state.errors.get(key);
 const denormIDs        = createSelector(getPersons, byID => memoize(ids => ids.map(id => byID.get(id))));
