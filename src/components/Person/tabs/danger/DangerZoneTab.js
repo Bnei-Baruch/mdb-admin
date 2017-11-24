@@ -6,19 +6,19 @@ import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'sema
 
 import { SECURITY_LEVELS } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
-import { actions, selectors } from '../../../../redux/modules/content_units';
+import { actions, selectors } from '../../../../redux/modules/persons';
 import * as shapes from '../../../shapes';
 
 class DangerZoneTab extends Component {
 
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
-    unit: shapes.ContentUnit,
+    person: shapes.Person,
     err: shapes.Error,
   };
 
   static defaultProps = {
-    unit: null,
+    person: null,
     err: null,
   };
 
@@ -40,9 +40,9 @@ class DangerZoneTab extends Component {
   };
 
   handleConfirmChangeSecure = () => {
-    const { unit, changeSecurityLevel } = this.props;
+    const { person, changeSecurityLevel } = this.props;
     const level                         = this.state.changedSecure;
-    changeSecurityLevel(unit.id, level);
+    changeSecurityLevel(person.id, level);
     this.hideChangeSecurityLevelModal();
   };
 
@@ -57,11 +57,11 @@ class DangerZoneTab extends Component {
   };
 
   render() {
-    const { unit, err } = this.props;
+    const { person, err } = this.props;
 
     const options = Object.keys(SECURITY_LEVELS)
       .map(k => SECURITY_LEVELS[k])
-      .filter(x => x.value !== unit.secure);
+      .filter(x => x.value !== person.secure);
 
     return (
       <Grid>
@@ -128,7 +128,7 @@ class DangerZoneTab extends Component {
 }
 
 const mapState = state => ({
-  err: selectors.getError(state.content_units, 'changeSecurityLevel'),
+  err: selectors.getError(state.persons, 'changeSecurityLevel'),
 });
 
 function mapDispatch(dispatch) {
