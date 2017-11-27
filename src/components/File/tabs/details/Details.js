@@ -135,6 +135,16 @@ const Details = (props) => {
               }
             </List.Content>
           </List.Item>
+          <List.Item>
+            <strong>Removed</strong>
+            <List.Content floated="right">
+              {
+                file.removed_at ?
+                  moment.utc(file.removed_at).local().format('YYYY-MM-DD HH:mm:ss') :
+                  null
+              }
+            </List.Content>
+          </List.Item>
         </List>
       </Segment>
     </div>

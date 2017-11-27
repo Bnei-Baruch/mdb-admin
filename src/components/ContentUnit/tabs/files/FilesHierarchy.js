@@ -180,6 +180,7 @@ class FilesHierarchy extends Component {
             secure,
             published,
             properties,
+            removed_at: removedAt
           }               = file;
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
@@ -202,7 +203,7 @@ class FilesHierarchy extends Component {
         >
           <Icon name={icon} />
           <Header.Content>
-            <Link to={`/files/${id}`}>{name}</Link>
+            <Link to={`/files/${id}`} style={removedAt ? { textDecoration: 'line-through' } : null}>{name}</Link>
             <Header.Subheader>
               <List horizontal>
                 <List.Item>

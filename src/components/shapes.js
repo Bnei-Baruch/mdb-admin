@@ -84,6 +84,7 @@ export const File = PropTypes.shape({
   mime_type: PropTypes.string,
   language: PropTypes.string,
   properties: PropTypes.object,
+  removed_at: PropTypes.string,
 });
 
 export const Operation = PropTypes.shape({

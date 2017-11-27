@@ -28,7 +28,7 @@ class FilesList extends PureComponent {
       <Table.Cell collapsing>
         {item.uid}
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell style={item.removed_at ? { textDecoration: 'line-through' } : null}>
         {item.name}
       </Table.Cell>
       <Table.Cell collapsing>
@@ -68,7 +68,7 @@ class FilesList extends PureComponent {
         </Table.Header>
         <Table.Body>
           {
-            items.map(x => this.renderItem(x))
+            items.map(this.renderItem)
           }
         </Table.Body>
       </Table>

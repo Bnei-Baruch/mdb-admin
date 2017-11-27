@@ -29,6 +29,9 @@ class FilesList extends PureComponent {
       if (item.properties.insert_type) {
         type += ` - ${item.properties.insert_type}`;
       }
+      if (item.properties.mode) {
+        type += ` (${item.properties.mode})`;
+      }
       if (item.properties.workflow_id) {
         type += ` [${item.properties.workflow_id}]`;
       }
