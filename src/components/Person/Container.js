@@ -12,6 +12,7 @@ class Container extends Component {
   static propTypes = {
     match: shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
+    updateInfo: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -45,10 +46,15 @@ const mapState = (state, props) => ({
   person: selectors.getPersonById(state.persons, parseInt(props.match.params.id, 10)),
   wip: selectors.getWIP(state.persons, 'fetchItem'),
   err: selectors.getError(state.persons, 'fetchItem'),
+  wipDetail: selectors.getWIP(state.persons, 'updateInfo'),
+  errDetail: selectors.getError(state.persons, 'updateInfo'),
 });
 
 function mapDispatch(dispatch) {
-  return bindActionCreators({ fetchItem: actions.fetchItem }, dispatch);
+  return bindActionCreators({
+    fetchItem: actions.fetchItem,
+    updateInfo: actions.updateInfo
+  }, dispatch);
 }
 
 export default connect(mapState, mapDispatch)(Container);

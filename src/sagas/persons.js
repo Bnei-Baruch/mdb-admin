@@ -22,6 +22,16 @@ function* create(action) {
   }
 }
 
+function* updateInfo(action) {
+  try {
+    const { id, pattern } = action.payload;
+    const resp                         = yield call(api.put, `/rest/persons/${id}/`, { pattern });
+    yield put(actions.updateInfoSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.updateInfoFailure(err));
+  }
+}
+
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
@@ -40,6 +50,10 @@ function* watchCreate() {
   yield takeEvery(types.CREATE, create);
 }
 
+function* watchUpdateInfo() {
+  yield takeEvery(types.UPDATE_INFO, updateInfo);
+}
+
 function* watchUpdateI18n() {
   yield takeEvery(types.UPDATE_I18N, updateI18n);
 }
@@ -48,4 +62,5 @@ export const sagas = [
   watchFetchItem,
   watchCreate,
   watchUpdateI18n,
+  watchUpdateInfo,
 ];

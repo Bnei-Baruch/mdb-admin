@@ -22,7 +22,7 @@ const MainPage = (props) => {
   }
 
   if (person) {
-    return <TabsMenu items={tabs} person={person} />;
+    return <TabsMenu items={tabs} {...props} />;
   }
 
   return wip ?
