@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Form, Message, Input } from 'semantic-ui-react';
+import moment from 'moment';
+import { Divider, Form, Message } from 'semantic-ui-react';
 
 import { MAJOR_LANGUAGES } from '../../../../helpers/consts';
-import { MajorLangsI18nField } from '../../../shared/Fields';
-import BaseCollectionForm from './BaseCollectionForm';
-import { isValidPattern } from '../../../../helpers/utils';
+import { MajorLangsI18nField } from '../../Fields/index';
+import BasePersonForm from './BasePersonForm';
 
-class CreateCollectionForm extends BaseCollectionForm {
+class CreatePersonForm extends BasePersonForm {
   static propTypes = {
     create: PropTypes.func.isRequired,
   };
@@ -22,10 +22,16 @@ class CreateCollectionForm extends BaseCollectionForm {
 
     return {
       ...state,
+      pattern: null,
       i18n,
-      pattern: '',
+      film_date: moment(),
+      updateInfo: PropTypes.func.isRequired,
+      original_language: '',
     };
   }
+
+  handlePatternChange = (e, data) =>
+    this.setState({ pattern: data.value });
 
   handleI18nChange = (i18n) => {
     const { errors } = this.state;
@@ -45,26 +51,13 @@ class CreateCollectionForm extends BaseCollectionForm {
     }, {});
   }
 
-  doSubmit(properties, i18n) {
-    this.props.create(properties, i18n);
+  doSubmit(pattern, properties, i18n) {
+    this.props.create(pattern, properties, i18n);
   }
 
-  onPatternChange = (e, { value }) => {
-    const errors = this.state.errors;
-    if (isValidPattern(value)) {
-      delete errors.pattern;
-    } else {
-      errors.pattern = true;
-    }
-
-    this.setState({ pattern: value, errors });
-  };
-
   validate() {
-    if (this.state.errors.pattern) {
-      return this.state.errors;
-    }
     const errors = super.validate();
+
     // validate at least one valid translation
     const i18n = this.state.i18n;
     if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
@@ -75,24 +68,13 @@ class CreateCollectionForm extends BaseCollectionForm {
   }
 
   renderForm() {
-    const { i18n, errors, pattern } = this.state;
+    const { i18n, errors } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Divider horizontal section>Pattern</Divider>
 
-        <Form.Field error={!!errors.pattern}>
-          <Input
-            id="pattern"
-            placeholder="Pattern"
-            value={pattern}
-            onChange={this.onPatternChange}
-          />
-          <small className="helper">
-            Used in physical file names.
-            English words separated with &lsquo;-&rsquo;
-          </small>
-        </Form.Field>
+        <Divider horizontal section>Pattern</Divider>
+        {this.renderPattern()}
 
         <Divider horizontal section>Translations</Divider>
         <MajorLangsI18nField
@@ -108,6 +90,7 @@ class CreateCollectionForm extends BaseCollectionForm {
       </Form>
     );
   }
+
 }
 
-export default CreateCollectionForm;
+export default CreatePersonForm;
