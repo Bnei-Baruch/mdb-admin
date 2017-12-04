@@ -25,7 +25,7 @@ function* create(action) {
 function* updateInfo(action) {
   try {
     const { id, pattern } = action.payload;
-    const resp                         = yield call(api.put, `/rest/persons/${id}/`, { pattern });
+    const resp            = yield call(api.put, `/rest/persons/${id}/`, { pattern });
     yield put(actions.updateInfoSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateInfoFailure(err));
@@ -39,6 +39,16 @@ function* updateI18n(action) {
     yield put(actions.updateI18nSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateI18nFailure(err));
+  }
+}
+
+function* changeSecurityLevel(action) {
+  try {
+    const { id, level } = action.payload;
+    const resp          = yield call(api.put, `/rest/persons/${id}/`, { secure: level });
+    yield put(actions.changeSecurityLevelSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.changeSecurityLevelFailure(err));
   }
 }
 
@@ -58,9 +68,14 @@ function* watchUpdateI18n() {
   yield takeEvery(types.UPDATE_I18N, updateI18n);
 }
 
+function* watchChangeSecurityLevel() {
+  yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
+}
+
 export const sagas = [
   watchFetchItem,
   watchCreate,
   watchUpdateI18n,
   watchUpdateInfo,
+  watchChangeSecurityLevel,
 ];

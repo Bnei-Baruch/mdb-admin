@@ -14,12 +14,13 @@ const CREATE         = 'Persons/CREATE';
 const CREATE_SUCCESS = 'Persons/CREATE_SUCCESS';
 const CREATE_FAILURE = 'Persons/CREATE_FAILURE';
 
-const UPDATE_I18N                   = 'Persons/UPDATE_I18N';
-const UPDATE_I18N_SUCCESS           = 'Persons/UPDATE_I18N_SUCCESS';
-const UPDATE_I18N_FAILURE           = 'Persons/UPDATE_I18N_FAILURE';
-const UPDATE_INFO                   = 'Tags/UPDATE_INFO';
-const UPDATE_INFO_SUCCESS           = 'Tags/UPDATE_INFO_SUCCESS';
-const UPDATE_INFO_FAILURE           = 'Tags/UPDATE_INFO_FAILURE';
+const UPDATE_I18N         = 'Persons/UPDATE_I18N';
+const UPDATE_I18N_SUCCESS = 'Persons/UPDATE_I18N_SUCCESS';
+const UPDATE_I18N_FAILURE = 'Persons/UPDATE_I18N_FAILURE';
+const UPDATE_INFO         = 'Tags/UPDATE_INFO';
+const UPDATE_INFO_SUCCESS = 'Tags/UPDATE_INFO_SUCCESS';
+const UPDATE_INFO_FAILURE = 'Tags/UPDATE_INFO_FAILURE';
+
 const CHANGE_SECURITY_LEVEL         = 'Persons/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'Persons/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'Persons/CHANGE_SECURITY_LEVEL_FAILURE';
@@ -53,12 +54,12 @@ export const types = {
 const fetchItem        = createAction(FETCH_ITEM);
 const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
 const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
-const create           = createAction(CREATE, (properties, i18n) => ({ properties, i18n }));
 
-const createSuccess       = createAction(CREATE_SUCCESS);
-const createFailure       = createAction(CREATE_FAILURE);
-const changeSecurityLevel = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
+const create        = createAction(CREATE, (properties, i18n) => ({ properties, i18n }));
+const createSuccess = createAction(CREATE_SUCCESS);
+const createFailure = createAction(CREATE_FAILURE);
 
+const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
 const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
