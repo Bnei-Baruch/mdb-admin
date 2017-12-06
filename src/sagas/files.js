@@ -1,6 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { actions, types } from '../redux/modules/files';
-import { actions as storages} from '../redux/modules/storages';
+import { actions as storages } from '../redux/modules/storages';
+import { actions as operations } from '../redux/modules/operations';
 import api from '../helpers/apiClient';
 
 function* fetchItem(action) {
@@ -24,6 +25,17 @@ function* fetchItemStorages(action) {
   }
 }
 
+function* fetchItemOperations(action) {
+  try {
+    const id   = action.payload;
+    const resp = yield call(api.get, `/rest/files/${id}/operations/`);
+    yield put(operations.receiveItems(resp.data));
+    yield put(actions.fetchItemOperationsSuccess({ id, data: resp.data }));
+  } catch (err) {
+    yield put(actions.fetchItemOperationsFailure(err));
+  }
+}
+
 function* changeSecurityLevel(action) {
   try {
     const { id, level } = action.payload;
@@ -42,6 +54,10 @@ function* watchfetchItemStorages() {
   yield takeEvery(types.FETCH_ITEM_STORAGES, fetchItemStorages);
 }
 
+function* watchfetchItemOperations() {
+  yield takeEvery(types.FETCH_ITEM_OPERATIONS, fetchItemOperations);
+}
+
 function* watchChangeSecurityLevel() {
   yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
 }
@@ -49,5 +65,6 @@ function* watchChangeSecurityLevel() {
 export const sagas = [
   watchFetchItem,
   watchfetchItemStorages,
+  watchfetchItemOperations,
   watchChangeSecurityLevel,
 ];
