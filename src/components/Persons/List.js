@@ -1,16 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Icon, Table } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 
-import {
-  CONTENT_TYPE_BY_ID,
-  CT_DAILY_LESSON,
-  CT_SPECIAL_LESSON,
-  EMPTY_ARRAY,
-  SECURITY_LEVELS
-} from '../../helpers/consts';
+import { EMPTY_ARRAY } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 

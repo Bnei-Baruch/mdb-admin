@@ -6,21 +6,19 @@ import { connect } from 'react-redux';
 import { Button, Header, List, Menu, Message, Segment, Search } from 'semantic-ui-react';
 
 import { actions, selectors } from '../../../../redux/modules/content_units';
-import { selectors as personsSelectors } from '../../../../redux/modules/tags';
+import { selectors as personsSelectors } from '../../../../redux/modules/persons';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, extractI18n } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import TagsSearch from '../../../Autocomplete/TagsSearch';
-import TagBreadcrumbs from '../../../Tags/TagBreadcrumbs';
 
 class Persons extends Component {
 
   static propTypes = {
     unit: shapes.ContentUnit.isRequired,
-    /*addPerson: PropTypes.func.isRequired,
-    removePerson: PropTypes.func.isRequired,*/
-    persons: PropTypes.arrayOf(shapes.Tag),
+    addPerson: PropTypes.func.isRequired,
+    removePerson: PropTypes.func.isRequired,
+    persons: PropTypes.arrayOf(shapes.Person),
     status: shapes.AsyncStatusMap,
   };
 
@@ -34,22 +32,22 @@ class Persons extends Component {
     searched: [],
   };
 
-  /* addTag = (tag) => {
-     const { unit, tags, addTag } = this.props;
-     if (tags.findIndex(x => x.id === tag.id) === -1) {
-       addTag(unit.id, tag.id);
-     }
-   };
+  addPerson = (tag) => {
+    const { unit, tags, addPerson } = this.props;
+    if (tags.findIndex(x => x.id === tag.id) === -1) {
+      addPerson(unit.id, tag.id);
+    }
+  };
 
-   removeTag = (tag) => {
-     const { unit, removeTag } = this.props;
-     removeTag(unit.id, tag.id);
-   };*/
+  removePerson = (tag) => {
+    const { unit, removePerson } = this.props;
+    removePerson(unit.id, tag.id);
+  };
 
   renderStatusMessage = () => {
-    /* const { status } = this.props;
+    const { status } = this.props;
 
-   if (status.addPerson.wip) {
+    if (status.addPerson.wip) {
       return <Header content="Adding Person..." icon={{ name: 'spinner', loading: true }} size="tiny" />;
     } else if (status.removePerson.wip) {
       return <Header content="Removing Person..." icon={{ name: 'spinner', loading: true }} size="tiny" />;
@@ -59,7 +57,6 @@ class Persons extends Component {
     if (err) {
       return <Header content={formatError(err)} icon={{ name: 'warning sign' }} color="red" size="tiny" />;
     }
-  */
     return null;
   };
 
@@ -135,11 +132,11 @@ class Persons extends Component {
             <Menu.Item>
               <Search
                 aligned="right"
-                placeholder="הוסף תגית"
+                placeholder="הוסף פרסון"
                 className="rtl-dir"
                 noResultsMessage="לא נמצאו תגיות."
                 onResultSelect={this.handleResultSelect}
-                onSearchChange={(e, data) => this.handleSearchChange(e, data)}
+                onSearchChange={this.handleSearchChange}
                 resultRenderer={this.renderResult}
                 results={searched}
                 value={query}
@@ -160,9 +157,9 @@ class Persons extends Component {
 const mapState = (state, ownProps) => {
   const { unit = EMPTY_OBJECT } = ownProps;
   const personIDs               = unit.persons;
-  //const denormIDs               = personsSelectors.denormIDs(state.persons);
+  const denormIDs               = personsSelectors.denormIDs(state.persons);
 
-  const status = ['fetchItemPersons']
+  const status = ['fetchItemPersons', 'addPerson', 'removePerson']
     .reduce((acc, val) => {
       acc[val] = {
         wip: selectors.getWIP(state.content_units, val),
@@ -173,8 +170,14 @@ const mapState = (state, ownProps) => {
 
   return {
     status,
-    persons: unit.persons ? unit.persons.map(p => p.person) : EMPTY_ARRAY,//personIDs ? denormIDs(personIDs) : EMPTY_ARRAY,
+    persons: personIDs ? denormIDs(personIDs) : EMPTY_ARRAY,
   };
 };
 
-export default connect(mapState)(Persons);
+const mapDispatch = dispatch => bindActionCreators({
+  fetchItemPersons: actions.fetchItemPersons,
+  addPerson: actions.addPerson,
+  removePerson: actions.removePerson,
+}, dispatch);
+
+export default connect(mapState, mapDispatch)(Persons);

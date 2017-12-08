@@ -43,4 +43,3 @@ Others.propTypes = {
 };
 
 export default Others;
-

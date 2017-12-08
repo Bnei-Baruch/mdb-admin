@@ -167,6 +167,26 @@ function* removeTag(action) {
   }
 }
 
+function* addPerson(action) {
+  try {
+    const { id, personID } = action.payload;
+    yield call(api.post, `/rest/content_units/${id}/persons/`, { personID });
+    yield put(actions.addPersonSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.addPersonFailure(err));
+  }
+}
+
+function* removePerson(action) {
+  try {
+    const { id, personID } = action.payload;
+    yield call(api.delete, `/rest/content_units/${id}/persons/${personID}`);
+    yield put(actions.removePersonSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.removePersonFailure(err));
+  }
+}
+
 function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
@@ -230,6 +250,14 @@ function* watchRemoveTag() {
   yield takeEvery(types.REMOVE_TAG, removeTag);
 }
 
+function* watchAddPerson() {
+  yield takeEvery(types.ADD_PERSON, addPerson);
+}
+
+function* watchRemovePerson() {
+  yield takeEvery(types.REMOVE_PERSON, removePerson);
+}
+
 export const sagas = [
   watchFetchItem,
   watchFetchItemFiles,
@@ -247,4 +275,6 @@ export const sagas = [
   watchRemoveSource,
   watchAddTag,
   watchRemoveTag,
+  watchAddPerson,
+  watchRemovePerson,
 ];

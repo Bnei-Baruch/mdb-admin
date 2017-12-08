@@ -151,8 +151,7 @@ class PersonsMainPage extends Component {
           closeIcon
           size="small"
           open={newPerson}
-          onClose={this.toggleNewPerson}
-        >
+          onClose={this.toggleNewPerson}>
           <Modal.Header>Create New Person</Modal.Header>
           <Modal.Content>
             <CreateCollectionForm wip={wipOfCreate} err={errOfCreate} create={create} />
