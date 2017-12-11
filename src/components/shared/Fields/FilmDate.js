@@ -21,7 +21,7 @@ const FilmDateField = (props) => {
         id="film_date"
         placeholder={DATE_FORMAT}
         format={DATE_FORMAT}
-        value={value.format(DATE_FORMAT)}
+        value={value ? value.format(DATE_FORMAT) : ''}
         onDayChange={onChange}
         dayPickerProps={dayPickerProps}
         style={{ width: '100%', zIndex: 1000 }}

@@ -14,7 +14,8 @@ import {
   CT_UNITY_DAY,
   CT_VIDEO_PROGRAM,
   CT_VIRTUAL_LESSONS,
-  CT_WOMEN_LESSONS
+  CT_WOMEN_LESSONS,
+  CT_ARTICLES,
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
 import { formatError, isValidPattern } from '../../../../helpers/utils';
@@ -94,6 +95,9 @@ class BaseCollectionForm extends Component {
       data.pattern          = state.pattern;
       data.active           = state.active;
       data.default_language = state.default_language;
+      break;
+    case COLLECTION_TYPES[CT_ARTICLES].value:
+      data.pattern          = state.pattern;
       break;
     default:
       break;
@@ -328,6 +332,9 @@ class BaseCollectionForm extends Component {
     </div>
   );
 
+  renderArticles = () =>
+    (this.renderPatternField());
+
   renderProperties = () => {
     switch (this.state.type_id) {
     case COLLECTION_TYPES[CT_DAILY_LESSON].value:
@@ -346,6 +353,8 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
     case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
       return this.renderVideoProgram();
+    case COLLECTION_TYPES[CT_ARTICLES].value:
+      return this.renderArticles();
     default:
       return null;
     }

@@ -33,6 +33,7 @@ export const CT_HOLIDAY            = 'HOLIDAY';
 export const CT_PICNIC             = 'PICNIC';
 export const CT_UNITY_DAY          = 'UNITY_DAY';
 export const CT_CLIPS              = 'CLIPS';
+export const CT_ARTICLES           = 'ARTICLES';
 
 // Content Unit Types
 export const CT_LESSON_PART           = 'LESSON_PART';
@@ -44,12 +45,13 @@ export const CT_FRIENDS_GATHERING     = 'FRIENDS_GATHERING';
 export const CT_MEAL                  = 'MEAL';
 export const CT_VIDEO_PROGRAM_CHAPTER = 'VIDEO_PROGRAM_CHAPTER';
 export const CT_FULL_LESSON           = 'FULL_LESSON';
-export const CT_TEXT                  = 'TEXT';
+export const CT_ARTICLE               = 'ARTICLE';
 export const CT_UNKNOWN               = 'UNKNOWN';
 export const CT_EVENT_PART            = 'EVENT_PART';
 export const CT_CLIP                  = 'CLIP';
 export const CT_TRAINING              = 'TRAINING';
 export const CT_KITEI_MAKOR           = 'KITEI_MAKOR';
+export const CT_PUBLICATION           = 'PUBLICATION';
 
 export const CONTENT_TYPE_BY_ID = {
   1: CT_DAILY_LESSON,
@@ -71,7 +73,7 @@ export const CONTENT_TYPE_BY_ID = {
   19: CT_MEAL,
   20: CT_VIDEO_PROGRAM_CHAPTER,
   21: CT_FULL_LESSON,
-  22: CT_TEXT,
+  22: CT_ARTICLE,
   27: CT_UNKNOWN,
   28: CT_EVENT_PART,
   29: CT_CLIP,
@@ -81,6 +83,8 @@ export const CONTENT_TYPE_BY_ID = {
   33: CT_CHILDREN_LESSONS,
   34: CT_WOMEN_LESSONS,
   35: CT_CLIPS,
+  36: CT_PUBLICATION,
+  37: CT_ARTICLES,
 };
 
 // Collection types
@@ -99,6 +103,7 @@ export const COLLECTION_TYPES = {
   [CT_CHILDREN_LESSONS]: { text: CT_CHILDREN_LESSONS, value: 33 },
   [CT_WOMEN_LESSONS]: { text: CT_WOMEN_LESSONS, value: 34 },
   [CT_CLIPS]: { text: CT_CLIPS, value: 35 },
+  [CT_ARTICLES]: { text: CT_ARTICLES, value: 37 },
 };
 
 // Content Unit types
@@ -112,12 +117,13 @@ export const CONTENT_UNIT_TYPES = {
   [CT_MEAL]: { text: CT_MEAL, value: 19 },
   [CT_VIDEO_PROGRAM_CHAPTER]: { text: CT_VIDEO_PROGRAM_CHAPTER, value: 20 },
   [CT_FULL_LESSON]: { text: CT_FULL_LESSON, value: 21 },
-  [CT_TEXT]: { text: CT_TEXT, value: 22 },
+  [CT_ARTICLE]: { text: CT_ARTICLE, value: 22 },
   [CT_UNKNOWN]: { text: CT_UNKNOWN, value: 27 },
   [CT_EVENT_PART]: { text: CT_EVENT_PART, value: 28 },
   [CT_CLIP]: { text: CT_CLIP, value: 29 },
   [CT_TRAINING]: { text: CT_TRAINING, value: 30 },
   [CT_KITEI_MAKOR]: { text: CT_KITEI_MAKOR, value: 31 },
+  [CT_PUBLICATION]: { text: CT_PUBLICATION, value: 36 },
 };
 
 export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
@@ -350,6 +356,7 @@ export const MEDIA_TYPES = {
   wav: { type: MT_AUDIO, sub_type: '', mime_type: 'audio/x-wav' },
   aac: { type: MT_AUDIO, sub_type: '', mime_type: 'audio/aac' },
   jpg: { type: MT_IMAGE, sub_type: '', mime_type: 'image/jpeg' },
+  png: { type: MT_IMAGE, sub_type: '', mime_type: 'image/png' },
   gif: { type: MT_IMAGE, sub_type: '', mime_type: 'image/gif' },
   bmp: { type: MT_IMAGE, sub_type: '', mime_type: 'image/bmp' },
   tif: { type: MT_IMAGE, sub_type: '', mime_type: 'image/tiff' },

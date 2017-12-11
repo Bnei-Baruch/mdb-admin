@@ -4,6 +4,7 @@ import { Button, Header, Segment } from 'semantic-ui-react';
 
 import {
   CONTENT_UNIT_TYPES,
+  CT_ARTICLE,
   CT_CHILDREN_LESSON,
   CT_CLIP,
   CT_EVENT_PART,
@@ -13,7 +14,7 @@ import {
   CT_LECTURE,
   CT_LESSON_PART,
   CT_MEAL,
-  CT_TEXT,
+  CT_PUBLICATION,
   CT_TRAINING,
   CT_UNKNOWN,
   CT_VIDEO_PROGRAM_CHAPTER,
@@ -64,12 +65,13 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_MEAL].value:
     case CONTENT_UNIT_TYPES[CT_VIDEO_PROGRAM_CHAPTER].value:
     case CONTENT_UNIT_TYPES[CT_FULL_LESSON].value:
-    case CONTENT_UNIT_TYPES[CT_TEXT].value:
+    case CONTENT_UNIT_TYPES[CT_ARTICLE].value:
     case CONTENT_UNIT_TYPES[CT_UNKNOWN].value:
     case CONTENT_UNIT_TYPES[CT_EVENT_PART].value:
     case CONTENT_UNIT_TYPES[CT_CLIP].value:
     case CONTENT_UNIT_TYPES[CT_TRAINING].value:
     case CONTENT_UNIT_TYPES[CT_KITEI_MAKOR].value:
+    case CONTENT_UNIT_TYPES[CT_PUBLICATION].value:
       data.film_date         = state.film_date;
       data.original_language = state.original_language;
       break;
@@ -177,12 +179,13 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_MEAL].value:
     case CONTENT_UNIT_TYPES[CT_VIDEO_PROGRAM_CHAPTER].value:
     case CONTENT_UNIT_TYPES[CT_FULL_LESSON].value:
-    case CONTENT_UNIT_TYPES[CT_TEXT].value:
+    case CONTENT_UNIT_TYPES[CT_ARTICLE].value:
     case CONTENT_UNIT_TYPES[CT_UNKNOWN].value:
     case CONTENT_UNIT_TYPES[CT_EVENT_PART].value:
     case CONTENT_UNIT_TYPES[CT_CLIP].value:
     case CONTENT_UNIT_TYPES[CT_TRAINING].value:
     case CONTENT_UNIT_TYPES[CT_KITEI_MAKOR].value:
+    case CONTENT_UNIT_TYPES[CT_PUBLICATION].value:
       return this.renderLessonPart();
     default:
       return null;
