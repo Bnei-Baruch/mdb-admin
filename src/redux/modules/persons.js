@@ -64,7 +64,7 @@ const fetchAll         = createAction(FETCH_ALL);
 const fetchAllSuccess  = createAction(FETCH_ALL_SUCCESS);
 const fetchAllFailure  = createAction(FETCH_ALL_FAILURE);
 
-const create        = createAction(CREATE, (properties, i18n) => ({ properties, i18n }));
+const create        = createAction(CREATE, (pattern, i18n) => ({ pattern, i18n }));
 const createSuccess = createAction(CREATE_SUCCESS);
 const createFailure = createAction(CREATE_FAILURE);
 

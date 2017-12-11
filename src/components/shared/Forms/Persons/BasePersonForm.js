@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Header, Segment } from 'semantic-ui-react';
+import { Button, Header, Segment, Form, Input } from 'semantic-ui-react';
 
 import { formatError, isValidPattern } from '../../../../helpers/utils';
-import { LanguageField } from '../../Fields/index';
-import { cleanProperties } from '../utils';
 
 class BasePersonForm extends Component {
   static propTypes = {
@@ -29,23 +27,6 @@ class BasePersonForm extends Component {
     };
   }
 
-  getPropertiesFromState = () => {
-    const { pattern } = this.state;
-    return { pattern };
-  };
-
-  handleFilmDateChange = (date) => {
-    const errors = this.state.errors;
-    delete errors.film_date;
-    this.setState({ film_date: date, errors });
-  };
-
-  handleOriginalLanguageChange = (e, data) => {
-    const errors = this.state.errors;
-    delete errors.original_language;
-    this.setState({ original_language: data.value });
-  };
-
   // eslint-disable-next-line class-methods-use-this
   cleanI18n() {
     return null;
@@ -57,29 +38,22 @@ class BasePersonForm extends Component {
       return;
     }
 
-    const properties = cleanProperties(this.getPropertiesFromState());
-    const i18n       = this.cleanI18n();
-    this.doSubmit(properties, i18n);
+    const i18n = this.cleanI18n();
+    this.doSubmit(this.state.pattern, i18n);
     this.setState({ submitted: true });
   };
 
   // eslint-disable-next-line class-methods-use-this
-  doSubmit(typeID, properties, i18n) {
+  doSubmit(pattern, i18n) {
     throw new Error('Not Implemented');
   }
 
-  validate() {
-    // validate required fields (most of them are...)
-    const required = this.getPropertiesFromState();
-
-    return Object.entries(required).reduce((acc, val) => {
-      const [k, v] = val;
-      if (!v || (typeof v === 'string' && v.trim() === '')) {
-        acc[k] = true;
-      }
-      return acc;
-    }, {});
-  }
+  validate = () => {
+    if (!this.state.pattern || !isValidPattern(this.state.pattern)) {
+      return { pattern: true };
+    }
+    return {};
+  };
 
   onPatternChange = (e, { value }) => {
     const errors = this.state.errors;
@@ -95,10 +69,6 @@ class BasePersonForm extends Component {
   isValid() {
     const errors = this.validate();
 
-    if (!isValidPattern(pattern)) {
-      errors.pattern = true;
-      return false;
-    }
     // do we have any error ?
     if (Object.values(errors).some(x => x)) {
       this.setState({ errors });
@@ -117,11 +87,10 @@ class BasePersonForm extends Component {
     const { pattern, errors } = this.state;
     return (
       <Form.Field error={!!errors.pattern}>
-        <label htmlFor="pattern">Pattern</label>
         <Input
           id="pattern"
           placeholder="Pattern"
-          value={pattern}
+          value={pattern || ''}
           onChange={this.onPatternChange}
         />
         <small className="helper">

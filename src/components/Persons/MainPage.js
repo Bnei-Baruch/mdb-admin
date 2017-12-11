@@ -10,7 +10,7 @@ import FilterTags from '../Filters/FilterTags/FilterTags';
 import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
-import CreateCollectionForm from '../shared/Forms/Collection/CreateCollectionForm';
+import CreatePersonForm from '../shared/Forms/Persons/CreatePersonForm';
 import PersonsList from './List';
 import Others from './filters/Others';
 
@@ -154,7 +154,7 @@ class PersonsMainPage extends Component {
           onClose={this.toggleNewPerson}>
           <Modal.Header>Create New Person</Modal.Header>
           <Modal.Content>
-            <CreateCollectionForm wip={wipOfCreate} err={errOfCreate} create={create} />
+            <CreatePersonForm wip={wipOfCreate} err={errOfCreate} create={create} />
           </Modal.Content>
         </Modal>
       </div>

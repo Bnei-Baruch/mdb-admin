@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Divider, Form, Message } from 'semantic-ui-react';
+import { Divider, Form, Message, Input } from 'semantic-ui-react';
 
 import { MAJOR_LANGUAGES } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../Fields/index';
@@ -30,9 +30,6 @@ class CreatePersonForm extends BasePersonForm {
     };
   }
 
-  handlePatternChange = (e, data) =>
-    this.setState({ pattern: data.value });
-
   handleI18nChange = (i18n) => {
     const { errors } = this.state;
     if (!MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
@@ -51,8 +48,8 @@ class CreatePersonForm extends BasePersonForm {
     }, {});
   }
 
-  doSubmit(pattern, properties, i18n) {
-    this.props.create(pattern, properties, i18n);
+  doSubmit(pattern, i18n) {
+    this.props.create(pattern, i18n);
   }
 
   validate() {
