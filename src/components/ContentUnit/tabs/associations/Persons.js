@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Button, Header, List, Menu, Message, Segment, Search } from 'semantic-ui-react';
 
 import { actions, selectors } from '../../../../redux/modules/content_units';
-import { selectors as personsSelectors } from '../../../../redux/modules/persons';
+import { selectors as personsSelectors, actions as personsAction } from '../../../../redux/modules/persons';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, extractI18n } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
@@ -32,10 +32,17 @@ class Persons extends Component {
     searched: [],
   };
 
-  addPerson = (tag) => {
-    const { unit, tags, addPerson } = this.props;
-    if (tags.findIndex(x => x.id === tag.id) === -1) {
-      addPerson(unit.id, tag.id);
+  componentDidMount() {
+    this.resetComponent();
+    if (this.props.persons.length === 0) {
+      this.props.fetchAll();
+    }
+  }
+
+  addPerson = (person) => {
+    const { unit, persons, addPerson } = this.props;
+    if (persons.findIndex(x => x.id === person.id) === -1) {
+      addPerson(unit.id, person.id);
     }
   };
 
@@ -61,24 +68,32 @@ class Persons extends Component {
   };
 
   handleResultSelect = (e, data) => {
-
+    this.addPerson(data.result);
+    this.resetComponent();
   };
 
   handleSearchChange = (e, data) => {
-    const searched = this.state.searched.length > 0 ? this.state.searched : this.props.persons;
-    this.setState({ query: data.value });
+    const query = escapeRegExp(data.value.trim());
+    if (query === '') {
+      this.resetComponent();
+      return;
+    }
+    const searched = this.state.searched.length > 0 ? this.state.searched : this.props.allPersons;
+    this.setState({ query });
     setTimeout(() => {
-      if (data.value.length < 1) return this.setState({ searched: [] });
 
-      const regExp = new RegExp(escapeRegExp(data.value), 'i');
+      const regExp = new RegExp(escapeRegExp(query), 'i');
       this.setState({
         searched: searched.filter(r => (regExp.test(extractI18n(r.i18n, ['name'])))),
       });
     }, 150);
   };
 
+  resetComponent = () => this.setState({ searched: [], query: '' });
+
   renderResult = (person) => {
-    return <div key={person.id}>{extractI18n(person.i18n, ['name'])}</div>;
+    const { id, i18n } = person;
+    return <div key={id}>{extractI18n(i18n, ['name'])}</div>;
   };
 
   render() {
@@ -170,12 +185,14 @@ const mapState = (state, ownProps) => {
 
   return {
     status,
+    allPersons: personsSelectors.getPersonList(state.persons),
     persons: personIDs ? denormIDs(personIDs) : EMPTY_ARRAY,
   };
 };
 
 const mapDispatch = dispatch => bindActionCreators({
   fetchItemPersons: actions.fetchItemPersons,
+  fetchAll: personsAction.fetchAll,
   addPerson: actions.addPerson,
   removePerson: actions.removePerson,
 }, dispatch);

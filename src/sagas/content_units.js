@@ -4,6 +4,7 @@ import api from '../helpers/apiClient';
 import { actions, types } from '../redux/modules/content_units';
 import { actions as files } from '../redux/modules/files';
 import { actions as collections } from '../redux/modules/collections';
+import { actions as persons } from '../redux/modules/persons';
 
 function* fetchItem(action) {
   try {
@@ -82,6 +83,7 @@ function* fetchItemPersons(action) {
   try {
     const id   = action.payload;
     const resp = yield call(api.get, `/rest/content_units/${id}/persons/`);
+    yield put(persons.receiveItems(resp.data.map(x => x.person)));
     yield put(actions.fetchItemPersonsSuccess({ id, data: resp.data }));
   } catch (err) {
     yield put(actions.fetchItemPersonsFailure(err));

@@ -395,7 +395,7 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_PERSONS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
-      persons: action.payload.data.map(x => x.id),
+      persons: action.payload.data.map(x => x.person.id),
     });
     break;
   case ADD_PERSON_SUCCESS:

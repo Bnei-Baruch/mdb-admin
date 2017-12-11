@@ -9,6 +9,9 @@ import { setMap, merge, bulkMerge } from '../utils';
 const FETCH_ITEM         = 'Persons/FETCH_ITEM';
 const FETCH_ITEM_SUCCESS = 'Persons/FETCH_ITEM_SUCCESS';
 const FETCH_ITEM_FAILURE = 'Persons/FETCH_ITEM_FAILURE';
+const FETCH_ALL          = 'Persons/FETCH_ALL';
+const FETCH_ALL_SUCCESS  = 'Persons/FETCH_ALL_SUCCESS';
+const FETCH_ALL_FAILURE  = 'Persons/FETCH_ALL_FAILURE';
 
 const CREATE         = 'Persons/CREATE';
 const CREATE_SUCCESS = 'Persons/CREATE_SUCCESS';
@@ -31,6 +34,9 @@ export const types = {
   FETCH_ITEM,
   FETCH_ITEM_SUCCESS,
   FETCH_ITEM_FAILURE,
+  FETCH_ALL,
+  FETCH_ALL_SUCCESS,
+  FETCH_ALL_FAILURE,
 
   CREATE,
   CREATE_SUCCESS,
@@ -54,6 +60,9 @@ export const types = {
 const fetchItem        = createAction(FETCH_ITEM);
 const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
 const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
+const fetchAll         = createAction(FETCH_ALL);
+const fetchAllSuccess  = createAction(FETCH_ALL_SUCCESS);
+const fetchAllFailure  = createAction(FETCH_ALL_FAILURE);
 
 const create        = createAction(CREATE, (properties, i18n) => ({ properties, i18n }));
 const createSuccess = createAction(CREATE_SUCCESS);
@@ -75,6 +84,9 @@ export const actions = {
   fetchItem,
   fetchItemSuccess,
   fetchItemFailure,
+  fetchAll,
+  fetchAllSuccess,
+  fetchAllFailure,
 
   create,
   createSuccess,
@@ -99,6 +111,9 @@ const keys = new Map([
   [FETCH_ITEM, 'fetchItem'],
   [FETCH_ITEM_SUCCESS, 'fetchItem'],
   [FETCH_ITEM_FAILURE, 'fetchItem'],
+  [FETCH_ALL, 'fetchAll'],
+  [FETCH_ALL_SUCCESS, 'fetchAll'],
+  [FETCH_ALL_FAILURE, 'fetchAll'],
 
   [CREATE, 'create'],
   [CREATE_SUCCESS, 'create'],
@@ -147,6 +162,9 @@ const onSuccess = (state, action) => {
   case CHANGE_SECURITY_LEVEL_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
+  case FETCH_ALL_SUCCESS:
+    byID = new Map(action.payload.map(x => [x.id, x]));
+    break;
   default:
     byID = state.byID;
   }
@@ -168,6 +186,9 @@ export const reducer = handleActions({
   [FETCH_ITEM]: onRequest,
   [FETCH_ITEM_SUCCESS]: onSuccess,
   [FETCH_ITEM_FAILURE]: onFailure,
+  [FETCH_ALL]: onRequest,
+  [FETCH_ALL_SUCCESS]: onSuccess,
+  [FETCH_ALL_FAILURE]: onFailure,
 
   [CREATE]: onRequest,
   [CREATE_SUCCESS]: onSuccess,
@@ -193,9 +214,11 @@ const getPersonById    = (state, id) => state.byID.get(id);
 const getWIP           = (state, key) => state.wip.get(key);
 const getError         = (state, key) => state.errors.get(key);
 const denormIDs        = createSelector(getPersons, byID => memoize(ids => ids.map(id => byID.get(id))));
+const getPersonList    = createSelector(getPersons, persons => Array.from(persons.values()));
 export const selectors = {
   getWIP,
   getError,
   denormIDs,
   getPersonById,
+  getPersonList,
 };

@@ -1,7 +1,9 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 
 import { actions, types } from '../redux/modules/persons';
+import { types as system } from '../redux/modules/system';
 import api from '../helpers/apiClient';
+import { loadAllPages } from './utils';
 
 function* fetchItem(action) {
   try {
@@ -10,6 +12,15 @@ function* fetchItem(action) {
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
+  }
+}
+
+function* fetchAll(action) {
+  try {
+    const data = yield loadAllPages('/rest/persons/');
+    yield put(actions.fetchAllSuccess(data));
+  } catch (err) {
+    yield put(actions.fetchAllFailure(err));
   }
 }
 
@@ -56,6 +67,10 @@ function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
 
+function* watchLastFetchAll() {
+  yield takeLatest([types.FETCH_ALL, system.INIT], fetchAll);
+}
+
 function* watchCreate() {
   yield takeEvery(types.CREATE, create);
 }
@@ -74,6 +89,7 @@ function* watchChangeSecurityLevel() {
 
 export const sagas = [
   watchFetchItem,
+  watchLastFetchAll,
   watchCreate,
   watchUpdateI18n,
   watchUpdateInfo,
