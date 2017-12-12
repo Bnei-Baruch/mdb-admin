@@ -35,6 +35,16 @@ function* fetchItemOperations(action) {
     yield put(actions.fetchItemOperationsFailure(err));
   }
 }
+function* fetchTreeWithOperations(action) {
+  try {
+    const id   = action.payload;
+    const resp = yield call(api.get, `/rest/files/${id}/tree/`);
+    yield put(operations.receiveItems(resp.data));
+    yield put(actions.fetchTreeWithOperationsSuccess({ id, data: resp.data }));
+  } catch (err) {
+    yield put(actions.fetchTreeWithOperationsFailure(err));
+  }
+}
 
 function* changeSecurityLevel(action) {
   try {
@@ -57,6 +67,9 @@ function* watchfetchItemStorages() {
 function* watchfetchItemOperations() {
   yield takeEvery(types.FETCH_ITEM_OPERATIONS, fetchItemOperations);
 }
+function* watchfetchTreeWithOperations() {
+  yield takeEvery(types.FETCH_TREE_WITH_OPERATIONS, fetchTreeWithOperations);
+}
 
 function* watchChangeSecurityLevel() {
   yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
@@ -66,5 +79,6 @@ export const sagas = [
   watchFetchItem,
   watchfetchItemStorages,
   watchfetchItemOperations,
+  watchfetchTreeWithOperations,
   watchChangeSecurityLevel,
 ];
