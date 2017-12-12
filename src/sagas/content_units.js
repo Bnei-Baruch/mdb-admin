@@ -172,7 +172,7 @@ function* removeTag(action) {
 function* addPerson(action) {
   try {
     const { id, personID } = action.payload;
-    yield call(api.post, `/rest/content_units/${id}/persons/`, { personID });
+    yield call(api.post, `/rest/content_units/${id}/persons/`, { person_id: personID,  role_id: 1});
     yield put(actions.addPersonSuccess(action.payload));
   } catch (err) {
     yield put(actions.addPersonFailure(err));

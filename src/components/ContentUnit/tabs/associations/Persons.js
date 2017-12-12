@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import escapeRegExp from 'lodash/escapeRegExp';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import debounce from 'lodash/debounce';
 import { Button, Header, List, Menu, Message, Segment, Search } from 'semantic-ui-react';
 
 import { actions, selectors } from '../../../../redux/modules/content_units';
@@ -78,16 +79,16 @@ class Persons extends Component {
       this.resetComponent();
       return;
     }
-    const searched = this.state.searched.length > 0 ? this.state.searched : this.props.allPersons;
     this.setState({ query });
-    setTimeout(() => {
-
-      const regExp = new RegExp(escapeRegExp(query), 'i');
-      this.setState({
-        searched: searched.filter(r => (regExp.test(extractI18n(r.i18n, ['name'])))),
-      });
-    }, 150);
+    this.doFilter();
   };
+
+  doFilter = debounce(() => {
+    const regExp   = new RegExp(escapeRegExp(this.state.query), 'i');
+    const searched = this.props.allPersons
+      .filter(r => (regExp.test(extractI18n(r.i18n, ['name']))));
+    this.setState({ searched });
+  }, 150);
 
   resetComponent = () => this.setState({ searched: [], query: '' });
 
