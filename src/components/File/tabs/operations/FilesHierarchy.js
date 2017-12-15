@@ -25,6 +25,7 @@ class FilesHierarchy extends Component {
 
   static propTypes = {
     files: PropTypes.arrayOf(shapes.File),
+    operations: PropTypes.arrayOf(shapes.Operation),
     wip: PropTypes.bool,
     err: shapes.Error,
   };
@@ -180,7 +181,7 @@ class FilesHierarchy extends Component {
             secure,
             published,
             properties,
-            removed_at: removedAt
+            removed_at: removedAt,
           }               = file;
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
@@ -190,6 +191,7 @@ class FilesHierarchy extends Component {
     const durationDisplay = duration ?
       moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
       null;
+    const operations      = this.props.operations.filter(o => o && file.operations && file.operations.some(id => (o.id === id)));
 
     return (
       <div key={id}>
@@ -232,6 +234,7 @@ class FilesHierarchy extends Component {
                       <Icon name="ban" color="red" />
                   }
                 </List.Item>
+                <List.Item>{operations.map(o => o.uid).join(', ')}</List.Item>
               </List>
             </Header.Subheader>
           </Header.Content>
@@ -270,14 +273,14 @@ class FilesHierarchy extends Component {
             <Grid.Row>
               <Grid.Column width={10}>
                 <div>
-                  { hierarchy.roots.map(x => this.renderFile(hierarchy.byID.get(x))) }
+                  {hierarchy.roots.map(x => this.renderFile(hierarchy.byID.get(x)))}
                 </div>
               </Grid.Column>
               <Grid.Column width={6} textAlign="center">
                 {
                   currentFile ?
                     <div>
-                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false}/>
+                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false} />
                       <br />
                       <Button
                         content="Download"

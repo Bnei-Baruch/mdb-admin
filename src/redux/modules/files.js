@@ -154,7 +154,11 @@ const onSuccess = (state, action) => {
     });
     break;
   case FETCH_TREE_WITH_OPERATIONS_SUCCESS:
-
+    byID = bulkMerge(state.byID, action.payload.files);
+    byID = merge(byID, {
+      id: action.payload.id,
+      tree: action.payload.files.map(x => x.id),
+    });
     break;
   default:
     byID = state.byID;
@@ -180,6 +184,9 @@ export const reducer = handleActions({
   [FETCH_ITEM_STORAGES]: onRequest,
   [FETCH_ITEM_STORAGES_SUCCESS]: onSuccess,
   [FETCH_ITEM_STORAGES_FAILURE]: onFailure,
+  [FETCH_TREE_WITH_OPERATIONS]: onRequest,
+  [FETCH_TREE_WITH_OPERATIONS_SUCCESS]: onSuccess,
+  [FETCH_TREE_WITH_OPERATIONS_FAILURE]: onFailure,
 
   [CHANGE_SECURITY_LEVEL]: onRequest,
   [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,

@@ -2,40 +2,37 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import uniq from 'lodash/uniq';
 
-import { actions, selectors } from '../../../../redux/modules/operations';
-import { selectors as files } from '../../../../redux/modules/files';
-import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
-import * as shapes from '../../../shapes';
+import { selectors as operations } from '../../../../redux/modules/operations';
+import { actions, selectors } from '../../../../redux/modules/files';
+import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import FilesHierarchy from './FilesHierarchy';
 
 class OperationsTab extends Component {
 
   static propTypes = {
-    fetchItemFiles: PropTypes.func.isRequired,
-    operation: shapes.Operation,
+    fetchTreeWithOperations: PropTypes.func.isRequired,
+    file: PropTypes.object,
   };
 
   static defaultProps = {
-    operation: undefined,
+    file: undefined,
   };
 
   componentDidMount() {
-    const { operation } = this.props;
-    if (operation) {
-      this.askForData(operation.id);
+    const { file } = this.props;
+    if (file) {
+      this.props.fetchTreeWithOperations(file.id);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (((nextProps.unit && !this.props.operation) ||
-        (nextProps.unit && this.props.unit && nextProps.unit.id !== this.props.unit.id))) {
-      this.askForData(nextProps.unit.id);
+    let a = nextProps;
+    if (((nextProps.file && !nextProps.files) ||
+        (nextProps.file && this.props.file && nextProps.file.id !== this.props.file.id))) {
+      this.props.fetchTreeWithOperations(nextProps.file.id);
     }
-  }
-
-  askForData(id) {
-    this.props.fetchItemFiles(id);
   }
 
   render() {
@@ -44,19 +41,24 @@ class OperationsTab extends Component {
 }
 
 const mapState = (state, ownProps) => {
-  const { unit = EMPTY_OBJECT } = ownProps;
-  const fileIds                 = unit.files;
-  const denormIDs               = files.denormIDs(state.files);
+  const { file } = ownProps;
+
+  const fileIds   = file ? file.tree : EMPTY_ARRAY;
+  const denormIDs = selectors.denormIDs(state.files);
+  const files     = fileIds ? denormIDs(fileIds) : EMPTY_ARRAY;
+
+  const denormOperationsIDs = operations.denormIDs(state.operations);
+  const operationsIds       = uniq(files.reduce((result, f) => result.concat(f.operations), []));
   return {
-    files: fileIds ? denormIDs(fileIds) : EMPTY_ARRAY,
-    wip: selectors.getWIP(state.opertions, 'fetchItemFiles'),
-    err: selectors.getError(state.opertions, 'fetchItemFiles'),
+    files: files,
+    operations: operationsIds ? denormOperationsIDs(operationsIds) : [],
+    wip: selectors.getWIP(state.files, 'fetchTreeWithOperations'),
+    err: selectors.getError(state.files, 'fetchTreeWithOperations'),
   };
 };
 
 function mapDispatch(dispatch) {
-  return bindActionCreators({ fetchItemFiles: actions.fetchItemFiles }, dispatch);
+  return bindActionCreators({ fetchTreeWithOperations: actions.fetchTreeWithOperations }, dispatch);
 }
 
 export default connect(mapState, mapDispatch)(OperationsTab);
-

@@ -35,12 +35,13 @@ function* fetchItemOperations(action) {
     yield put(actions.fetchItemOperationsFailure(err));
   }
 }
+
 function* fetchTreeWithOperations(action) {
   try {
     const id   = action.payload;
     const resp = yield call(api.get, `/rest/files/${id}/tree/`);
-    yield put(operations.receiveItems(resp.data));
-    yield put(actions.fetchTreeWithOperationsSuccess({ id, data: resp.data }));
+    yield put(operations.receiveItems(Object.keys(resp.data.operations).map(key => resp.data.operations[key])));
+    yield put(actions.fetchTreeWithOperationsSuccess({ id, files: resp.data.files }));
   } catch (err) {
     yield put(actions.fetchTreeWithOperationsFailure(err));
   }
@@ -67,6 +68,7 @@ function* watchfetchItemStorages() {
 function* watchfetchItemOperations() {
   yield takeEvery(types.FETCH_ITEM_OPERATIONS, fetchItemOperations);
 }
+
 function* watchfetchTreeWithOperations() {
   yield takeEvery(types.FETCH_TREE_WITH_OPERATIONS, fetchTreeWithOperations);
 }
