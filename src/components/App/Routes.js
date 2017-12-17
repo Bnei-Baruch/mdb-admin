@@ -15,10 +15,12 @@ import Sources from '../Sources/SourcesContainer';
 import Source from '../Sources/SourceContainer';
 import Welcome from '../Welcome/Welcome';
 import Design from '../Design/Design';
+import LoginCallback from '../Login/LoginCallback';
 
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Welcome} />
+    <Route exact path="/callback" component={LoginCallback} />
     <Route exact path="/files" component={Files} />
     <Route exact path="/files/:id" component={File} />
     <Route exact path="/content_units" component={ContentUnits} />

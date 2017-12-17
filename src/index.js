@@ -7,7 +7,9 @@ import createSagaMiddleware, { delay } from 'redux-saga';
 import { put } from 'redux-saga/effects';
 import { routerMiddleware as createRouterMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
+import createOidcMiddleware from 'redux-oidc';
 
+import userManager from './helpers/userManager';
 import reducer from './redux';
 import { actions as system } from './redux/modules/system';
 import allSagas from './sagas';
@@ -27,6 +29,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 const devToolsArePresent    = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => !isProduction && devToolsArePresent ? window.devToolsExtension() : f => f;
 
+const oidcMiddleware = createOidcMiddleware(userManager);
+
 const sagaMiddlewareOptions = isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
 
@@ -36,7 +40,7 @@ const history          = createHistory({
 const routerMiddleware = createRouterMiddleware(history);
 
 const store = createStore(reducer, {}, compose(
-  applyMiddleware(routerMiddleware, sagaMiddleWare),
+  applyMiddleware(oidcMiddleware, routerMiddleware, sagaMiddleWare),
   devToolsStoreEnhancer()
 ));
 

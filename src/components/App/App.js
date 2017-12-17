@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect, Provider } from 'react-redux';
+import { OidcProvider } from 'redux-oidc';
 import { ConnectedRouter } from 'react-router-redux';
 import 'semantic-ui-css/semantic.min.css';
 
+import userManager from '../../helpers/userManager';
 import { selectors as system } from '../../redux/modules/system';
 import Layout from './Layout';
 import Routes from './Routes';
@@ -39,11 +41,13 @@ class App extends Component {
     if (isAppReady) {
       return (
         <Provider store={store}>
-          <ConnectedRouter history={history}>
-            <Layout>
-              <Routes />
-            </Layout>
-          </ConnectedRouter>
+          <OidcProvider store={store} userManager={userManager}>
+            <ConnectedRouter history={history}>
+              <Layout>
+                <Routes />
+              </Layout>
+            </ConnectedRouter>
+          </OidcProvider>
         </Provider>
       );
     }

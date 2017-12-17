@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
+import { reducer as oidc } from 'redux-oidc';
 
 import { reducer as filters } from './modules/filters';
 import { reducer as lists } from './modules/lists';
@@ -16,6 +17,7 @@ import { reducer as storages } from './modules/storages';
 
 export default combineReducers({
   router,
+  oidc,
   system,
   filters,
   lists,
