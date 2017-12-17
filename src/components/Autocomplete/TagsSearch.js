@@ -44,26 +44,41 @@ class TagsSearch extends Component {
 
     const { tagsById, hierarchy } = this.props;
 
-    const suggestions = hierarchy.roots
-      .map((rootID) => {
-        const root     = tagsById.get(rootID);
-        const name     = extractI18n(root.i18n, ['label'])[0];
-        const children = hierarchy.childMap.get(rootID) || [];
-        const results  = children.map((tagId) => {
-          const tag = tagsById.get(tagId);
-          let title;
-          for (const i18n of Object.values(tag.i18n)) {
-            if (regex.test(i18n.label)) {
-              title = i18n.label;
-              break;
-            }
-          }
-          return { id: tagId, title, key: tagId };
-        }).filter(x => x.title !== undefined);
+    // search in each tag family
+    const suggestions = hierarchy.roots.reduce((acc, rootID) => {
+      const children = hierarchy.childMap.get(rootID) || [];
 
-        return { name, results };
-      })
-      .filter(x => x.results.length > 0);
+      const results = [];
+
+      // DFS (pre-order) this tag family
+      let s = [...children];
+      while (s.length > 0) {
+        const nodeID = s.shift();
+        if (hierarchy.childMap.has(nodeID)) {
+          s = hierarchy.childMap.get(nodeID).concat(s);
+        }
+
+        const node = tagsById.get(nodeID);
+        let title;
+        for (const i18n of Object.values(node.i18n)) {
+          if (regex.test(i18n.label)) {
+            title = i18n.label;
+            break;
+          }
+        }
+        if (title) {
+          results.push({ id: nodeID, title, key: nodeID });
+        }
+      }
+
+      if (results.length > 0) {
+        const root = tagsById.get(rootID);
+        const name = extractI18n(root.i18n, ['label'])[0];
+        acc.push({ name, results });
+      }
+
+      return acc;
+    }, []);
 
     this.setState({ query, suggestions });
   }, 150);
