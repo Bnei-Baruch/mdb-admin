@@ -12,7 +12,7 @@ Make sure you have [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com/
 
 1. Clone this repo
 ```shell
-$ git clone https://github.com/Bnei-Baruch/kmedia-mdb.git
+$ git clone https://github.com/Bnei-Baruch/mdb-admin.git
 ```
 
 2. Install all dependencies
