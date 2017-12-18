@@ -11,6 +11,7 @@ import Derivatives from './Derivatives';
 import Origins from './Origins';
 import Sources from './Sources';
 import Tags from './Tags';
+import Persons from './Persons';
 
 class AssociationsTab extends Component {
 
@@ -20,6 +21,7 @@ class AssociationsTab extends Component {
     fetchItemOrigins: PropTypes.func.isRequired,
     fetchItemSources: PropTypes.func.isRequired,
     fetchItemTags: PropTypes.func.isRequired,
+    fetchItemPersons: PropTypes.func.isRequired,
     unit: shapes.ContentUnit,
   };
 
@@ -47,6 +49,7 @@ class AssociationsTab extends Component {
     this.props.fetchItemOrigins(id);
     this.props.fetchItemSources(id);
     this.props.fetchItemTags(id);
+    this.props.fetchItemPersons(id);
   }
 
   render() {
@@ -64,6 +67,8 @@ class AssociationsTab extends Component {
             <Sources {...this.props} />
             <Divider horizontal hidden />
             <Tags {...this.props} />
+            <Divider horizontal hidden />
+            <Persons {...this.props} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -78,6 +83,7 @@ function mapDispatch(dispatch) {
     fetchItemOrigins: actions.fetchItemOrigins,
     fetchItemSources: actions.fetchItemSources,
     fetchItemTags: actions.fetchItemTags,
+    fetchItemPersons: actions.fetchItemPersons,
   }, dispatch);
 }
 

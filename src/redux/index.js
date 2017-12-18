@@ -14,6 +14,7 @@ import { reducer as authors } from './modules/authors';
 import { reducer as sources } from './modules/sources';
 import { reducer as tags } from './modules/tags';
 import { reducer as storages } from './modules/storages';
+import { reducer as persons } from './modules/persons';
 
 export default combineReducers({
   router,
@@ -30,5 +31,6 @@ export default combineReducers({
   sources,
   tags,
   storages,
+  persons,
 });
 

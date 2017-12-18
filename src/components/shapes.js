@@ -157,6 +157,11 @@ export const Author = PropTypes.shape({
   sources: PropTypes.arrayOf(PropTypes.number),
 });
 
+export const Person = PropTypes.shape({
+  id: PropTypes.number.isRequired,
+  i18n: PropTypes.objectOf(AuthorI18n),
+});
+
 export const Tag = PropTypes.shape({
   id: PropTypes.number.isRequired,
   uid: PropTypes.string.isRequired,
