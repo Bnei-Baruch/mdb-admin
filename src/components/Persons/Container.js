@@ -92,8 +92,8 @@ const mapState = (state) => {
 
 function mapDispatch(dispatch) {
   return bindActionCreators({
-    getWIP: persons.getWIP,
-    getError: persons.getWIP,
+    // getWIP: persons.getWIP,
+    // getError: persons.getWIP,
     fetchList: actions.fetchList,
     updateInfo: actions.updateInfo,
     setPage: actions.setPage,

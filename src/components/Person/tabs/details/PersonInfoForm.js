@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Header, Input, List, Menu, Segment } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 
-import * as shapes from '../../../shapes';
 import { EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, isValidPattern } from '../../../../helpers/utils';
+import * as shapes from '../../../shapes';
 
 class PersonInfoForm extends Component {
 
@@ -25,7 +24,6 @@ class PersonInfoForm extends Component {
 
     this.state = {
       pattern: props.person.pattern || '',
-      description: props.person.description || '',
       submitted: false,
       errors: {}
     };
@@ -34,8 +32,7 @@ class PersonInfoForm extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.person !== nextProps.person) {
       this.setState({
-        pattern: nextProps.person.pattern || '',
-        description: nextProps.person.description || '',
+        pattern: nextProps.person.pattern || ''
       });
     }
   }

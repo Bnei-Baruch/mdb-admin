@@ -26,12 +26,12 @@ class PersonsMainPage extends Component {
     items: PropTypes.arrayOf(shapes.Person),
     wip: PropTypes.bool,
     err: shapes.Error,
+    create: PropTypes.func.isRequired,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
     onFiltersChange: PropTypes.func.isRequired,
     onFiltersHydrated: PropTypes.func.isRequired,
-    create: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -151,7 +151,8 @@ class PersonsMainPage extends Component {
           closeIcon
           size="small"
           open={newPerson}
-          onClose={this.toggleNewPerson}>
+          onClose={this.toggleNewPerson}
+        >
           <Modal.Header>Create New Person</Modal.Header>
           <Modal.Content>
             <CreatePersonForm wip={wipOfCreate} err={errOfCreate} create={create} />

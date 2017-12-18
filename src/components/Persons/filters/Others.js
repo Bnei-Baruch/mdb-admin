@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Header, Segment } from 'semantic-ui-react';
 
 import { NS_PERSONS } from '../../../helpers/consts';
-import { ContentTypeFilter, SecureFilter, PublishedFilter } from '../../Filters/filterComponents';
+import { ContentTypeFilter, PublishedFilter, SecureFilter } from '../../Filters/filterComponents';
 
 const Others = props => (
   <Segment>

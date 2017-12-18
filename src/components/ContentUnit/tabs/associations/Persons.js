@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import { Button, Header, List, Menu, Message, Segment, Search } from 'semantic-ui-react';
 
-import { actions, selectors } from '../../../../redux/modules/content_units';
-import { selectors as personsSelectors, actions as personsAction } from '../../../../redux/modules/persons';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, extractI18n } from '../../../../helpers/utils';
+import { actions, selectors } from '../../../../redux/modules/content_units';
+import { selectors as personsSelectors, actions as personsAction } from '../../../../redux/modules/persons';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 

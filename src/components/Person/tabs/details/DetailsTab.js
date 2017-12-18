@@ -18,7 +18,7 @@ const DetailsTab = (props) => {
     <Grid stackable>
       <Grid.Row>
         <Grid.Column width={8}>
-          <PersonInfoForm {...props}/>
+          <PersonInfoForm {...props} />
           <Divider horizontal hidden />
           <ReadonlyProperties properties={readonlyProperties} />
         </Grid.Column>
