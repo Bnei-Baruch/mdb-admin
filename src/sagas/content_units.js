@@ -4,6 +4,7 @@ import api from '../helpers/apiClient';
 import { actions, types } from '../redux/modules/content_units';
 import { actions as files } from '../redux/modules/files';
 import { actions as collections } from '../redux/modules/collections';
+import { actions as persons } from '../redux/modules/persons';
 
 function* fetchItem(action) {
   try {
@@ -76,6 +77,16 @@ function* fetchItemTags(action) {
     yield put(actions.fetchItemTagsSuccess({ id, data: resp.data }));
   } catch (err) {
     yield put(actions.fetchItemTagsFailure(err));
+  }
+}
+function* fetchItemPersons(action) {
+  try {
+    const id   = action.payload;
+    const resp = yield call(api.get, `/rest/content_units/${id}/persons/`);
+    yield put(persons.receiveItems(resp.data.map(x => x.person)));
+    yield put(actions.fetchItemPersonsSuccess({ id, data: resp.data }));
+  } catch (err) {
+    yield put(actions.fetchItemPersonsFailure(err));
   }
 }
 
@@ -158,6 +169,26 @@ function* removeTag(action) {
   }
 }
 
+function* addPerson(action) {
+  try {
+    const { id, personID } = action.payload;
+    yield call(api.post, `/rest/content_units/${id}/persons/`, { person_id: personID,  role_id: 1});
+    yield put(actions.addPersonSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.addPersonFailure(err));
+  }
+}
+
+function* removePerson(action) {
+  try {
+    const { id, personID } = action.payload;
+    yield call(api.delete, `/rest/content_units/${id}/persons/${personID}`);
+    yield put(actions.removePersonSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.removePersonFailure(err));
+  }
+}
+
 function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
@@ -184,6 +215,9 @@ function* watchFetchItemSources() {
 
 function* watchFetchItemTags() {
   yield takeEvery(types.FETCH_ITEM_TAGS, fetchItemTags);
+}
+function* watchFetchItemPersons() {
+  yield takeEvery(types.FETCH_ITEM_PERSONS, fetchItemPersons);
 }
 
 function* watchCreate() {
@@ -218,6 +252,14 @@ function* watchRemoveTag() {
   yield takeEvery(types.REMOVE_TAG, removeTag);
 }
 
+function* watchAddPerson() {
+  yield takeEvery(types.ADD_PERSON, addPerson);
+}
+
+function* watchRemovePerson() {
+  yield takeEvery(types.REMOVE_PERSON, removePerson);
+}
+
 export const sagas = [
   watchFetchItem,
   watchFetchItemFiles,
@@ -226,6 +268,7 @@ export const sagas = [
   watchFetchItemOrigins,
   watchFetchItemSources,
   watchFetchItemTags,
+  watchFetchItemPersons,
   watchCreate,
   watchUpdateProperties,
   watchChangeSecurityLevel,
@@ -234,4 +277,6 @@ export const sagas = [
   watchRemoveSource,
   watchAddTag,
   watchRemoveTag,
+  watchAddPerson,
+  watchRemovePerson,
 ];

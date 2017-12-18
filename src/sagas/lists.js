@@ -6,8 +6,9 @@ import { actions as collections } from '../redux/modules/collections';
 import { actions as units } from '../redux/modules/content_units';
 import { actions as files } from '../redux/modules/files';
 import { actions as operations } from '../redux/modules/operations';
+import { actions as persons } from '../redux/modules/persons';
 import { selectors as filterSelectors } from '../redux/modules/filters';
-import { NS_COLLECTIONS, NS_FILES, NS_OPERATIONS, NS_UNITS, NS_COLLECTION_UNITS } from '../helpers/consts';
+import { NS_COLLECTIONS, NS_FILES, NS_OPERATIONS, NS_UNITS, NS_COLLECTION_UNITS, NS_PERSONS } from '../helpers/consts';
 import { filtersTransformer } from '../filters';
 import { updateQuery } from './helpers/url';
 
@@ -17,6 +18,7 @@ const dataReceivers = {
   [NS_COLLECTION_UNITS]: units.receiveItems,
   [NS_FILES]: files.receiveItems,
   [NS_OPERATIONS]: operations.receiveItems,
+  [NS_PERSONS]: persons.receiveItems,
 };
 
 function* fetchList(action) {

@@ -27,14 +27,17 @@ const FETCH_ITEM_SOURCES_FAILURE     = 'ContentUnits/FETCH_ITEM_SOURCES_FAILURE'
 const FETCH_ITEM_TAGS                = 'ContentUnits/FETCH_ITEM_TAGS';
 const FETCH_ITEM_TAGS_SUCCESS        = 'ContentUnits/FETCH_ITEM_TAGS_SUCCESS';
 const FETCH_ITEM_TAGS_FAILURE        = 'ContentUnits/FETCH_ITEM_TAGS_FAILURE';
+const FETCH_ITEM_PERSONS             = 'ContentUnits/FETCH_ITEM_PERSONS';
+const FETCH_ITEM_PERSONS_SUCCESS     = 'ContentUnits/FETCH_ITEM_PERSONS_SUCCESS';
+const FETCH_ITEM_PERSONS_FAILURE     = 'ContentUnits/FETCH_ITEM_PERSONS_FAILURE';
 
 const CREATE                        = 'ContentUnits/CREATE';
 const CREATE_SUCCESS                = 'ContentUnits/CREATE_SUCCESS';
 const CREATE_FAILURE                = 'ContentUnits/CREATE_FAILURE';
-const CHANGE_SECURITY_LEVEL         = 'ContentUnits/CHANGE_SECURITY_LEVEL';
 const UPDATE_PROPERTIES             = 'ContentUnits/UPDATE_PROPERTIES';
 const UPDATE_PROPERTIES_SUCCESS     = 'ContentUnits/UPDATE_PROPERTIES_SUCCESS';
 const UPDATE_PROPERTIES_FAILURE     = 'ContentUnits/UPDATE_PROPERTIES_FAILURE';
+const CHANGE_SECURITY_LEVEL         = 'ContentUnits/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'ContentUnits/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'ContentUnits/CHANGE_SECURITY_LEVEL_FAILURE';
 const UPDATE_I18N                   = 'ContentUnits/UPDATE_I18N';
@@ -52,6 +55,12 @@ const ADD_TAG_FAILURE               = 'ContentUnits/ADD_TAG_FAILURE';
 const REMOVE_TAG                    = 'ContentUnits/REMOVE_TAG';
 const REMOVE_TAG_SUCCESS            = 'ContentUnits/REMOVE_TAG_SUCCESS';
 const REMOVE_TAG_FAILURE            = 'ContentUnits/REMOVE_TAG_FAILURE';
+const ADD_PERSON                    = 'ContentUnits/ADD_PERSON';
+const ADD_PERSON_SUCCESS            = 'ContentUnits/ADD_PERSON_SUCCESS';
+const ADD_PERSON_FAILURE            = 'ContentUnits/ADD_PERSON_FAILURE';
+const REMOVE_PERSON                 = 'ContentUnits/REMOVE_PERSON';
+const REMOVE_PERSON_SUCCESS         = 'ContentUnits/REMOVE_PERSON_SUCCESS';
+const REMOVE_PERSON_FAILURE         = 'ContentUnits/REMOVE_PERSON_FAILURE';
 
 const RECEIVE_ITEMS = 'ContentUnits/RECEIVE_ITEMS';
 
@@ -77,6 +86,9 @@ export const types = {
   FETCH_ITEM_TAGS,
   FETCH_ITEM_TAGS_SUCCESS,
   FETCH_ITEM_TAGS_FAILURE,
+  FETCH_ITEM_PERSONS,
+  FETCH_ITEM_PERSONS_SUCCESS,
+  FETCH_ITEM_PERSONS_FAILURE,
 
   CREATE,
   CREATE_SUCCESS,
@@ -102,6 +114,12 @@ export const types = {
   REMOVE_TAG,
   REMOVE_TAG_SUCCESS,
   REMOVE_TAG_FAILURE,
+  ADD_PERSON,
+  ADD_PERSON_SUCCESS,
+  ADD_PERSON_FAILURE,
+  REMOVE_PERSON,
+  REMOVE_PERSON_SUCCESS,
+  REMOVE_PERSON_FAILURE,
 
   RECEIVE_ITEMS,
 };
@@ -129,8 +147,11 @@ const fetchItemSourcesFailure     = createAction(FETCH_ITEM_SOURCES_FAILURE);
 const fetchItemTags               = createAction(FETCH_ITEM_TAGS);
 const fetchItemTagsSuccess        = createAction(FETCH_ITEM_TAGS_SUCCESS);
 const fetchItemTagsFailure        = createAction(FETCH_ITEM_TAGS_FAILURE);
+const fetchItemPersons            = createAction(FETCH_ITEM_PERSONS);
+const fetchItemPersonsSuccess     = createAction(FETCH_ITEM_PERSONS_SUCCESS);
+const fetchItemPersonsFailure     = createAction(FETCH_ITEM_PERSONS_FAILURE);
 
-const create                          = createAction(CREATE, (typeID, properties, i18n) => ({
+const create                     = createAction(CREATE, (typeID, properties, i18n) => ({
   type_id: typeID,
   properties,
   i18n
@@ -158,6 +179,12 @@ const addTagFailure              = createAction(ADD_TAG_FAILURE);
 const removeTag                  = createAction(REMOVE_TAG, (id, tagID) => ({ id, tagID }));
 const removeTagSuccess           = createAction(REMOVE_TAG_SUCCESS);
 const removeTagFailure           = createAction(REMOVE_TAG_FAILURE);
+const addPerson                  = createAction(ADD_PERSON, (id, personID) => ({ id, personID }));
+const addPersonSuccess           = createAction(ADD_PERSON_SUCCESS);
+const addPersonFailure           = createAction(ADD_PERSON_FAILURE);
+const removePerson               = createAction(REMOVE_PERSON, (id, personID) => ({ id, personID }));
+const removePersonSuccess        = createAction(REMOVE_PERSON_SUCCESS);
+const removePersonFailure        = createAction(REMOVE_PERSON_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
@@ -183,6 +210,9 @@ export const actions = {
   fetchItemTags,
   fetchItemTagsSuccess,
   fetchItemTagsFailure,
+  fetchItemPersons,
+  fetchItemPersonsSuccess,
+  fetchItemPersonsFailure,
 
   create,
   createSuccess,
@@ -208,6 +238,12 @@ export const actions = {
   removeTag,
   removeTagSuccess,
   removeTagFailure,
+  addPerson,
+  addPersonSuccess,
+  addPersonFailure,
+  removePerson,
+  removePersonSuccess,
+  removePersonFailure,
 
   receiveItems,
 };
@@ -236,6 +272,9 @@ const keys = new Map([
   [FETCH_ITEM_TAGS, 'fetchItemTags'],
   [FETCH_ITEM_TAGS_SUCCESS, 'fetchItemTags'],
   [FETCH_ITEM_TAGS_FAILURE, 'fetchItemTags'],
+  [FETCH_ITEM_PERSONS, 'fetchItemPersons'],
+  [FETCH_ITEM_PERSONS_SUCCESS, 'fetchItemPersons'],
+  [FETCH_ITEM_PERSONS_FAILURE, 'fetchItemPersons'],
 
   [CREATE, 'create'],
   [CREATE_SUCCESS, 'create'],
@@ -261,6 +300,12 @@ const keys = new Map([
   [REMOVE_TAG, 'removeTag'],
   [REMOVE_TAG_SUCCESS, 'removeTag'],
   [REMOVE_TAG_FAILURE, 'removeTag'],
+  [ADD_PERSON, 'addPerson'],
+  [ADD_PERSON_SUCCESS, 'addPerson'],
+  [ADD_PERSON_FAILURE, 'addPerson'],
+  [REMOVE_PERSON, 'removePerson'],
+  [REMOVE_PERSON_SUCCESS, 'removePerson'],
+  [REMOVE_PERSON_FAILURE, 'removePerson'],
 ]);
 
 const initialState = {
@@ -347,6 +392,20 @@ const onSuccess = (state, action) => {
     byID = update(state.byID, action.payload.id,
       x => ({ ...x, tags: x.tags.filter(t => t !== action.payload.tagID) }));
     break;
+  case FETCH_ITEM_PERSONS_SUCCESS:
+    byID = merge(state.byID, {
+      id: action.payload.id,
+      persons: action.payload.data.map(x => x.person.id),
+    });
+    break;
+  case ADD_PERSON_SUCCESS:
+    byID = update(state.byID, action.payload.id,
+      x => ({ ...x, persons: [...x.persons, action.payload.personID] }));
+    break;
+  case REMOVE_PERSON_SUCCESS:
+    byID = update(state.byID, action.payload.id,
+      x => ({ ...x, persons: x.persons.filter(t => t !== action.payload.personID) }));
+    break;
   default:
     byID = state.byID;
   }
@@ -386,6 +445,9 @@ export const reducer = handleActions({
   [FETCH_ITEM_TAGS]: onRequest,
   [FETCH_ITEM_TAGS_SUCCESS]: onSuccess,
   [FETCH_ITEM_TAGS_FAILURE]: onFailure,
+  [FETCH_ITEM_PERSONS]: onRequest,
+  [FETCH_ITEM_PERSONS_SUCCESS]: onSuccess,
+  [FETCH_ITEM_PERSONS_FAILURE]: onFailure,
 
   [CREATE]: onRequest,
   [CREATE_SUCCESS]: onSuccess,
@@ -411,6 +473,12 @@ export const reducer = handleActions({
   [REMOVE_TAG]: onRequest,
   [REMOVE_TAG_SUCCESS]: onSuccess,
   [REMOVE_TAG_FAILURE]: onFailure,
+  [ADD_PERSON]: onRequest,
+  [ADD_PERSON_SUCCESS]: onSuccess,
+  [ADD_PERSON_FAILURE]: onFailure,
+  [REMOVE_PERSON]: onRequest,
+  [REMOVE_PERSON_SUCCESS]: onSuccess,
+  [REMOVE_PERSON_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 }, initialState);
