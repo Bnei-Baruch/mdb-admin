@@ -15,14 +15,11 @@ import Persons from '../Persons/Container';
 import Person from '../Person/Container';
 import Sources from '../Sources/SourcesContainer';
 import Source from '../Sources/SourceContainer';
-import Welcome from '../Welcome/Welcome';
-import Design from '../Design/Design';
-import LoginCallback from '../Login/LoginCallback';
+import HomePage from '../HomePage/HomePage';
 
 const Routes = () => (
   <Switch>
-    <Route exact path="/" component={Welcome} />
-    <Route exact path="/callback" component={LoginCallback} />
+    <Route exact path="/" component={HomePage} />
     <Route exact path="/files" component={Files} />
     <Route exact path="/files/:id" component={File} />
     <Route exact path="/content_units" component={ContentUnits} />
@@ -37,7 +34,6 @@ const Routes = () => (
     <Route exact path="/sources/:id" component={Source} />
     <Route exact path="/persons" component={Persons} />
     <Route exact path="/persons/:id" component={Person} />
-    <Route exact path="/design" component={Design} />
     <Route render={() => <h1>Page not found</h1>} />
   </Switch>
 );

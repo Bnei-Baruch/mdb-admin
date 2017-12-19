@@ -7,8 +7,7 @@ import 'semantic-ui-css/semantic.min.css';
 
 import userManager from '../../helpers/userManager';
 import { selectors as system } from '../../redux/modules/system';
-import Layout from './Layout';
-import Routes from './Routes';
+import FrontPage from '../FrontPage/FrontPage';
 import './App.css';
 
 const Loader = () => (
@@ -43,9 +42,7 @@ class App extends Component {
         <Provider store={store}>
           <OidcProvider store={store} userManager={userManager}>
             <ConnectedRouter history={history}>
-              <Layout>
-                <Routes />
-              </Layout>
+              <FrontPage />
             </ConnectedRouter>
           </OidcProvider>
         </Provider>
