@@ -4,6 +4,7 @@ import escapeRegExp from 'lodash/escapeRegExp';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
+import { Link } from 'react-router-dom';
 import { Button, Header, List, Menu, Message, Segment, Search } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
@@ -128,7 +129,9 @@ class Persons extends Component {
                     />
                   </List.Content>
                   <List.Content>
-                    {extractI18n(x.i18n, ['name'])}
+                    <Link to={`/persons/${x.id}`}>
+                      {extractI18n(x.i18n, ['name'])}
+                    </Link>
                   </List.Content>
                 </List.Item>
               )
