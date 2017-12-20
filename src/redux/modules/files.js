@@ -6,15 +6,15 @@ import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
 
-const FETCH_ITEM                    = 'Files/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS            = 'Files/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE            = 'Files/FETCH_ITEM_FAILURE';
-const FETCH_ITEM_STORAGES           = 'Files/FETCH_ITEM_STORAGES';
-const FETCH_ITEM_STORAGES_SUCCESS   = 'Files/FETCH_ITEM_STORAGES_SUCCESS';
-const FETCH_ITEM_STORAGES_FAILURE   = 'Files/FETCH_ITEM_STORAGES_FAILURE';
-const FETCH_ITEM_OPERATIONS         = 'Files/FETCH_ITEM_OPERATIONS';
-const FETCH_ITEM_OPERATIONS_SUCCESS = 'Files/FETCH_ITEM_OPERATIONS_SUCCESS';
-const FETCH_ITEM_OPERATIONS_FAILURE = 'Files/FETCH_ITEM_OPERATIONS_FAILURE';
+const FETCH_ITEM                         = 'Files/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS                 = 'Files/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE                 = 'Files/FETCH_ITEM_FAILURE';
+const FETCH_ITEM_STORAGES                = 'Files/FETCH_ITEM_STORAGES';
+const FETCH_ITEM_STORAGES_SUCCESS        = 'Files/FETCH_ITEM_STORAGES_SUCCESS';
+const FETCH_ITEM_STORAGES_FAILURE        = 'Files/FETCH_ITEM_STORAGES_FAILURE';
+const FETCH_ITEM_OPERATIONS              = 'Files/FETCH_ITEM_OPERATIONS';
+const FETCH_ITEM_OPERATIONS_SUCCESS      = 'Files/FETCH_ITEM_OPERATIONS_SUCCESS';
+const FETCH_ITEM_OPERATIONS_FAILURE      = 'Files/FETCH_ITEM_OPERATIONS_FAILURE';
 const FETCH_TREE_WITH_OPERATIONS         = 'Files/FETCH_TREE_WITH_OPERATIONS';
 const FETCH_TREE_WITH_OPERATIONS_SUCCESS = 'Files/FETCH_TREE_WITH_OPERATIONS_SUCCESS';
 const FETCH_TREE_WITH_OPERATIONS_FAILURE = 'Files/FETCH_TREE_WITH_OPERATIONS_FAILURE';
@@ -48,15 +48,15 @@ export const types = {
 
 /* Actions */
 
-const fetchItem                  = createAction(FETCH_ITEM);
-const fetchItemSuccess           = createAction(FETCH_ITEM_SUCCESS);
-const fetchItemFailure           = createAction(FETCH_ITEM_FAILURE);
-const fetchItemStorages          = createAction(FETCH_ITEM_STORAGES);
-const fetchItemStoragesSuccess   = createAction(FETCH_ITEM_STORAGES_SUCCESS);
-const fetchItemStoragesFailure   = createAction(FETCH_ITEM_STORAGES_FAILURE);
-const fetchItemOperations        = createAction(FETCH_ITEM_OPERATIONS);
-const fetchItemOperationsSuccess = createAction(FETCH_ITEM_OPERATIONS_SUCCESS);
-const fetchItemOperationsFailure = createAction(FETCH_ITEM_OPERATIONS_FAILURE);
+const fetchItem                      = createAction(FETCH_ITEM);
+const fetchItemSuccess               = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure               = createAction(FETCH_ITEM_FAILURE);
+const fetchItemStorages              = createAction(FETCH_ITEM_STORAGES);
+const fetchItemStoragesSuccess       = createAction(FETCH_ITEM_STORAGES_SUCCESS);
+const fetchItemStoragesFailure       = createAction(FETCH_ITEM_STORAGES_FAILURE);
+const fetchItemOperations            = createAction(FETCH_ITEM_OPERATIONS);
+const fetchItemOperationsSuccess     = createAction(FETCH_ITEM_OPERATIONS_SUCCESS);
+const fetchItemOperationsFailure     = createAction(FETCH_ITEM_OPERATIONS_FAILURE);
 const fetchTreeWithOperations        = createAction(FETCH_TREE_WITH_OPERATIONS);
 const fetchTreeWithOperationsSuccess = createAction(FETCH_TREE_WITH_OPERATIONS_SUCCESS);
 const fetchTreeWithOperationsFailure = createAction(FETCH_TREE_WITH_OPERATIONS_FAILURE);
