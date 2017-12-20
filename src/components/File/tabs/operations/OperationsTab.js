@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import uniq from 'lodash/uniq';
 
+import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { selectors as operations } from '../../../../redux/modules/operations';
 import { actions, selectors } from '../../../../redux/modules/files';
-import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import FilesHierarchy from './FilesHierarchy';
 
 class OperationsTab extends Component {
@@ -28,8 +28,7 @@ class OperationsTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let a = nextProps;
-    if (((nextProps.file && !nextProps.files) ||
+    if (((nextProps.file && !nextProps.file) ||
         (nextProps.file && this.props.file && nextProps.file.id !== this.props.file.id))) {
       this.props.fetchTreeWithOperations(nextProps.file.id);
     }
@@ -50,7 +49,7 @@ const mapState = (state, ownProps) => {
   const denormOperationsIDs = operations.denormIDs(state.operations);
   const operationsIds       = uniq(files.reduce((result, f) => result.concat(f.operations), []));
   return {
-    files: files,
+    files,
     operations: operationsIds ? denormOperationsIDs(operationsIds) : [],
     wip: selectors.getWIP(state.files, 'fetchTreeWithOperations'),
     err: selectors.getError(state.files, 'fetchTreeWithOperations'),
@@ -58,7 +57,9 @@ const mapState = (state, ownProps) => {
 };
 
 function mapDispatch(dispatch) {
-  return bindActionCreators({ fetchTreeWithOperations: actions.fetchTreeWithOperations }, dispatch);
+  return bindActionCreators({
+    fetchTreeWithOperations: actions.fetchTreeWithOperations
+  }, dispatch);
 }
 
 export default connect(mapState, mapDispatch)(OperationsTab);
