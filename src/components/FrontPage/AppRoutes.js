@@ -15,11 +15,11 @@ import Persons from '../Persons/Container';
 import Person from '../Person/Container';
 import Sources from '../Sources/SourcesContainer';
 import Source from '../Sources/SourceContainer';
-import HomePage from '../HomePage/HomePage';
+import Welcome from './Welcome';
 
 const Routes = () => (
   <Switch>
-    <Route exact path="/" component={HomePage} />
+    <Route exact path="/" component={Welcome} />
     <Route exact path="/files" component={Files} />
     <Route exact path="/files/:id" component={File} />
     <Route exact path="/content_units" component={ContentUnits} />

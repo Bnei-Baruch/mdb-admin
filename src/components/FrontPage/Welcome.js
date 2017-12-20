@@ -1,9 +1,9 @@
 import React from 'react';
 import { Header, Image } from 'semantic-ui-react';
 
-import logo from './KL_Tree_256.png';
+import logo from './KL_Tree_128.png';
 
-const HomePage = () => (
+const Welcome = () => (
   <div>
     <br />
     <Image src={logo} centered />
@@ -12,4 +12,4 @@ const HomePage = () => (
   </div>
 );
 
-export default HomePage;
+export default Welcome;

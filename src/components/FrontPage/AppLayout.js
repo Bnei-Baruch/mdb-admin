@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import { Grid, Image, Menu } from 'semantic-ui-react';
+import { Grid, Image, Menu, Dropdown } from 'semantic-ui-react';
 
 import userManager from '../../helpers/userManager';
 
@@ -10,7 +10,8 @@ import logo from './KL_Tree_32.png';
 class AppLayout extends PureComponent {
 
   static propTypes = {
-    children: PropTypes.element
+    children: PropTypes.element,
+    user: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -23,6 +24,8 @@ class AppLayout extends PureComponent {
   };
 
   render() {
+    const { user } = this.props;
+
     return (
       <Grid container>
         <Grid.Row>
@@ -41,7 +44,11 @@ class AppLayout extends PureComponent {
               <Menu.Item key={8} as={NavLink} to="/persons">Persons</Menu.Item>
 
               <Menu.Menu position="right">
-                <Menu.Item onClick={this.handleSignout}>Sign Out</Menu.Item>
+                <Dropdown item text={user.profile.name}>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={this.handleSignout}>Sign Out</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </Menu.Menu>
             </Menu>
             {this.props.children}

@@ -25,10 +25,8 @@ class MainPage extends PureComponent {
       return <LoginRoutes />;
     }
 
-    // TODO: organize this shit and keep whatever path user came with after login redirects...
-
     return (
-      <AppLayout>
+      <AppLayout user={user}>
         <AppRoutes />
       </AppLayout>
     );

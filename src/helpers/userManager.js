@@ -13,7 +13,7 @@ const AUTH_URL = process.env.NODE_ENV !== 'production' ?
   'https://accounts.kbb1.com/auth/realms/main';
 
 const userManagerConfig = {
-  client_id: 'mdb-admin',
+  client_id: 'mdb-admin-ui',
   redirect_uri: `${BASE_URL}/callback`,
   response_type: 'token id_token',
   scope: 'openid profile',
