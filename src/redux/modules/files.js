@@ -6,12 +6,18 @@ import { bulkMerge, merge, setMap } from '../utils';
 
 /* Types */
 
-const FETCH_ITEM                  = 'Files/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS          = 'Files/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE          = 'Files/FETCH_ITEM_FAILURE';
-const FETCH_ITEM_STORAGES         = 'Files/FETCH_ITEM_STORAGES';
-const FETCH_ITEM_STORAGES_SUCCESS = 'Files/FETCH_ITEM_STORAGES_SUCCESS';
-const FETCH_ITEM_STORAGES_FAILURE = 'Files/FETCH_ITEM_STORAGES_FAILURE';
+const FETCH_ITEM                         = 'Files/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS                 = 'Files/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE                 = 'Files/FETCH_ITEM_FAILURE';
+const FETCH_ITEM_STORAGES                = 'Files/FETCH_ITEM_STORAGES';
+const FETCH_ITEM_STORAGES_SUCCESS        = 'Files/FETCH_ITEM_STORAGES_SUCCESS';
+const FETCH_ITEM_STORAGES_FAILURE        = 'Files/FETCH_ITEM_STORAGES_FAILURE';
+const FETCH_ITEM_OPERATIONS              = 'Files/FETCH_ITEM_OPERATIONS';
+const FETCH_ITEM_OPERATIONS_SUCCESS      = 'Files/FETCH_ITEM_OPERATIONS_SUCCESS';
+const FETCH_ITEM_OPERATIONS_FAILURE      = 'Files/FETCH_ITEM_OPERATIONS_FAILURE';
+const FETCH_TREE_WITH_OPERATIONS         = 'Files/FETCH_TREE_WITH_OPERATIONS';
+const FETCH_TREE_WITH_OPERATIONS_SUCCESS = 'Files/FETCH_TREE_WITH_OPERATIONS_SUCCESS';
+const FETCH_TREE_WITH_OPERATIONS_FAILURE = 'Files/FETCH_TREE_WITH_OPERATIONS_FAILURE';
 
 const CHANGE_SECURITY_LEVEL         = 'Files/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'Files/CHANGE_SECURITY_LEVEL_SUCCESS';
@@ -26,6 +32,12 @@ export const types = {
   FETCH_ITEM_STORAGES,
   FETCH_ITEM_STORAGES_SUCCESS,
   FETCH_ITEM_STORAGES_FAILURE,
+  FETCH_ITEM_OPERATIONS,
+  FETCH_ITEM_OPERATIONS_SUCCESS,
+  FETCH_ITEM_OPERATIONS_FAILURE,
+  FETCH_TREE_WITH_OPERATIONS,
+  FETCH_TREE_WITH_OPERATIONS_SUCCESS,
+  FETCH_TREE_WITH_OPERATIONS_FAILURE,
 
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
@@ -36,12 +48,18 @@ export const types = {
 
 /* Actions */
 
-const fetchItem                = createAction(FETCH_ITEM);
-const fetchItemSuccess         = createAction(FETCH_ITEM_SUCCESS);
-const fetchItemFailure         = createAction(FETCH_ITEM_FAILURE);
-const fetchItemStorages        = createAction(FETCH_ITEM_STORAGES);
-const fetchItemStoragesSuccess = createAction(FETCH_ITEM_STORAGES_SUCCESS);
-const fetchItemStoragesFailure = createAction(FETCH_ITEM_STORAGES_FAILURE);
+const fetchItem                      = createAction(FETCH_ITEM);
+const fetchItemSuccess               = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure               = createAction(FETCH_ITEM_FAILURE);
+const fetchItemStorages              = createAction(FETCH_ITEM_STORAGES);
+const fetchItemStoragesSuccess       = createAction(FETCH_ITEM_STORAGES_SUCCESS);
+const fetchItemStoragesFailure       = createAction(FETCH_ITEM_STORAGES_FAILURE);
+const fetchItemOperations            = createAction(FETCH_ITEM_OPERATIONS);
+const fetchItemOperationsSuccess     = createAction(FETCH_ITEM_OPERATIONS_SUCCESS);
+const fetchItemOperationsFailure     = createAction(FETCH_ITEM_OPERATIONS_FAILURE);
+const fetchTreeWithOperations        = createAction(FETCH_TREE_WITH_OPERATIONS);
+const fetchTreeWithOperationsSuccess = createAction(FETCH_TREE_WITH_OPERATIONS_SUCCESS);
+const fetchTreeWithOperationsFailure = createAction(FETCH_TREE_WITH_OPERATIONS_FAILURE);
 
 const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
@@ -56,6 +74,12 @@ export const actions = {
   fetchItemStorages,
   fetchItemStoragesSuccess,
   fetchItemStoragesFailure,
+  fetchItemOperations,
+  fetchItemOperationsSuccess,
+  fetchItemOperationsFailure,
+  fetchTreeWithOperations,
+  fetchTreeWithOperationsSuccess,
+  fetchTreeWithOperationsFailure,
 
   changeSecurityLevel,
   changeSecurityLevelSuccess,
@@ -73,6 +97,15 @@ const keys = new Map([
   [FETCH_ITEM_STORAGES, 'fetchStorages'],
   [FETCH_ITEM_STORAGES_SUCCESS, 'fetchStorages'],
   [FETCH_ITEM_STORAGES_FAILURE, 'fetchStorages'],
+  [FETCH_ITEM_STORAGES, 'fetchStorages'],
+  [FETCH_ITEM_STORAGES_SUCCESS, 'fetchStorages'],
+  [FETCH_ITEM_STORAGES_FAILURE, 'fetchStorages'],
+  [FETCH_ITEM_OPERATIONS, 'fetchItemOperations'],
+  [FETCH_ITEM_OPERATIONS_SUCCESS, 'fetchItemOperations'],
+  [FETCH_ITEM_OPERATIONS_FAILURE, 'fetchItemOperations'],
+  [FETCH_TREE_WITH_OPERATIONS, 'fetchTreeWithOperations'],
+  [FETCH_TREE_WITH_OPERATIONS_SUCCESS, 'fetchTreeWithOperations'],
+  [FETCH_TREE_WITH_OPERATIONS_FAILURE, 'fetchTreeWithOperations'],
 
   [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
   [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
@@ -114,6 +147,19 @@ const onSuccess = (state, action) => {
       storages: action.payload.data.map(x => x.id),
     });
     break;
+  case FETCH_ITEM_OPERATIONS_SUCCESS:
+    byID = merge(state.byID, {
+      id: action.payload.id,
+      operations: action.payload.data.map(x => x.id),
+    });
+    break;
+  case FETCH_TREE_WITH_OPERATIONS_SUCCESS:
+    byID = bulkMerge(state.byID, action.payload.files);
+    byID = merge(byID, {
+      id: action.payload.id,
+      tree: action.payload.files.map(x => x.id),
+    });
+    break;
   default:
     byID = state.byID;
   }
@@ -138,6 +184,9 @@ export const reducer = handleActions({
   [FETCH_ITEM_STORAGES]: onRequest,
   [FETCH_ITEM_STORAGES_SUCCESS]: onSuccess,
   [FETCH_ITEM_STORAGES_FAILURE]: onFailure,
+  [FETCH_TREE_WITH_OPERATIONS]: onRequest,
+  [FETCH_TREE_WITH_OPERATIONS_SUCCESS]: onSuccess,
+  [FETCH_TREE_WITH_OPERATIONS_FAILURE]: onFailure,
 
   [CHANGE_SECURITY_LEVEL]: onRequest,
   [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,

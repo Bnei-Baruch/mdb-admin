@@ -8,9 +8,11 @@ import { ErrorSplash, FrownSplash, LoadingSplash } from '../shared/Splash';
 import { formatError } from '../../helpers/utils';
 import DetailsTab from './tabs/details/DetailsTab';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
+import OperationsTab from './tabs/operations/OperationsTab';
 
 const items = [
   { name: 'Details', element: DetailsTab },
+  { name: 'Operations', element: OperationsTab },
   { name: 'Danger Zone', element: DangerZoneTab },
 ];
 
