@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
 
-import { SECURITY_LEVELS } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/persons';
 import * as shapes from '../../../shapes';
@@ -12,7 +10,6 @@ import * as shapes from '../../../shapes';
 class DangerZoneTab extends Component {
 
   static propTypes = {
-    changeSecurityLevel: PropTypes.func.isRequired,
     person: shapes.Person,
     err: shapes.Error,
   };
@@ -23,46 +20,20 @@ class DangerZoneTab extends Component {
   };
 
   state = {
-    changedSecure: null,
-    modals: {
-      confirmChangeSecurityLevel: false,
-    },
+    deletePerson: null,
+    confirmDelete: false,
   };
 
-  handleChangeSecure = (e, data) => {
-    this.setState({
-      changedSecure: data.value,
-      modals: {
-        ...this.state.modals,
-        confirmChangeSecurityLevel: true
-      }
-    });
-  };
+  handleDelete = () => this.setState({ confirmDelete: true });
 
-  handleConfirmChangeSecure = () => {
-    const { person, changeSecurityLevel } = this.props;
-    const level                         = this.state.changedSecure;
-    changeSecurityLevel(person.id, level);
-    this.hideChangeSecurityLevelModal();
-  };
-
-  hideChangeSecurityLevelModal = () => {
-    this.setState({
-      changedSecure: null,
-      modals: {
-        ...this.state.modals,
-        confirmChangeSecurityLevel: false,
-      }
-    });
+  handleConfirmDelete = () => {
+    const { person, deletePerson } = this.props;
+    deletePerson(person.id);
+    this.setState({ confirmDelete: false });
   };
 
   render() {
-    const { person, err } = this.props;
-
-    const options = Object.keys(SECURITY_LEVELS)
-      .map(k => SECURITY_LEVELS[k])
-      .filter(x => x.value !== person.secure);
-
+    const { wip, err } = this.props;
     return (
       <Grid>
         <Grid.Row>
@@ -72,22 +43,22 @@ class DangerZoneTab extends Component {
               <List divided verticalAlign="middle">
                 <List.Item>
                   <List.Content floated="right">
-                    <Button.Group color="red">
-                      <Dropdown
-                        button
-                        upward
-                        options={options}
-                        value={options[0].value}
-                        onChange={this.handleChangeSecure}
-                        selectOnBlur={false}
-                      />
-                    </Button.Group>
+                    {
+                      wip ?
+                        <Icon name="spinner" loading /> :
+                        null
+                    }
+                    <Button
+                      color="red"
+                      content="Delete"
+                      onClick={this.handleDelete}
+                    />
                   </List.Content>
                   <List.Content>
                     <List.Header>
-                      Change Security Level
+                      Delete Permanently
                     </List.Header>
-                    Make sure you understand what you are doing.
+                    BE CAREFUL, there is no going back !
                     {
                       err ?
                         <Header
@@ -105,17 +76,17 @@ class DangerZoneTab extends Component {
             <Modal
               basic
               size="small"
-              open={this.state.modals.confirmChangeSecurityLevel}
+              open={this.state.confirmDelete}
             >
-              <Header icon="spy" content="Change Security Level" />
+              <Header icon="trash" content="Delete person" />
               <Modal.Content>
-                <p>Are you sure you want to change the security level?</p>
+                <p>Are you sure you want to permanently delete this person?</p>
               </Modal.Content>
               <Modal.Actions>
-                <Button basic color="green" inverted onClick={this.hideChangeSecurityLevelModal}>
+                <Button basic color="green" inverted onClick={this.hideDeleteModal}>
                   <Icon name="remove" /> No
                 </Button>
-                <Button color="red" inverted onClick={this.handleConfirmChangeSecure}>
+                <Button color="red" inverted onClick={this.handleConfirmDelete}>
                   <Icon name="checkmark" /> Yes
                 </Button>
               </Modal.Actions>
@@ -128,11 +99,14 @@ class DangerZoneTab extends Component {
 }
 
 const mapState = state => ({
-  err: selectors.getError(state.persons, 'changeSecurityLevel'),
+  err: selectors.getError(state.persons, 'delete'),
+  wip: selectors.getWIP(state.persons, 'delete'),
 });
 
 function mapDispatch(dispatch) {
-  return bindActionCreators({ changeSecurityLevel: actions.changeSecurityLevel }, dispatch);
+  return bindActionCreators({
+    deletePerson: actions.deletePerson
+  }, dispatch);
 }
 
 export default connect(mapState, mapDispatch)(DangerZoneTab);

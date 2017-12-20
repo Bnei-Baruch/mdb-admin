@@ -1,9 +1,12 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 
 import { actions, types } from '../redux/modules/persons';
 import { types as system } from '../redux/modules/system';
 import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
+import { NS_PERSONS } from '../helpers/consts';
+import { actions as lists } from '../redux/modules/lists';
 
 function* fetchItem(action) {
   try {
@@ -53,13 +56,15 @@ function* updateI18n(action) {
   }
 }
 
-function* changeSecurityLevel(action) {
+function* deletePerson(action) {
+  const id = action.payload;
   try {
-    const { id, level } = action.payload;
-    const resp          = yield call(api.put, `/rest/persons/${id}/`, { secure: level });
-    yield put(actions.changeSecurityLevelSuccess(resp.data));
+    yield call(api.delete, `/rest/persons/${id}/`);
+    yield put(lists.removeItem(NS_PERSONS, id));
+    yield put(actions.deleteSuccess(id));
+    yield put(push('/persons'));
   } catch (err) {
-    yield put(actions.changeSecurityLevelFailure(err));
+    yield put(actions.deleteFailure(err));
   }
 }
 
@@ -83,8 +88,8 @@ function* watchUpdateI18n() {
   yield takeEvery(types.UPDATE_I18N, updateI18n);
 }
 
-function* watchChangeSecurityLevel() {
-  yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
+function* watchDelete() {
+  yield takeEvery(types.DELETE, deletePerson);
 }
 
 export const sagas = [
@@ -93,5 +98,5 @@ export const sagas = [
   watchCreate,
   watchUpdateI18n,
   watchUpdateInfo,
-  watchChangeSecurityLevel,
+  watchDelete,
 ];
