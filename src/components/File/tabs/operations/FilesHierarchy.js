@@ -6,18 +6,19 @@ import filesize from 'filesize';
 import { Link } from 'react-router-dom';
 import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
 
-import * as shapes from '../../../shapes';
-import JWPlayer from '../../../shared/JWPlayer';
-import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
 import {
   ALL_FILE_TYPES,
   ALL_LANGUAGES,
   EMPTY_ARRAY,
   LANG_UNKNOWN,
   LANGUAGES,
+  OPERATION_TYPE_BY_ID,
   SECURITY_LEVELS
 } from '../../../../helpers/consts';
+import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
+import * as shapes from '../../../shapes';
+import JWPlayer from '../../../shared/JWPlayer';
+import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 
 import './files.css';
 
@@ -191,7 +192,21 @@ class FilesHierarchy extends Component {
     const durationDisplay = duration ?
       moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
       null;
-    const operations      = this.props.operations.filter(o => o && file.operations && file.operations.some(id => (o.id === id)));
+    const operations      = this.props.operations
+      .filter(o =>
+        o &&
+        file.operations &&
+        file.operations.some(x => (o.id === x)));
+
+    // sort by created_at
+    operations.sort((a, b) => {
+      if (a.created_at < b.created_at) {
+        return -1;
+      } else if (a.created_at > b.created_at) {
+        return 1;
+      }
+      return 0;
+    });
 
     return (
       <div key={id}>
@@ -237,9 +252,11 @@ class FilesHierarchy extends Component {
                 <List.Item>
                   Operations: {
                   operations.map((o, i) => (
-                    <span key={i}>
-                      {i === 0 ? `` : `, `}
-                      <Link to={`/operations/${o.id}`}>{o.uid}</Link>
+                    <span key={o.id}>
+                      {i === 0 ? '' : ', '}
+                      <Link to={`/operations/${o.id}`} title={o.uid}>
+                        {OPERATION_TYPE_BY_ID[o.type_id]}
+                      </Link>
                     </span>
                   ))
                 }
