@@ -234,7 +234,16 @@ class FilesHierarchy extends Component {
                       <Icon name="ban" color="red" />
                   }
                 </List.Item>
-                <List.Item>{operations.map(o => o.uid).join(', ')}</List.Item>
+                <List.Item>
+                  Operations: {
+                  operations.map((o, i) => (
+                    <span key={i}>
+                      {i === 0 ? `` : `, `}
+                      <Link to={`/operations/${o.id}`}>{o.uid}</Link>
+                    </span>
+                  ))
+                }
+                </List.Item>
               </List>
             </Header.Subheader>
           </Header.Content>
