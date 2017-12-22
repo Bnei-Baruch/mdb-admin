@@ -24,6 +24,10 @@ class PersonsContainer extends Component {
     errOfCreate: null,
   };
 
+  componentDidMount() {
+    this.handlePageChange(1);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
     const nWip            = nextProps.wipOfCreate;
@@ -51,14 +55,6 @@ class PersonsContainer extends Component {
     this.askForData(pageNo);
   };
 
-  handleFiltersChange = () => this.handlePageChange(1);
-
-  handleFiltersHydrated = () => {
-    const { location }       = this.props;
-    const pageNoFromLocation = this.getPageNo(location.search);
-    this.handlePageChange(pageNoFromLocation);
-  };
-
   askForData = (pageNo) => {
     this.props.fetchList(NS_PERSONS, pageNo);
   };
@@ -70,8 +66,6 @@ class PersonsContainer extends Component {
       <MainPage
         {...rest}
         onPageChange={this.handlePageChange}
-        onFiltersChange={this.handleFiltersChange}
-        onFiltersHydrated={this.handleFiltersHydrated}
       />
     );
   }
@@ -92,8 +86,6 @@ const mapState = (state) => {
 
 function mapDispatch(dispatch) {
   return bindActionCreators({
-    // getWIP: persons.getWIP,
-    // getError: persons.getWIP,
     fetchList: actions.fetchList,
     updateInfo: actions.updateInfo,
     setPage: actions.setPage,

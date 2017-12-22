@@ -2,21 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header, Icon, Label, Menu, Modal } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_PERSONS } from '../../helpers/consts';
+import { EMPTY_ARRAY } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
-import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../Filters/FilterTags/FilterTags';
-import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
 import CreatePersonForm from '../shared/Forms/Persons/CreatePersonForm';
 import PersonsList from './List';
-import Others from './filters/Others';
-
-const filterTabs = [
-  { name: 'Others', element: Others },
-];
 
 class PersonsMainPage extends Component {
 
@@ -30,8 +22,6 @@ class PersonsMainPage extends Component {
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
-    onFiltersChange: PropTypes.func.isRequired,
-    onFiltersHydrated: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -45,9 +35,9 @@ class PersonsMainPage extends Component {
   };
 
   state = {
-    showFilters: false,
     newPerson: false,
   };
+
 
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
@@ -58,14 +48,11 @@ class PersonsMainPage extends Component {
     }
   }
 
-  toggleFilters = () =>
-    this.setState({ showFilters: !this.state.showFilters });
-
   toggleNewPerson = () =>
     this.setState({ newPerson: !this.state.newPerson });
 
   render() {
-    const { showFilters, newPerson } = this.state;
+    const { newPerson } = this.state;
 
     const
       {
@@ -77,8 +64,6 @@ class PersonsMainPage extends Component {
         err,
         errOfCreate,
         onPageChange,
-        onFiltersChange,
-        onFiltersHydrated,
         create,
       } = this.props;
 
@@ -89,10 +74,6 @@ class PersonsMainPage extends Component {
             <Header content="Persons" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item onClick={this.toggleFilters}>
-              <Icon name="filter" />
-              {showFilters ? 'Hide' : 'Show'} Filters
-            </Menu.Item>
             <Menu.Item onClick={this.toggleNewPerson}>
               <Icon name="plus" />
               New Person
@@ -100,22 +81,7 @@ class PersonsMainPage extends Component {
           </Menu.Menu>
         </Menu>
 
-        <FiltersHydrator namespace={NS_PERSONS} onHydrated={onFiltersHydrated} />
-
         <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              {
-                showFilters ?
-                  <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={onFiltersChange} />
-                    <br />
-                  </div> :
-                  null
-              }
-              <FilterTags namespace={NS_PERSONS} onClose={onFiltersChange} />
-            </Grid.Column>
-          </Grid.Row>
           <Grid.Row>
             <Grid.Column>
               <div style={{ textAlign: 'right' }}>

@@ -4,6 +4,7 @@ import escapeRegExp from 'lodash/escapeRegExp';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
+import { Link } from 'react-router-dom';
 import { Button, Header, List, Menu, Message, Segment, Search } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
@@ -86,15 +87,18 @@ class Persons extends Component {
   doFilter = debounce(() => {
     const regExp   = new RegExp(escapeRegExp(this.state.query), 'i');
     const searched = this.props.allPersons
-      .filter(r => (regExp.test(extractI18n(r.i18n, ['name']))));
+      .filter(p => (regExp.test(extractI18n(p.i18n, ['name'])))).map(p => ({
+        id: p.id,
+        title: extractI18n(p.i18n, ['name'])[0],
+      }));
     this.setState({ searched });
   }, 150);
 
   resetComponent = () => this.setState({ searched: [], query: '' });
 
-  renderResult = (person) => {
-    const { id, i18n } = person;
-    return <div key={id}>{extractI18n(i18n, ['name'])}</div>;
+  renderResult = (item) => {
+    const { id, title } = item;
+    return <div key={id}>{title}</div>;
   };
 
   render() {
@@ -128,7 +132,9 @@ class Persons extends Component {
                     />
                   </List.Content>
                   <List.Content>
-                    {extractI18n(x.i18n, ['name'])}
+                    <Link to={`/persons/${x.id}`}>
+                      {extractI18n(x.i18n, ['name'])}
+                    </Link>
                   </List.Content>
                 </List.Item>
               )
@@ -148,9 +154,9 @@ class Persons extends Component {
             <Menu.Item>
               <Search
                 aligned="right"
-                placeholder="הוסף פרסון"
+                placeholder="הוסף אישיות"
                 className="rtl-dir"
-                noResultsMessage="לא נמצאו תגיות."
+                noResultsMessage="באתי ואין איש"
                 onResultSelect={this.handleResultSelect}
                 onSearchChange={this.handleSearchChange}
                 resultRenderer={this.renderResult}

@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { setMap, merge, bulkMerge } from '../utils';
+import { setMap, merge, bulkMerge, del } from '../utils';
 
 /* Types */
 
@@ -24,9 +24,9 @@ const UPDATE_INFO         = 'Tags/UPDATE_INFO';
 const UPDATE_INFO_SUCCESS = 'Tags/UPDATE_INFO_SUCCESS';
 const UPDATE_INFO_FAILURE = 'Tags/UPDATE_INFO_FAILURE';
 
-const CHANGE_SECURITY_LEVEL         = 'Persons/CHANGE_SECURITY_LEVEL';
-const CHANGE_SECURITY_LEVEL_SUCCESS = 'Persons/CHANGE_SECURITY_LEVEL_SUCCESS';
-const CHANGE_SECURITY_LEVEL_FAILURE = 'Persons/CHANGE_SECURITY_LEVEL_FAILURE';
+const DELETE         = 'Persons/DELETE';
+const DELETE_SUCCESS = 'Persons/DELETE_SUCCESS';
+const DELETE_FAILURE = 'Persons/DELETE_FAILURE';
 
 const RECEIVE_ITEMS = 'Persons/RECEIVE_ITEMS';
 
@@ -48,9 +48,9 @@ export const types = {
   UPDATE_INFO,
   UPDATE_INFO_SUCCESS,
   UPDATE_INFO_FAILURE,
-  CHANGE_SECURITY_LEVEL,
-  CHANGE_SECURITY_LEVEL_SUCCESS,
-  CHANGE_SECURITY_LEVEL_FAILURE,
+  DELETE,
+  DELETE_SUCCESS,
+  DELETE_FAILURE,
 
   RECEIVE_ITEMS,
 };
@@ -68,15 +68,15 @@ const create        = createAction(CREATE, (pattern, i18n) => ({ pattern, i18n }
 const createSuccess = createAction(CREATE_SUCCESS);
 const createFailure = createAction(CREATE_FAILURE);
 
-const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
-const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
-const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
-const updateI18n                 = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
-const updateI18nSuccess          = createAction(UPDATE_I18N_SUCCESS);
-const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
-const updateInfo                 = createAction(UPDATE_INFO, (id, pattern) => ({ id, pattern }));
-const updateInfoSuccess          = createAction(UPDATE_INFO_SUCCESS);
-const updateInfoFailure          = createAction(UPDATE_INFO_FAILURE);
+const deletePerson      = createAction(DELETE);
+const deleteSuccess     = createAction(DELETE_SUCCESS);
+const deleteFailure     = createAction(DELETE_FAILURE);
+const updateI18n        = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
+const updateI18nSuccess = createAction(UPDATE_I18N_SUCCESS);
+const updateI18nFailure = createAction(UPDATE_I18N_FAILURE);
+const updateInfo        = createAction(UPDATE_INFO, (id, pattern) => ({ id, pattern }));
+const updateInfoSuccess = createAction(UPDATE_INFO_SUCCESS);
+const updateInfoFailure = createAction(UPDATE_INFO_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
@@ -98,9 +98,9 @@ export const actions = {
   updateI18n,
   updateI18nSuccess,
   updateI18nFailure,
-  changeSecurityLevel,
-  changeSecurityLevelSuccess,
-  changeSecurityLevelFailure,
+  deletePerson,
+  deleteSuccess,
+  deleteFailure,
 
   receiveItems,
 };
@@ -125,9 +125,9 @@ const keys = new Map([
   [UPDATE_I18N, 'updateI18n'],
   [UPDATE_I18N_SUCCESS, 'updateI18n'],
   [UPDATE_I18N_FAILURE, 'updateI18n'],
-  [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
-  [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
-  [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
+  [DELETE, 'delete'],
+  [DELETE_SUCCESS, 'delete'],
+  [DELETE_FAILURE, 'delete'],
 ]);
 
 const initialState = {
@@ -159,12 +159,15 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_SUCCESS:
   case UPDATE_I18N_SUCCESS:
   case UPDATE_INFO_SUCCESS:
-  case CHANGE_SECURITY_LEVEL_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ALL_SUCCESS:
     byID = new Map(action.payload.map(x => [x.id, x]));
     break;
+  case DELETE_SUCCESS:
+    byID = del(state.byID, action.payload);
+    break;
+
   default:
     byID = state.byID;
   }
@@ -200,9 +203,9 @@ export const reducer = handleActions({
   [UPDATE_I18N]: onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
   [UPDATE_I18N_FAILURE]: onFailure,
-  [CHANGE_SECURITY_LEVEL]: onRequest,
-  [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
-  [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
+  [DELETE]: onRequest,
+  [DELETE_SUCCESS]: onSuccess,
+  [DELETE_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 }, initialState);
@@ -211,7 +214,9 @@ export const reducer = handleActions({
 
 const getPersons       = state => state.byID;
 const getPersonById    = (state, id) => state.byID.get(id);
-const getWIP           = (state, key) => state.wip.get(key);
+const getWIP           = function (state, key) {
+  return state.wip.get(key);
+};
 const getError         = (state, key) => state.errors.get(key);
 const denormIDs        = createSelector(getPersons, byID => memoize(ids => ids.map(id => byID.get(id))));
 const getPersonList    = createSelector(getPersons, persons => Array.from(persons.values()));

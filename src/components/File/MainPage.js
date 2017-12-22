@@ -9,10 +9,12 @@ import { formatError } from '../../helpers/utils';
 import DetailsTab from './tabs/details/DetailsTab';
 import AssociationsTab from './tabs/associations/AssociationsTab';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
+import OperationsTab from './tabs/operations/OperationsTab';
 
 const items = [
   { name: 'Details', element: DetailsTab },
   { name: 'Associations', element: AssociationsTab },
+  { name: 'Operations', element: OperationsTab },
   { name: 'Danger Zone', element: DangerZoneTab },
 ];
 
