@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { actions, types } from '../redux/modules/files';
-import { actions as storages} from '../redux/modules/storages';
+import { actions as storages } from '../redux/modules/storages';
 import api from '../helpers/apiClient';
 
 function* fetchItem(action) {
@@ -34,6 +34,16 @@ function* changeSecurityLevel(action) {
   }
 }
 
+function* updateProperties(action) {
+  const { id, properties } = action.payload;
+  try {
+    yield call(api.put, `/rest/files/${id}/`, properties);
+    yield put(actions.updatePropertiesSuccess({ id, properties }));
+  } catch (err) {
+    yield put(actions.updatePropertiesFailure({ ...err, content_units_id: properties.content_unit_id }));
+  }
+}
+
 function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
@@ -46,8 +56,13 @@ function* watchChangeSecurityLevel() {
   yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
 }
 
+function* watchUpdateProperties() {
+  yield takeEvery(types.UPDATE_PROPERTIES, updateProperties);
+}
+
 export const sagas = [
   watchFetchItem,
   watchfetchItemStorages,
   watchChangeSecurityLevel,
+  watchUpdateProperties,
 ];

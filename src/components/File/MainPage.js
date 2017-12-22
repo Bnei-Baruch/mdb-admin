@@ -7,10 +7,12 @@ import TabsMenu from '../shared/TabsMenu';
 import { ErrorSplash, FrownSplash, LoadingSplash } from '../shared/Splash';
 import { formatError } from '../../helpers/utils';
 import DetailsTab from './tabs/details/DetailsTab';
+import AssociationsTab from './tabs/associations/AssociationsTab';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
 
 const items = [
   { name: 'Details', element: DetailsTab },
+  { name: 'Associations', element: AssociationsTab },
   { name: 'Danger Zone', element: DangerZoneTab },
 ];
 
