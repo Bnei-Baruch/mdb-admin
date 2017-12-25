@@ -417,11 +417,14 @@ const onSuccess = (state, action) => {
     errors: setMap(state.errors, key, null),
   };
 };
-
-const onReceiveItems = (state, action) => ({
-  ...state,
-  byID: bulkMerge(state.byID, action.payload),
-});
+//@TODO - ask Edo if need update CU on change file properties
+function onReceiveItems (state, action){
+  console.log(action);
+  return {
+    ...state,
+    byID: bulkMerge(state.byID, action.payload),
+  };
+}
 
 export const reducer = handleActions({
   [FETCH_ITEM]: onRequest,

@@ -4,6 +4,7 @@ import api from '../helpers/apiClient';
 import { actions, types } from '../redux/modules/files';
 import { actions as storages } from '../redux/modules/storages';
 import { actions as operations } from '../redux/modules/operations';
+import { actions as units } from '../redux/modules/content_units';
 
 function* fetchItem(action) {
   try {
@@ -50,8 +51,9 @@ function* changeSecurityLevel(action) {
 function* updateProperties(action) {
   const { id, properties } = action.payload;
   try {
-    yield call(api.put, `/rest/files/${id}/`, properties);
+    const resp = yield call(api.put, `/rest/files/${id}/`, properties);
     yield put(actions.updatePropertiesSuccess({ id, properties }));
+    yield put(units.receiveItems(resp.data.map(x => x.content_unit)));
   } catch (err) {
     yield put(actions.updatePropertiesFailure({ ...err, content_units_id: properties.content_unit_id }));
   }
