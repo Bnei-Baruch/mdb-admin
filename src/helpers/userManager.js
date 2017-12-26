@@ -1,16 +1,6 @@
-import { Log as oidclog } from 'oidc-client';
 import { createUserManager } from 'redux-oidc';
 
-oidclog.logger = console;
-oidclog.level  = 4;
-
-const BASE_URL = process.env.NODE_ENV !== 'production' ?
-  `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}` :
-  'http://app.mdb.bbdomain.org/admin';
-
-const AUTH_URL = process.env.NODE_ENV !== 'production' ?
-  process.env.REACT_APP_AUTH_URL :
-  'https://accounts.kbb1.com/auth/realms/main';
+import { AUTH_URL, BASE_URL } from './env';
 
 const userManagerConfig = {
   client_id: 'mdb-admin-ui',

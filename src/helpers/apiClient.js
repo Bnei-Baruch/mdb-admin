@@ -1,9 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 
-const API_BACKEND = process.env.NODE_ENV !== 'production' ?
-  process.env.REACT_APP_MDB_URL :
-  'http://app.mdb.bbdomain.org/';
+import { API_BACKEND } from './env';
 
 const client = axios.create({
   baseURL: API_BACKEND,
