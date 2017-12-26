@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import { Grid, Image, Menu, Dropdown } from 'semantic-ui-react';
+import { Dropdown, Grid, Image, Menu } from 'semantic-ui-react';
 
+import { AUTH_URL } from '../../helpers/env';
 import userManager from '../../helpers/userManager';
 
 import logo from './KL_Tree_32.png';
@@ -46,6 +47,10 @@ class AppLayout extends PureComponent {
               <Menu.Menu position="right">
                 <Dropdown item text={user.profile.name}>
                   <Dropdown.Menu>
+                    <Dropdown.Item as="a" href={`${AUTH_URL}/account`} target="_blank">
+                      My Account
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
                     <Dropdown.Item onClick={this.handleSignout}>Sign Out</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
