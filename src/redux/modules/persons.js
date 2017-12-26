@@ -214,9 +214,7 @@ export const reducer = handleActions({
 
 const getPersons       = state => state.byID;
 const getPersonById    = (state, id) => state.byID.get(id);
-const getWIP           = function (state, key) {
-  return state.wip.get(key);
-};
+const getWIP           = (state, key) => state.wip.get(key);
 const getError         = (state, key) => state.errors.get(key);
 const denormIDs        = createSelector(getPersons, byID => memoize(ids => ids.map(id => byID.get(id))));
 const getPersonList    = createSelector(getPersons, persons => Array.from(persons.values()));

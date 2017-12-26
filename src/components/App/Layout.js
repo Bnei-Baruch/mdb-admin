@@ -21,6 +21,7 @@ const Layout = props => (
           <Menu.Item key={6} as={NavLink} to="/tags">Tags</Menu.Item>
           <Menu.Item key={7} as={NavLink} to="/sources">Sources</Menu.Item>
           <Menu.Item key={8} as={NavLink} to="/persons">Persons</Menu.Item>
+          <Menu.Item key={9} as={NavLink} to="/publishers">Publishers</Menu.Item>
         </Menu>
         {props.children}
       </Grid.Column>
