@@ -2,10 +2,12 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function rewireSilentRenew(config, env) {
-  config.entry = {
-    main: config.entry.main || config.entry,
-    silentRenew: ['./src/silent_renew.js']
-  };
+  config.entry = Object.assign(
+    {
+      main: config.entry.main || config.entry,
+      silentRenew: ['./src/silent_renew.js']
+    },
+    config.entry);
 
   // emit to different filename in development
   if (config.output.filename === 'static/js/bundle.js') {

@@ -18,6 +18,7 @@
     "eslint-plugin-jest": "^20.0.3",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
+    "react-app-rewire-vendor-splitting": "^1.1.2",
     "react-app-rewired": "^1.4.0",
     "react-scripts": "^1.0.7",
     "react-test-renderer": "^15.6.1",
