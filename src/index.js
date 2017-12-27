@@ -9,6 +9,7 @@ import { routerMiddleware as createRouterMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import createOidcMiddleware from 'redux-oidc';
 
+import { isProduction } from './helpers/env';
 import userManager from './helpers/userManager';
 import reducer from './redux';
 import { actions as system } from './redux/modules/system';
@@ -19,7 +20,6 @@ import App from './components/App/App';
 //
 // Create redux store
 //
-const isProduction = process.env.NODE_ENV === 'production';
 
 // if (!isProduction) {
 //   const { whyDidYouUpdate } = require('why-did-you-update');
@@ -40,7 +40,7 @@ const history          = createHistory({
 const routerMiddleware = createRouterMiddleware(history);
 
 const store = createStore(reducer, {}, compose(
-  applyMiddleware(oidcMiddleware, routerMiddleware, sagaMiddleWare),
+  applyMiddleware(routerMiddleware, sagaMiddleWare, oidcMiddleware),
   devToolsStoreEnhancer()
 ));
 

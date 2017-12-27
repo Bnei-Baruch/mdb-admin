@@ -1,6 +1,10 @@
+import { Log as oidclog } from 'oidc-client';
 import { createUserManager } from 'redux-oidc';
 
 import { AUTH_URL, BASE_URL } from './env';
+
+oidclog.logger = console;
+oidclog.level  = 4;
 
 const userManagerConfig = {
   client_id: 'mdb-admin-ui',
@@ -9,10 +13,8 @@ const userManagerConfig = {
   scope: 'openid profile',
   authority: AUTH_URL,
   post_logout_redirect_uri: `${BASE_URL}/`,
-  // silent_redirect_uri: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/silent_renew.html`,
-  // automaticSilentRenew: true,
-  // filterProtocolClaims: false,
-  // loadUserInfo: true,
+  automaticSilentRenew: true,
+  silent_redirect_uri: `${BASE_URL}/silent_renew.html`,
 };
 
 const userManager = createUserManager(userManagerConfig);

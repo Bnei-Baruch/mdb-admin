@@ -11,6 +11,14 @@ class LoginPage extends PureComponent {
     location: shapes.HistoryLocation.isRequired,
   };
 
+  componentDidMount() {
+    // keep current location in state so we'll have it once auth is complete
+    // and we're back in the app.
+    // We need this to redirect the user to location he wanted in the first place.
+    const { location } = this.props;
+    userManager.signinSilent({ state: JSON.stringify({ location }) });
+  }
+
   handleLogin = (e) => {
     e.preventDefault();
 

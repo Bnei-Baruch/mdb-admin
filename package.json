@@ -18,6 +18,7 @@
     "eslint-plugin-jest": "^20.0.3",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
+    "react-app-rewired": "^1.4.0",
     "react-scripts": "^1.0.7",
     "react-test-renderer": "^15.6.1",
     "why-did-you-update": "0.0.8"
@@ -52,9 +53,9 @@
     "semantic-ui-react": "^0.73.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "npm run build && scp -r build/* archive@app.mdb.bbdomain.org:/sites/admin"
   }
