@@ -22,7 +22,7 @@ module.exports = function rewireSilentRenew(config, env) {
   config.plugins.push(
     new HtmlWebpackPlugin({
       template: './public/silent_renew.html',
-      chunks: ['silentRenew'],
+      excludeChunks: ['main'],
       filename: 'silent_renew.html'
     }),
   );
