@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Icon, Label, Menu } from 'semantic-ui-react';
+import { Grid, Header, Icon, Label, Menu, Input } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, NS_FILES } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
@@ -45,6 +45,13 @@ class FilesMainPage extends Component {
   };
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
+  queryByFreeText = () => { alert("queryByFreeText triggerd"); };
+  textSearchKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      this.queryByFreeText();
+    }
+  };
+
 
   render() {
     const { showFilters } = this.state;
@@ -58,6 +65,10 @@ class FilesMainPage extends Component {
             <Header content="Files" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
+            <Input onKeyDown = {this.textSearchKeyDown}
+                icon={{ name: 'search', circular: true, link: true, onClick: (e) => {this.queryByFreeText()} }}
+                placeholder='Search...'
+              />
             <Menu.Item onClick={this.toggleFilters}>
               <Icon name="filter" />
               {showFilters ? 'Hide' : 'Show' } Filters
