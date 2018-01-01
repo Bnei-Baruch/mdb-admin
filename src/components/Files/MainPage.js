@@ -26,6 +26,7 @@ class FilesMainPage extends Component {
     total: PropTypes.number,
     items: PropTypes.arrayOf(shapes.File),
     wip: PropTypes.bool,
+    textQuery: PropTypes.string,
     err: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
     onFiltersChange: PropTypes.func.isRequired,
@@ -45,13 +46,14 @@ class FilesMainPage extends Component {
   };
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
-  queryByFreeText = () => { alert("queryByFreeText triggerd"); };
   textSearchKeyDown = (e) => {
     if (e.key === 'Enter') {
       this.queryByFreeText();
     }
   };
-
+  queryByFreeText = () => {
+     alert(this.state.textQuery);
+  };
 
   render() {
     const { showFilters } = this.state;
@@ -65,7 +67,7 @@ class FilesMainPage extends Component {
             <Header content="Files" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <Input onKeyDown = {this.textSearchKeyDown}
+            <Input value={this.state.textQuery} onKeyDown = {this.textSearchKeyDown}
                 icon={{ name: 'search', circular: true, link: true, onClick: (e) => {this.queryByFreeText()} }}
                 placeholder='Search...'
               />
