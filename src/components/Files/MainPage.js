@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Icon, Label, Menu, Input } from 'semantic-ui-react';
+import { Grid, Header, Icon, Label, Menu } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, NS_FILES } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
