@@ -13,10 +13,12 @@ import ResultsPageHeader from '../shared/ResultsPageHeader';
 import FilesList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
+import FreeText from './filters/FreeText';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
   { name: 'Others', element: Others },
+  { name: 'Free Text', element: FreeText },
 ];
 
 class FilesMainPage extends Component {
@@ -26,11 +28,10 @@ class FilesMainPage extends Component {
     total: PropTypes.number,
     items: PropTypes.arrayOf(shapes.File),
     wip: PropTypes.bool,
-    textQuery: PropTypes.string,
     err: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
     onFiltersChange: PropTypes.func.isRequired,
-    onFiltersHydrated: PropTypes.func.isRequired,
+    onFiltersHydrated: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -42,18 +43,10 @@ class FilesMainPage extends Component {
   };
 
   state = {
-    showFilters: false,
+    showFilters: false
   };
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
-  textSearchKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      this.queryByFreeText();
-    }
-  };
-  queryByFreeText = () => {
-     alert(this.state.textQuery);
-  };
 
   render() {
     const { showFilters } = this.state;
@@ -67,10 +60,6 @@ class FilesMainPage extends Component {
             <Header content="Files" size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <Input value={this.state.textQuery} onKeyDown = {this.textSearchKeyDown}
-                icon={{ name: 'search', circular: true, link: true, onClick: (e) => {this.queryByFreeText()} }}
-                placeholder='Search...'
-              />
             <Menu.Item onClick={this.toggleFilters}>
               <Icon name="filter" />
               {showFilters ? 'Hide' : 'Show' } Filters
