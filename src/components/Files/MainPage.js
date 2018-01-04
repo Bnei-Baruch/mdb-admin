@@ -16,9 +16,9 @@ import Others from './filters/Others';
 import FreeText from './filters/FreeText';
 
 const filterTabs = [
+  { name: 'Free Text', element: FreeText },
   { name: 'Date Range', element: DateRange },
   { name: 'Others', element: Others },
-  { name: 'Free Text', element: FreeText },
 ];
 
 class FilesMainPage extends Component {
