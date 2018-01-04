@@ -21,7 +21,6 @@ class LoginPage extends PureComponent {
     // We need this to redirect the user to location he wanted in the first place.
     const { location } = this.props;
     userManager.signinSilent({ state: JSON.stringify({ location }) })
-      .then(user => this.setState({ signinSilent: false }))
       .catch(err => this.setState({ signinSilent: false }));
   }
 
