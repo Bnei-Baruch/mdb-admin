@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Divider, Form, Message } from 'semantic-ui-react';
 
-import { CONTENT_UNIT_TYPE_OPTIONS, MAJOR_LANGUAGES } from '../../../../helpers/consts';
+import {
+  CONTENT_UNIT_TYPE_OPTIONS,
+  MAJOR_LANGUAGES,
+  CONTENT_UNIT_TYPES,
+  CT_LESSON_PART,
+} from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../Fields/index';
 import BaseContentUnitForm from './BaseContentUnitForm';
 
@@ -22,8 +27,9 @@ class CreateContentUnitForm extends BaseContentUnitForm {
 
     return {
       ...state,
-      type_id: null,
       i18n,
+      pattern: '',
+      type_id: CONTENT_UNIT_TYPES[CT_LESSON_PART].value,
       film_date: moment(),
       original_language: '',
     };
@@ -66,47 +72,36 @@ class CreateContentUnitForm extends BaseContentUnitForm {
     return errors;
   }
 
-  renderContentTypeField = () => (
-    <Form.Dropdown
-      search
-      selection
-      inline
-      label="Content Type"
-      placeholder="Content Type"
-      options={CONTENT_UNIT_TYPE_OPTIONS}
-      onChange={this.handleTypeChange}
-    />
-  );
-
   renderForm() {
-    const { type_id: typeID, i18n, errors } = this.state;
-
-    if (typeID) {
-      return (
-        <Form onSubmit={this.handleSubmit}>
-          {this.renderContentTypeField()}
-
-          <Divider horizontal section>Properties</Divider>
-          {this.renderProperties()}
-
-          <Divider horizontal section>Translations</Divider>
-          <MajorLangsI18nField
-            i18n={i18n}
-            err={errors.i18n}
-            onChange={this.handleI18nChange}
-          />
-          {
-            errors.i18n ?
-              <Message negative content="At least one translation is required" /> :
-              null
-          }
-        </Form>
-      );
-    }
-
+    const { i18n, errors, type_id } = this.state;
     return (
       <Form onSubmit={this.handleSubmit}>
-        {this.renderContentTypeField()}
+
+        <Form.Dropdown
+          search
+          selection
+          inline
+          label="Content Type"
+          placeholder="Content Type"
+          options={CONTENT_UNIT_TYPE_OPTIONS}
+          onChange={this.handleTypeChange}
+          defaultValue={type_id}
+        />
+
+        <Divider horizontal section>Properties</Divider>
+        {this.renderProperties()}
+
+        <Divider horizontal section>Translations</Divider>
+        <MajorLangsI18nField
+          i18n={i18n}
+          err={errors.i18n}
+          onChange={this.handleI18nChange}
+        />
+        {
+          errors.i18n ?
+            <Message negative content="At least one translation is required" /> :
+            null
+        }
       </Form>
     );
   }

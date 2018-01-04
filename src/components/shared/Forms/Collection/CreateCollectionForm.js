@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Form, Message, Input } from 'semantic-ui-react';
+import moment from 'moment';
+import { Divider, Form, Message } from 'semantic-ui-react';
 
-import { MAJOR_LANGUAGES } from '../../../../helpers/consts';
+import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../../shared/Fields';
 import BaseCollectionForm from './BaseCollectionForm';
-import { isValidPattern } from '../../../../helpers/utils';
 
 class CreateCollectionForm extends BaseCollectionForm {
   static propTypes = {
@@ -22,10 +22,23 @@ class CreateCollectionForm extends BaseCollectionForm {
 
     return {
       ...state,
+      type_id: null,
       i18n,
       pattern: '',
+      active: true,
+      start_date: moment(),
+      end_date: moment().add(1, 'days'),
+      film_date: moment(),
+      country: '',
+      city: '',
+      full_address: '',
+      default_language: '',
+      holiday_tag: '',
     };
   }
+
+  handleTypeChange = (e, data) =>
+    this.setState({ type_id: data.value });
 
   handleI18nChange = (i18n) => {
     const { errors } = this.state;
@@ -45,28 +58,14 @@ class CreateCollectionForm extends BaseCollectionForm {
     }, {});
   }
 
-  doSubmit(properties, i18n) {
-    this.props.create(properties, i18n);
+  doSubmit(typeID, properties, i18n) {
+    this.props.create(typeID, properties, i18n);
   }
 
-  onPatternChange = (e, { value }) => {
-    const errors = this.state.errors;
-    if (isValidPattern(value)) {
-      delete errors.pattern;
-    } else {
-      errors.pattern = true;
-    }
-
-    this.setState({ pattern: value, errors });
-  };
-
   validate() {
-    if (this.state.errors.pattern) {
-      return this.state.errors;
-    }
     const errors = super.validate();
     // validate at least one valid translation
-    const i18n = this.state.i18n;
+    const i18n   = this.state.i18n;
     if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }
@@ -74,37 +73,47 @@ class CreateCollectionForm extends BaseCollectionForm {
     return errors;
   }
 
+  renderContentTypeField = () => (
+    <Form.Dropdown
+      search
+      selection
+      inline
+      label="Content Type"
+      placeholder="Content Type"
+      options={COLLECTION_TYPE_OPTIONS}
+      onChange={this.handleTypeChange}
+    />
+  );
+
   renderForm() {
-    const { i18n, errors, pattern } = this.state;
+    const { type_id: typeID, i18n, errors } = this.state;
+
+    if (typeID) {
+      return (
+        <Form onSubmit={this.handleSubmit}>
+          {this.renderContentTypeField()}
+
+          <Divider horizontal section>Properties</Divider>
+          {this.renderProperties()}
+
+          <Divider horizontal section>Translations</Divider>
+          <MajorLangsI18nField
+            i18n={i18n}
+            err={errors.i18n}
+            onChange={this.handleI18nChange}
+          />
+          {
+            errors.i18n ?
+              <Message negative content="At least one translation is required" /> :
+              null
+          }
+        </Form>
+      );
+    }
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Divider horizontal section>Pattern</Divider>
-
-        <Form.Field error={!!errors.pattern}>
-          <Input
-            id="pattern"
-            placeholder="Pattern"
-            value={pattern}
-            onChange={this.onPatternChange}
-          />
-          <small className="helper">
-            Used in physical file names.
-            English words separated with &lsquo;-&rsquo;
-          </small>
-        </Form.Field>
-
-        <Divider horizontal section>Translations</Divider>
-        <MajorLangsI18nField
-          i18n={i18n}
-          err={errors.i18n}
-          onChange={this.handleI18nChange}
-        />
-        {
-          errors.i18n ?
-            <Message negative content="At least one translation is required" /> :
-            null
-        }
+        {this.renderContentTypeField()}
       </Form>
     );
   }
