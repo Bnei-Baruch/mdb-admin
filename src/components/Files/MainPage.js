@@ -13,10 +13,12 @@ import ResultsPageHeader from '../shared/ResultsPageHeader';
 import FilesList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
+import FreeText from './filters/FreeText';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
   { name: 'Others', element: Others },
+  { name: 'Free Text', element: FreeText },
 ];
 
 class FilesMainPage extends Component {
@@ -29,7 +31,7 @@ class FilesMainPage extends Component {
     err: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
     onFiltersChange: PropTypes.func.isRequired,
-    onFiltersHydrated: PropTypes.func.isRequired,
+    onFiltersHydrated: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -41,7 +43,7 @@ class FilesMainPage extends Component {
   };
 
   state = {
-    showFilters: false,
+    showFilters: false
   };
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });

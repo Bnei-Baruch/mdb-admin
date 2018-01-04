@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Input, Button } from 'semantic-ui-react';
 import connectFilter from './connectFilter';
+import { CONTENT_TYPE_BY_ID} from '../../helpers/consts';
 
 class TextFilter extends Component {
     
@@ -16,6 +17,12 @@ class TextFilter extends Component {
     };
 
     apply = (value) => {
+
+        let key = Object.keys(CONTENT_TYPE_BY_ID).find(key => CONTENT_TYPE_BY_ID[key] === value);
+        if (key) {
+            value = key;
+        }
+
         this.props.updateValue(value);
         this.props.onApply();
     }
