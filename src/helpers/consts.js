@@ -53,6 +53,7 @@ export const CT_CLIP                  = 'CLIP';
 export const CT_TRAINING              = 'TRAINING';
 export const CT_KITEI_MAKOR           = 'KITEI_MAKOR';
 export const CT_PUBLICATION           = 'PUBLICATION';
+export const CT_LELO_MIKUD            = 'LELO_MIKUD';
 
 export const CONTENT_TYPE_BY_ID = {
   1: CT_DAILY_LESSON,
@@ -86,6 +87,7 @@ export const CONTENT_TYPE_BY_ID = {
   35: CT_CLIPS,
   36: CT_PUBLICATION,
   37: CT_ARTICLES,
+  38: CT_LELO_MIKUD,
 };
 
 // Collection types
@@ -125,6 +127,7 @@ export const CONTENT_UNIT_TYPES = {
   [CT_TRAINING]: { text: CT_TRAINING, value: 30 },
   [CT_KITEI_MAKOR]: { text: CT_KITEI_MAKOR, value: 31 },
   [CT_PUBLICATION]: { text: CT_PUBLICATION, value: 36 },
+  [CT_LELO_MIKUD]: { text: CT_LELO_MIKUD, value: 38 },
 };
 
 export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
