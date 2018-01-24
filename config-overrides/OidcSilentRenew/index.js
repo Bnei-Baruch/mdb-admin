@@ -20,12 +20,11 @@ module.exports = function rewireSilentRenew(config, env) {
   mainHtmlPlugin.options.excludeChunks.push('silentRenew');
 
   // add new html plugin for silent renew
-  config.plugins.push(
-    new HtmlWebpackPlugin({
+  config.plugins.push(new HtmlWebpackPlugin({
       template: './public/silent_renew.html',
       excludeChunks: ['main'],
       filename: 'silent_renew.html'
-    }),
+    })
   );
 
   return config;
