@@ -21,11 +21,8 @@ import {
   CT_VIRTUAL_LESSON,
   CT_WOMEN_LESSON
 } from '../../../../helpers/consts';
-import { formatError, isValidPattern } from '../../../../helpers/utils';
-import {
-  FilmDateField, LanguageField,
-  FilenamePatternField,
-} from '../../Fields';
+import { formatError } from '../../../../helpers/utils';
+import { FilmDateField, LanguageField } from '../../Fields';
 import { cleanProperties } from '../utils';
 
 class BaseContentUnitForm extends Component {
@@ -77,26 +74,12 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_PUBLICATION].value:
       data.film_date         = state.film_date;
       data.original_language = state.original_language;
-      data.pattern           = state.pattern;
       break;
     default:
       break;
     }
 
     return data;
-  };
-
-  handlePatternChange = (e, data) => {
-    const pattern = data.value;
-
-    const errors = this.state.errors;
-    if (isValidPattern(pattern)) {
-      delete errors.pattern;
-    } else {
-      errors.pattern = true;
-    }
-
-    this.setState({ pattern, errors });
   };
 
   handleFilmDateChange = (date) => {
@@ -158,14 +141,6 @@ class BaseContentUnitForm extends Component {
     return true;
   }
 
-  renderPatternField          = () => (
-    <FilenamePatternField
-      required
-      value={this.state.pattern}
-      err={this.state.errors.pattern}
-      onChange={this.handlePatternChange}
-    />
-  );
   renderOriginalLanguageField = () => (
     <LanguageField
       name="original_language"
@@ -186,7 +161,6 @@ class BaseContentUnitForm extends Component {
 
   renderLessonPart = () => (
     <div>
-      {this.renderPatternField()}
       {this.renderFilmDateField()}
       {this.renderOriginalLanguageField()}
     </div>
