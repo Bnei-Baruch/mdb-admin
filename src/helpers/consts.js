@@ -12,10 +12,12 @@ export const EMPTY_HIERARCHY = Object.freeze({
 // Namespaces
 export const NS_COLLECTIONS      = 'collections';
 export const NS_COLLECTION_UNITS = 'collections/content_units';
+export const NS_FILE_UNITS       = 'files/content_units';
 export const NS_UNITS            = 'content_units';
 export const NS_FILES            = 'files';
 export const NS_OPERATIONS       = 'operations';
 export const NS_PERSONS          = 'persons';
+export const NS_PUBLISHERS       = 'publishers';
 
 export const PAGE_SIZE = 50;
 

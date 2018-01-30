@@ -19,6 +19,9 @@ const FETCH_TREE_WITH_OPERATIONS_FAILURE = 'Files/FETCH_TREE_WITH_OPERATIONS_FAI
 const CHANGE_SECURITY_LEVEL         = 'Files/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'Files/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'Files/CHANGE_SECURITY_LEVEL_FAILURE';
+const UPDATE_PROPERTIES                = 'Files/UPDATE_PROPERTIES';
+const UPDATE_PROPERTIES_SUCCESS        = 'Files/UPDATE_PROPERTIES_SUCCESS';
+const UPDATE_PROPERTIES_FAILURE        = 'Files/UPDATE_PROPERTIES_FAILURE';
 
 const RECEIVE_ITEMS = 'Files/RECEIVE_ITEMS';
 
@@ -36,6 +39,9 @@ export const types = {
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
   CHANGE_SECURITY_LEVEL_FAILURE,
+  UPDATE_PROPERTIES,
+  UPDATE_PROPERTIES_SUCCESS,
+  UPDATE_PROPERTIES_FAILURE,
 
   RECEIVE_ITEMS,
 };
@@ -55,6 +61,9 @@ const fetchTreeWithOperationsFailure = createAction(FETCH_TREE_WITH_OPERATIONS_F
 const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
+const updateProperties              = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
+const updatePropertiesSuccess       = createAction(UPDATE_PROPERTIES_SUCCESS);
+const updatePropertiesFailure       = createAction(UPDATE_PROPERTIES_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
@@ -72,6 +81,9 @@ export const actions = {
   changeSecurityLevel,
   changeSecurityLevelSuccess,
   changeSecurityLevelFailure,
+  updateProperties,
+  updatePropertiesSuccess,
+  updatePropertiesFailure,
 
   receiveItems,
 };
@@ -95,6 +107,10 @@ const keys = new Map([
   [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
   [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
   [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
+  [UPDATE_PROPERTIES, 'updateProperties'],
+  [UPDATE_PROPERTIES_SUCCESS, 'updateProperties'],
+  [UPDATE_PROPERTIES_FAILURE, 'updateProperties'],
+
 ]);
 
 const initialState = {
@@ -125,6 +141,12 @@ const onSuccess = (state, action) => {
   case CHANGE_SECURITY_LEVEL_SUCCESS:
   case FETCH_ITEM_SUCCESS:
     byID = merge(state.byID, action.payload);
+    break;
+  case UPDATE_PROPERTIES_SUCCESS:
+    byID = merge(state.byID, {
+      id: action.payload.id,
+      content_unit_id: action.payload.properties.content_unit_id,
+    });
     break;
   case FETCH_ITEM_STORAGES_SUCCESS:
     byID = merge(state.byID, {
@@ -170,6 +192,9 @@ export const reducer = handleActions({
   [CHANGE_SECURITY_LEVEL]: onRequest,
   [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
   [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
+  [UPDATE_PROPERTIES]: onRequest,
+  [UPDATE_PROPERTIES_SUCCESS]: onSuccess,
+  [UPDATE_PROPERTIES_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 

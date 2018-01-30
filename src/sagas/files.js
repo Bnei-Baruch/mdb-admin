@@ -47,6 +47,16 @@ function* changeSecurityLevel(action) {
   }
 }
 
+function* updateProperties(action) {
+  const { id, properties } = action.payload;
+  try {
+    const resp = yield call(api.put, `/rest/files/${id}/`, properties);
+    yield put(actions.updatePropertiesSuccess({ id, properties }));
+  } catch (err) {
+    yield put(actions.updatePropertiesFailure({ ...err, content_units_id: properties.content_unit_id }));
+  }
+}
+
 function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
@@ -63,9 +73,14 @@ function* watchChangeSecurityLevel() {
   yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
 }
 
+function* watchUpdateProperties() {
+  yield takeEvery(types.UPDATE_PROPERTIES, updateProperties);
+}
+
 export const sagas = [
   watchFetchItem,
   watchfetchItemStorages,
   watchfetchTreeWithOperations,
   watchChangeSecurityLevel,
+  watchUpdateProperties,
 ];

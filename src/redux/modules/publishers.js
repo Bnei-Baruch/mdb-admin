@@ -6,37 +6,31 @@ import { setMap, merge, bulkMerge, del } from '../utils';
 
 /* Types */
 
-const FETCH_ITEM         = 'Persons/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS = 'Persons/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE = 'Persons/FETCH_ITEM_FAILURE';
-const FETCH_ALL          = 'Persons/FETCH_ALL';
-const FETCH_ALL_SUCCESS  = 'Persons/FETCH_ALL_SUCCESS';
-const FETCH_ALL_FAILURE  = 'Persons/FETCH_ALL_FAILURE';
+const FETCH_ITEM         = 'Publishers/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS = 'Publishers/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE = 'Publishers/FETCH_ITEM_FAILURE';
 
-const CREATE         = 'Persons/CREATE';
-const CREATE_SUCCESS = 'Persons/CREATE_SUCCESS';
-const CREATE_FAILURE = 'Persons/CREATE_FAILURE';
+const CREATE         = 'Publishers/CREATE';
+const CREATE_SUCCESS = 'Publishers/CREATE_SUCCESS';
+const CREATE_FAILURE = 'Publishers/CREATE_FAILURE';
 
-const UPDATE_I18N         = 'Persons/UPDATE_I18N';
-const UPDATE_I18N_SUCCESS = 'Persons/UPDATE_I18N_SUCCESS';
-const UPDATE_I18N_FAILURE = 'Persons/UPDATE_I18N_FAILURE';
-const UPDATE_INFO         = 'Tags/UPDATE_INFO';
-const UPDATE_INFO_SUCCESS = 'Tags/UPDATE_INFO_SUCCESS';
-const UPDATE_INFO_FAILURE = 'Tags/UPDATE_INFO_FAILURE';
+const UPDATE_I18N         = 'Publishers/UPDATE_I18N';
+const UPDATE_I18N_SUCCESS = 'Publishers/UPDATE_I18N_SUCCESS';
+const UPDATE_I18N_FAILURE = 'Publishers/UPDATE_I18N_FAILURE';
+const UPDATE_INFO         = 'Publishers/UPDATE_INFO';
+const UPDATE_INFO_SUCCESS = 'Publishers/UPDATE_INFO_SUCCESS';
+const UPDATE_INFO_FAILURE = 'Publishers/UPDATE_INFO_FAILURE';
 
-const DELETE         = 'Persons/DELETE';
-const DELETE_SUCCESS = 'Persons/DELETE_SUCCESS';
-const DELETE_FAILURE = 'Persons/DELETE_FAILURE';
+const DELETE         = 'Publishers/DELETE';
+const DELETE_SUCCESS = 'Publishers/DELETE_SUCCESS';
+const DELETE_FAILURE = 'Publishers/DELETE_FAILURE';
 
-const RECEIVE_ITEMS = 'Persons/RECEIVE_ITEMS';
+const RECEIVE_ITEMS = 'Publishers/RECEIVE_ITEMS';
 
 export const types = {
   FETCH_ITEM,
   FETCH_ITEM_SUCCESS,
   FETCH_ITEM_FAILURE,
-  FETCH_ALL,
-  FETCH_ALL_SUCCESS,
-  FETCH_ALL_FAILURE,
 
   CREATE,
   CREATE_SUCCESS,
@@ -60,15 +54,12 @@ export const types = {
 const fetchItem        = createAction(FETCH_ITEM);
 const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
 const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
-const fetchAll         = createAction(FETCH_ALL);
-const fetchAllSuccess  = createAction(FETCH_ALL_SUCCESS);
-const fetchAllFailure  = createAction(FETCH_ALL_FAILURE);
 
 const create        = createAction(CREATE, (pattern, i18n) => ({ pattern, i18n }));
 const createSuccess = createAction(CREATE_SUCCESS);
 const createFailure = createAction(CREATE_FAILURE);
 
-const deletePerson      = createAction(DELETE);
+const deletePublisher   = createAction(DELETE);
 const deleteSuccess     = createAction(DELETE_SUCCESS);
 const deleteFailure     = createAction(DELETE_FAILURE);
 const updateI18n        = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
@@ -84,9 +75,6 @@ export const actions = {
   fetchItem,
   fetchItemSuccess,
   fetchItemFailure,
-  fetchAll,
-  fetchAllSuccess,
-  fetchAllFailure,
 
   create,
   createSuccess,
@@ -98,7 +86,7 @@ export const actions = {
   updateI18n,
   updateI18nSuccess,
   updateI18nFailure,
-  deletePerson,
+  deletePublisher,
   deleteSuccess,
   deleteFailure,
 
@@ -111,9 +99,6 @@ const keys = new Map([
   [FETCH_ITEM, 'fetchItem'],
   [FETCH_ITEM_SUCCESS, 'fetchItem'],
   [FETCH_ITEM_FAILURE, 'fetchItem'],
-  [FETCH_ALL, 'fetchAll'],
-  [FETCH_ALL_SUCCESS, 'fetchAll'],
-  [FETCH_ALL_FAILURE, 'fetchAll'],
 
   [CREATE, 'create'],
   [CREATE_SUCCESS, 'create'],
@@ -161,9 +146,6 @@ const onSuccess = (state, action) => {
   case UPDATE_INFO_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
-  case FETCH_ALL_SUCCESS:
-    byID = new Map(action.payload.map(x => [x.id, x]));
-    break;
   case DELETE_SUCCESS:
     byID = del(state.byID, action.payload);
     break;
@@ -189,9 +171,6 @@ export const reducer = handleActions({
   [FETCH_ITEM]: onRequest,
   [FETCH_ITEM_SUCCESS]: onSuccess,
   [FETCH_ITEM_FAILURE]: onFailure,
-  [FETCH_ALL]: onRequest,
-  [FETCH_ALL_SUCCESS]: onSuccess,
-  [FETCH_ALL_FAILURE]: onFailure,
 
   [CREATE]: onRequest,
   [CREATE_SUCCESS]: onSuccess,
@@ -212,16 +191,16 @@ export const reducer = handleActions({
 
 /* Selectors */
 
-const getPersons       = state => state.byID;
-const getPersonById    = (state, id) => state.byID.get(id);
+const getPublishers    = state => state.byID;
+const getPublisherById = (state, id) => state.byID.get(id);
 const getWIP           = (state, key) => state.wip.get(key);
 const getError         = (state, key) => state.errors.get(key);
-const denormIDs        = createSelector(getPersons, byID => memoize(ids => ids.map(id => byID.get(id))));
-const getPersonList    = createSelector(getPersons, persons => Array.from(persons.values()));
+const denormIDs        = createSelector(getPublishers, byID => memoize(ids => ids.map(id => byID.get(id))));
+const getPublisherList = createSelector(getPublishers, publishers => Array.from(publishers.values()));
 export const selectors = {
   getWIP,
   getError,
   denormIDs,
-  getPersonById,
-  getPersonList,
+  getPublisherById,
+  getPublisherList,
 };
