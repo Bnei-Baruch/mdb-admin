@@ -62,7 +62,7 @@ class FileContentUnit extends PureComponent {
     this.setState({ showFilters: !this.state.showFilters });
 
   associate = () => {
-    const { selectedCUId }        = this.state;
+    const { selectedCUId }           = this.state;
     const { file, updateProperties } = this.props;
     if (!selectedCUId) {
       return;
@@ -141,7 +141,8 @@ class FileContentUnit extends PureComponent {
                 associatedCUId={file.content_unit_id}
                 items={items}
                 handleSelectCU={this.handleSelectCU}
-                selectedCUId={selectedCUId} />
+                selectedCUId={selectedCUId}
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>

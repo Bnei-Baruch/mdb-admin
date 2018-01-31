@@ -19,7 +19,7 @@ function* fetchItem(action) {
 function* create(action) {
   try {
     const resp = yield call(api.post, '/rest/publishers/', action.payload);
-    yield put(actions.createSuccess(resp.data, action.payload.author));
+    yield put(actions.createSuccess(resp.data, action.payload));
   } catch (err) {
     yield put(actions.createFailure(err));
   }

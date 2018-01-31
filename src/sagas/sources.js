@@ -47,7 +47,7 @@ function* updateI18n(action) {
 function* create(action) {
   try {
     const resp = yield call(api.post, '/rest/sources/', action.payload);
-    yield put(actions.createSuccess(resp.data, action.payload.author));
+    yield put(actions.createSuccess(resp.data, action.payload));
   } catch (err) {
     yield put(actions.createFailure(err));
   }

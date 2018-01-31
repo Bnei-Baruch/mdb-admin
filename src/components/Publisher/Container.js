@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/publishers';
+import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class Container extends Component {

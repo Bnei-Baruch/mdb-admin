@@ -20,7 +20,7 @@ class PublishersList extends PureComponent {
   renderItem = item => (
     <Table.Row key={item.id}>
       <Table.Cell collapsing>
-        <Link to={`/Publishers/${item.id}`}>
+        <Link to={`/publishers/${item.id}`}>
           {item.id}
         </Link>
       </Table.Cell>

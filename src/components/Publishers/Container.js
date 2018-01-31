@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PUBLISHERS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';
 import { actions as publisherActions, selectors as publishers } from '../../redux/modules/publishers';
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PUBLISHERS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 

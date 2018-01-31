@@ -31,7 +31,7 @@ function* fetchList(action) {
   const { namespace, pageNo } = action.payload;
   const filters               = yield select(state => filterSelectors.getFilters(state.filters, namespace));
   const params                = filtersTransformer.toApiParams(filters);
-  let urlParam = (namespace === NS_COLLECTION_UNITS || namespace === NS_FILE_UNITS) ? NS_UNITS : namespace;
+  const urlParam = (namespace === NS_COLLECTION_UNITS || namespace === NS_FILE_UNITS) ? NS_UNITS : namespace;
   try {
     const resp = yield call(api.get, `/rest/${urlParam}/`, { params: { page_no: pageNo, ...params } });
     yield put(dataReceivers[namespace](resp.data.data));
