@@ -17,7 +17,7 @@ class UpdateContentUnitPropertiesForm extends BaseContentUnitForm {
     const { type_id: typeID, properties } = this.props.unit;
 
     // convert date fields to moment
-    const { film_date: film } = properties;
+    const { film_date: film } = properties || {};
 
     return {
       ...state,

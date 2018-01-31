@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import { Form } from 'semantic-ui-react';
 
-import { LANG_HEBREW } from '../../../helpers/consts';
+import { LANG_MULTI, LANG_UNKNOWN } from '../../../helpers/consts';
 import { titleize } from '../../../helpers/utils';
 import LanguageSelector from '../../shared/LanguageSelector';
 
@@ -16,8 +16,9 @@ const LanguageField = (props) => {
       <LanguageSelector
         selection
         id={name}
-        value={value}
+        defaultValue={value}
         onChange={onChange}
+        exclude={[LANG_MULTI]}
       />
     </Form.Field>
   );
@@ -31,7 +32,7 @@ LanguageField.propTypes = {
 };
 
 LanguageField.defaultProps = {
-  value: LANG_HEBREW,
+  value: LANG_UNKNOWN,
   err: false,
   onChange: noop,
 };
