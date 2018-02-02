@@ -16,6 +16,7 @@ import {
   CT_VIRTUAL_LESSONS,
   CT_WOMEN_LESSONS,
   CT_ARTICLES,
+
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
 import { formatError, isValidPattern } from '../../../../helpers/utils';
@@ -28,6 +29,7 @@ import {
   LanguageField,
   LocationField,
   ToggleField,
+  GenreField,
 } from '../../Fields';
 import './collections.css';
 
@@ -88,6 +90,11 @@ class BaseCollectionForm extends Component {
       data.end_date   = state.end_date;
       break;
     case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
+      data.pattern          = state.pattern;
+      data.active           = state.active;
+      data.default_language = state.default_language;
+      data.genre            = state.genre;
+      break;
     case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
     case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
     case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
@@ -97,7 +104,7 @@ class BaseCollectionForm extends Component {
       data.default_language = state.default_language;
       break;
     case COLLECTION_TYPES[CT_ARTICLES].value:
-      data.pattern          = state.pattern;
+      data.pattern = state.pattern;
       break;
     default:
       break;
@@ -163,6 +170,9 @@ class BaseCollectionForm extends Component {
     delete errors.holiday_tag;
     this.setState({ holiday_tag: data.value, errors });
   };
+
+  handleGenreChange = (e, data) =>
+    this.setState({ genre: data.value });
 
   // eslint-disable-next-line class-methods-use-this
   cleanI18n() {
@@ -249,6 +259,17 @@ class BaseCollectionForm extends Component {
     />
   );
 
+  renderGenreField = () => (
+
+    <GenreField
+      value={this.state.genre}
+      err={this.state.errors.genre}
+      onChange={this.handleGenreChange}
+      required
+      width={6}
+    />
+  );
+
   renderDateRangeFields = () => {
     const { start_date: start, end_date: end, errors } = this.state;
 
@@ -305,6 +326,14 @@ class BaseCollectionForm extends Component {
       {this.renderPatternField()}
       {this.renderActiveField()}
       {this.renderDefaultLanguageField()}
+      {this.renderGenreField()}
+    </div>
+  );
+  renderLesson       = () => (
+    <div>
+      {this.renderPatternField()}
+      {this.renderActiveField()}
+      {this.renderDefaultLanguageField()}
     </div>
   );
 
@@ -348,11 +377,12 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_UNITY_DAY].value:
       return this.renderPicnic();
     case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
+      return this.renderVideoProgram();
     case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
     case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
     case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
     case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
-      return this.renderVideoProgram();
+      return this.renderLesson();
     case COLLECTION_TYPES[CT_ARTICLES].value:
       return this.renderArticles();
     default:
