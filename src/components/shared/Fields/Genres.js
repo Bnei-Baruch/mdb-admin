@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import { Form } from 'semantic-ui-react';
 
-import { GENRE_OPTIONS } from '../../../helpers/consts';
+import { EMPTY_ARRAY, GENRE_OPTIONS } from '../../../helpers/consts';
 
-const GenreField = (props) => {
+const GenresField = (props) => {
   const { value, err, onChange, ...rest } = props;
 
   return (
@@ -15,6 +15,7 @@ const GenreField = (props) => {
         search
         selection
         required
+        multiple
         label="Genre"
         placeholder="Genre"
         defaultValue={value}
@@ -26,16 +27,16 @@ const GenreField = (props) => {
   );
 };
 
-GenreField.propTypes = {
-  value: PropTypes.string,
+GenresField.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.string),
   err: PropTypes.bool,
   onChange: PropTypes.func,
 };
 
-GenreField.defaultProps = {
-  value: '',
+GenresField.defaultProps = {
+  value: EMPTY_ARRAY,
   err: false,
   onChange: noop,
 };
 
-export default GenreField;
+export default GenresField;

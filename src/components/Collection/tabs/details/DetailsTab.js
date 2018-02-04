@@ -17,7 +17,8 @@ const editableProperties = [
   'country',
   'city',
   'full_address',
-  'holiday_tag'
+  'holiday_tag',
+  'genres',
 ];
 
 const DetailsTab = (props) => {

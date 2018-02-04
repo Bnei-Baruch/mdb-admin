@@ -29,7 +29,7 @@ import {
   LanguageField,
   LocationField,
   ToggleField,
-  GenreField,
+  GenresField,
 } from '../../Fields';
 import './collections.css';
 
@@ -93,7 +93,7 @@ class BaseCollectionForm extends Component {
       data.pattern          = state.pattern;
       data.active           = state.active;
       data.default_language = state.default_language;
-      data.genre            = state.genre;
+      data.genres            = state.genres;
       break;
     case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
     case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
@@ -171,8 +171,8 @@ class BaseCollectionForm extends Component {
     this.setState({ holiday_tag: data.value, errors });
   };
 
-  handleGenreChange = (e, data) =>
-    this.setState({ genre: data.value });
+  handleGenresChange = (e, data) =>
+    this.setState({ genres: data.value });
 
   // eslint-disable-next-line class-methods-use-this
   cleanI18n() {
@@ -259,12 +259,11 @@ class BaseCollectionForm extends Component {
     />
   );
 
-  renderGenreField = () => (
-
-    <GenreField
-      value={this.state.genre}
-      err={this.state.errors.genre}
-      onChange={this.handleGenreChange}
+  renderGenresField = () => (
+    <GenresField
+      value={this.state.genres}
+      err={this.state.errors.genres}
+      onChange={this.handleGenresChange}
       required
       width={6}
     />
@@ -326,7 +325,7 @@ class BaseCollectionForm extends Component {
       {this.renderPatternField()}
       {this.renderActiveField()}
       {this.renderDefaultLanguageField()}
-      {this.renderGenreField()}
+      {this.renderGenresField()}
     </div>
   );
   renderLesson       = () => (

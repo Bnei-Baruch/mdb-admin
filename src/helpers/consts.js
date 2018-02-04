@@ -411,19 +411,19 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
 export const GR_DOCUMENTARY = 'documentary';
 export const GR_LATE_NIGHT  = 'late-night';
 export const GR_NEWS        = 'news';
-export const TALK_SHOW      = 'talk-show';
-export const EDUCATIONAL    = 'educational';
-export const CHILDREN       = 'children';
-export const MOVIES         = 'movies';
+export const GR_TALK_SHOW   = 'talk-show';
+export const GR_EDUCATIONAL = 'educational';
+export const GR_CHILDREN    = 'children';
+export const GR_MOVIES      = 'movies';
 
 export const GENRE_BY_ID = {
   [GR_DOCUMENTARY]: { text: GR_DOCUMENTARY, value: GR_DOCUMENTARY },
   [GR_LATE_NIGHT]: { text: GR_LATE_NIGHT, value: GR_LATE_NIGHT },
   [GR_NEWS]: { text: GR_NEWS, value: GR_NEWS },
-  [TALK_SHOW]: { text: TALK_SHOW, value: TALK_SHOW },
-  [EDUCATIONAL]: { text: EDUCATIONAL, value: EDUCATIONAL },
-  [CHILDREN]: { text: CHILDREN, value: CHILDREN },
-  [MOVIES]: { text: MOVIES, value: MOVIES },
+  [GR_TALK_SHOW]: { text: GR_TALK_SHOW, value: GR_TALK_SHOW },
+  [GR_EDUCATIONAL]: { text: GR_EDUCATIONAL, value: GR_EDUCATIONAL },
+  [GR_CHILDREN]: { text: GR_CHILDREN, value: GR_CHILDREN },
+  [GR_MOVIES]: { text: GR_MOVIES, value: GR_MOVIES },
 };
 
 export const GENRE_OPTIONS = Array.from(Object.values(GENRE_BY_ID));
