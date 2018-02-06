@@ -15,7 +15,7 @@ class LoginPage extends PureComponent {
     signinSilent: true,
   };
 
-  componentDidMount() {
+  componentWillMount() {
     // keep current location in state so we'll have it once auth is complete
     // and we're back in the app.
     // We need this to redirect the user to location he wanted in the first place.

@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { USER_FOUND } from 'redux-oidc';
 
 import { actions, types } from '../redux/modules/authors';
-import { types as system } from '../redux/modules/system';
 import api from '../helpers/apiClient';
 
 function* fetchAll(action) {
@@ -14,7 +14,7 @@ function* fetchAll(action) {
 }
 
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, system.INIT], fetchAll);
+  yield takeLatest([types.FETCH_ALL, USER_FOUND], fetchAll);
 }
 
 export const sagas = [

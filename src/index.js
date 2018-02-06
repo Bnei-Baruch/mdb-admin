@@ -7,7 +7,7 @@ import createSagaMiddleware, { delay } from 'redux-saga';
 import { put } from 'redux-saga/effects';
 import { routerMiddleware as createRouterMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
-import createOidcMiddleware from 'redux-oidc';
+import { loadUser } from 'redux-oidc';
 
 import { isProduction } from './helpers/env';
 import userManager from './helpers/userManager';
@@ -29,8 +29,6 @@ import App from './components/App/App';
 const devToolsArePresent    = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => !isProduction && devToolsArePresent ? window.devToolsExtension() : f => f;
 
-const oidcMiddleware = createOidcMiddleware(userManager);
-
 const sagaMiddlewareOptions = isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
 
@@ -40,9 +38,12 @@ const history          = createHistory({
 const routerMiddleware = createRouterMiddleware(history);
 
 const store = createStore(reducer, {}, compose(
-  applyMiddleware(routerMiddleware, sagaMiddleWare, oidcMiddleware),
+  applyMiddleware(routerMiddleware, sagaMiddleWare),
   devToolsStoreEnhancer()
 ));
+
+// we have silent_renew configured so we use this instead of the oidc-middleware
+loadUser(store, userManager);
 
 // Render regardless of application's state. let App decide what to render.
 const appContainer = document.getElementById('root');

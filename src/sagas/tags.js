@@ -1,7 +1,7 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { USER_FOUND } from 'redux-oidc';
 
 import { actions, types } from '../redux/modules/tags';
-import { types as system } from '../redux/modules/system';
 import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
 
@@ -56,15 +56,19 @@ function* create(action) {
 function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
+
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, system.INIT], fetchAll);
+  yield takeLatest([types.FETCH_ALL, USER_FOUND], fetchAll);
 }
+
 function* watchUpdateInfo() {
   yield takeEvery(types.UPDATE_INFO, updateInfo);
 }
+
 function* watchUpdateI18n() {
   yield takeEvery(types.UPDATE_I18N, updateI18n);
 }
+
 function* watchCreate() {
   yield takeEvery(types.CREATE, create);
 }
