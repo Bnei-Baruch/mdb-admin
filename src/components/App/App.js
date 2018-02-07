@@ -10,20 +10,6 @@ import { selectors as system } from '../../redux/modules/system';
 import FrontPage from '../FrontPage/FrontPage';
 import './App.css';
 
-const Loader = () => (
-  <div style={{
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: 'black',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }}
-  >
-    <h1 style={{ color: 'white' }}>Loading...</h1>
-  </div>
-);
-
 class App extends Component {
   static propTypes = {
     store: PropTypes.object.isRequired,
@@ -49,7 +35,11 @@ class App extends Component {
       );
     }
 
-    return <Loader />;
+    return (
+      <div className="fullscreen-centered">
+        <h1>Loading...</h1>
+      </div>
+    );
   }
 }
 

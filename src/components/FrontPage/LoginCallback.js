@@ -39,7 +39,9 @@ class LoginCallback extends PureComponent {
         successCallback={this.successCallback}
         errorCallback={this.errorCallback}
       >
-        <div>Redirecting...</div>
+        <div className="fullscreen-centered">
+          <h1>Redirecting...</h1>
+        </div>
       </CallbackComponent>
     );
   }
