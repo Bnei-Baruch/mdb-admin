@@ -7,7 +7,7 @@ import api from '../helpers/apiClient';
 function* fetchItem(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/operations/${id}/`);
+    const resp = yield call(api.get, `/operations/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
@@ -17,7 +17,7 @@ function* fetchItem(action) {
 function* fetchItemFiles(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/operations/${id}/files/`);
+    const resp = yield call(api.get, `/operations/${id}/files/`);
     yield put(files.receiveItems(resp.data));
     yield put(actions.fetchItemFilesSuccess({ id, data: resp.data }));
   } catch (err) {

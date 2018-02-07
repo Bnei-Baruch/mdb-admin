@@ -1,17 +1,16 @@
-export const isProduction = process.env.NODE_ENV === 'production';
+export const isProduction = process.env.NODE_ENV === 'production' ||
+  process.env.NODE_ENV === 'external';
 
 // Base url of this application
-export const BASE_URL = isProduction ?
-  'http://app.mdb.bbdomain.org/admin' :
+export const BASE_URL = process.env.REACT_APP_BASE_URL ||
   `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
 
+// Base name for history (path of BASE_URL)
+export const HISTORY_BASENAME = process.env.REACT_APP_HISTORY_BASENAME || '';
+
 // Authentication service root url (OIDC Identity Provider)
-export const AUTH_URL = isProduction ?
-  'https://accounts.kbb1.com/auth/realms/main' :
-  process.env.REACT_APP_AUTH_URL;
+export const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 
 // Base url of our beloved backend API
-export const API_BACKEND = isProduction ?
-  'http://app.mdb.bbdomain.org/' :
-  process.env.REACT_APP_MDB_URL;
+export const API_BACKEND = process.env.REACT_APP_MDB_URL;
 

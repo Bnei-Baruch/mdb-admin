@@ -9,7 +9,7 @@ import { routerMiddleware as createRouterMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import { loadUser } from 'redux-oidc';
 
-import { isProduction } from './helpers/env';
+import * as env from './helpers/env';
 import userManager from './helpers/userManager';
 import reducer from './redux';
 import { actions as system } from './redux/modules/system';
@@ -27,14 +27,15 @@ import App from './components/App/App';
 // }
 
 const devToolsArePresent    = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
-const devToolsStoreEnhancer = () => !isProduction && devToolsArePresent ? window.devToolsExtension() : f => f;
+const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? window.devToolsExtension() : f => f;
 
-const sagaMiddlewareOptions = isProduction ? {} : { sagaMonitor };
+const sagaMiddlewareOptions = env.isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
 
-const history          = createHistory({
-  basename: isProduction ? '/admin/' : ''
+const history = createHistory({
+  basename: env.HISTORY_BASENAME
 });
+
 const routerMiddleware = createRouterMiddleware(history);
 
 const store = createStore(reducer, {}, compose(

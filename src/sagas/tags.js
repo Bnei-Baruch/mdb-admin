@@ -8,7 +8,7 @@ import { loadAllPages } from './utils';
 function* fetchItem(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/tags/${id}/`);
+    const resp = yield call(api.get, `/tags/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
@@ -17,7 +17,7 @@ function* fetchItem(action) {
 
 function* fetchAll(action) {
   try {
-    const data = yield loadAllPages('/rest/tags/');
+    const data = yield loadAllPages('/tags/');
     yield put(actions.fetchAllSuccess(data));
   } catch (err) {
     yield put(actions.fetchAllFailure(err));
@@ -27,7 +27,7 @@ function* fetchAll(action) {
 function* updateInfo(action) {
   try {
     const { id, pattern, description } = action.payload;
-    const resp                         = yield call(api.put, `/rest/tags/${id}/`, { pattern, description });
+    const resp                         = yield call(api.put, `/tags/${id}/`, { pattern, description });
     yield put(actions.updateInfoSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateInfoFailure(err));
@@ -37,7 +37,7 @@ function* updateInfo(action) {
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
-    const resp         = yield call(api.put, `/rest/tags/${id}/i18n/`, i18n);
+    const resp         = yield call(api.put, `/tags/${id}/i18n/`, i18n);
     yield put(actions.updateI18nSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateI18nFailure(err));
@@ -46,7 +46,7 @@ function* updateI18n(action) {
 
 function* create(action) {
   try {
-    const resp = yield call(api.post, '/rest/tags/', action.payload);
+    const resp = yield call(api.post, '/tags/', action.payload);
     yield put(actions.createSuccess(resp.data));
   } catch (err) {
     yield put(actions.createFailure(err));

@@ -8,7 +8,7 @@ import { loadAllPages } from './utils';
 function* fetchItem(action) {
   try {
     const id = action.payload;
-    const resp = yield call(api.get, `/rest/sources/${id}/`);
+    const resp = yield call(api.get, `/sources/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
@@ -17,7 +17,7 @@ function* fetchItem(action) {
 
 function* fetchAll(action) {
   try {
-    const data = yield loadAllPages('/rest/sources/');
+    const data = yield loadAllPages('/sources/');
     yield put(actions.fetchAllSuccess(data));
   } catch (err) {
     yield put(actions.fetchAllFailure(err));
@@ -27,7 +27,7 @@ function* fetchAll(action) {
 function* updateInfo(action) {
   try {
     const { id, pattern, description, type_id } = action.payload;
-    const resp                                  = yield call(api.put, `/rest/sources/${id}/`, {
+    const resp                                  = yield call(api.put, `/sources/${id}/`, {
       pattern,
       description,
       type_id
@@ -41,7 +41,7 @@ function* updateInfo(action) {
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
-    const resp         = yield call(api.put, `/rest/sources/${id}/i18n/`, i18n);
+    const resp         = yield call(api.put, `/sources/${id}/i18n/`, i18n);
     yield put(actions.updateI18nSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateI18nFailure(err));
@@ -50,7 +50,7 @@ function* updateI18n(action) {
 
 function* create(action) {
   try {
-    const resp = yield call(api.post, '/rest/sources/', action.payload);
+    const resp = yield call(api.post, '/sources/', action.payload);
     yield put(actions.createSuccess(resp.data, action.payload));
   } catch (err) {
     yield put(actions.createFailure(err));

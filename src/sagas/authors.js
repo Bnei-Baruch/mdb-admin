@@ -6,7 +6,7 @@ import api from '../helpers/apiClient';
 
 function* fetchAll(action) {
   try {
-    const resp = yield call(api.get, '/rest/authors/');
+    const resp = yield call(api.get, '/authors/');
     yield put(actions.fetchAllSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchAllFailure(err));

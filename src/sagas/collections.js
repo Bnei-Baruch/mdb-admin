@@ -10,7 +10,7 @@ import { actions as lists } from '../redux/modules/lists';
 function* fetchItem(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/collections/${id}/`);
+    const resp = yield call(api.get, `/collections/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
@@ -20,7 +20,7 @@ function* fetchItem(action) {
 function* fetchItemUnits(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/collections/${id}/content_units/`);
+    const resp = yield call(api.get, `/collections/${id}/content_units/`);
     yield put(units.receiveItems(resp.data.map(x => x.content_unit)));
     yield put(actions.fetchItemUnitsSuccess({ id, data: resp.data }));
   } catch (err) {
@@ -31,7 +31,7 @@ function* fetchItemUnits(action) {
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
-    const resp         = yield call(api.put, `/rest/collections/${id}/i18n/`, i18n);
+    const resp         = yield call(api.put, `/collections/${id}/i18n/`, i18n);
     yield put(actions.updateI18nSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateI18nFailure(err));
@@ -41,7 +41,7 @@ function* updateI18n(action) {
 function* updateProperties(action) {
   try {
     const { id, properties } = action.payload;
-    const resp               = yield call(api.put, `/rest/collections/${id}/`, { properties });
+    const resp               = yield call(api.put, `/collections/${id}/`, { properties });
     yield put(actions.updatePropertiesSuccess(resp.data));
   } catch (err) {
     yield put(actions.updatePropertiesFailure(err));
@@ -51,7 +51,7 @@ function* updateProperties(action) {
 function* associateUnit(action) {
   const { id, properties } = action.payload;
   try {
-    yield call(api.post, `/rest/collections/${id}/content_units/`, properties);
+    yield call(api.post, `/collections/${id}/content_units/`, properties);
     yield put(actions.associateUnitSuccess({ id, properties }));
   } catch (err) {
     yield put(actions.associateUnitFailure({ ...err, content_units_id: properties.content_unit_id }));
@@ -61,7 +61,7 @@ function* associateUnit(action) {
 function* updateItemUnitProperties(action) {
   const { id, ccuId, properties } = action.payload;
   try {
-    yield call(api.put, `/rest/collections/${id}/content_units/${ccuId}`, properties);
+    yield call(api.put, `/collections/${id}/content_units/${ccuId}`, properties);
     yield put(actions.updateItemUnitPropertiesSuccess({ id, ccuId, properties }));
   } catch (err) {
     yield put(actions.updateItemUnitPropertiesFailure({ ...err, content_units_id: ccuId }));
@@ -71,7 +71,7 @@ function* updateItemUnitProperties(action) {
 function* deleteItemUnit(action) {
   const { id, ccuId } = action.payload;
   try {
-    yield call(api.delete, `/rest/collections/${id}/content_units/${ccuId}`);
+    yield call(api.delete, `/collections/${id}/content_units/${ccuId}`);
     yield put(actions.deleteItemUnitSuccess({ id, ccuId }));
   } catch (err) {
     yield put(actions.deleteItemUnitFailure({ ...err, content_units_id: ccuId }));
@@ -81,7 +81,7 @@ function* deleteItemUnit(action) {
 function* changeSecurityLevel(action) {
   try {
     const { id, level } = action.payload;
-    const resp          = yield call(api.put, `/rest/collections/${id}/`, { secure: level });
+    const resp          = yield call(api.put, `/collections/${id}/`, { secure: level });
     yield put(actions.changeSecurityLevelSuccess(resp.data));
   } catch (err) {
     yield put(actions.changeSecurityLevelFailure(err));
@@ -91,7 +91,7 @@ function* changeSecurityLevel(action) {
 function* changeActive(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.post, `/rest/collections/${id}/activate`);
+    const resp = yield call(api.post, `/collections/${id}/activate`);
     yield put(actions.changeActiveSuccess(resp.data));
   } catch (err) {
     yield put(actions.changeActiveFailure(err));
@@ -100,7 +100,7 @@ function* changeActive(action) {
 
 function* create(action) {
   try {
-    const resp = yield call(api.post, '/rest/collections/', action.payload);
+    const resp = yield call(api.post, '/collections/', action.payload);
     yield put(actions.createSuccess(resp.data));
   } catch (err) {
     yield put(actions.createFailure(err));
@@ -110,7 +110,7 @@ function* create(action) {
 function* deleteC(action) {
   const id = action.payload;
   try {
-    yield call(api.delete, `/rest/collections/${id}/`);
+    yield call(api.delete, `/collections/${id}/`);
     yield put(lists.removeItem(NS_COLLECTIONS, id));
     yield put(actions.deleteSuccess(id));
     yield put(push('/collections'));

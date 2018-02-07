@@ -33,7 +33,7 @@ function* fetchList(action) {
   const params                = filtersTransformer.toApiParams(filters);
   const urlParam = (namespace === NS_COLLECTION_UNITS || namespace === NS_FILE_UNITS) ? NS_UNITS : namespace;
   try {
-    const resp = yield call(api.get, `/rest/${urlParam}/`, { params: { page_no: pageNo, ...params } });
+    const resp = yield call(api.get, `/${urlParam}/`, { params: { page_no: pageNo, ...params } });
     yield put(dataReceivers[namespace](resp.data.data));
     yield put(actions.fetchListSuccess(namespace, resp.data.total, resp.data.data));
   } catch (err) {

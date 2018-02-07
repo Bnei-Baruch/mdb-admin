@@ -9,7 +9,7 @@ import { actions as persons } from '../redux/modules/persons';
 function* fetchItem(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/content_units/${id}/`);
+    const resp = yield call(api.get, `/content_units/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
@@ -19,7 +19,7 @@ function* fetchItem(action) {
 function* fetchItemFiles(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/content_units/${id}/files/`);
+    const resp = yield call(api.get, `/content_units/${id}/files/`);
     yield put(files.receiveItems(resp.data));
     yield put(actions.fetchItemFilesSuccess({ id, data: resp.data }));
   } catch (err) {
@@ -30,7 +30,7 @@ function* fetchItemFiles(action) {
 function* fetchItemCollections(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/content_units/${id}/collections/`);
+    const resp = yield call(api.get, `/content_units/${id}/collections/`);
     yield put(collections.receiveItems(resp.data.map(x => x.collection)));
     yield put(actions.fetchItemCollectionsSuccess({ id, data: resp.data }));
   } catch (err) {
@@ -41,7 +41,7 @@ function* fetchItemCollections(action) {
 function* fetchItemDerivatives(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/content_units/${id}/derivatives/`);
+    const resp = yield call(api.get, `/content_units/${id}/derivatives/`);
     yield put(actions.receiveItems(resp.data.map(x => x.derived)));
     yield put(actions.fetchItemDerivativesSuccess({ id, data: resp.data }));
   } catch (err) {
@@ -52,7 +52,7 @@ function* fetchItemDerivatives(action) {
 function* fetchItemOrigins(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/content_units/${id}/origins/`);
+    const resp = yield call(api.get, `/content_units/${id}/origins/`);
     yield put(actions.receiveItems(resp.data.map(x => x.source)));
     yield put(actions.fetchItemOriginsSuccess({ id, data: resp.data }));
   } catch (err) {
@@ -63,7 +63,7 @@ function* fetchItemOrigins(action) {
 function* fetchItemSources(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/content_units/${id}/sources/`);
+    const resp = yield call(api.get, `/content_units/${id}/sources/`);
     yield put(actions.fetchItemSourcesSuccess({ id, data: resp.data }));
   } catch (err) {
     yield put(actions.fetchItemSourcesFailure(err));
@@ -73,7 +73,7 @@ function* fetchItemSources(action) {
 function* fetchItemTags(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/content_units/${id}/tags/`);
+    const resp = yield call(api.get, `/content_units/${id}/tags/`);
     yield put(actions.fetchItemTagsSuccess({ id, data: resp.data }));
   } catch (err) {
     yield put(actions.fetchItemTagsFailure(err));
@@ -82,7 +82,7 @@ function* fetchItemTags(action) {
 function* fetchItemPersons(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/content_units/${id}/persons/`);
+    const resp = yield call(api.get, `/content_units/${id}/persons/`);
     yield put(persons.receiveItems(resp.data.map(x => x.person)));
     yield put(actions.fetchItemPersonsSuccess({ id, data: resp.data }));
   } catch (err) {
@@ -92,7 +92,7 @@ function* fetchItemPersons(action) {
 
 function* create(action) {
   try {
-    const resp = yield call(api.post, '/rest/content_units/', action.payload);
+    const resp = yield call(api.post, '/content_units/', action.payload);
     yield put(actions.createSuccess(resp.data));
   } catch (err) {
     yield put(actions.createFailure(err));
@@ -102,7 +102,7 @@ function* create(action) {
 function* updateProperties(action) {
   try {
     const { id, properties } = action.payload;
-    const resp               = yield call(api.put, `/rest/content_units/${id}/`, { properties });
+    const resp               = yield call(api.put, `/content_units/${id}/`, { properties });
     yield put(actions.updatePropertiesSuccess(resp.data));
   } catch (err) {
     yield put(actions.updatePropertiesFailure(err));
@@ -112,7 +112,7 @@ function* updateProperties(action) {
 function* changeSecurityLevel(action) {
   try {
     const { id, level } = action.payload;
-    const resp          = yield call(api.put, `/rest/content_units/${id}/`, { secure: level });
+    const resp          = yield call(api.put, `/content_units/${id}/`, { secure: level });
     yield put(actions.changeSecurityLevelSuccess(resp.data));
   } catch (err) {
     yield put(actions.changeSecurityLevelFailure(err));
@@ -122,7 +122,7 @@ function* changeSecurityLevel(action) {
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
-    const resp         = yield call(api.put, `/rest/content_units/${id}/i18n/`, i18n);
+    const resp         = yield call(api.put, `/content_units/${id}/i18n/`, i18n);
     yield put(actions.updateI18nSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateI18nFailure(err));
@@ -132,7 +132,7 @@ function* updateI18n(action) {
 function* addSource(action) {
   try {
     const { id, sourceID } = action.payload;
-    yield call(api.post, `/rest/content_units/${id}/sources/`, { sourceID });
+    yield call(api.post, `/content_units/${id}/sources/`, { sourceID });
     yield put(actions.addSourceSuccess(action.payload));
   } catch (err) {
     yield put(actions.addSourceFailure(err));
@@ -142,7 +142,7 @@ function* addSource(action) {
 function* removeSource(action) {
   try {
     const { id, sourceID } = action.payload;
-    yield call(api.delete, `/rest/content_units/${id}/sources/${sourceID}`);
+    yield call(api.delete, `/content_units/${id}/sources/${sourceID}`);
     yield put(actions.removeSourceSuccess(action.payload));
   } catch (err) {
     yield put(actions.removeSourceFailure(err));
@@ -152,7 +152,7 @@ function* removeSource(action) {
 function* addTag(action) {
   try {
     const { id, tagID } = action.payload;
-    yield call(api.post, `/rest/content_units/${id}/tags/`, { tagID });
+    yield call(api.post, `/content_units/${id}/tags/`, { tagID });
     yield put(actions.addTagSuccess(action.payload));
   } catch (err) {
     yield put(actions.addTagFailure(err));
@@ -162,7 +162,7 @@ function* addTag(action) {
 function* removeTag(action) {
   try {
     const { id, tagID } = action.payload;
-    yield call(api.delete, `/rest/content_units/${id}/tags/${tagID}`);
+    yield call(api.delete, `/content_units/${id}/tags/${tagID}`);
     yield put(actions.removeTagSuccess(action.payload));
   } catch (err) {
     yield put(actions.removeTagFailure(err));
@@ -172,7 +172,7 @@ function* removeTag(action) {
 function* addPerson(action) {
   try {
     const { id, personID } = action.payload;
-    yield call(api.post, `/rest/content_units/${id}/persons/`, { person_id: personID,  role_id: 1});
+    yield call(api.post, `/content_units/${id}/persons/`, { person_id: personID,  role_id: 1});
     yield put(actions.addPersonSuccess(action.payload));
   } catch (err) {
     yield put(actions.addPersonFailure(err));
@@ -182,7 +182,7 @@ function* addPerson(action) {
 function* removePerson(action) {
   try {
     const { id, personID } = action.payload;
-    yield call(api.delete, `/rest/content_units/${id}/persons/${personID}`);
+    yield call(api.delete, `/content_units/${id}/persons/${personID}`);
     yield put(actions.removePersonSuccess(action.payload));
   } catch (err) {
     yield put(actions.removePersonFailure(err));

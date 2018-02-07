@@ -55,9 +55,12 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
+    "build:external": "REACT_APP_ENV=external yarn build",
+    "build:production": "REACT_APP_ENV=production yarn build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && scp -r build/* archive@app.mdb.bbdomain.org:/sites/admin"
+    "deploy": "yarn build:production && scp -r build/* archive@app.mdb.bbdomain.org:/sites/admin",
+    "deploy:external": "yarn build:external && scp -r build/* archive@app.archive.bbdomain.org:/sites/admin"
   }
 }

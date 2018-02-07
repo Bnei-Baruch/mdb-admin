@@ -6,12 +6,12 @@ import api from '../helpers/apiClient';
 import { relationshipResponseToPaginated } from '../helpers/apiResponseTransforms';
 
 const namespaceToRequest = {
-    'content_units': (params) => api.get('/rest/content_units/', { params }),
-    'collections': (params) => api.get('/rest/collections/', { params }),
-    'files': (params) => api.get('/rest/files/', { params }),
-    'operations': (params) => api.get('/rest/operations/', { params }),
+    'content_units': (params) => api.get('/content_units/', { params }),
+    'collections': (params) => api.get('/collections/', { params }),
+    'files': (params) => api.get('/files/', { params }),
+    'operations': (params) => api.get('/operations/', { params }),
     'operation.files': (params, meta) => {
-        return api.get(`/rest/operations/${meta.id}/files/`, { params })
+        return api.get(`/operations/${meta.id}/files/`, { params })
             // patch response for infinite search
             .then(response => relationshipResponseToPaginated(response))
     }

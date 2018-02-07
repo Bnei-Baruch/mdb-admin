@@ -11,7 +11,7 @@ import { actions as lists } from '../redux/modules/lists';
 function* fetchItem(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/persons/${id}/`);
+    const resp = yield call(api.get, `/persons/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
@@ -20,7 +20,7 @@ function* fetchItem(action) {
 
 function* fetchAll(action) {
   try {
-    const data = yield loadAllPages('/rest/persons/');
+    const data = yield loadAllPages('/persons/');
     yield put(actions.fetchAllSuccess(data));
   } catch (err) {
     yield put(actions.fetchAllFailure(err));
@@ -29,7 +29,7 @@ function* fetchAll(action) {
 
 function* create(action) {
   try {
-    const resp = yield call(api.post, '/rest/persons/', action.payload);
+    const resp = yield call(api.post, '/persons/', action.payload);
     yield put(actions.createSuccess(resp.data, action.payload.author));
   } catch (err) {
     yield put(actions.createFailure(err));
@@ -39,7 +39,7 @@ function* create(action) {
 function* updateInfo(action) {
   try {
     const { id, pattern } = action.payload;
-    const resp            = yield call(api.put, `/rest/persons/${id}/`, { pattern });
+    const resp            = yield call(api.put, `/persons/${id}/`, { pattern });
     yield put(actions.updateInfoSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateInfoFailure(err));
@@ -49,7 +49,7 @@ function* updateInfo(action) {
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
-    const resp         = yield call(api.put, `/rest/persons/${id}/i18n/`, i18n);
+    const resp         = yield call(api.put, `/persons/${id}/i18n/`, i18n);
     yield put(actions.updateI18nSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateI18nFailure(err));
@@ -59,7 +59,7 @@ function* updateI18n(action) {
 function* deletePerson(action) {
   const id = action.payload;
   try {
-    yield call(api.delete, `/rest/persons/${id}/`);
+    yield call(api.delete, `/persons/${id}/`);
     yield put(lists.removeItem(NS_PERSONS, id));
     yield put(actions.deleteSuccess(id));
     yield put(push('/persons'));

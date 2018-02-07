@@ -8,7 +8,7 @@ import { actions as operations } from '../redux/modules/operations';
 function* fetchItem(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/files/${id}/`);
+    const resp = yield call(api.get, `/files/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
     yield put(actions.fetchItemFailure(err));
@@ -18,7 +18,7 @@ function* fetchItem(action) {
 function* fetchItemStorages(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/files/${id}/storages/`);
+    const resp = yield call(api.get, `/files/${id}/storages/`);
     yield put(storages.receiveItems(resp.data));
     yield put(actions.fetchItemStoragesSuccess({ id, data: resp.data }));
   } catch (err) {
@@ -29,7 +29,7 @@ function* fetchItemStorages(action) {
 function* fetchTreeWithOperations(action) {
   try {
     const id   = action.payload;
-    const resp = yield call(api.get, `/rest/files/${id}/tree/`);
+    const resp = yield call(api.get, `/files/${id}/tree/`);
     yield put(operations.receiveItems(Object.keys(resp.data.operations).map(key => resp.data.operations[key])));
     yield put(actions.fetchTreeWithOperationsSuccess({ id, files: resp.data.files }));
   } catch (err) {
@@ -40,7 +40,7 @@ function* fetchTreeWithOperations(action) {
 function* changeSecurityLevel(action) {
   try {
     const { id, level } = action.payload;
-    const resp          = yield call(api.put, `/rest/files/${id}/`, { secure: level });
+    const resp          = yield call(api.put, `/files/${id}/`, { secure: level });
     yield put(actions.changeSecurityLevelSuccess(resp.data));
   } catch (err) {
     yield put(actions.changeSecurityLevelFailure(err));
@@ -50,7 +50,7 @@ function* changeSecurityLevel(action) {
 function* updateProperties(action) {
   const { id, properties } = action.payload;
   try {
-    yield call(api.put, `/rest/files/${id}/`, properties);
+    yield call(api.put, `/files/${id}/`, properties);
     yield put(actions.updatePropertiesSuccess({ id, properties }));
   } catch (err) {
     yield put(actions.updatePropertiesFailure({ ...err, content_units_id: properties.content_unit_id }));
