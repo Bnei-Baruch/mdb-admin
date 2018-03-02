@@ -48,12 +48,10 @@ class HolidayField extends PureComponent {
 }
 
 const mapState = (state) => {
-  const hierarchy = selectors.getHierarchy(state.tags);
-  const tags      = selectors.getTags(state.tags);
-
-  const rootID      = hierarchy.roots.find(x => tags.get(x).uid === '1nyptSIo');
-  const childs      = hierarchy.childMap.get(rootID) || EMPTY_ARRAY;
-  const holidayTags = selectors.denormIDs(state.tags)(childs);
+  const holidaysRoot = selectors.getTagByUID(state.tags)('1nyptSIo');
+  const hierarchy    = selectors.getHierarchy(state.tags);
+  const childs       = hierarchy.childMap.get(holidaysRoot.id) || EMPTY_ARRAY;
+  const holidayTags  = selectors.denormIDs(state.tags)(childs);
   return {
     options: holidayTags.map(x => ({ value: x.uid, text: extractI18n(x.i18n, ['label'])[0] }))
   };
