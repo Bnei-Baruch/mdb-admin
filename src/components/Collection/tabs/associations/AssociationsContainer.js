@@ -104,9 +104,11 @@ class AssociationsContainer extends Component {
   handlePositionDown = () =>
     this.updatePosition(false);
 
+  handleContextRef = contextRef => this.setState({ contextRef });
+
   render() {
-    const { selectedCCU } = this.state;
-    const { units }       = this.props;
+    const { selectedCCU, contextRef } = this.state;
+    const { units }                   = this.props;
 
     const isLast  = selectedCCU.length === 0 || units.length === 0 ||
       selectedCCU[selectedCCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
@@ -125,8 +127,8 @@ class AssociationsContainer extends Component {
             </Menu.Item>
           </Menu.Menu>
         </Menu>
-        <div>
-          <Sticky className={'stickyMenu'}>
+        <div ref={this.handleContextRef}>
+          <Sticky className={'stickyMenu'} context={contextRef}>
             <Button.Group>
               <Button
                 basic
@@ -151,7 +153,7 @@ class AssociationsContainer extends Component {
               />
             </Button.Group>
           </Sticky>
-          <Grid stackable>
+          <Grid>
             <Grid.Row>
               <Grid.Column>
                 <Units
