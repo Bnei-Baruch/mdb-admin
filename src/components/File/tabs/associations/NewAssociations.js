@@ -12,10 +12,12 @@ import TabsMenu from '../../../shared/TabsMenu';
 import Pagination from '../../../shared/Pagination';
 import ResultsPageHeader from '../../../shared/ResultsPageHeader';
 import ContentUnitList from './NewAssociationsList';
+import FreeText from './filters/FreeText';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
 
 const filterTabs = [
+  { name: 'Free Text', element: FreeText },
   { name: 'Date Range', element: DateRange },
   { name: 'Others', element: Others },
 ];
