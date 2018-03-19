@@ -13,8 +13,10 @@ import ResultsPageHeader from '../shared/ResultsPageHeader';
 import OperationsList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
+import FreeText from './filters/FreeText';
 
 const filterTabs = [
+  { name: 'Free Text', element: FreeText },
   { name: 'Date Range', element: DateRange },
   { name: 'Others', element: Others },
 ];
