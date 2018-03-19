@@ -65,10 +65,8 @@ const mapState = (state, ownProps) => {
   const { collection = EMPTY_OBJECT } = ownProps;
   const unitIDs                       = collection.content_units;
   const denormCCUs                    = units.denormCCUs(state.content_units);
-  const CCUs                          = unitIDs ? orderBy(denormCCUs(unitIDs).sort(orderUnits), ['position', 'content_unit.type_id']) : EMPTY_ARRAY;
-  if(unitIDs){
-    console.log(CCUs);
-  }
+  const CCUs                          = unitIDs ? orderBy(denormCCUs(unitIDs).sort(orderUnits), ['content_unit.type_id', 'position']) : EMPTY_ARRAY;
+
   return {
     units: CCUs,
     associatedCUIds: collection.content_units ?
