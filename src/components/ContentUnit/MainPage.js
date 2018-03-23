@@ -9,12 +9,14 @@ import { formatError } from '../../helpers/utils';
 import DetailsTab from './tabs/details/DetailsTab';
 import AssociationsTab from './tabs/associations/AssociationsTab';
 import FilesTab from './tabs/files/FilesTab';
+import MergeContentUnitTab from './tabs/merge/MainPage';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
 
 const items = [
   { name: 'Details', element: DetailsTab },
   { name: 'Files', element: FilesTab },
   { name: 'Associations', element: AssociationsTab },
+  { name: 'Merge', element: MergeContentUnitTab },
   { name: 'Danger Zone', element: DangerZoneTab },
 ];
 

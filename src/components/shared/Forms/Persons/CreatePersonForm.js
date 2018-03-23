@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Divider, Form, Message, Input } from 'semantic-ui-react';
+import { Divider, Form, Message } from 'semantic-ui-react';
 
 import { MAJOR_LANGUAGES } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../Fields/index';
