@@ -193,7 +193,7 @@ function* removePerson(action) {
 function* merge(action) {
   try {
     const { id, cuIds } = action.payload;
-    yield call(api.delete, `/content_units/${id}`, { cuIds });
+    yield call(api.post, `/content_units/${id}`, { cuIds });
     yield put(actions.mergeSuccess(action.payload));
   } catch (err) {
     yield put(actions.mergeFailure(err));
