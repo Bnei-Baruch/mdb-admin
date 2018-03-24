@@ -69,14 +69,15 @@ class AddFiles extends PureComponent {
     if (selectedFilesIds.includes(file.id)) {
       selectedFilesIds.some((id, i, arr) => {
         if (id === file.id) {
-          arr.splice(i);
+          arr.splice(i, 1);
           return true;
         }
       });
     } else {
       selectedFilesIds.push(file.id);
     }
-    this.setState({ selectedFilesIds: selectedFilesIds });
+
+    this.setState({ selectedFilesIds: [...selectedFilesIds] });
   };
 
   toggleFilters = () =>
