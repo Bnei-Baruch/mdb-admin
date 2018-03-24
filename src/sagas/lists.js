@@ -11,7 +11,7 @@ import { actions as publishers } from '../redux/modules/publishers';
 import { selectors as filterSelectors } from '../redux/modules/filters';
 import {
   NS_COLLECTIONS, NS_FILES, NS_OPERATIONS, NS_UNITS, NS_COLLECTION_UNITS, NS_PERSONS,
-  NS_FILE_UNITS, NS_PUBLISHERS
+  NS_FILE_UNITS, NS_PUBLISHERS, NS_UNIT_FILE_UNITS
 } from '../helpers/consts';
 import { filtersTransformer } from '../filters';
 import { updateQuery } from './helpers/url';
@@ -22,6 +22,7 @@ const dataReceivers = {
   [NS_COLLECTION_UNITS]: units.receiveItems,
   [NS_FILE_UNITS]: units.receiveItems,
   [NS_FILES]: files.receiveItems,
+  [NS_UNIT_FILE_UNITS]: files.receiveItems,
   [NS_OPERATIONS]: operations.receiveItems,
   [NS_PERSONS]: persons.receiveItems,
   [NS_PUBLISHERS]: publishers.receiveItems,
@@ -31,7 +32,16 @@ function* fetchList(action) {
   const { namespace, pageNo } = action.payload;
   const filters               = yield select(state => filterSelectors.getFilters(state.filters, namespace));
   const params                = filtersTransformer.toApiParams(filters);
-  const urlParam = (namespace === NS_COLLECTION_UNITS || namespace === NS_FILE_UNITS) ? NS_UNITS : namespace;
+  let urlParam                = namespace;
+
+  switch (namespace) {
+  case  NS_COLLECTION_UNITS:
+  case  NS_FILE_UNITS:
+    urlParam = NS_UNITS;
+  case NS_UNIT_FILE_UNITS:
+    urlParam = NS_FILES;
+  }
+
   try {
     const resp = yield call(api.get, `/${urlParam}/`, { params: { page_no: pageNo, ...params } });
     yield put(dataReceivers[namespace](resp.data.data));

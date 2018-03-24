@@ -4,12 +4,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
-import { actions } from '../../../../redux/modules/content_units';
+import { actions, selectors } from '../../../../redux/modules/content_units';
+import { selectors as filesSectors } from '../../../../redux/modules/files';
 
 import * as shapes from '../../../shapes';
 
-import Files from './Container';
-import NewAssociations from './selectNew/Container';
+import Files from './List';
+import AddFiles from './selectNew/Container';
 
 class AssociationsTab extends Component {
 
@@ -39,13 +40,13 @@ class AssociationsTab extends Component {
     }
   }
 
-  askForData = (id) => this.props.fetchItemUnits(id);
+  askForData = (id) => this.props.fetchItemFiles(id);
 
   setEditMode = editMode => this.setState({ editMode });
 
   render() {
     if (this.state.editMode) {
-      return (<NewAssociations {...this.props} setEditMode={this.setEditMode} />);
+      return (<AddFiles {...this.props} setEditMode={this.setEditMode} />);
     }
     return (<Files {...this.props} setEditMode={this.setEditMode} />);
   }
@@ -54,8 +55,11 @@ class AssociationsTab extends Component {
 
 const mapState = (state, ownProps) => {
   const { unit } = ownProps;
+
+  const denormFiles = filesSectors.denormIDs(state.files);
+  const filesIds    = unit && unit.files ? unit.files : EMPTY_ARRAY;
   return {
-    files: unit ? unit.files : EMPTY_ARRAY,
+    files: denormFiles(filesIds),
     wip: selectors.getWIP(state.content_units, 'fetchItemFiles'),
     err: selectors.getError(state.content_units, 'fetchItemFiles'),
   };

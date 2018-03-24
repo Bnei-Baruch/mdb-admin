@@ -179,7 +179,7 @@ const addSourceFailure           = createAction(ADD_SOURCE_FAILURE);
 const removeSource               = createAction(REMOVE_SOURCE, (id, sourceID) => ({ id, sourceID }));
 const removeSourceSuccess        = createAction(REMOVE_SOURCE_SUCCESS);
 const removeSourceFailure        = createAction(REMOVE_SOURCE_FAILURE);
-const addFiles                   = createAction(ADD_FILES, (id, files_ids) => ({ id, files_ids }));
+const addFiles                   = createAction(ADD_FILES, (id, filesIds) => ({ id, filesIds }));
 const addFilesSuccess            = createAction(ADD_FILES_SUCCESS);
 const addFilesFailure            = createAction(ADD_FILES_FAILURE);
 const addTag                     = createAction(ADD_TAG, (id, tagID) => ({ id, tagID }));

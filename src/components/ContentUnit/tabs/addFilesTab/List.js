@@ -2,172 +2,100 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Icon, Message, Table } from 'semantic-ui-react';
+import { Icon, Table, Message, Menu, Header } from 'semantic-ui-react';
+import filesize from 'filesize';
 
-import {
-  CONTENT_TYPE_BY_ID,
-  CT_DAILY_LESSON,
-  CT_SPECIAL_LESSON,
-  EMPTY_ARRAY,
-  SECURITY_LEVELS
-} from '../../../../helpers/consts';
-import { extractI18n, formatError } from '../../../../helpers/utils';
+import { SECURITY_LEVELS } from '../../../../helpers/consts';
+import { formatError } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import EditedField from '../../../shared/Fields/EditedField';
 
-class Units extends PureComponent {
+class FilesList extends PureComponent {
 
   static propTypes = {
-    collection: shapes.Collection,
-    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
-    selectedCCU: PropTypes.arrayOf(PropTypes.object),
-    updateItemUnitProperties: PropTypes.func.isRequired,
-    onSelectionChange: PropTypes.func.isRequired,
-    wip: PropTypes.bool,
-    err: shapes.Error,
-    errDeleteCu: shapes.Error,
-    errUpdateCu: shapes.Error,
+    files: PropTypes.arrayOf(shapes.File),
   };
 
-  static defaultProps = {
-    collection: null,
-    units: EMPTY_ARRAY,
-    selectedCCU: EMPTY_ARRAY,
-    wip: false,
-    err: null,
-    errDeleteCu: null,
-    errUpdateCu: null,
-  };
-
-  state = {
-    checked: false
-  };
-
-  saveCCUName = (id, item, val) => {
-    this.props.updateItemUnitProperties(id, item.content_unit_id, { name: val, position: item.position });
-  };
-
-  handleSelectionChange = (unit, data) => {
-    const checked = data.checked;
-    this.props.onSelectionChange(unit, checked);
-    this.setState({ checked });
-  };
+  handleSwitchToAddFiles = () => this.props.setEditMode(true);
 
   renderItem = (item) => {
-    const { collection, errUpdateCu, errDeleteCu, selectedCCU } = this.props;
-    const unit                                                  = item.content_unit;
-    const error                                                 = errDeleteCu || errUpdateCu;
-
-    let properties = extractI18n(unit.i18n, ['name'])[0];
-    if (!properties) {
-      switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
-      case CT_SPECIAL_LESSON:
-      case CT_DAILY_LESSON: {
-        const { film_date: filmDate, number } = unit.properties;
-        properties                            = filmDate;
-        if (number) {
-          properties += `, number ${number}`;
-        }
-        break;
-      }
-      default:
-        properties = unit.properties ? unit.properties.film_date : '';
-      }
-    }
-
     return (
-      <Table.Row
-        key={unit.id}
-        error={error && error.content_units_id === unit.id}
-        title={error ? formatError(error) : ''}
-      >
+      <Table.Row key={item.id}>
         <Table.Cell collapsing>
-          <Checkbox
-            type="checkbox"
-            onChange={(e, data) => this.handleSelectionChange(item, data)}
-            checked={selectedCCU.findIndex(ccu => ccu.content_unit_id === unit.id) !== -1}
-          />
-        </Table.Cell>
-        <Table.Cell collapsing>
-          <Link to={`/content_units/${unit.id}`}>
-            {unit.id}
+          <Link to={`/files/${item.id}`}>
+            {item.id}
           </Link>
         </Table.Cell>
         <Table.Cell collapsing>
-          {unit.uid}
+          {item.uid}
         </Table.Cell>
-        <Table.Cell>
-          {properties}
-        </Table.Cell>
-        <Table.Cell collapsing>
-          {CONTENT_TYPE_BY_ID[unit.type_id]}
+        <Table.Cell style={item.removed_at ? { textDecoration: 'line-through' } : null}>
+          {item.name}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+          {filesize(item.size)}
         </Table.Cell>
         <Table.Cell collapsing>
+          {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+        </Table.Cell>
+        <Table.Cell collapsing textAlign="center">
+          <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />
+        </Table.Cell>
+        <Table.Cell collapsing textAlign="center">
           {
-            unit.properties && unit.properties.duration ?
-              moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
-              '??'
-          }
-        </Table.Cell>
-        <Table.Cell textAlign="center" collapsing>
-          <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
-        </Table.Cell>
-        <Table.Cell textAlign="center" collapsing>
-          {
-            unit.published ?
+            item.published ?
               <Icon name="checkmark" color="green" /> :
               <Icon name="ban" color="red" />
           }
-        </Table.Cell>
-        <Table.Cell>
-          <EditedField
-            value={item.name}
-            onSave={val => this.saveCCUName(collection.id, item, val)}
-          />
         </Table.Cell>
       </Table.Row>
     );
   };
 
   render() {
-    const { units, wip, err } = this.props;
-
+    const { files, wip, err } = this.props;
+    let content;
     if (err) {
-      return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
+      content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
+    } else if (files.length === 0) {
+      content = wip ?
+        <LoadingSplash text="Loading sources" /> :
+        <Message>No files for this unit</Message>;
+    } else {
+      content = (
+        <Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>ID</Table.HeaderCell>
+              <Table.HeaderCell>UID</Table.HeaderCell>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Size</Table.HeaderCell>
+              <Table.HeaderCell>Created At</Table.HeaderCell>
+              <Table.HeaderCell>Secure</Table.HeaderCell>
+              <Table.HeaderCell>Published</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {files.map(this.renderItem)}
+          </Table.Body>
+        </Table>);
     }
-
-    if (units.length === 0) {
-      return wip ?
-        <LoadingSplash text="Loading content units" /> :
-        <Message>No content units found for this collection</Message>;
-    }
-
     return (
-      <Table celled selectable compact size="small">
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell />
-            <Table.HeaderCell>ID</Table.HeaderCell>
-            <Table.HeaderCell>UID</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Type</Table.HeaderCell>
-            <Table.HeaderCell>Created At</Table.HeaderCell>
-            <Table.HeaderCell>Duration</Table.HeaderCell>
-            <Table.HeaderCell>Secure</Table.HeaderCell>
-            <Table.HeaderCell>Published</Table.HeaderCell>
-            <Table.HeaderCell>Association Name</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {units.map(this.renderItem)}
-        </Table.Body>
-      </Table>
+      <div>
+        <Menu borderless size="large">
+          <Menu.Item header>
+            <Header content="Add Files To Content Unit" size="medium" color="blue" />
+          </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item onClick={this.handleSwitchToAddFiles}>
+              <Icon name="plus" /> Add Files
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
+        {content}
+      </div>
     );
   }
 }
 
-export default Units;
+export default FilesList;

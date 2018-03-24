@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Icon, Table } from 'semantic-ui-react';
-import { filesize } from 'filesize';
+import { Checkbox, Icon, Table, Menu, Header } from 'semantic-ui-react';
+import filesize from 'filesize';
 
 import { SECURITY_LEVELS } from '../../../../../helpers/consts';
 import * as shapes from '../../../../shapes';
@@ -12,9 +12,9 @@ class FilesList extends PureComponent {
 
   static propTypes = {
     items: PropTypes.arrayOf(shapes.File),
-    unitId: shapes.ContentUnit.required,
+    unitId: PropTypes.number,
     handleSelectFile: PropTypes.func,
-    selectedFilesId: PropTypes.number,
+    selectedFilesIds: PropTypes.arrayOf(PropTypes.number),
   };
 
   checkHandler = (cu, checked) => {
@@ -23,15 +23,15 @@ class FilesList extends PureComponent {
   };
 
   renderItem = (item) => {
-    const { selectedFilesId, unitFilesIds } = this.props;
+    const { selectedFilesIds, unitId } = this.props;
 
     return (
-      <Table.Row key={item.id} disabled={unitFilesIds.includes(item.id)}>
+      <Table.Row key={item.id} disabled={item.id === unitId}>
         <Table.Cell>
           <Checkbox
             type="checkbox"
             onChange={(event, data) => this.checkHandler(item, data.checked)}
-            checked={selectedFilesId === item.id}
+            checked={selectedFilesIds.includes(item.id)}
           />
         </Table.Cell>
         <Table.Cell collapsing>
@@ -67,22 +67,31 @@ class FilesList extends PureComponent {
 
   render() {
     return (
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>ID</Table.HeaderCell>
-            <Table.HeaderCell>UID</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Size</Table.HeaderCell>
-            <Table.HeaderCell>Created At</Table.HeaderCell>
-            <Table.HeaderCell>Secure</Table.HeaderCell>
-            <Table.HeaderCell>Published</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {this.props.items.map(this.renderItem)}
-        </Table.Body>
-      </Table>
+      <div>
+        <Menu borderless size="large">
+          <Menu.Item header>
+            <Header content="Add Files To Content Unit" size="medium" color="blue" />
+          </Menu.Item>
+        </Menu>
+        <div>
+          <Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>ID</Table.HeaderCell>
+                <Table.HeaderCell>UID</Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Size</Table.HeaderCell>
+                <Table.HeaderCell>Created At</Table.HeaderCell>
+                <Table.HeaderCell>Secure</Table.HeaderCell>
+                <Table.HeaderCell>Published</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {this.props.items.map(this.renderItem)}
+            </Table.Body>
+          </Table>
+        </div>
+      </div>
     );
   }
 }
