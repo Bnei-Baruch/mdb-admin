@@ -20,10 +20,12 @@ import { selectors as filesSelectors } from '../../../../../redux/modules/files'
 import FilesList from './List';
 import DateRange from '../filters/DateRange';
 import Others from '../filters/Others';
+import FreeText from '../filters/FreeText';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
   { name: 'Others', element: Others },
+  { name: 'Free Text', element: FreeText },
 ];
 
 class AddFiles extends PureComponent {
