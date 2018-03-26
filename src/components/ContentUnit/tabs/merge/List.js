@@ -12,7 +12,7 @@ class ContentUnitList extends PureComponent {
 
   static propTypes = {
     units: PropTypes.arrayOf(shapes.ContentUnit),
-    selectedCUId: PropTypes.arrayOf(PropTypes.number),
+    selectedCUIds: PropTypes.arrayOf(PropTypes.number),
     selectCU: PropTypes.func,
     associatedCUIds: PropTypes.object,
   };
@@ -23,19 +23,18 @@ class ContentUnitList extends PureComponent {
 
   checkHandler = (unit, checked) => {
     this.props.selectCU(unit.id, checked);
-    this.setState({ checked });
   };
 
   renderItem = (unit) => {
     const properties       = extractI18n(unit.i18n, ['name'])[0];
-    const { selectedCUId } = this.props;
+    const { selectedCUIds } = this.props;
     return (
       <Table.Row key={unit.id}>
         <Table.Cell>
           <Checkbox
             type="checkbox"
             onChange={(event, data) => this.checkHandler(unit, data.checked)}
-            checked={selectedCUId.find(cuId => cuId === unit.id)}
+            checked={selectedCUIds.includes(unit.id)}
           />
         </Table.Cell>
         <Table.Cell>

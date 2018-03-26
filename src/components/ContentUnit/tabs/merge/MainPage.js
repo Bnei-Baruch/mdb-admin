@@ -50,7 +50,7 @@ class MergeContentUnitTab extends PureComponent {
 
   state = {
     showFilters: false,
-    selectedCUId: []
+    selectedCUIds: []
   };
 
   toggleFilters = () =>
@@ -79,28 +79,28 @@ class MergeContentUnitTab extends PureComponent {
     this.props.fetchList(NS_MERGE_UNITS, pageNo);
   };
 
-  selectCU = (data, checked) => {
-    const selectedCUId = this.state.selectedCUId;
+  selectCU = (id, checked) => {
+    const selectedCUIds = this.state.selectedCUIds;
     if (checked) {
-      selectedCUId.push(data);
+      selectedCUIds.push(id);
     } else {
-      selectedCUId.some((cuId, i) => {
-        if (cuId === data.id) {
-          selectedCUId.splice(i, 1);
+      selectedCUIds.some((cuId, i) => {
+        if (cuId === id) {
+          selectedCUIds.splice(i, 1);
           return true;
         }
       });
     }
-    this.setState({ selectedCUId });
+    this.setState({ selectedCUIds: [...selectedCUIds] });
   };
 
   mergeCU = () => {
-    const { selectedCUId } = this.state;
-    if (selectedCUId.length === 0) {
+    const { selectedCUIds } = this.state;
+    if (selectedCUIds.length === 0) {
       return;
     }
     const { unit, mergeUnits } = this.props;
-    mergeUnits(unit.id, { cuIds: selectedCUId });
+    mergeUnits(unit.id, { cuIds: selectedCUIds });
   };
 
   render() {
@@ -172,7 +172,7 @@ class MergeContentUnitTab extends PureComponent {
               </div>
               <ContentUnitList
                 {...this.props}
-                selectedCUId={this.state.selectedCUId}
+                selectedCUIds={this.state.selectedCUIds}
                 selectCU={this.selectCU} />
             </Grid.Column>
           </Grid.Row>
