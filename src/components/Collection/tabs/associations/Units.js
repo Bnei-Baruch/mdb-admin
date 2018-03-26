@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Icon, Message, Table, Header } from 'semantic-ui-react';
+import { Checkbox, Header, Icon, Message, Table } from 'semantic-ui-react';
 
 import {
   CONTENT_TYPE_BY_ID,
@@ -130,13 +130,13 @@ class Units extends PureComponent {
     );
   };
 
-  separateByType = (list) => {
-    return list.reduce((acc, val, i, arr) => {
+  separateByType = list =>
+    list.reduce((acc, val, i, arr) => {
       const unit = val.content_unit;
       if (i === 0 || arr[i - 1].content_unit.type_id !== unit.type_id) {
-        acc.push(<Table.Row key={'type_id_' + unit.type_id}>
+        acc.push(<Table.Row key={`type_id_${unit.type_id}`}>
           <Table.Cell colSpan={9} collapsing>
-            <Header textAlign="center" block color='blue'>
+            <Header textAlign="center" block color="blue">
               {CONTENT_TYPE_BY_ID[unit.type_id]}
             </Header>
           </Table.Cell>
@@ -145,7 +145,6 @@ class Units extends PureComponent {
       acc.push(this.renderItem(val));
       return acc;
     }, []);
-  };
 
   render() {
     const { units, wip, err } = this.props;

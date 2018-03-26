@@ -100,7 +100,7 @@ class MergeContentUnitTab extends PureComponent {
       return;
     }
     const { unit, mergeUnits } = this.props;
-    mergeUnits(unit.id, { cuIds: selectedCUIds });
+    mergeUnits(unit.id, selectedCUIds);
   };
 
   render() {
