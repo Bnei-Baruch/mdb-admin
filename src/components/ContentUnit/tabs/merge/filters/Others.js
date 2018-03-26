@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header, Segment } from 'semantic-ui-react';
 
-import { NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
+import { NS_MERGE_UNITS } from '../../../../../helpers/consts';
 import { ContentTypeFilter, PublishedFilter, SecureFilter } from '../../../../Filters/filterComponents';
 
 const Others = props => (
@@ -12,7 +12,7 @@ const Others = props => (
         <Grid.Column width={4}>
           <Header content="Content Type" size="small" />
           <ContentTypeFilter
-            namespace={NS_COLLECTION_UNITS}
+            namespace={NS_MERGE_UNITS}
             name="content_type"
             onApply={props.onFilterApplication}
           />
@@ -20,7 +20,7 @@ const Others = props => (
         <Grid.Column width={4}>
           <Header content="Security Level" size="small" />
           <SecureFilter
-            namespace={NS_COLLECTION_UNITS}
+            namespace={NS_MERGE_UNITS}
             name="secure"
             onApply={props.onFilterApplication}
           />
@@ -28,7 +28,7 @@ const Others = props => (
         <Grid.Column width={4}>
           <Header content="Published" size="small" />
           <PublishedFilter
-            namespace={NS_COLLECTION_UNITS}
+            namespace={NS_MERGE_UNITS}
             name="published"
             onApply={props.onFilterApplication}
           />
