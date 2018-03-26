@@ -18,10 +18,12 @@ import { selectors as unitsSelectors, actions as unitActions } from '../../../..
 import ContentUnitList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
+import FreeText from './filters/FreeText';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
   { name: 'Others', element: Others },
+  { name: 'Free Text', element: FreeText },
 ];
 
 class MergeContentUnitTab extends PureComponent {
@@ -35,7 +37,7 @@ class MergeContentUnitTab extends PureComponent {
     units: PropTypes.arrayOf(shapes.ContentUnit),
     fetchList: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
-    mergeUnit: PropTypes.func.isRequired,
+    mergeUnits: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -97,8 +99,8 @@ class MergeContentUnitTab extends PureComponent {
     if (selectedCUId.length === 0) {
       return;
     }
-    const { unit, mergeUnit } = this.props;
-    mergeUnit(unit.id, { cuIds: selectedCUId });
+    const { unit, mergeUnits } = this.props;
+    mergeUnits(unit.id, { cuIds: selectedCUId });
   };
 
   render() {
@@ -193,7 +195,7 @@ function mapDispatch(dispatch) {
   return bindActionCreators({
     fetchList: actions.fetchList,
     setPage: actions.setPage,
-    mergeUnit: unitActions.merge,
+    mergeUnits: unitActions.mergeUnits,
   }, dispatch);
 }
 
