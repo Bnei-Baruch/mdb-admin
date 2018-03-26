@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Icon, Message, Table } from 'semantic-ui-react';
+import { Checkbox, Icon, Message, Table, Header } from 'semantic-ui-react';
 
 import {
   CONTENT_TYPE_BY_ID,
@@ -101,9 +101,6 @@ class Units extends PureComponent {
           {properties}
         </Table.Cell>
         <Table.Cell collapsing>
-          {CONTENT_TYPE_BY_ID[unit.type_id]}
-        </Table.Cell>
-        <Table.Cell collapsing>
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell collapsing>
@@ -133,6 +130,23 @@ class Units extends PureComponent {
     );
   };
 
+  separateByType = (list) => {
+    return list.reduce((acc, val, i, arr) => {
+      const unit = val.content_unit;
+      if (i === 0 || arr[i - 1].content_unit.type_id !== unit.type_id) {
+        acc.push(<Table.Row key={'type_id_' + unit.type_id}>
+          <Table.Cell colSpan={9} collapsing>
+            <Header textAlign="center" block color='blue'>
+              {CONTENT_TYPE_BY_ID[unit.type_id]}
+            </Header>
+          </Table.Cell>
+        </Table.Row>);
+      }
+      acc.push(this.renderItem(val));
+      return acc;
+    }, []);
+  };
+
   render() {
     const { units, wip, err } = this.props;
 
@@ -154,7 +168,6 @@ class Units extends PureComponent {
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Type</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
             <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
@@ -163,7 +176,7 @@ class Units extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {units.map(this.renderItem)}
+          {this.separateByType(units)}
         </Table.Body>
       </Table>
     );
