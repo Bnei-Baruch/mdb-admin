@@ -79,6 +79,7 @@ function* fetchItemTags(action) {
     yield put(actions.fetchItemTagsFailure(err));
   }
 }
+
 function* fetchItemPersons(action) {
   try {
     const id   = action.payload;
@@ -172,7 +173,7 @@ function* removeTag(action) {
 function* addPerson(action) {
   try {
     const { id, personID } = action.payload;
-    yield call(api.post, `/content_units/${id}/persons/`, { person_id: personID,  role_id: 1});
+    yield call(api.post, `/content_units/${id}/persons/`, { person_id: personID, role_id: 1 });
     yield put(actions.addPersonSuccess(action.payload));
   } catch (err) {
     yield put(actions.addPersonFailure(err));
@@ -186,6 +187,16 @@ function* removePerson(action) {
     yield put(actions.removePersonSuccess(action.payload));
   } catch (err) {
     yield put(actions.removePersonFailure(err));
+  }
+}
+
+function* mergeUnits(action) {
+  try {
+    const { id, cuIds } = action.payload;
+    yield call(api.post, `/content_units/${id}/merge/`, { cuIds });
+    yield put(actions.mergeUnitsSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.mergeUnitsFailure(err));
   }
 }
 
@@ -216,6 +227,7 @@ function* watchFetchItemSources() {
 function* watchFetchItemTags() {
   yield takeEvery(types.FETCH_ITEM_TAGS, fetchItemTags);
 }
+
 function* watchFetchItemPersons() {
   yield takeEvery(types.FETCH_ITEM_PERSONS, fetchItemPersons);
 }
@@ -260,6 +272,10 @@ function* watchRemovePerson() {
   yield takeEvery(types.REMOVE_PERSON, removePerson);
 }
 
+function* watchMergeUnits() {
+  yield takeEvery(types.MERGE_UNITS, mergeUnits);
+}
+
 export const sagas = [
   watchFetchItem,
   watchFetchItemFiles,
@@ -279,4 +295,5 @@ export const sagas = [
   watchRemoveTag,
   watchAddPerson,
   watchRemovePerson,
+  watchMergeUnits
 ];

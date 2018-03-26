@@ -10,7 +10,7 @@ import { actions as persons } from '../redux/modules/persons';
 import { actions as publishers } from '../redux/modules/publishers';
 import { selectors as filterSelectors } from '../redux/modules/filters';
 import {
-  NS_COLLECTIONS, NS_FILES, NS_OPERATIONS, NS_UNITS, NS_COLLECTION_UNITS, NS_PERSONS,
+  NS_COLLECTIONS, NS_FILES, NS_OPERATIONS, NS_UNITS, NS_COLLECTION_UNITS, NS_MERGE_UNITS, NS_PERSONS,
   NS_FILE_UNITS, NS_PUBLISHERS
 } from '../helpers/consts';
 import { filtersTransformer } from '../filters';
@@ -20,6 +20,7 @@ const dataReceivers = {
   [NS_COLLECTIONS]: collections.receiveItems,
   [NS_UNITS]: units.receiveItems,
   [NS_COLLECTION_UNITS]: units.receiveItems,
+  [NS_MERGE_UNITS]: units.receiveItems,
   [NS_FILE_UNITS]: units.receiveItems,
   [NS_FILES]: files.receiveItems,
   [NS_OPERATIONS]: operations.receiveItems,
@@ -31,7 +32,7 @@ function* fetchList(action) {
   const { namespace, pageNo } = action.payload;
   const filters               = yield select(state => filterSelectors.getFilters(state.filters, namespace));
   const params                = filtersTransformer.toApiParams(filters);
-  const urlParam = (namespace === NS_COLLECTION_UNITS || namespace === NS_FILE_UNITS) ? NS_UNITS : namespace;
+  const urlParam              = (namespace === NS_COLLECTION_UNITS || namespace === NS_FILE_UNITS || NS_MERGE_UNITS) ? NS_UNITS : namespace;
   try {
     const resp = yield call(api.get, `/${urlParam}/`, { params: { page_no: pageNo, ...params } });
     yield put(dataReceivers[namespace](resp.data.data));
