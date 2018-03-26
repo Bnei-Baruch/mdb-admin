@@ -190,13 +190,13 @@ function* removePerson(action) {
   }
 }
 
-function* merge(action) {
+function* mergeUnits(action) {
   try {
     const { id, cuIds } = action.payload;
     yield call(api.post, `/content_units/${id}`, { cuIds });
-    yield put(actions.mergeSuccess(action.payload));
+    yield put(actions.mergeUnitsSuccess(action.payload));
   } catch (err) {
-    yield put(actions.mergeFailure(err));
+    yield put(actions.mergeUnitsFailure(err));
   }
 }
 
@@ -272,8 +272,8 @@ function* watchRemovePerson() {
   yield takeEvery(types.REMOVE_PERSON, removePerson);
 }
 
-function* watchMerge() {
-  yield takeEvery(types.MERGE, merge);
+function* watchMergeUnits() {
+  yield takeEvery(types.MERGE, mergeUnits);
 }
 
 export const sagas = [
@@ -295,5 +295,5 @@ export const sagas = [
   watchRemoveTag,
   watchAddPerson,
   watchRemovePerson,
-  watchMerge
+  watchMergeUnits
 ];

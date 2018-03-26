@@ -61,9 +61,9 @@ const ADD_PERSON_FAILURE            = 'ContentUnits/ADD_PERSON_FAILURE';
 const REMOVE_PERSON                 = 'ContentUnits/REMOVE_PERSON';
 const REMOVE_PERSON_SUCCESS         = 'ContentUnits/REMOVE_PERSON_SUCCESS';
 const REMOVE_PERSON_FAILURE         = 'ContentUnits/REMOVE_PERSON_FAILURE';
-const MERGE                         = 'ContentUnits/MERGE';
-const MERGE_SUCCESS                 = 'ContentUnits/MERGE_SUCCESS';
-const MERGE_FAILURE                 = 'ContentUnits/MERGE_FAILURE';
+const MERGE_UNITS                   = 'ContentUnits/MERGE_UNITS';
+const MERGE_UNITS_SUCCESS           = 'ContentUnits/MERGE_UNITS_SUCCESS';
+const MERGE_UNITS_FAILURE           = 'ContentUnits/MERGE_UNITS_FAILURE';
 
 const RECEIVE_ITEMS = 'ContentUnits/RECEIVE_ITEMS';
 
@@ -123,9 +123,9 @@ export const types = {
   REMOVE_PERSON,
   REMOVE_PERSON_SUCCESS,
   REMOVE_PERSON_FAILURE,
-  MERGE,
-  MERGE_SUCCESS,
-  MERGE_FAILURE,
+  MERGE_UNITS,
+  MERGE_UNITS_SUCCESS,
+  MERGE_UNITS_FAILURE,
 
   RECEIVE_ITEMS,
 };
@@ -191,9 +191,9 @@ const addPersonFailure           = createAction(ADD_PERSON_FAILURE);
 const removePerson               = createAction(REMOVE_PERSON, (id, personID) => ({ id, personID }));
 const removePersonSuccess        = createAction(REMOVE_PERSON_SUCCESS);
 const removePersonFailure        = createAction(REMOVE_PERSON_FAILURE);
-const merge                      = createAction(MERGE, (id, cuIds) => ({ id, cuIds }));
-const mergeSuccess               = createAction(MERGE_SUCCESS);
-const mergeFailure               = createAction(MERGE_FAILURE);
+const mergeUnits                 = createAction(MERGE_UNITS, (id, cuIds) => ({ id, cuIds }));
+const mergeUnitsSuccess          = createAction(MERGE_UNITS_SUCCESS);
+const mergeUnitsFailure          = createAction(MERGE_UNITS_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
@@ -253,9 +253,9 @@ export const actions = {
   removePerson,
   removePersonSuccess,
   removePersonFailure,
-  merge,
-  mergeSuccess,
-  mergeFailure,
+  mergeUnits,
+  mergeUnitsSuccess,
+  mergeUnitsFailure,
 
   receiveItems,
 };
@@ -318,9 +318,9 @@ const keys = new Map([
   [REMOVE_PERSON, 'removePerson'],
   [REMOVE_PERSON_SUCCESS, 'removePerson'],
   [REMOVE_PERSON_FAILURE, 'removePerson'],
-  [MERGE, 'merge'],
-  [MERGE_SUCCESS, 'merge'],
-  [MERGE_FAILURE, 'merge'],
+  [MERGE_UNITS, 'mergeUnits'],
+  [MERGE_UNITS_SUCCESS, 'mergeUnits'],
+  [MERGE_UNITS_FAILURE, 'mergeUnits'],
 ]);
 
 const initialState = {
@@ -356,7 +356,7 @@ const onSuccess = (state, action) => {
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ITEM_FILES_SUCCESS:
-  case MERGE_SUCCESS:
+  case MERGE_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
       files: action.payload.data.map(x => x.id),
