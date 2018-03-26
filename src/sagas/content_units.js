@@ -150,6 +150,17 @@ function* removeSource(action) {
   }
 }
 
+function* addFiles(action) {
+  try {
+    const { id, filesIds } = action.payload;
+    const resp = yield call(api.post, `/content_units/${id}/`, { filesIds });
+    yield put(files.receiveItems(resp.data));
+    yield put(actions.addFilesSuccess({ id, data: resp.data }));
+  } catch (err) {
+    yield put(actions.addFilesFailure(err));
+  }
+}
+
 function* addTag(action) {
   try {
     const { id, tagID } = action.payload;
@@ -256,6 +267,10 @@ function* watchRemoveSource() {
   yield takeEvery(types.REMOVE_SOURCE, removeSource);
 }
 
+function* watchAddFiles() {
+  yield takeEvery(types.ADD_FILES, addFiles);
+}
+
 function* watchAddTag() {
   yield takeEvery(types.ADD_TAG, addTag);
 }
@@ -291,6 +306,7 @@ export const sagas = [
   watchUpdateI18n,
   watchAddSource,
   watchRemoveSource,
+  watchAddFiles,
   watchAddTag,
   watchRemoveTag,
   watchAddPerson,

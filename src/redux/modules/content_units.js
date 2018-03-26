@@ -49,6 +49,9 @@ const ADD_SOURCE_FAILURE            = 'ContentUnits/ADD_SOURCE_FAILURE';
 const REMOVE_SOURCE                 = 'ContentUnits/REMOVE_SOURCE';
 const REMOVE_SOURCE_SUCCESS         = 'ContentUnits/REMOVE_SOURCE_SUCCESS';
 const REMOVE_SOURCE_FAILURE         = 'ContentUnits/REMOVE_SOURCE_FAILURE';
+const ADD_FILES                     = 'ContentUnits/ADD_FILES';
+const ADD_FILES_SUCCESS             = 'ContentUnits/ADD_FILES_SUCCESS';
+const ADD_FILES_FAILURE             = 'ContentUnits/ADD_FILES_FAILURE';
 const ADD_TAG                       = 'ContentUnits/ADD_TAG';
 const ADD_TAG_SUCCESS               = 'ContentUnits/ADD_TAG_SUCCESS';
 const ADD_TAG_FAILURE               = 'ContentUnits/ADD_TAG_FAILURE';
@@ -111,6 +114,9 @@ export const types = {
   REMOVE_SOURCE,
   REMOVE_SOURCE_SUCCESS,
   REMOVE_SOURCE_FAILURE,
+  ADD_FILES,
+  ADD_FILES_SUCCESS,
+  ADD_FILES_FAILURE,
   ADD_TAG,
   ADD_TAG_SUCCESS,
   ADD_TAG_FAILURE,
@@ -179,6 +185,9 @@ const addSourceFailure           = createAction(ADD_SOURCE_FAILURE);
 const removeSource               = createAction(REMOVE_SOURCE, (id, sourceID) => ({ id, sourceID }));
 const removeSourceSuccess        = createAction(REMOVE_SOURCE_SUCCESS);
 const removeSourceFailure        = createAction(REMOVE_SOURCE_FAILURE);
+const addFiles                   = createAction(ADD_FILES, (id, filesIds) => ({ id, filesIds }));
+const addFilesSuccess            = createAction(ADD_FILES_SUCCESS);
+const addFilesFailure            = createAction(ADD_FILES_FAILURE);
 const addTag                     = createAction(ADD_TAG, (id, tagID) => ({ id, tagID }));
 const addTagSuccess              = createAction(ADD_TAG_SUCCESS);
 const addTagFailure              = createAction(ADD_TAG_FAILURE);
@@ -241,6 +250,9 @@ export const actions = {
   removeSource,
   removeSourceSuccess,
   removeSourceFailure,
+  addFiles,
+  addFilesSuccess,
+  addFilesFailure,
   addTag,
   addTagSuccess,
   addTagFailure,
@@ -306,6 +318,9 @@ const keys = new Map([
   [REMOVE_SOURCE, 'removeSource'],
   [REMOVE_SOURCE_SUCCESS, 'removeSource'],
   [REMOVE_SOURCE_FAILURE, 'removeSource'],
+  [ADD_FILES, 'addFiles'],
+  [ADD_FILES_SUCCESS, 'addFiles'],
+  [ADD_FILES_FAILURE, 'addFiles'],
   [ADD_TAG, 'addTag'],
   [ADD_TAG_SUCCESS, 'addTag'],
   [ADD_TAG_FAILURE, 'addTag'],
@@ -356,6 +371,7 @@ const onSuccess = (state, action) => {
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ITEM_FILES_SUCCESS:
+  case ADD_FILES_SUCCESS:
   case MERGE_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
@@ -483,6 +499,9 @@ export const reducer = handleActions({
   [REMOVE_SOURCE]: onRequest,
   [REMOVE_SOURCE_SUCCESS]: onSuccess,
   [REMOVE_SOURCE_FAILURE]: onFailure,
+  [ADD_FILES]: onRequest,
+  [ADD_FILES_SUCCESS]: onSuccess,
+  [ADD_FILES_FAILURE]: onFailure,
   [ADD_TAG]: onRequest,
   [ADD_TAG_SUCCESS]: onSuccess,
   [ADD_TAG_FAILURE]: onFailure,

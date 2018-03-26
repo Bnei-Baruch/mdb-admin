@@ -8,6 +8,7 @@ import { ErrorSplash, FrownSplash, LoadingSplash } from '../shared/Splash';
 import { formatError } from '../../helpers/utils';
 import DetailsTab from './tabs/details/DetailsTab';
 import AssociationsTab from './tabs/associations/AssociationsTab';
+import AddFilesTab from './tabs/addFiles/AddFilesTab';
 import FilesTab from './tabs/files/FilesTab';
 import MergeContentUnitTab from './tabs/merge/MainPage';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
@@ -17,6 +18,7 @@ const items = [
   { name: 'Files', element: FilesTab },
   { name: 'Associations', element: AssociationsTab },
   { name: 'Merge', element: MergeContentUnitTab },
+  { name: 'Add files', element: AddFilesTab },
   { name: 'Danger Zone', element: DangerZoneTab },
 ];
 

@@ -13,6 +13,7 @@ export const EMPTY_HIERARCHY = Object.freeze({
 export const NS_COLLECTIONS      = 'collections';
 export const NS_COLLECTION_UNITS = 'collections/content_units';
 export const NS_MERGE_UNITS      = 'content_units/merge_units';
+export const NS_UNIT_FILE_UNITS  = 'content_units/files';
 export const NS_FILE_UNITS       = 'files/content_units';
 export const NS_UNITS            = 'content_units';
 export const NS_FILES            = 'files';
