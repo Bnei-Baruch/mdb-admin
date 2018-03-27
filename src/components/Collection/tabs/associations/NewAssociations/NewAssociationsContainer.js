@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import delay from 'lodash/delay';
+import orderBy from 'lodash/orderBy';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
 import { actions, selectors } from '../../../../../redux/modules/lists';
@@ -72,11 +73,12 @@ class ContentUnitsContainer extends Component {
     if (selectedCCU.length === 0) {
       return;
     }
-
-    selectedCCU.forEach((ccu) => {
-      lastPosition++;
-      this.props.associateUnit(collection.id, { content_unit_id: ccu.id, name: '', position: lastPosition });
-    });
+    const unitsData = orderBy(selectedCCU, 'id', 'desc').map(u => ({
+      content_unit_id: u.id,
+      name: '',
+      position: ++lastPosition
+    }));
+    this.props.associateUnit(collection.id, { unitsData });
 
     // we delay here to allow the server to update
     // before we go back to view mode (which will re-fetch associations)
