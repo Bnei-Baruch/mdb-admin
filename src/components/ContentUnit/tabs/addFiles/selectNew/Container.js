@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
 import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -79,6 +78,7 @@ class AddFiles extends PureComponent {
       selectedFilesIds.push(file.id);
     }
 
+    console.log('selectNew.handleSelectFile', selectedFilesIds);
     this.setState({ selectedFilesIds: [...selectedFilesIds] });
   };
 
@@ -87,7 +87,7 @@ class AddFiles extends PureComponent {
 
   switchToViewMode = () => {
     this.props.setEditMode(false);
-    this.handleSelectFile({});
+    this.setState({ selectedFilesIds: [] });
   };
 
   addFiles = () => {

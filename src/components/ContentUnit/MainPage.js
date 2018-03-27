@@ -18,7 +18,7 @@ const items = [
   { name: 'Files', element: FilesTab },
   { name: 'Associations', element: AssociationsTab },
   { name: 'Merge', element: MergeContentUnitTab },
-  { name: 'Add files', element: AddFilesTab },
+  { name: 'Add Files', element: AddFilesTab },
   { name: 'Danger Zone', element: DangerZoneTab },
 ];
 
