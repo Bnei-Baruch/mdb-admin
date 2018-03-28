@@ -73,12 +73,12 @@ class ContentUnitsContainer extends Component {
     if (selectedCCU.length === 0) {
       return;
     }
-    const unitsData = orderBy(selectedCCU, 'id', 'desc').map(u => ({
+    const unitsData = orderBy(selectedCCU, 'id').map(u => ({
       content_unit_id: u.id,
       name: '',
       position: ++lastPosition
     }));
-    this.props.associateUnit(collection.id, { unitsData });
+    this.props.associateUnit(collection.id, unitsData);
 
     // we delay here to allow the server to update
     // before we go back to view mode (which will re-fetch associations)
