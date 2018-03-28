@@ -130,17 +130,24 @@ class Units extends PureComponent {
     );
   };
 
+  renderSeparator = (type_id) => (<Table.Row key={`type_id_${type_id}`}>
+    <Table.Cell colSpan={9} collapsing>
+      <Header textAlign="center" block color="blue">
+        {CONTENT_TYPE_BY_ID[type_id]}
+      </Header>
+    </Table.Cell>
+  </Table.Row>);
+
+  /**
+   *  Render list of units that ordered by type.
+   *  On change type of unit in iteration - insert separator with title, new type
+   */
   separateByType = list =>
     list.reduce((acc, val, i, arr) => {
       const unit = val.content_unit;
+      //if unit type was changed
       if (i === 0 || arr[i - 1].content_unit.type_id !== unit.type_id) {
-        acc.push(<Table.Row key={`type_id_${unit.type_id}`}>
-          <Table.Cell colSpan={9} collapsing>
-            <Header textAlign="center" block color="blue">
-              {CONTENT_TYPE_BY_ID[unit.type_id]}
-            </Header>
-          </Table.Cell>
-        </Table.Row>);
+        acc.push(this.renderSeparator(unit.type_id));
       }
       acc.push(this.renderItem(val));
       return acc;
