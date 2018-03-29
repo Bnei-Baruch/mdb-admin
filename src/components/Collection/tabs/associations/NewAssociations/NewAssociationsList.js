@@ -28,6 +28,9 @@ class FilesList extends PureComponent {
 
   renderItem = (unit) => {
     const properties = extractI18n(unit.i18n, ['name'])[0];
+    const isChecked  = this.props.selectedCCU.some(ccu => {
+      return ccu.id === unit.id;
+    });
 
     return (
       <Table.Row key={unit.id} disabled={this.props.associatedCUIds.has(unit.id)}>
@@ -35,7 +38,7 @@ class FilesList extends PureComponent {
           <Checkbox
             type="checkbox"
             onChange={(event, data) => this.checkHandler(unit, data.checked)}
-            checked={this.props.selectedCCU.find(ccu => ccu.content_unit_id === unit.id)}
+            checked={isChecked}
           />
         </Table.Cell>
         <Table.Cell>
