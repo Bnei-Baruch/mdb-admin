@@ -153,9 +153,8 @@ function* removeSource(action) {
 function* addFiles(action) {
   try {
     const { id, filesIds } = action.payload;
-    const resp = yield call(api.post, `/content_units/${id}/files/`, filesIds);
-    yield put(files.receiveItems(resp.data));
-    yield put(actions.addFilesSuccess({ id, data: resp.data }));
+    yield call(api.post, `/content_units/${id}/files/`, filesIds);
+    yield put(actions.addFilesSuccess(action.payload));
   } catch (err) {
     yield put(actions.addFilesFailure(err));
   }
