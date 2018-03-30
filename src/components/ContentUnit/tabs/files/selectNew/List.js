@@ -12,7 +12,7 @@ class FilesList extends PureComponent {
 
   static propTypes = {
     items: PropTypes.arrayOf(shapes.File),
-    unitId: PropTypes.number,
+    currentFiles: PropTypes.arrayOf(shapes.File),
     handleSelectFile: PropTypes.func,
     selectedFilesIds: PropTypes.arrayOf(PropTypes.number),
   };
@@ -23,10 +23,10 @@ class FilesList extends PureComponent {
   };
 
   renderItem = (item) => {
-    const { selectedFilesIds, unitId } = this.props;
+    const { selectedFilesIds, currentFiles } = this.props;
 
     return (
-      <Table.Row key={item.id} disabled={item.id === unitId}>
+      <Table.Row key={item.id} disabled={currentFiles.some(f => f.id === item.id)}>
         <Table.Cell>
           <Checkbox
             type="checkbox"
