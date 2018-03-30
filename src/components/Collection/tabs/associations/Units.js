@@ -12,10 +12,14 @@ import {
   SECURITY_LEVELS
 } from '../../../../helpers/consts';
 import { extractI18n, formatError } from '../../../../helpers/utils';
+import shouldUpdate from '../../../../hoc/withShouldUpdate';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import EditedField from '../../../shared/Fields/EditedField';
 
+
+
+const Cell = shouldUpdate(Table.Cell);
 class Units extends PureComponent {
 
   static propTypes = {
@@ -40,10 +44,6 @@ class Units extends PureComponent {
     errUpdateCu: null,
   };
 
-  state = {
-    checked: false
-  };
-
   saveCCUName = (id, item, val) => {
     this.props.updateItemUnitProperties(id, item.content_unit_id, { name: val, position: item.position });
   };
@@ -51,7 +51,6 @@ class Units extends PureComponent {
   handleSelectionChange = (unit, data) => {
     const checked = data.checked;
     this.props.onSelectionChange(unit, checked);
-    this.setState({ checked });
   };
 
   renderItem = (item) => {
@@ -75,57 +74,57 @@ class Units extends PureComponent {
         properties = unit.properties ? unit.properties.film_date : '';
       }
     }
-
+    const isChecked = selectedCCU.some(ccu => ccu.content_unit_id === unit.id);
     return (
       <Table.Row
         key={unit.id}
         error={error && error.content_units_id === unit.id}
         title={error ? formatError(error) : ''}
       >
-        <Table.Cell collapsing>
+        <Cell collapsing propForUpdate={'checked'}>
           <Checkbox
             type="checkbox"
             onChange={(e, data) => this.handleSelectionChange(item, data)}
-            checked={selectedCCU.findIndex(ccu => ccu.content_unit_id === unit.id) !== -1}
+            checked={isChecked}
           />
-        </Table.Cell>
-        <Table.Cell collapsing>
+        </Cell>
+        <Cell collapsing>
           <Link to={`/content_units/${unit.id}`}>
             {unit.id}
           </Link>
-        </Table.Cell>
-        <Table.Cell collapsing>
+        </Cell>
+        <Cell collapsing>
           {unit.uid}
-        </Table.Cell>
-        <Table.Cell>
+        </Cell>
+        <Cell>
           {properties}
-        </Table.Cell>
-        <Table.Cell collapsing>
+        </Cell>
+        <Cell collapsing>
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
-        </Table.Cell>
-        <Table.Cell collapsing>
+        </Cell>
+        <Cell collapsing>
           {
             unit.properties && unit.properties.duration ?
               moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
               '??'
           }
-        </Table.Cell>
-        <Table.Cell textAlign="center" collapsing>
+        </Cell>
+        <Cell textAlign="center" collapsing>
           <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
-        </Table.Cell>
-        <Table.Cell textAlign="center" collapsing>
+        </Cell>
+        <Cell textAlign="center" collapsing>
           {
             unit.published ?
               <Icon name="checkmark" color="green" /> :
               <Icon name="ban" color="red" />
           }
-        </Table.Cell>
-        <Table.Cell>
+        </Cell>
+        <Cell  propForUpdate={'value'}>
           <EditedField
             value={item.name}
             onSave={val => this.saveCCUName(collection.id, item, val)}
           />
-        </Table.Cell>
+        </Cell>
       </Table.Row>
     );
   };

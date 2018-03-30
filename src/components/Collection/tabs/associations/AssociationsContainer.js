@@ -80,13 +80,19 @@ class AssociationsContainer extends Component {
     updateItemUnitProperties(collection.id, ccuId, properties);
   };
 
-  handleSelectionChange = (ccu, checked) => {
+  handleSelectionChange = (unit, checked) => {
     const selectedCCU = this.state.selectedCCU;
     if (checked) {
-      this.setState({ selectedCCU: [...selectedCCU, ccu] });
+      selectedCCU.push(unit);
     } else {
-      this.setState({ selectedCCU: selectedCCU.filter(x => x.content_unit_id !== ccu.content_unit_id) });
+      selectedCCU.some((ccu, i) => {
+        if (ccu.content_unit_id === unit.content_unit_id) {
+          selectedCCU.splice(i, 1);
+          return true;
+        }
+      });
     }
+    this.setState({ selectedCCU: [...selectedCCU] });
   };
 
   deleteCollectionUnits = () => {
