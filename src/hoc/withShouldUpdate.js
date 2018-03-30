@@ -14,7 +14,6 @@ const shouldUpdate = (WrappedComponent) => {
 
     render() {
       const { propForUpdate, ...props } = this.props;
-      console.log('render', props);
       return (
         <WrappedComponent {...props} />
       );
