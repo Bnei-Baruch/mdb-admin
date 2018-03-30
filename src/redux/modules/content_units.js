@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { bulkMerge, merge, setMap, update } from '../utils';
+import { bulkMerge, merge, setMap, update, delList } from '../utils';
 
 /* Types */
 
@@ -372,7 +372,6 @@ const onSuccess = (state, action) => {
     break;
   case FETCH_ITEM_FILES_SUCCESS:
   case ADD_FILES_SUCCESS:
-  case MERGE_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
       files: action.payload.data.map(x => x.id),
@@ -437,6 +436,9 @@ const onSuccess = (state, action) => {
   case REMOVE_PERSON_SUCCESS:
     byID = update(state.byID, action.payload.id,
       x => ({ ...x, persons: x.persons.filter(t => t !== action.payload.personID) }));
+    break;
+  case MERGE_UNITS_SUCCESS:
+    byID = delList(state.byID, action.payload.cuIds);
     break;
   default:
     byID = state.byID;
@@ -514,6 +516,9 @@ export const reducer = handleActions({
   [REMOVE_PERSON]: onRequest,
   [REMOVE_PERSON_SUCCESS]: onSuccess,
   [REMOVE_PERSON_FAILURE]: onFailure,
+  [MERGE_UNITS]: onRequest,
+  [MERGE_UNITS_SUCCESS]: onSuccess,
+  [MERGE_UNITS_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 }, initialState);
