@@ -15,11 +15,13 @@ import ContentUnitList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
 import FreeText from './filters/FreeText';
+import Sources from './filters/Sources';
 
 
 const filterTabs = [
   { name: 'Free Text', element: FreeText },
   { name: 'Date Range', element: DateRange },
+  { name: 'Sources', element: Sources },
   { name: 'Others', element: Others },
 ];
 

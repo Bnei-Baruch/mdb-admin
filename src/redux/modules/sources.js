@@ -136,6 +136,7 @@ const onSuccess = (state, action) => {
   const key = keys.get(action.type);
 
   let byID;
+  let roots;
   switch (action.type) {
   case FETCH_ITEM_SUCCESS:
   case UPDATE_INFO_SUCCESS:
@@ -145,6 +146,7 @@ const onSuccess = (state, action) => {
     break;
   case FETCH_ALL_SUCCESS:
     byID = new Map(action.payload.map(x => [x.id, x]));
+    roots = action.payload.map(x => x.id);
     break;
   default:
     byID = state.byID;
@@ -152,7 +154,7 @@ const onSuccess = (state, action) => {
 
   return {
     ...state,
-    byID,
+    byID, roots,
     wip: setMap(state.wip, key, false),
     errors: setMap(state.errors, key, null),
   };
@@ -207,6 +209,7 @@ const sortHierarchy = (h, getById) => {
 };
 
 const getSources    = state => state.byID;
+const getRoots         = state => state.roots;
 const getSourceById = state => id => state.byID.get(id);
 const getWIP      = state => key => state.wip.get(key);
 const getError    = state => key => state.errors.get(key);
@@ -235,6 +238,7 @@ const getPathByID = createSelector(getSources, byID =>
 
 export const selectors = {
   getSources,
+  getRoots,
   getSourceById,
   getWIP,
   getError,
