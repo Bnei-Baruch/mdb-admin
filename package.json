@@ -22,7 +22,10 @@
     "react-app-rewired": "^1.4.0",
     "react-scripts": "^1.0.7",
     "react-test-renderer": "^15.6.1",
-    "why-did-you-update": "0.0.8"
+    "why-did-you-update": "0.0.8",
+    "node-sass": "^4.5.3",
+    "node-sass-chokidar": "^1.1.2",
+    "npm-run-all": "^4.0.2"
   },
   "dependencies": {
     "amdefine": "^1.0.1",
@@ -54,13 +57,16 @@
     "semantic-ui-react": "^0.73.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "npm-run-all -p watch-css start-js",
+    "start-js": "react-scripts start",
     "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
     "build:external": "REACT_APP_ENV=external yarn build",
     "build:production": "REACT_APP_ENV=production yarn build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "yarn build:production && scp -r build/* archive@app.mdb.bbdomain.org:/sites/admin",
-    "deploy:external": "yarn build:external && scp -r build/* archive@app.archive.bbdomain.org:/sites/admin"
+    "deploy:external": "yarn build:external && scp -r build/* archive@app.archive.bbdomain.org:/sites/admin",
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
   }
 }
