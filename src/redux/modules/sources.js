@@ -136,7 +136,6 @@ const onSuccess = (state, action) => {
   const key = keys.get(action.type);
 
   let byID;
-  let roots;
   switch (action.type) {
   case FETCH_ITEM_SUCCESS:
   case UPDATE_INFO_SUCCESS:

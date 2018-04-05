@@ -1,5 +1,6 @@
 import { createFilterDefinition } from './util';
 import { selectors } from '../../redux/modules/sources';
+import { selectors as authors } from '../../redux/modules/authors';
 
 const sourcesFilter = {
   name: 'sources-filter',
@@ -13,8 +14,9 @@ const sourcesFilter = {
       return '';
     }
 
-    const getSourceById = selectors.getSourceById(getState().sources);
-    const path          = value.map(getSourceById);
+    const getSourceById   = selectors.getSourceById(getState().sources);
+    const getAuthorByCode = authors.getAuthorByCode(getState().authors);
+    const path            = value.map(v => isNaN(v) ? getAuthorByCode(v) : getSourceById(v));
 
     // Make sure we have all items.
     // Location hydration probably happens before we receive sources
