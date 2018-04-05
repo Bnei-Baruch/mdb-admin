@@ -5,7 +5,7 @@ const topicsFilter = {
   name: 'topics-filter',
   queryKey: 'topic',
   valueToQuery: value => value.join('_'),
-  queryToValue: queryValue => queryValue.split('_'),
+  queryToValue: queryValue => queryValue.split('_').map(parseFloat),
   valueToApiParam: value => ({ tag: value[value.length - 1] }),
   tagIcon: 'tag',
   valueToTagLabel: (value, props, { getState }) => {

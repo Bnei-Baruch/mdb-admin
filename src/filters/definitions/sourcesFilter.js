@@ -16,7 +16,7 @@ const sourcesFilter = {
 
     const getSourceById   = selectors.getSourceById(getState().sources);
     const getAuthorByCode = authors.getAuthorByCode(getState().authors);
-    const path            = value.map(v => isNaN(v) ? getAuthorByCode(v) : getSourceById(v));
+    const path            = value.map(v => isNaN(v) ? getAuthorByCode(v) : getSourceById(parseFloat(v)));
 
     // Make sure we have all items.
     // Location hydration probably happens before we receive sources

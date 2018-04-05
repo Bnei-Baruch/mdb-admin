@@ -16,8 +16,8 @@ class DeepListFilter extends React.Component {
     onApply: PropTypes.func,
     emptyLabel: PropTypes.string.isRequired,
     updateValue: PropTypes.func.isRequired,
-    value: PropTypes.arrayOf(PropTypes.string),
-    allValues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
+    value: PropTypes.arrayOf(PropTypes.object),
+    allValues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object))
   };
 
   static defaultProps = {
