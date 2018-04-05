@@ -5,6 +5,8 @@ import { Button, Menu, Segment, Container } from 'semantic-ui-react';
 
 import connectFilter from './connectFilter';
 
+import { hierarchyToTree, hierarchyNodeToTreeNode } from '../../helpers/utils';
+
 class DeepListFilter extends React.Component {
 
   static propTypes = {
@@ -54,7 +56,7 @@ class DeepListFilter extends React.Component {
     newSelection.splice(depth, oldSelection.length - depth);
     newSelection.push(value);
 
-    const menu = this.menus[depth];
+    const menu          = this.menus[depth];
     const prevScrollTop = menu.scrollTop;
     this.setState({ selection: newSelection }, () => {
       this.menus[depth].scrollTop = prevScrollTop;
@@ -84,7 +86,7 @@ class DeepListFilter extends React.Component {
         const selectedItems = this.menus[depth].getElementsByClassName('active');
 
         if (selectedItems.length) {
-          const firstItem = selectedItems[0];
+          const firstItem             = selectedItems[0];
           this.menus[depth].scrollTop = firstItem.offsetTop;
         }
       });
@@ -100,8 +102,9 @@ class DeepListFilter extends React.Component {
     if (selection.length === 0) {
       return [this.createList(depth, items, '', otherSelected.map(s => s[0]))];
     }
+    const { getSubItemById, hierarchy } = this.props;
 
-    const selected = this.props.getSubItemById(selection[0]);
+    const selected = hierarchyNodeToTreeNode(hierarchy, getSubItemById(selection[0]));
     const current  = this.createList(depth, items, selection[0], otherSelected.map(s => s[0]));
     let next       = [];
     if (selected && selected.children) {
@@ -112,24 +115,24 @@ class DeepListFilter extends React.Component {
   };
 
   createList = (depth, items, selectedId, otherSelectedIds) => {
-    const { getSubItemById } = this.props;
+    const { getSubItemById, hierarchy } = this.props;
 
     return (
       <div key={selectedId} className="filter-steps__column-wrapper" ref={el => this.menus[depth] = el}>
         <div className="filter-steps__column">
           <Menu fluid vertical color="blue" size="tiny">
             {
-              items.map((x) => {
-                const node  = getSubItemById(x);
-                const style = otherSelectedIds.includes(x) && selectedId !== x ?
+              items.map(({ id }) => {
+                const node  = hierarchyNodeToTreeNode(hierarchy, getSubItemById(id));
+                const style = otherSelectedIds.includes(id) && selectedId !== id ?
                   { backgroundColor: 'lightgoldenrodyellow' } :
                   {};
 
                 return (
                   <Menu.Item
-                    key={x}
-                    value={x}
-                    active={selectedId === x}
+                    key={id}
+                    value={id}
+                    active={selectedId === id}
                     data-depth={depth}
                     onClick={this.onSelectionChange}
                     style={style}
@@ -146,7 +149,8 @@ class DeepListFilter extends React.Component {
   };
 
   render() {
-    const { roots, emptyLabel } = this.props;
+    const { hierarchy, emptyLabel } = this.props;
+    const roots                     = hierarchyToTree(hierarchy);
 
     return (
       <Container className="padded-horizontally">

@@ -11,7 +11,7 @@ import DeepListFilter from '../../Filters/DeepListFilter';
 const Sources = props => (
   <DeepListFilter
     namespace={NS_UNITS}
-    name="deep-list"
+    name="sources-filter"
     onApply={props.onFilterApplication}
     {...props}
   />
@@ -21,11 +21,13 @@ Sources.propTypes = {
   onFilterApplication: PropTypes.func.isRequired
 };
 
-export default connect(
-  state => ({
+const mapState = (state) => {
+  return {
     emptyLabel: 'No Sources',
-    roots: selectors.getRoots(state.sources),
-    getSubItemById: selectors.getSourceById(state.sources),
-  })
-)(Sources);
+    hierarchy: selectors.getHierarchy(state.sources),
+    getSubItemById: selectors.getSourceById(state.sources)
+  };
+};
+
+export default connect(mapState)(Sources);
 
