@@ -20,7 +20,7 @@ const sourcesFilter = {
 
     // Make sure we have all items.
     // Location hydration probably happens before we receive sources
-    return path.some(x => !x) ? '' : path.map(x => x.name).join(' > ');
+    return path.some(x => !x) ? '' : path.map(x => x.i18n.he.name).join(' > ');
   }
 };
 

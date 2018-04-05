@@ -14,12 +14,14 @@ import ContentUnitList from './NewAssociationsList';
 import DateRange from '../filters/DateRange';
 import Others from '../filters/Others';
 import Sources from '../filters/Sources';
+import Topics from '../filters/Topics';
 import FreeText from '../filters/FreeText';
 
 const filterTabs = [
   { name: 'Free Text', element: FreeText },
   { name: 'Date Range', element: DateRange },
   { name: 'Sources', element: Sources },
+  { name: 'Topics', element: Topics },
   { name: 'Others', element: Others },
 ];
 

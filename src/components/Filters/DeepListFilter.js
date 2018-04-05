@@ -137,7 +137,7 @@ class DeepListFilter extends React.Component {
                     onClick={this.onSelectionChange}
                     style={style}
                   >
-                    {node.name || node.label}
+                    {node.i18n.he.name || node.i18n.he.label}
                   </Menu.Item>
                 );
               })

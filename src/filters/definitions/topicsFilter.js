@@ -18,7 +18,7 @@ const topicsFilter = {
 
     // Make sure we have all items.
     // Location hydration probably happens before we receive sources
-    return path.some(x => !x) ? '' : path.map(x => x.label).join(' > ');
+    return path.some(x => !x) ? '' : path.map(x => x.i18n.he.label).join(' > ');
   }
 };
 
