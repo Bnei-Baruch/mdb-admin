@@ -25,8 +25,13 @@ class ContentUnitList extends PureComponent {
     this.props.selectCU(unit.id, checked);
   };
 
+  isAllSelected = () => {
+    const { selectedCUIds, units } = this.props;
+    return selectedCUIds.length >= units.length && units.every(u => selectedCUIds.includes(u.id));
+  };
+
   renderItem = (unit) => {
-    const properties       = extractI18n(unit.i18n, ['name'])[0];
+    const properties        = extractI18n(unit.i18n, ['name'])[0];
     const { selectedCUIds } = this.props;
     return (
       <Table.Row key={unit.id}>
@@ -80,7 +85,13 @@ class ContentUnitList extends PureComponent {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
+            <Table.HeaderCell>
+              <Checkbox
+                type="checkbox"
+                onChange={(event, data) => this.props.selectAllCUs(data.checked)}
+                checked={this.isAllSelected()}
+              />
+            </Table.HeaderCell>
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
