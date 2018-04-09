@@ -11,6 +11,7 @@ import * as shapes from '../../../shapes';
 class ContentUnitList extends PureComponent {
 
   static propTypes = {
+    unit: shapes.ContentUnit,
     units: PropTypes.arrayOf(shapes.ContentUnit),
     selectedCUIds: PropTypes.arrayOf(PropTypes.number),
     selectCU: PropTypes.func,
@@ -21,52 +22,55 @@ class ContentUnitList extends PureComponent {
     units: EMPTY_ARRAY,
   };
 
-  checkHandler = (unit, checked) => {
-    this.props.selectCU(unit.id, checked);
+  checkHandler = (cu, checked) => {
+    this.props.selectCU(cu.id, checked);
   };
 
-  renderItem = (unit) => {
-    const properties       = extractI18n(unit.i18n, ['name'])[0];
+  renderItem = (item) => {
+    if (!item || this.props.unit.id === item.id) {
+      return null;
+    }
+    const properties        = extractI18n(item.i18n, ['name'])[0];
     const { selectedCUIds } = this.props;
     return (
-      <Table.Row key={unit.id}>
+      <Table.Row key={item.id}>
         <Table.Cell>
           <Checkbox
             type="checkbox"
-            onChange={(event, data) => this.checkHandler(unit, data.checked)}
-            checked={selectedCUIds.includes(unit.id)}
+            onChange={(event, data) => this.checkHandler(item, data.checked)}
+            checked={selectedCUIds.includes(item.id)}
           />
         </Table.Cell>
         <Table.Cell>
-          <Link to={`/content_units/${unit.id}`}>
-            {unit.id}
+          <Link to={`/content_units/${item.id}`}>
+            {item.id}
           </Link>
         </Table.Cell>
         <Table.Cell>
-          {unit.uid}
+          {item.uid}
         </Table.Cell>
         <Table.Cell>
           {properties}
         </Table.Cell>
         <Table.Cell>
-          {CONTENT_TYPE_BY_ID[unit.type_id]}
+          {CONTENT_TYPE_BY_ID[item.type_id]}
         </Table.Cell>
         <Table.Cell>
-          {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+          {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell>
           {
-            unit.properties && unit.properties.duration ?
-              moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
+            item.properties && item.properties.duration ?
+              moment.utc(moment.duration(item.properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
               '??'
           }
         </Table.Cell>
         <Table.Cell textAlign="center">
-          <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
+          <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />
         </Table.Cell>
         <Table.Cell textAlign="center">
           {
-            unit.published ?
+            item.published ?
               <Icon name="checkmark" color="green" /> :
               <Icon name="ban" color="red" />
           }
