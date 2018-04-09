@@ -57,6 +57,8 @@ class FilesHierarchy extends Component {
     this.setState(nextState);
   }
 
+  handleSwitchToAddFiles = () => this.props.setEditMode(true);
+
   getStateFromFiles = (files) => {
     const total   = files.length;
     const cuFiles = new Set(files.map(x => x.id));
@@ -264,20 +266,25 @@ class FilesHierarchy extends Component {
           <Menu.Item>
             {total} files
           </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item onClick={this.handleSwitchToAddFiles}>
+              <Icon name="plus" /> Add Files
+            </Menu.Item>
+          </Menu.Menu>
         </Menu>
         <Segment attached>
           <Grid>
             <Grid.Row>
               <Grid.Column width={10}>
                 <div>
-                  { hierarchy.roots.map(x => this.renderFile(hierarchy.byID.get(x))) }
+                  {hierarchy.roots.map(x => this.renderFile(hierarchy.byID.get(x)))}
                 </div>
               </Grid.Column>
               <Grid.Column width={6} textAlign="center">
                 {
                   currentFile ?
                     <div>
-                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false}/>
+                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false} />
                       <br />
                       <Button
                         content="Download"

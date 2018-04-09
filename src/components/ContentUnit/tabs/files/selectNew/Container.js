@@ -13,7 +13,7 @@ import TabsMenu from '../../../../shared/TabsMenu';
 import Pagination from '../../../../shared/Pagination';
 import ResultsPageHeader from '../../../../shared/ResultsPageHeader';
 import { actions, selectors } from '../../../../../redux/modules/lists';
-import { actions as cuActions } from '../../../../../redux/modules/content_units';
+import { actions as cuActions, selectors as cuSelectors } from '../../../../../redux/modules/content_units';
 import { selectors as filesSelectors } from '../../../../../redux/modules/files';
 
 import FilesList from './List';
@@ -33,13 +33,14 @@ class AddFiles extends PureComponent {
     total: PropTypes.number,
     unit: shapes.ContentUnit,
     files: PropTypes.arrayOf(shapes.File),
+    allFiles: PropTypes.arrayOf(shapes.File),
     setEditMode: PropTypes.func,
     wip: PropTypes.bool,
     err: shapes.Error,
   };
 
   static defaultProps = {
-    files: EMPTY_ARRAY,
+    allFiles: EMPTY_ARRAY,
     pageNo: 1,
     total: 0,
     wip: false,
@@ -50,6 +51,12 @@ class AddFiles extends PureComponent {
     showFilters: false,
     selectedFilesIds: []
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.wipAddFile && !nextProps.wipAddFile) {
+      this.switchToViewMode();
+    }
+  }
 
   handlePageChange = (pageNo) => {
     const { setPage, fetchList } = this.props;
@@ -78,7 +85,6 @@ class AddFiles extends PureComponent {
       selectedFilesIds.push(file.id);
     }
 
-    console.log('selectNew.handleSelectFile', selectedFilesIds);
     this.setState({ selectedFilesIds: [...selectedFilesIds] });
   };
 
@@ -97,12 +103,23 @@ class AddFiles extends PureComponent {
       return;
     }
     addFiles(unit.id, selectedFilesIds);
-    this.switchToViewMode();
   };
 
   render() {
-    const { showFilters, selectedFilesIds }        = this.state;
-    const { pageNo, total, wip, err, unit, files } = this.props;
+    const {
+            showFilters,
+            selectedFilesIds
+          } = this.state;
+    const {
+            pageNo,
+            total,
+            wip,
+            err,
+            unit,
+            allFiles,
+            wipAddFile,
+            files
+          } = this.props;
     return (
       <div>
         <Segment clearing vertical>
@@ -135,7 +152,6 @@ class AddFiles extends PureComponent {
           <Grid.Row>
             <Grid.Column>
               <div>
-
                 {
                   showFilters ?
                     <div>
@@ -155,18 +171,18 @@ class AddFiles extends PureComponent {
                 <ResultsPageHeader pageNo={pageNo} total={total} />
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
-              </div>
-              <div>
-                {
-                  wip ?
-                    <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
-                    null
-                }
-                {
-                  err ?
-                    <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
-                    null
-                }
+                <div style={{ float: 'left' }}>
+                  {
+                    wip || wipAddFile ?
+                      <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
+                      null
+                  }
+                  {
+                    err ?
+                      <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
+                      null
+                  }
+                </div>
               </div>
             </Grid.Column>
           </Grid.Row>
@@ -174,7 +190,8 @@ class AddFiles extends PureComponent {
             <Grid.Column>
               <FilesList
                 unitId={unit.id}
-                items={files}
+                items={allFiles}
+                currentFiles={files}
                 handleSelectFile={this.handleSelectFile}
                 selectedFilesIds={selectedFilesIds}
               />
@@ -191,7 +208,11 @@ const mapState = (state) => {
   const denormIDs = filesSelectors.denormIDs(state.files);
   return {
     ...status,
-    files: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    allFiles: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    wip: filesSelectors.getWIP(state.files, 'fetchItem'),
+    err: filesSelectors.getError(state.files, 'fetchItem'),
+    wipAddFile: cuSelectors.getWIP(state.content_units, 'addFiles'),
+    errAddFile: cuSelectors.getError(state.content_units, 'addFiles'),
   };
 };
 

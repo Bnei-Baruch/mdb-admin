@@ -372,6 +372,7 @@ const onSuccess = (state, action) => {
     break;
   case FETCH_ITEM_FILES_SUCCESS:
   case ADD_FILES_SUCCESS:
+  case MERGE_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
       files: action.payload.data.map(x => x.id),
@@ -436,6 +437,10 @@ const onSuccess = (state, action) => {
   case REMOVE_PERSON_SUCCESS:
     byID = update(state.byID, action.payload.id,
       x => ({ ...x, persons: x.persons.filter(t => t !== action.payload.personID) }));
+    break;
+  case ADD_FILES_SUCCESS:
+    byID = update(state.byID, action.payload.id,
+      x => ({ ...x, files: [...x.files, ...action.payload.filesIds] }));
     break;
   case MERGE_UNITS_SUCCESS:
     byID = delList(state.byID, action.payload.cuIds);
