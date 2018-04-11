@@ -211,7 +211,7 @@ const mapState = (state) => {
   const wipMerge  = unitsSelectors.getWIP(state.content_units, 'mergeUnits');
   return {
     ...status,
-    units: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    units: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items).filter(u => u) : EMPTY_ARRAY,
     wipMerge,
     errMerge: unitsSelectors.getError(state.content_units, 'mergeUnits'),
   };

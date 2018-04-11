@@ -371,8 +371,6 @@ const onSuccess = (state, action) => {
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ITEM_FILES_SUCCESS:
-  case ADD_FILES_SUCCESS:
-  case MERGE_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
       files: action.payload.data.map(x => x.id),

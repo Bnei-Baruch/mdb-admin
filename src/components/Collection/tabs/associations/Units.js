@@ -17,9 +17,8 @@ import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import EditedField from '../../../shared/Fields/EditedField';
 
-
-
 const Cell = shouldUpdate(Table.Cell);
+
 class Units extends PureComponent {
 
   static propTypes = {
@@ -58,7 +57,7 @@ class Units extends PureComponent {
 
   isAllSelected = () => {
     const { selectedCCU, units } = this.props;
-    return selectedCCU.length >= units.length && units.every(u => selectedCCU.some(cu => u.id === cu.id));
+    return selectedCCU.length >= units.length && units.every(u => selectedCCU.some(cu => cu && u.id === cu.id));
   };
 
   renderItem = (item) => {
@@ -127,7 +126,7 @@ class Units extends PureComponent {
               <Icon name="ban" color="red" />
           }
         </Cell>
-        <Cell  propForUpdate={'value'}>
+        <Cell propForUpdate={'value'}>
           <EditedField
             value={item.name}
             onSave={val => this.saveCCUName(collection.id, item, val)}
