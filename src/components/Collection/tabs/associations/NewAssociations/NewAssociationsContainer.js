@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import delay from 'lodash/delay';
-import orderBy from 'lodash/orderBy';
+import { delay, orderBy, uniqBy } from 'lodash';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
 import { actions, selectors } from '../../../../../redux/modules/lists';
@@ -66,6 +65,16 @@ class ContentUnitsContainer extends Component {
     this.setState({ selectedCCU: [...selectedCCU] });
   };
 
+  selectAllCUs = (checked) => {
+    const { units }       = this.props;
+    const { selectedCCU } = this.state;
+    if (checked) {
+      this.setState({ selectedCCU: uniqBy([...selectedCCU, ...units.map(cu => cu.content_unit)], 'id') });
+    } else {
+      this.setState({ selectedCCU: selectedCCU.filter(x => !units.some(y => x.content_unit_id === y.content_unit_id)) });
+    }
+  };
+
   associate = () => {
     const { selectedCCU }       = this.state;
     const { collection, units } = this.props;
@@ -95,6 +104,7 @@ class ContentUnitsContainer extends Component {
         onFiltersChange={this.handleFiltersChange}
         onFiltersHydrated={this.handleFiltersHydrated}
         associate={this.associate}
+        selectAllCUs={this.selectAllCUs}
       />
     );
   }
