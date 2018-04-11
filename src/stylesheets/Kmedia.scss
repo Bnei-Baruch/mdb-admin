@@ -1,43 +1,5 @@
-@import 'includes/colors-helpers';
-@import 'includes/text-helpers';
-@import 'includes/responsive-helpers';
-@import 'includes/layout';
-@import 'includes/index';
-@import 'includes/unit';
-@import 'includes/video-player';
-@import 'includes/media-player';
-@import 'includes/sources';
-@import 'includes/search';
-@import 'includes/homepage';
-//////////ALL YOUR CSS IS HERE ↴
-@import 'includes/not-sorted-scss';
-
-
-.debug {
-  position: fixed;
-  background: yellow;
-  z-index: 999999999999;
-  bottom: 0;
-  left:0;
-}
-/// INDEX FILTERS
-.index-filters {
-  &__search {
-    .input {
-      top: .8em !important;
-      width: 300px !important;
-    }
-  }
-}
-
-/// END OF INDEX FILTERS
-
-.filter_tab {
-  .menu {
-    border: 0 !important;
-    border-bottom: 0 !important;
-  }
-}
+@import 'colors-helpers';
+@import 'text-helpers';
 
 .filter-steps {
   display: flex;
