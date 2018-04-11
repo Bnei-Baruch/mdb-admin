@@ -97,9 +97,9 @@ class AssociationsContainer extends Component {
 
   handleSelectionAllChange = (checked) => {
     if (checked) {
-      this.setState({ selectedCCU: [...this.state.selectedCCU, ...this.props.units] });
+      this.setState({ selectedCCU: [...this.props.units] });
     } else {
-      this.setState({ selectedCCU: this.state.selectedCCU.filter(x => this.props.units.some(y => x.content_unit_id !== y.content_unit_id)) });
+      this.setState({ selectedCCU: [] });
     }
   };
 

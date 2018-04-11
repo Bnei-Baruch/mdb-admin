@@ -55,11 +55,6 @@ class Units extends PureComponent {
     this.props.onSelectionAllChange(checked);
   };
 
-  isAllSelected = () => {
-    const { selectedCCU, units } = this.props;
-    return selectedCCU.length >= units.length && units.every(u => selectedCCU.some(cu => cu && u.id === cu.id));
-  };
-
   renderItem = (item) => {
     const { collection, errUpdateCu, errDeleteCu, selectedCCU } = this.props;
     const unit                                                  = item.content_unit;
@@ -160,7 +155,7 @@ class Units extends PureComponent {
     }, []);
 
   render() {
-    const { units, wip, err } = this.props;
+    const { units, selectedCCU, wip, err } = this.props;
 
     if (err) {
       return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -180,7 +175,7 @@ class Units extends PureComponent {
               <Checkbox
                 type="checkbox"
                 onChange={(e, data) => this.handleSelectionAllChange(data)}
-                checked={this.isAllSelected()}
+                checked={selectedCCU.length === units.length}
               />
             </Table.HeaderCell>
             <Table.HeaderCell>ID</Table.HeaderCell>
