@@ -24,7 +24,6 @@ const mapState = (state) => {
   return {
     emptyLabel: 'No Tags',
     hierarchy: selectors.getHierarchy(state.tags),
-    //roots: selectors.getRoots(state.tags).filter(x => TOPICS_FOR_DISPLAY.indexOf(x) !== -1),
     getSubItemById: selectors.getTagById(state.tags),
   };
 };
