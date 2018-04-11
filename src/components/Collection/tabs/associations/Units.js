@@ -48,10 +48,18 @@ class Units extends PureComponent {
     this.props.updateItemUnitProperties(id, item.content_unit_id, { name: val, position: item.position });
   };
 
-  handleSelectionChange = (unit, data) => {
+  handleSelectionChange    = (unit, data) => {
     const checked = data.checked;
     this.props.onSelectionChange(unit, checked);
     this.setState({ checked });
+  };
+  handleSelectionAllChange = ({ checked }) => {
+    this.props.onSelectionAllChange(checked);
+  };
+
+  isAllSelected = () => {
+    const { selectedCCU, units } = this.props;
+    return selectedCCU.length >= units.length && units.every(u => selectedCCU.some(cu => u.id === cu.id));
   };
 
   renderItem = (item) => {
@@ -170,7 +178,13 @@ class Units extends PureComponent {
       <Table celled selectable compact size="small">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
+            <Table.HeaderCell>
+              <Checkbox
+                type="checkbox"
+                onChange={(e, data) => this.handleSelectionAllChange(data)}
+                checked={this.isAllSelected()}
+              />
+            </Table.HeaderCell>
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>

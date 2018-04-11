@@ -89,6 +89,14 @@ class AssociationsContainer extends Component {
     }
   };
 
+  handleSelectionAllChange = (checked) => {
+    if (checked) {
+      this.setState({ selectedCCU: [...this.state.selectedCCU, ...this.props.units] });
+    } else {
+      this.setState({ selectedCCU: this.state.selectedCCU.filter(x => this.props.units.some(y => x.content_unit_id !== y.content_unit_id)) });
+    }
+  };
+
   deleteCollectionUnits = () => {
     const { selectedCCU }                = this.state;
     const { collection, deleteItemUnit } = this.props;
@@ -160,6 +168,7 @@ class AssociationsContainer extends Component {
                   {...this.props}
                   selectedCCU={selectedCCU}
                   onSelectionChange={this.handleSelectionChange}
+                  onSelectionAllChange={this.handleSelectionAllChange}
                 />
               </Grid.Column>
             </Grid.Row>

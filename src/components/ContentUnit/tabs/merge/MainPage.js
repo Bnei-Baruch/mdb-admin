@@ -104,7 +104,8 @@ class MergeContentUnitTab extends PureComponent {
       this.setState({ selectedCUIds: selectedCUIds.filter(x => !units.some(y => x === y.id)) });
     }
   };
-  mergeCU      = () => {
+
+  mergeCU = () => {
     const { selectedCUIds } = this.state;
     if (selectedCUIds.length === 0) {
       return;
