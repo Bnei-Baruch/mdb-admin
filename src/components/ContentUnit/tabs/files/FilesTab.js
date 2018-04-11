@@ -8,6 +8,7 @@ import { selectors as files } from '../../../../redux/modules/files';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
 import FilesHierarchy from './FilesHierarchy';
+import AddFiles from '../files/selectNew/Container';
 
 class FilesTab extends Component {
 
@@ -18,6 +19,10 @@ class FilesTab extends Component {
 
   static defaultProps = {
     unit: undefined,
+  };
+
+  state = {
+    editMode: false
   };
 
   componentDidMount() {
@@ -34,13 +39,17 @@ class FilesTab extends Component {
     }
   }
 
-  askForData(id) {
-    this.props.fetchItemFiles(id);
-  }
+  askForData = (id) => this.props.fetchItemFiles(id);
+
+  setEditMode = editMode => this.setState({ editMode });
 
   render() {
-    return <FilesHierarchy {...this.props} />;
+    if (this.state.editMode) {
+      return (<AddFiles {...this.props} setEditMode={this.setEditMode} />);
+    }
+    return (<FilesHierarchy {...this.props} setEditMode={this.setEditMode} />);
   }
+
 }
 
 const mapState = (state, ownProps) => {

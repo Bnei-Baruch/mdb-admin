@@ -30,3 +30,9 @@ export const del = (m, k) => {
   nm.delete(k);
   return freezeMap(nm);
 };
+
+export const delList = (m, l) => {
+  const nm = new Map(m);
+  l.forEach(k => nm.delete(k));
+  return freezeMap(nm);
+};

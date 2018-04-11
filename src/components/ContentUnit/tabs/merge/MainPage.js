@@ -112,6 +112,15 @@ class MergeContentUnitTab extends PureComponent {
     }
     const { unit, mergeUnits } = this.props;
     mergeUnits(unit.id, selectedCUIds);
+    this.setState({ selectedCUIds: [] });
+  };
+
+  renderIsMergedMessage = (wip, err) => {
+    if (err) {
+      return <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" />;
+    }
+    return wip ? <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> : null;
+
   };
 
   render() {
@@ -121,9 +130,10 @@ class MergeContentUnitTab extends PureComponent {
             pageNo,
             total,
             wip,
-            err
+            err,
+            wipMerge,
+            errMerge,
           } = this.props;
-
     return (
       <div>
         <Segment clearing secondary size="large">
@@ -131,6 +141,7 @@ class MergeContentUnitTab extends PureComponent {
         </Segment>
 
         <Segment clearing vertical>
+          {this.renderIsMergedMessage(wipMerge, errMerge)}
           <Button
             onClick={this.toggleFilters}
             color="blue"
@@ -197,9 +208,12 @@ class MergeContentUnitTab extends PureComponent {
 const mapState = (state) => {
   const status    = selectors.getNamespaceState(state.lists, NS_MERGE_UNITS) || EMPTY_OBJECT;
   const denormIDs = unitsSelectors.denormIDs(state.content_units);
+  const wipMerge  = unitsSelectors.getWIP(state.content_units, 'mergeUnits');
   return {
     ...status,
     units: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    wipMerge,
+    errMerge: unitsSelectors.getError(state.content_units, 'mergeUnits'),
   };
 };
 

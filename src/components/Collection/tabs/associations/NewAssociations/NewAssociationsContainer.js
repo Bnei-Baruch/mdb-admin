@@ -57,13 +57,13 @@ class ContentUnitsContainer extends Component {
       selectedCCU.push(data);
     } else {
       selectedCCU.some((ccu, i) => {
-        if (ccu.content_unit_id === data.content_unit_id) {
+        if (ccu.id === data.id) {
           selectedCCU.splice(i, 1);
           return true;
         }
       });
     }
-    this.setState({ selectedCCU });
+    this.setState({ selectedCCU: [...selectedCCU] });
   };
 
   associate = () => {
