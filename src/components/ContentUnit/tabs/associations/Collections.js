@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
+import { Header, Icon, List, Menu, Message, Segment, Modal } from 'semantic-ui-react';
 
 import { selectors } from '../../../../redux/modules/content_units';
 import { selectors as collections } from '../../../../redux/modules/collections';
@@ -10,6 +10,8 @@ import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
+
+import NewCollections from './CollectionModal/Container';
 
 class Collections extends Component {
 
@@ -23,6 +25,18 @@ class Collections extends Component {
     ccus: EMPTY_ARRAY,
     wip: false,
     err: null,
+  };
+
+  state = {
+    isShowAssociateModal: false
+  };
+
+  handleShowAssociateModal = () => {
+    this.setState({ isShowAssociateModal: !this.state.isShowAssociateModal });
+  };
+
+  toggleAssociateCollection = (r) => {
+    this.setState({ isShowAssociateModal: false });
   };
 
   render() {
@@ -96,10 +110,27 @@ class Collections extends Component {
           <Menu.Item header>
             <Header content="Collections" size="medium" color="blue" />
           </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item onClick={this.handleShowAssociateModal}>
+              <Icon name="plus" /> Add Collections
+            </Menu.Item>
+          </Menu.Menu>
         </Menu>
         <Segment attached>
           {content}
         </Segment>
+
+        <Modal
+          closeIcon
+          size="fullscreen"
+          open={this.state.isShowAssociateModal}
+          onClose={this.toggleAssociateCollection}
+        >
+          <Modal.Header>Associate Collections</Modal.Header>
+          <Modal.Content>
+            <NewCollections {...this.props} />
+          </Modal.Content>
+        </Modal>
       </div>
     );
   }
@@ -110,6 +141,7 @@ const mapState = (state, ownProps) => {
   const collectionIDs           = unit.collections;
   const denormCCUs              = collections.denormCCUs(state.collections);
   return {
+    associatedCIds: collectionIDs ? collectionIDs.map(c => c.collection_id) : [],
     ccus: collectionIDs ? denormCCUs(collectionIDs) : EMPTY_ARRAY,
     wip: selectors.getWIP(state.content_units, 'fetchItemCollections'),
     err: selectors.getError(state.content_units, 'fetchItemCollections'),
