@@ -14,12 +14,22 @@ class FilesList extends PureComponent {
     items: PropTypes.arrayOf(shapes.File),
     currentFiles: PropTypes.arrayOf(shapes.File),
     handleSelectFile: PropTypes.func,
+    handleSelectAllFiles: PropTypes.func,
     selectedFilesIds: PropTypes.arrayOf(PropTypes.number),
   };
 
   checkHandler = (cu, checked) => {
     this.props.handleSelectFile(cu);
     this.setState({ checked });
+  };
+
+  selectAllFiles = (event, data) => {
+    this.props.handleSelectAllFiles(data.checked);
+  };
+
+  isAllSelected = () => {
+    const { selectedFilesIds, items, currentFiles } = this.props;
+    return selectedFilesIds.length >= (items.length - currentFiles.length) && items.every(f => selectedFilesIds.includes(f.id) || currentFiles.some(cf => cf.id === f.id));
   };
 
   renderItem = (item) => {
@@ -77,6 +87,13 @@ class FilesList extends PureComponent {
           <Table>
             <Table.Header>
               <Table.Row>
+                <Table.HeaderCell>
+                  <Checkbox
+                    type="checkbox"
+                    onChange={this.selectAllFiles}
+                    checked={this.isAllSelected()}
+                  />
+                </Table.HeaderCell>
                 <Table.HeaderCell>ID</Table.HeaderCell>
                 <Table.HeaderCell>UID</Table.HeaderCell>
                 <Table.HeaderCell>Name</Table.HeaderCell>
