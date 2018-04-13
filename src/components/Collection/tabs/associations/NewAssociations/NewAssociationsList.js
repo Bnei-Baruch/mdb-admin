@@ -27,9 +27,9 @@ class FilesList extends PureComponent {
   };
 
   isAllSelected = () => {
-    const { selectedCCU, units, associatedCUIds } = this.props;
-    return selectedCCU.length >= (units.length - associatedCUIds.length) &&
-      units.every(u => associatedCUIds.includes(u.id) || selectedCCU.some(su => su.id === u.id));
+    const { selectedCCU, items, associatedCUIds } = this.props;
+    return selectedCCU.length >= (items.length - associatedCUIds.size) &&
+      items.every(u => associatedCUIds.get(u.id) || selectedCCU.some(su => su.id === u.id));
   };
 
   renderItem = (unit) => {

@@ -15,7 +15,8 @@ class ContentUnitsContainer extends Component {
 
   static propTypes = {
     collection: shapes.Collection,
-    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
+    associatedCUs: PropTypes.arrayOf(shapes.CollectionContentUnit),
+    associatedCUIds: PropTypes.object,
     fetchList: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
     associateUnit: PropTypes.func.isRequired,
@@ -66,19 +67,19 @@ class ContentUnitsContainer extends Component {
   };
 
   selectAllCUs = (checked) => {
-    const { units }       = this.props;
-    const { selectedCCU } = this.state;
+    const { items, associatedCUIds } = this.props;
+    const { selectedCCU }            = this.state;
     if (checked) {
-      this.setState({ selectedCCU: uniqBy([...selectedCCU, ...units.map(cu => cu.content_unit)], 'id') });
+      this.setState({ selectedCCU: uniqBy([...selectedCCU, ...items.filter(cu => !associatedCUIds.get(cu.id))], 'id') });
     } else {
-      this.setState({ selectedCCU: selectedCCU.filter(x => !units.some(y => x.content_unit_id === y.content_unit_id)) });
+      this.setState({ selectedCCU: selectedCCU.filter(x => !items.some(y => x.id === y.id)) });
     }
   };
 
   associate = () => {
     const { selectedCCU }       = this.state;
-    const { collection, units } = this.props;
-    let lastPosition            = units.length > 0 ? units[units.length - 1].position : 0;
+    const { collection, associatedCUs } = this.props;
+    let lastPosition            = associatedCUs.length > 0 ? associatedCUs[associatedCUs.length - 1].position : 0;
     if (selectedCCU.length === 0) {
       return;
     }

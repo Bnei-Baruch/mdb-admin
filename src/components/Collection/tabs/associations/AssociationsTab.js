@@ -50,7 +50,8 @@ class AssociationsTab extends Component {
     if (this.state.editMode) {
       return (<NewAssociationsContainer {...this.props} setEditMode={this.setEditMode} />);
     }
-    return (<AssociationsContainer {...this.props} setEditMode={this.setEditMode} />);
+    const { associatedCUs, ...props } = this.props;
+    return (<AssociationsContainer {...props} units={this.props.associatedCUs} setEditMode={this.setEditMode} />);
   }
 }
 
@@ -75,7 +76,7 @@ const mapState = (state, ownProps) => {
   const CCUs                          = unitIDs ? denormCCUs(unitIDs).sort(orderUnits) : EMPTY_ARRAY;
 
   return {
-    units: CCUs,
+    associatedCUs: CCUs,
     associatedCUIds: collection.content_units ?
       new Map(collection.content_units.map(x => [x.content_unit_id, true])) :
       new Map(),
