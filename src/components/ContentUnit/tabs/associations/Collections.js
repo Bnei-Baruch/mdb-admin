@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Header, Icon, List, Menu, Message, Segment, Modal } from 'semantic-ui-react';
+import { Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import { selectors } from '../../../../redux/modules/content_units';
 import { selectors as collections } from '../../../../redux/modules/collections';
@@ -33,10 +33,6 @@ class Collections extends Component {
 
   handleShowAssociateModal = () => {
     this.setState({ isShowAssociateModal: !this.state.isShowAssociateModal });
-  };
-
-  toggleAssociateCollection = (r) => {
-    this.setState({ isShowAssociateModal: false });
   };
 
   render() {
@@ -120,17 +116,7 @@ class Collections extends Component {
           {content}
         </Segment>
 
-        <Modal
-          closeIcon
-          size="fullscreen"
-          open={this.state.isShowAssociateModal}
-          onClose={this.toggleAssociateCollection}
-        >
-          <Modal.Header>Associate Collections</Modal.Header>
-          <Modal.Content>
-            <NewCollections {...this.props} />
-          </Modal.Content>
-        </Modal>
+        <NewCollections {...this.props} handleShowAssociateModal={this.handleShowAssociateModal} isShowAssociateModal={this.state.isShowAssociateModal} />
       </div>
     );
   }

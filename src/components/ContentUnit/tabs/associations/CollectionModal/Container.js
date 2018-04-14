@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Grid, Header, Icon, Label, Menu } from 'semantic-ui-react';
+import { Grid, Header, Icon, Label, Menu, Button, Modal } from 'semantic-ui-react';
 import uniq from 'lodash/uniq';
 
 import { formatError } from '../../../../../helpers/utils';
@@ -70,6 +70,16 @@ class NewCollections extends PureComponent {
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
 
+  handleAssociate = () => {
+    this.setState({ showFilters: !this.state.showFilters });
+    this.handleClose();
+  };
+
+  handleClose = () => {
+    this.setState({ selectedCIds: [], showFilters: false });
+    this.props.handleShowAssociateModal();
+  };
+
   selectCollection = (id, checked) => {
     const selectedCIds = this.state.selectedCIds;
     if (checked) {
@@ -100,77 +110,95 @@ class NewCollections extends PureComponent {
             wip,
             err,
             getTagByUID,
-            associatedCIds
+            associatedCIds,
+            isShowAssociateModal
           }                             = this.props;
 
     return (
-      <div>
-        <Menu borderless size="large">
-          <Menu.Item header>
-            <Header content="Collections" size="medium" color="blue" />
-          </Menu.Item>
-          <Menu.Menu position="right">
+      <Modal
+        closeIcon
+        size="fullscreen"
+        open={isShowAssociateModal}
+        onClose={this.handleAssociate}>
+        <Modal.Header content="Associate Collections" />
+        <Modal.Content scrolling>
+
+
+          <Menu borderless size="large">
             <Menu.Item onClick={this.toggleFilters}>
               <Icon name="filter" />
               {showFilters ? 'Hide' : 'Show'} Filters
             </Menu.Item>
-          </Menu.Menu>
-        </Menu>
+            <Menu.Menu position="right">
+              <Menu.Item>
 
-        <FiltersHydrator namespace={NS_UNIT_ASSOCIATION_COLLECTION} onHydrated={this.onFiltersHydrated} />
-
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              {
-                showFilters ?
-                  <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={this.onFiltersChange} />
-                    <br />
-                  </div> :
-                  null
-              }
-              <FilterTags namespace={NS_UNIT_ASSOCIATION_COLLECTION} onClose={this.onFiltersChange} />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
-                {
-                  wip ?
-                    <Label
-                      color="yellow"
-                      icon={{ name: 'spinner', loading: true }}
-                      content="Loading"
-                    /> :
-                    null
-                }
-                {
-                  err ?
-                    <Header
-                      inverted
-                      content={formatError(err)}
-                      color="red"
-                      icon="warning sign"
-                      floated="left"
-                    /> :
-                    null
-                }
                 <ResultsPageHeader pageNo={pageNo} total={total} />
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={this.onPageChange} />
-              </div>
-              <CollectionsList
-                items={items}
-                getTagByUID={getTagByUID}
-                selectedCIds={selectedCIds}
-                associatedCIds={associatedCIds}
-                selectCollection={this.selectCollection}
-                selectAllCollections={this.selectAllCollections} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
+              </Menu.Item>
+            </Menu.Menu>
+          </Menu>
+
+          <FiltersHydrator namespace={NS_UNIT_ASSOCIATION_COLLECTION} onHydrated={this.onFiltersHydrated} />
+
+          <Grid>
+            <Grid.Row>
+              <Grid.Column>
+                {
+                  showFilters ?
+                    <div>
+                      <TabsMenu items={filterTabs} onFilterApplication={this.onFiltersChange} />
+                      <br />
+                    </div> :
+                    null
+                }
+                <FilterTags namespace={NS_UNIT_ASSOCIATION_COLLECTION} onClose={this.onFiltersChange} />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+                <div style={{ textAlign: 'right' }}>
+                  {
+                    wip ?
+                      <Label
+                        color="yellow"
+                        icon={{ name: 'spinner', loading: true }}
+                        content="Loading"
+                      /> :
+                      null
+                  }
+                  {
+                    err ?
+                      <Header
+                        inverted
+                        content={formatError(err)}
+                        color="red"
+                        icon="warning sign"
+                        floated="left"
+                      /> :
+                      null
+                  }
+                </div>
+                <CollectionsList
+                  items={items}
+                  getTagByUID={getTagByUID}
+                  selectedCIds={selectedCIds}
+                  associatedCIds={associatedCIds}
+                  selectCollection={this.selectCollection}
+                  selectAllCollections={this.selectAllCollections} />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button content="Cancel"
+                  onClick={this.handleClose} />
+          <Button
+            onClick={this.handleAssociate}
+            content="Associate content unit to collections"
+            color="blue" />
+        </Modal.Actions>
+      </Modal>
     );
   }
 }

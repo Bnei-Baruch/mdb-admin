@@ -38,13 +38,13 @@ class CollectionsList extends PureComponent {
       return false;
     }
 
-    const countAssociatedInPage = items.filter(u => selectedCIds.includes(u.id)).length;
+    const countAssociatedInPage = items.filter(u => associatedCIds.includes(u.id)).length;
     //check that not all associated
     if (countAssociatedInPage === items.length) {
       return false;
     }
 
-    return (countAssociatedInPage + items.filter(u => associatedCIds.includes(u.id)).length) === items.length;
+    return (countAssociatedInPage + items.filter(u => selectedCIds.includes(u.id)).length) === items.length;
   };
 
   renderItem = (item) => {
