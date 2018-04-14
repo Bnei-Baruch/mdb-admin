@@ -166,6 +166,9 @@ class AssociationsContainer extends Component {
                 onClick={this.deleteCollectionUnits}
               />
             </Button.Group>
+            <span style={{ float: 'right' }}>
+              <strong>{`Total: ${units.length} Selected: ${selectedCCU.length}`}</strong>
+            </span>
           </Sticky>
           <Grid>
             <Grid.Row>
