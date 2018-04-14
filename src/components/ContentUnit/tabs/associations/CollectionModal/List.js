@@ -32,8 +32,19 @@ class CollectionsList extends PureComponent {
 
   isAllSelected = () => {
     const { selectedCIds, items, associatedCIds } = this.props;
-    return selectedCIds.length >= (items.length - associatedCIds.length) &&
-      items.every(u => associatedCIds.includes(u.id) || selectedCIds.includes(u.id));
+
+    //prevent check
+    if (selectedCIds.length < (items.length - associatedCIds.length)) {
+      return false;
+    }
+
+    const countAssociatedInPage = items.filter(u => selectedCIds.includes(u.id)).length;
+    //check that not all associated
+    if (countAssociatedInPage === items.length) {
+      return false;
+    }
+
+    return (countAssociatedInPage + items.filter(u => associatedCIds.includes(u.id)).length) === items.length;
   };
 
   renderItem = (item) => {
