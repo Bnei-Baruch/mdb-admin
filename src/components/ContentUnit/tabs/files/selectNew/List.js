@@ -29,7 +29,19 @@ class FilesList extends PureComponent {
 
   isAllSelected = () => {
     const { selectedFilesIds, items, currentFiles } = this.props;
-    return selectedFilesIds.length >= (items.length - currentFiles.length) && items.every(f => selectedFilesIds.includes(f.id) || currentFiles.some(cf => cf.id === f.id));
+
+    //prevent check
+    if (selectedFilesIds.length < (items.length - currentFiles.length)) {
+      return false;
+    }
+
+    const countAssociatedInPage = items.filter(f => currentFiles.some(cf => cf.id === f.id)).length;
+    //check that not all associated
+    if (countAssociatedInPage === items.length) {
+      return false;
+    }
+
+    return (countAssociatedInPage + items.filter(f => selectedFilesIds.includes(f.id)).length) === items.length;
   };
 
   renderItem = (item) => {
