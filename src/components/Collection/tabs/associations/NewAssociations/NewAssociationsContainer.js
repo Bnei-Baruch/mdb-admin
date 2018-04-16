@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import delay from 'lodash/delay';
-import orderBy from 'lodash/orderBy';
+import { delay, orderBy, uniqBy } from 'lodash';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
 import { actions, selectors } from '../../../../../redux/modules/lists';
@@ -16,7 +15,8 @@ class ContentUnitsContainer extends Component {
 
   static propTypes = {
     collection: shapes.Collection,
-    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
+    associatedCUs: PropTypes.arrayOf(shapes.CollectionContentUnit),
+    associatedCUIds: PropTypes.object,
     fetchList: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
     associateUnit: PropTypes.func.isRequired,
@@ -66,10 +66,20 @@ class ContentUnitsContainer extends Component {
     this.setState({ selectedCCU: [...selectedCCU] });
   };
 
+  selectAllCUs = (checked) => {
+    const { items, associatedCUIds } = this.props;
+    const { selectedCCU }            = this.state;
+    if (checked) {
+      this.setState({ selectedCCU: uniqBy([...selectedCCU, ...items.filter(cu => !associatedCUIds.get(cu.id))], 'id') });
+    } else {
+      this.setState({ selectedCCU: selectedCCU.filter(x => !items.some(y => x.id === y.id)) });
+    }
+  };
+
   associate = () => {
     const { selectedCCU }       = this.state;
-    const { collection, units } = this.props;
-    let lastPosition            = units.length > 0 ? units[units.length - 1].position : 0;
+    const { collection, associatedCUs } = this.props;
+    let lastPosition            = associatedCUs.length > 0 ? associatedCUs[associatedCUs.length - 1].position : 0;
     if (selectedCCU.length === 0) {
       return;
     }
@@ -95,6 +105,7 @@ class ContentUnitsContainer extends Component {
         onFiltersChange={this.handleFiltersChange}
         onFiltersHydrated={this.handleFiltersHydrated}
         associate={this.associate}
+        selectAllCUs={this.selectAllCUs}
       />
     );
   }

@@ -26,6 +26,23 @@ class FilesList extends PureComponent {
     this.setState({ checked });
   };
 
+  isAllSelected = () => {
+    const { selectedCCU, items, associatedCUIds } = this.props;
+
+    //prevent check
+    if (selectedCCU.length < (items.length - associatedCUIds.size)) {
+      return false;
+    }
+
+    const countAssociatedInPage = items.filter(u => associatedCUIds.get(u.id)).length;
+    //check that not all associated
+    if (countAssociatedInPage === items.length) {
+      return false;
+    }
+
+    return (countAssociatedInPage + items.filter(u => selectedCCU.some(su => su.id === u.id)).length) === items.length;
+  };
+
   renderItem = (unit) => {
     const properties = extractI18n(unit.i18n, ['name'])[0];
     const isChecked  = this.props.selectedCCU.some(ccu => {
@@ -84,7 +101,13 @@ class FilesList extends PureComponent {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
+            <Table.HeaderCell>
+              <Checkbox
+                type="checkbox"
+                onChange={(event, data) => this.props.selectAllCUs(data.checked)}
+                checked={this.isAllSelected()}
+              />
+            </Table.HeaderCell>
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>

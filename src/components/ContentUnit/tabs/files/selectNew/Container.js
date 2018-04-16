@@ -3,6 +3,7 @@ import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import uniq from 'lodash/uniq';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_FILE_UNITS } from '../../../../../helpers/consts';
 import { formatError } from '../../../../../helpers/utils';
@@ -72,7 +73,7 @@ class AddFiles extends PureComponent {
     this.handlePageChange(1);
   };
 
-  handleSelectFile = (file) => {
+  selectFile = (file) => {
     const { selectedFilesIds } = this.state;
     if (selectedFilesIds.includes(file.id)) {
       selectedFilesIds.some((id, i, arr) => {
@@ -86,6 +87,16 @@ class AddFiles extends PureComponent {
     }
 
     this.setState({ selectedFilesIds: [...selectedFilesIds] });
+  };
+
+  selectAllFiles = (checked) => {
+    const { items, files }     = this.props;
+    const { selectedFilesIds } = this.state;
+    if (checked) {
+      this.setState({ selectedFilesIds: uniq([...selectedFilesIds, ...items.filter(id => files.every(f => f.id !== id))]) });
+    } else {
+      this.setState({ selectedFilesIds: selectedFilesIds.filter(x => !items.includes(x)) });
+    }
   };
 
   toggleFilters = () =>
@@ -192,7 +203,8 @@ class AddFiles extends PureComponent {
                 unitId={unit.id}
                 items={allFiles}
                 currentFiles={files}
-                handleSelectFile={this.handleSelectFile}
+                handleSelectFile={this.selectFile}
+                handleSelectAllFiles={this.selectAllFiles}
                 selectedFilesIds={selectedFilesIds}
               />
             </Grid.Column>
