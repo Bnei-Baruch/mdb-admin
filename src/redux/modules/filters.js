@@ -260,13 +260,13 @@ const getFilters = (state, namespace) => {
 };
 
 const getFilterAllValues = (state, namespace, name) =>
-state[namespace] &&
-state[namespace][name] &&
-state[namespace][name].values;
+  state[namespace] &&
+  state[namespace][name] &&
+  state[namespace][name].values;
 
 const getFilterValue = (state, namespace, name, index = 0) =>
-getFilterAllValues(state, namespace, name, index) &&
-state[namespace][name].values[index];
+  getFilterAllValues(state, namespace, name, index) &&
+  state[namespace][name].values[index];
 
 const getLastFilterValue = (state, namespace, name) => {
   if (
@@ -283,18 +283,18 @@ const getLastFilterValue = (state, namespace, name) => {
 };
 
 const getActiveValueIndex = (state, namespace, name) =>
-state[namespace] &&
-state[namespace][name] &&
-state[namespace][name].activeValueIndex;
+  state[namespace] &&
+  state[namespace][name] &&
+  state[namespace][name].activeValueIndex;
 
 const getActiveValue = (state, namespace, name) =>
-getFilterValue(state, namespace, name, getActiveValueIndex(state, namespace, name)) ||
-getLastFilterValue(state, namespace, name);
+  getFilterValue(state, namespace, name, getActiveValueIndex(state, namespace, name)) ||
+  getLastFilterValue(state, namespace, name);
 
 const getIsEditingExistingFilter = (state, namespace, name) =>
-!!state[namespace] &&
-!!state[namespace][name] &&
-!!state[namespace][name].editingExistingValue;
+  !!state[namespace] &&
+  !!state[namespace][name] &&
+  !!state[namespace][name].editingExistingValue;
 
 const getIsHydrated = (state, namespace) => !!state.isHydrated && !!state.isHydrated[namespace];
 

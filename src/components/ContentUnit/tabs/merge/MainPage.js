@@ -19,11 +19,15 @@ import ContentUnitList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
 import FreeText from './filters/FreeText';
+import Sources from './filters/Sources';
+import Topics from './filters/Topics';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
-  { name: 'Others', element: Others },
   { name: 'Free Text', element: FreeText },
+  { name: 'Sources', element: Sources },
+  { name: 'Topics', element: Topics },
+  { name: 'Others', element: Others },
 ];
 
 class MergeContentUnitTab extends PureComponent {

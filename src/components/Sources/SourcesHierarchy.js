@@ -54,7 +54,7 @@ class SourcesHierarchy extends Component {
     }
 
     // set default author once we have authors if we need one
-    if (this.state.author === null && nextProps.authors.length > 0) {
+    if (!this.state.author && nextProps.authors.length > 0) {
       this.setState({ author: nextProps.authors[0] });
     }
   }
@@ -63,7 +63,7 @@ class SourcesHierarchy extends Component {
   hideModal = () => this.setState({ modalOpen: false });
 
   renderSources() {
-    const { author }  = this.state;
+    const { author } = this.state;
     const { sources } = author;
     const hasSources  = Array.isArray(sources) && sources.length > 0;
 

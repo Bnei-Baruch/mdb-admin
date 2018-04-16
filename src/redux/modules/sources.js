@@ -144,7 +144,7 @@ const onSuccess = (state, action) => {
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ALL_SUCCESS:
-    byID = new Map(action.payload.map(x => [x.id, x]));
+    byID  = new Map(action.payload.map(x => [x.id, x]));
     break;
   default:
     byID = state.byID;
@@ -208,8 +208,8 @@ const sortHierarchy = (h, getById) => {
 
 const getSources    = state => state.byID;
 const getSourceById = state => id => state.byID.get(id);
-const getWIP      = state => key => state.wip.get(key);
-const getError    = state => key => state.errors.get(key);
+const getWIP        = state => key => state.wip.get(key);
+const getError      = state => key => state.errors.get(key);
 
 const getHierarchy = createSelector(getSources,
   sources => sortHierarchy(buildHierarchy(sources), x => sources.get(x)));

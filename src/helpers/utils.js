@@ -208,10 +208,34 @@ export const fileIcon = (file) => {
  * @param file
  * @param ext {boolean} include file name extension in url or not
  */
-export const physicalFile = (file, ext = false) => {
+export const physicalFile            = (file, ext = false) => {
   let suffix = '';
   if (ext) {
     suffix = `.${filenameExtension(file.name)}`;
   }
   return `http://app.mdb.bbdomain.org/links/${file.uid}${suffix}`;
+};
+/**
+ * Convert hierarchy to tree
+ * @param file
+ * @param ext {boolean} include file name extension in url or not
+ */
+export const hierarchyToTree         = (hierarchy) => {
+  return hierarchy.roots.map(id => recursiveAddChildren(id, hierarchy.childMap));
+};
+const recursiveAddChildren           = (id, allMap) => {
+  const children = allMap.get(id);
+  if (children && children.length > 0) {
+    return { id, children: children.map(i => recursiveAddChildren(i, allMap)) };
+  }
+  return { id };
+};
+/**
+ * Convert hierarchyNodeToTreeNode insert to node his children
+ * @param hierarchy
+ * @node - current node
+ */
+export const hierarchyNodeToTreeNode = (hierarchy, node) => {
+  const children = hierarchy.childMap.get(node.id);
+  return { ...node, children: !children ? children : children.map(id => ({ id })) };
 };
