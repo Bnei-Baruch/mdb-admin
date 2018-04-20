@@ -9,7 +9,7 @@ class SecureFilter extends Component {
 
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
-    allValues: PropTypes.arrayOf(PropTypes.number),
+    allValues: PropTypes.arrayOf(PropTypes.any),
     onApply: PropTypes.func.isRequired,
   };
 

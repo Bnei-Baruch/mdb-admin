@@ -16,8 +16,8 @@ class DeepListFilter extends React.Component {
     onApply: PropTypes.func,
     emptyLabel: PropTypes.string.isRequired,
     updateValue: PropTypes.func.isRequired,
-    value: PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.string, PropTypes.number)),
-    allValues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.string, PropTypes.number)))
+    value: PropTypes.any,
+    allValues: PropTypes.any,
   };
 
   static defaultProps = {
@@ -25,7 +25,7 @@ class DeepListFilter extends React.Component {
     onCancel: noop,
     onApply: noop,
     value: [],
-    allValues: [[]],
+    allValues: [],
   };
 
   state = {
@@ -33,6 +33,9 @@ class DeepListFilter extends React.Component {
   };
 
   componentDidMount() {
+    const { allValues, value } = this.props;
+    console.log('componentDidMount', allValues, value);
+
     this.scrollToSelections(this.state.selection);
   }
 
@@ -149,14 +152,13 @@ class DeepListFilter extends React.Component {
     );
   };
 
-  listToNumbersIfCan(list){
+  listToNumbersIfCan(list) {
     return list.map(x => isNaN(parseFloat(x)) ? x : parseFloat(x));
   }
 
   render() {
     const { hierarchy, emptyLabel, allValues } = this.props;
     const roots                                = hierarchyToTree(hierarchy);
-
     return (
       <Container className="padded-horizontally">
         <Segment

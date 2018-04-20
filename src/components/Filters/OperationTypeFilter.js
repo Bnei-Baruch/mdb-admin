@@ -9,7 +9,7 @@ class OperationTypeFilter extends Component {
 
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
-    allValues: PropTypes.arrayOf(PropTypes.string),
+    allValues: PropTypes.arrayOf(PropTypes.any),
     onApply: PropTypes.func.isRequired,
   };
 
