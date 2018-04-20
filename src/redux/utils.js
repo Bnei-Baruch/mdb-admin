@@ -16,6 +16,15 @@ export const update = (m, k, updater) => {
   return setMap(m, k, updater(old));
 };
 
+export const updateList = (m, l, updater) => {
+  const nm = new Map(m);
+  l.forEach(k => {
+    const old = m.get(k) || {};
+    nm.set(k, updater(old, k));
+  });
+  return freezeMap(nm);
+};
+
 export const bulkMerge = (m, a) => {
   const nm = new Map(m);
   a.forEach((x) => {

@@ -53,6 +53,13 @@ function* associateUnit(action) {
   try {
     yield call(api.post, `/collections/${id}/content_units/`, properties);
     yield put(actions.associateUnitSuccess({ id, properties }));
+
+    const data = yield properties.reduce((r, x) => {
+      r.ids.push(x.content_unit_id);
+      r.collections.set(x.content_unit_id, { collection_id: id, name: x.name });
+      return r;
+    }, { ids: [], collections: new Map() });
+    yield  put(units.receiveItemsCollections(data));
   } catch (err) {
     yield put(actions.associateUnitFailure({ ...err, content_units_id: properties.content_unit_id }));
   }

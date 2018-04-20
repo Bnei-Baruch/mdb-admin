@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { bulkMerge, merge, setMap, update, delList } from '../utils';
+import { bulkMerge, merge, setMap, update, delList, updateList } from '../utils';
 
 /* Types */
 
@@ -68,7 +68,8 @@ const MERGE_UNITS                   = 'ContentUnits/MERGE_UNITS';
 const MERGE_UNITS_SUCCESS           = 'ContentUnits/MERGE_UNITS_SUCCESS';
 const MERGE_UNITS_FAILURE           = 'ContentUnits/MERGE_UNITS_FAILURE';
 
-const RECEIVE_ITEMS = 'ContentUnits/RECEIVE_ITEMS';
+const RECEIVE_ITEMS             = 'ContentUnits/RECEIVE_ITEMS';
+const RECEIVE_ITEMS_COLLECTIONS = 'ContentUnits/RECEIVE_ITEMS_COLLECTIONS';
 
 export const types = {
   FETCH_ITEM,
@@ -134,6 +135,7 @@ export const types = {
   MERGE_UNITS_FAILURE,
 
   RECEIVE_ITEMS,
+  RECEIVE_ITEMS_COLLECTIONS,
 };
 
 /* Actions */
@@ -204,7 +206,8 @@ const mergeUnits                 = createAction(MERGE_UNITS, (id, cuIds) => ({ i
 const mergeUnitsSuccess          = createAction(MERGE_UNITS_SUCCESS);
 const mergeUnitsFailure          = createAction(MERGE_UNITS_FAILURE);
 
-const receiveItems = createAction(RECEIVE_ITEMS);
+const receiveItems            = createAction(RECEIVE_ITEMS);
+const receiveItemsCollections = createAction(RECEIVE_ITEMS_COLLECTIONS);
 
 export const actions = {
   fetchItem,
@@ -270,6 +273,7 @@ export const actions = {
   mergeUnitsFailure,
 
   receiveItems,
+  receiveItemsCollections,
 };
 
 /* Reducer */
@@ -371,8 +375,6 @@ const onSuccess = (state, action) => {
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ITEM_FILES_SUCCESS:
-  case ADD_FILES_SUCCESS:
-  case MERGE_UNITS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
       files: action.payload.data.map(x => x.id),
@@ -457,6 +459,12 @@ const onSuccess = (state, action) => {
   };
 };
 
+const onReceiveItemsCollections = (state, action) => {
+  const byID = updateList(state.byID, action.payload.ids,
+    (x, id) => ({ ...x, collections: [...x.collections, action.payload.collections.get(id)] }));
+  return { ...state, byID };
+};
+
 const onReceiveItems = (state, action) => ({
   ...state,
   byID: bulkMerge(state.byID, action.payload),
@@ -526,6 +534,7 @@ export const reducer = handleActions({
   [MERGE_UNITS_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
+  [RECEIVE_ITEMS_COLLECTIONS]: onReceiveItemsCollections,
 }, initialState);
 
 /* Selectors */

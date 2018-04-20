@@ -51,6 +51,7 @@ function* fetchList(action) {
     break;
   case  NS_FILE_UNITS:
   case  NS_MERGE_UNITS:
+  case  NS_COLLECTION_UNITS:
     urlParam = NS_UNITS;
     break;
   case NS_UNIT_FILE_UNITS:

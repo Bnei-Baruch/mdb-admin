@@ -10,7 +10,7 @@ import { formatError } from '../../../../../helpers/utils';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_COLLECTION } from '../../../../../helpers/consts';
 import { actions, selectors } from '../../../../../redux/modules/lists';
-import { actions as collectionActions, selectors as collections } from '../../../../../redux/modules/collections';
+import { selectors as collections } from '../../../../../redux/modules/collections';
 import { selectors as tagSelectors } from '../../../../../redux/modules/tags';
 
 import ResultsPageHeader from '../../../../shared/ResultsPageHeader';
@@ -34,6 +34,7 @@ const filterTabs = [
 class NewCollections extends PureComponent {
 
   static propTypes = {
+    unit: shapes.ContentUnit,
     items: PropTypes.arrayOf(shapes.Collection),
     getTagByUID: PropTypes.func.isRequired,
     associatedCIds: PropTypes.arrayOf(PropTypes.number),
@@ -56,6 +57,14 @@ class NewCollections extends PureComponent {
     this.askForData(1);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { wipAssociate } = this.props;
+    if (nextProps.unit && wipAssociate && !nextProps.wipAssociate) {
+      this.askForData(1);
+      this.handleClose();
+    }
+  }
+
   onPageChange = (pageNo) => {
     const { setPage } = this.props;
     setPage(NS_UNIT_ASSOCIATION_COLLECTION, pageNo);
@@ -71,8 +80,12 @@ class NewCollections extends PureComponent {
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
 
   handleAssociate = () => {
-    this.setState({ showFilters: !this.state.showFilters });
-    this.handleClose();
+    const { associate, unit } = this.props;
+    this.state.selectedCIds.forEach(cId => associate(cId, [{
+      content_unit_id: unit.id,
+      name: '',
+      position: 0
+    }]));
   };
 
   handleClose = () => {
@@ -109,21 +122,23 @@ class NewCollections extends PureComponent {
             items,
             wip,
             err,
+            wipAssociate,
+            errAssociate,
             getTagByUID,
             associatedCIds,
             isShowAssociateModal
           }                             = this.props;
-
+    if (!isShowAssociateModal) {
+      return null;
+    }
     return (
       <Modal
         closeIcon
         size="fullscreen"
         open={isShowAssociateModal}
-        onClose={this.handleAssociate}>
+        onClose={this.handleClose}>
         <Modal.Header content="Associate Collections" />
         <Modal.Content scrolling>
-
-
           <Menu borderless size="large">
             <Menu.Item onClick={this.toggleFilters}>
               <Icon name="filter" />
@@ -159,7 +174,7 @@ class NewCollections extends PureComponent {
               <Grid.Column>
                 <div style={{ textAlign: 'right' }}>
                   {
-                    wip ?
+                    wip || wipAssociate ?
                       <Label
                         color="yellow"
                         icon={{ name: 'spinner', loading: true }}
@@ -168,10 +183,10 @@ class NewCollections extends PureComponent {
                       null
                   }
                   {
-                    err ?
+                    err || errAssociate ?
                       <Header
                         inverted
-                        content={formatError(err)}
+                        content={formatError(err || errAssociate)}
                         color="red"
                         icon="warning sign"
                         floated="left"
@@ -221,7 +236,6 @@ function mapDispatch(dispatch) {
   return bindActionCreators({
     fetchList: actions.fetchList,
     setPage: actions.setPage,
-    create: collectionActions.create,
   }, dispatch);
 }
 

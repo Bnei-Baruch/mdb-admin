@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import { selectors } from '../../../../redux/modules/content_units';
-import { selectors as collections } from '../../../../redux/modules/collections';
+import { actions as collectionActions, selectors as collections } from '../../../../redux/modules/collections';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
@@ -114,9 +115,11 @@ class Collections extends Component {
         </Menu>
         <Segment attached>
           {content}
+          <NewCollections
+            {...this.props}
+            handleShowAssociateModal={this.handleShowAssociateModal}
+            isShowAssociateModal={this.state.isShowAssociateModal} />
         </Segment>
-
-        <NewCollections {...this.props} handleShowAssociateModal={this.handleShowAssociateModal} isShowAssociateModal={this.state.isShowAssociateModal} />
       </div>
     );
   }
@@ -131,7 +134,15 @@ const mapState = (state, ownProps) => {
     ccus: collectionIDs ? denormCCUs(collectionIDs) : EMPTY_ARRAY,
     wip: selectors.getWIP(state.content_units, 'fetchItemCollections'),
     err: selectors.getError(state.content_units, 'fetchItemCollections'),
+    wipAssociate: collections.getWIP(state.collections, 'associateUnit'),
+    errAssociate: collections.getError(state.collections, 'associateUnit'),
   };
 };
 
-export default connect(mapState)(Collections);
+function mapDispatch(dispatch) {
+  return bindActionCreators({
+    associate: collectionActions.associateUnit,
+  }, dispatch);
+}
+
+export default connect(mapState, mapDispatch)(Collections);

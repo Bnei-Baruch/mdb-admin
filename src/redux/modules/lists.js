@@ -9,7 +9,7 @@ const FETCH_LIST         = 'Lists/FETCH_LIST';
 const FETCH_LIST_SUCCESS = 'Lists/FETCH_LIST_SUCCESS';
 const FETCH_LIST_FAILURE = 'Lists/FETCH_LIST_FAILURE';
 const REMOVE_ITEM        = 'Lists/REMOVE_ITEM';
-const REMOVE_ITEMS        = 'Lists/REMOVE_ITEMS';
+const REMOVE_ITEMS       = 'Lists/REMOVE_ITEMS';
 
 export const types = {
   SET_PAGE,
@@ -27,7 +27,7 @@ const fetchList        = createAction(FETCH_LIST, (namespace, pageNo, parent) =>
 const fetchListSuccess = createAction(FETCH_LIST_SUCCESS, (namespace, total, data) => ({ namespace, total, data }));
 const fetchListFailure = createAction(FETCH_LIST_FAILURE, (namespace, err) => ({ namespace, err }));
 const removeItem       = createAction(REMOVE_ITEM, (namespace, id) => ({ namespace, id }));
-const removeItems       = createAction(REMOVE_ITEM, (namespace, ids) => ({ namespace, ids }));
+const removeItems      = createAction(REMOVE_ITEM, (namespace, ids) => ({ namespace, ids }));
 
 export const actions = {
   setPage,
@@ -74,7 +74,7 @@ const onSuccess = (state, action) => ({
     })),
 });
 
-const onRemoveItem = (state, action) => {
+const onRemoveItem  = (state, action) => {
   const { namespace, id } = action.payload;
 
   const status = state.byNS.get(namespace);
@@ -105,7 +105,7 @@ const onRemoveItems = (state, action) => {
     return state;
   }
 
-  const items = status.items.filter(x=>ids.includes(x));
+  const items = status.items.filter(x => ids.includes(x));
   if (items.length === 0) {
     return state;
   }
@@ -115,7 +115,7 @@ const onRemoveItems = (state, action) => {
     byNS: update(state.byNS, namespace,
       x => ({
         ...x,
-        items:items,
+        items: items,
       })),
   };
 };
