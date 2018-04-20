@@ -16,8 +16,8 @@ class DeepListFilter extends React.Component {
     onApply: PropTypes.func,
     emptyLabel: PropTypes.string.isRequired,
     updateValue: PropTypes.func.isRequired,
-    value: PropTypes.arrayOf(PropTypes.object),
-    allValues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object))
+    value: PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.string, PropTypes.number)),
+    allValues: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.string, PropTypes.number)))
   };
 
   static defaultProps = {
@@ -25,11 +25,11 @@ class DeepListFilter extends React.Component {
     onCancel: noop,
     onApply: noop,
     value: [],
-    allValues: [],
+    allValues: [[]],
   };
 
   state = {
-    selection: this.props.value
+    selection: this.listToNumbersIfCan(this.props.value)
   };
 
   componentDidMount() {
@@ -38,7 +38,7 @@ class DeepListFilter extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      selection: nextProps.value
+      selection: this.listToNumbersIfCan(nextProps.value)
     });
   }
 
@@ -83,6 +83,7 @@ class DeepListFilter extends React.Component {
   scrollToSelections = (selections) => {
     if (this.menus[0]) {
       selections.forEach((selection, depth) => {
+        console.log('scrollToSelections', this.menus, depth);
         const selectedItems = this.menus[depth].getElementsByClassName('active');
 
         if (selectedItems.length) {
@@ -148,9 +149,13 @@ class DeepListFilter extends React.Component {
     );
   };
 
+  listToNumbersIfCan(list){
+    return list.map(x => isNaN(parseFloat(x)) ? x : parseFloat(x));
+  }
+
   render() {
-    const { hierarchy, emptyLabel } = this.props;
-    const roots                     = hierarchyToTree(hierarchy);
+    const { hierarchy, emptyLabel, allValues } = this.props;
+    const roots                                = hierarchyToTree(hierarchy);
 
     return (
       <Container className="padded-horizontally">
@@ -165,7 +170,7 @@ class DeepListFilter extends React.Component {
           >
             {
               roots.length > 0 ?
-                this.createLists(0, roots, this.state.selection, this.props.allValues) :
+                this.createLists(0, roots, this.state.selection, this.listToNumbersIfCan(allValues)) :
                 emptyLabel
             }
           </div>
