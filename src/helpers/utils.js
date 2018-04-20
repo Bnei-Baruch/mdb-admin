@@ -236,6 +236,6 @@ const recursiveAddChildren           = (id, allMap) => {
  * @node - current node
  */
 export const hierarchyNodeToTreeNode = (hierarchy, node) => {
-  const children = hierarchy.childMap.get(node.id);
+  const children = node && node.id ? hierarchy.childMap.get(node.id) : [];
   return { ...node, children: !children ? children : children.map(id => ({ id })) };
 };
