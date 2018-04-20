@@ -263,7 +263,7 @@ const onSuccess = (state, action) => {
   case DELETE_ITEM_UNIT_SUCCESS:
     byID = update(state.byID, action.payload.id, x => ({
       ...x,
-      content_units: x.content_units.filter(ccu => ccu.content_unit_id !== action.payload.ccuId)
+      content_units: x.content_units ? x.content_units.filter(ccu => ccu.content_unit_id !== action.payload.ccuId) : []
     }));
 
     break;

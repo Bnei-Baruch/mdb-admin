@@ -80,6 +80,7 @@ function* deleteItemUnit(action) {
   try {
     yield call(api.delete, `/collections/${id}/content_units/${ccuId}`);
     yield put(actions.deleteItemUnitSuccess({ id, ccuId }));
+    yield  put(units.removeItemCollections({ collectionId: id, ccuId }));
   } catch (err) {
     yield put(actions.deleteItemUnitFailure({ ...err, content_units_id: ccuId }));
   }

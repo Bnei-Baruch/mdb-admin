@@ -78,7 +78,7 @@ class CollectionsList extends PureComponent {
 
     return (
       <Table.Row key={item.id} disabled={associatedCIds.includes(item.id)}>
-        <Table.Cell>
+        <Table.Cell width="1">
           <Checkbox
             type="checkbox"
             onChange={(event, data) => selectCollection(item.id, data.checked)}
@@ -123,7 +123,7 @@ class CollectionsList extends PureComponent {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>
+            <Table.HeaderCell width="1">
               <Checkbox
                 type="checkbox"
                 onChange={(event, data) => this.props.selectAllCollections(data.checked)}

@@ -70,6 +70,7 @@ const MERGE_UNITS_FAILURE           = 'ContentUnits/MERGE_UNITS_FAILURE';
 
 const RECEIVE_ITEMS             = 'ContentUnits/RECEIVE_ITEMS';
 const RECEIVE_ITEMS_COLLECTIONS = 'ContentUnits/RECEIVE_ITEMS_COLLECTIONS';
+const REMOVE_ITEM_COLLECTIONS   = 'ContentUnits/REMOVE_ITEM_COLLECTIONS';
 
 export const types = {
   FETCH_ITEM,
@@ -136,6 +137,7 @@ export const types = {
 
   RECEIVE_ITEMS,
   RECEIVE_ITEMS_COLLECTIONS,
+  REMOVE_ITEM_COLLECTIONS,
 };
 
 /* Actions */
@@ -208,6 +210,7 @@ const mergeUnitsFailure          = createAction(MERGE_UNITS_FAILURE);
 
 const receiveItems            = createAction(RECEIVE_ITEMS);
 const receiveItemsCollections = createAction(RECEIVE_ITEMS_COLLECTIONS);
+const removeItemCollections   = createAction(REMOVE_ITEM_COLLECTIONS);
 
 export const actions = {
   fetchItem,
@@ -274,6 +277,7 @@ export const actions = {
 
   receiveItems,
   receiveItemsCollections,
+  removeItemCollections
 };
 
 /* Reducer */
@@ -465,6 +469,12 @@ const onReceiveItemsCollections = (state, action) => {
   return { ...state, byID };
 };
 
+const onRemoveItemCollections = (state, action) => {
+  const byID = update(state.byID, action.payload.ccuId,
+    x => ({ ...x, collections: x.collections.filter(c => c.collection_id !== action.payload.collectionId) }));
+  return { ...state, byID };
+};
+
 const onReceiveItems = (state, action) => ({
   ...state,
   byID: bulkMerge(state.byID, action.payload),
@@ -535,6 +545,7 @@ export const reducer = handleActions({
 
   [RECEIVE_ITEMS]: onReceiveItems,
   [RECEIVE_ITEMS_COLLECTIONS]: onReceiveItemsCollections,
+  [REMOVE_ITEM_COLLECTIONS]: onRemoveItemCollections,
 }, initialState);
 
 /* Selectors */
