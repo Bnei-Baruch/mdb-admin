@@ -17,9 +17,8 @@ import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import EditedField from '../../../shared/Fields/EditedField';
 
-
-
 const Cell = shouldUpdate(Table.Cell);
+
 class Units extends PureComponent {
 
   static propTypes = {
@@ -48,9 +47,12 @@ class Units extends PureComponent {
     this.props.updateItemUnitProperties(id, item.content_unit_id, { name: val, position: item.position });
   };
 
-  handleSelectionChange = (unit, data) => {
+  handleSelectionChange    = (unit, data) => {
     const checked = data.checked;
     this.props.onSelectionChange(unit, checked);
+  };
+  handleSelectionAllChange = ({ checked }) => {
+    this.props.onSelectionAllChange(checked);
   };
 
   renderItem = (item) => {
@@ -119,7 +121,7 @@ class Units extends PureComponent {
               <Icon name="ban" color="red" />
           }
         </Cell>
-        <Cell  propForUpdate={'value'}>
+        <Cell propForUpdate={'value'}>
           <EditedField
             value={item.name}
             onSave={val => this.saveCCUName(collection.id, item, val)}
@@ -153,7 +155,7 @@ class Units extends PureComponent {
     }, []);
 
   render() {
-    const { units, wip, err } = this.props;
+    const { units, selectedCCU, wip, err } = this.props;
 
     if (err) {
       return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -169,7 +171,13 @@ class Units extends PureComponent {
       <Table celled selectable compact size="small">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
+            <Table.HeaderCell>
+              <Checkbox
+                type="checkbox"
+                onChange={(e, data) => this.handleSelectionAllChange(data)}
+                checked={selectedCCU.length === units.length}
+              />
+            </Table.HeaderCell>
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>

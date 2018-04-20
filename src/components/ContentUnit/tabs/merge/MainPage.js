@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import uniq from 'lodash/uniq';
 import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_MERGE_UNITS } from '../../../../helpers/consts';
@@ -19,11 +20,15 @@ import ContentUnitList from './List';
 import DateRange from './filters/DateRange';
 import Others from './filters/Others';
 import FreeText from './filters/FreeText';
+import Sources from './filters/Sources';
+import Topics from './filters/Topics';
 
 const filterTabs = [
   { name: 'Date Range', element: DateRange },
-  { name: 'Others', element: Others },
   { name: 'Free Text', element: FreeText },
+  { name: 'Sources', element: Sources },
+  { name: 'Topics', element: Topics },
+  { name: 'Others', element: Others },
 ];
 
 class MergeContentUnitTab extends PureComponent {
@@ -92,6 +97,16 @@ class MergeContentUnitTab extends PureComponent {
       });
     }
     this.setState({ selectedCUIds: [...selectedCUIds] });
+  };
+
+  selectAllCUs = (checked) => {
+    const { units }         = this.props;
+    const { selectedCUIds } = this.state;
+    if (checked) {
+      this.setState({ selectedCUIds: uniq([...selectedCUIds, ...units.map(u => u.id)]) });
+    } else {
+      this.setState({ selectedCUIds: selectedCUIds.filter(x => !units.some(y => x === y.id)) });
+    }
   };
 
   mergeCU = () => {
@@ -184,7 +199,8 @@ class MergeContentUnitTab extends PureComponent {
               <ContentUnitList
                 {...this.props}
                 selectedCUIds={this.state.selectedCUIds}
-                selectCU={this.selectCU} />
+                selectCU={this.selectCU}
+                selectAllCUs={this.selectAllCUs} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -199,7 +215,7 @@ const mapState = (state) => {
   const wipMerge  = unitsSelectors.getWIP(state.content_units, 'mergeUnits');
   return {
     ...status,
-    units: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    units: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items).filter(u => u) : EMPTY_ARRAY,
     wipMerge,
     errMerge: unitsSelectors.getError(state.content_units, 'mergeUnits'),
   };

@@ -109,11 +109,13 @@ export const reducer = handleActions({
 
 /* Selectors */
 
-const getAuthors              = state => state.byID;
-const getAuthorById           = state => id => state.byID.get(id);
-const getWIP                  = state => key => state.wip.get(key);
-const getError                = state => key => state.errors.get(key);
-const getAuthorsList          = createSelector(getAuthors, authors => Array.from(authors.values()));
+const getAuthors      = state => state.byID;
+const getAuthorById   = state => id => state.byID.get(id);
+const getWIP          = state => key => state.wip.get(key);
+const getError        = state => key => state.errors.get(key);
+const getAuthorsList  = createSelector(getAuthors, authors => Array.from(authors.values()));
+const getAuthorByCode = state => code => getAuthorsList(state).find(a => a.code === code);
+
 const getAuthorByCollectionId = createSelector(getAuthorsList, getAuthorById,
   (authors, byId) => {
     const pairs = authors.reduce((acc, val) => acc.concat(val.sources.map(x => [x, val.id])), []);
@@ -126,4 +128,5 @@ export const selectors = {
   getError,
   getAuthorsList,
   getAuthorByCollectionId,
+  getAuthorByCode
 };

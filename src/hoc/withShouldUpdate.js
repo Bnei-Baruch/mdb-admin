@@ -4,6 +4,9 @@ import isEqualWith from 'lodash/isEqualWith';
 const shouldUpdate = (WrappedComponent) => {
   return class DataLoader extends PureComponent {
     shouldComponentUpdate(nextProps) {
+      if (!nextProps.children) {
+        return true;
+      }
       const nProps = nextProps.children.props;
       const props  = this.props.children.props;
       if (nextProps.propForUpdate) {

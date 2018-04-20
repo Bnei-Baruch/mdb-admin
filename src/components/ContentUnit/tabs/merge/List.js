@@ -84,7 +84,7 @@ class ContentUnitList extends PureComponent {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
+            <Table.HeaderCell/>
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>

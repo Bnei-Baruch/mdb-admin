@@ -8,6 +8,7 @@ import 'semantic-ui-css/semantic.min.css';
 import userManager from '../../helpers/userManager';
 import { selectors as system } from '../../redux/modules/system';
 import FrontPage from '../FrontPage/FrontPage';
+import '../../stylesheets/Kmedia.css';
 import './App.css';
 
 class App extends Component {
