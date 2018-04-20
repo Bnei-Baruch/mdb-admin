@@ -328,6 +328,12 @@ export const MAJOR_LANGUAGES = [
   LANG_SPANISH,
 ];
 
+export const MUST_BE_ADDED_LANGUAGES = [
+  LANG_HEBREW,
+  LANG_ENGLISH,
+  LANG_RUSSIAN,
+];
+
 export const RTL_LANGUAGES = [
   LANG_HEBREW,
   LANG_ARABIC,

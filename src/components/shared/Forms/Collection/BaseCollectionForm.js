@@ -16,6 +16,7 @@ import {
   CT_VIRTUAL_LESSONS,
   CT_WOMEN_LESSONS,
   CT_ARTICLES,
+  MUST_BE_ADDED_LANGUAGES,
 
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
@@ -93,7 +94,7 @@ class BaseCollectionForm extends Component {
       data.pattern          = state.pattern;
       data.active           = state.active;
       data.default_language = state.default_language;
-      data.genres            = state.genres;
+      data.genres           = state.genres;
       break;
     case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
     case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
@@ -200,7 +201,6 @@ class BaseCollectionForm extends Component {
     // validate required fields (most of them are...)
     const required = this.getPropertiesFromState();
     delete required.active;
-    delete required.default_language;
 
     return Object.entries(required).reduce((acc, val) => {
       const [k, v] = val;
@@ -208,7 +208,18 @@ class BaseCollectionForm extends Component {
         acc[k] = true;
       }
       return acc;
-    }, {});
+    }, this.validateLanguages());
+  }
+
+  validateLanguages() {
+    const errors = {};
+    // validate at least one valid translation
+    const i18n   = this.state.i18n;
+    if (MUST_BE_ADDED_LANGUAGES.some(x => i18n[x] && i18n[x].name.trim() === '')) {
+      errors.i18n = true;
+    }
+
+    return errors;
   }
 
   isValid() {
