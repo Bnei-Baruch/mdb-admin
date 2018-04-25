@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Form } from 'semantic-ui-react';
+import { Form, Message } from 'semantic-ui-react';
 
 import { countries } from '../../../../helpers/countries';
 import * as shapes from '../../../shapes';
+import { MajorLangsI18nField } from '../../../shared/Fields';
 import BaseCollectionForm from './BaseCollectionForm';
 
 class UpdateCollectionPropertiesForm extends BaseCollectionForm {
@@ -41,9 +42,23 @@ class UpdateCollectionPropertiesForm extends BaseCollectionForm {
   }
 
   renderForm() {
+
+    const { i18n, errors } = this.state;
     return (
       <Form onSubmit={this.handleSubmit}>
         {this.renderProperties()}
+
+
+        <MajorLangsI18nField
+          i18n={i18n}
+          err={errors.i18n}
+          onChange={this.handleI18nChange}
+        />
+        {
+          errors.i18n ?
+            <Message negative content="At least one translation is required" /> :
+            null
+        }
       </Form>
     );
   }
