@@ -215,7 +215,7 @@ class BaseCollectionForm extends Component {
     const errors = {};
     // validate at least one valid translation
     const i18n   = this.state.i18n;
-    if (MUST_BE_ADDED_LANGUAGES.some(x => i18n[x] && i18n[x].name.trim() === '')) {
+    if (MUST_BE_ADDED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }
 

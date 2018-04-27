@@ -60,18 +60,6 @@ class CreateContentUnitForm extends BaseContentUnitForm {
     this.props.create(typeID, properties, i18n);
   }
 
-  validate() {
-    const errors = super.validate();
-
-    // validate at least one valid translation
-    const i18n = this.state.i18n;
-    if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
-      errors.i18n = true;
-    }
-
-    return errors;
-  }
-
   renderForm() {
     const { i18n, errors, type_id } = this.state;
     return (

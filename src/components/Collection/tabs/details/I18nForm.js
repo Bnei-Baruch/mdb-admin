@@ -129,7 +129,7 @@ class I18nForm extends Component {
               </Table.Cell>
               <Table.Cell collapsing>
                 {
-                  MUST_BE_ADDED_LANGUAGES.includes(k) ?
+                  !MUST_BE_ADDED_LANGUAGES.includes(k) ?
                     <Button
                       circular
                       compact
