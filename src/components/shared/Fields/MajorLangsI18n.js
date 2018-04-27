@@ -51,7 +51,6 @@ class MajorLangsI18n extends PureComponent {
           <NameField
             language={LANG_SPANISH}
             value={i18n[LANG_SPANISH].name}
-            err={err}
             onChange={this.handleI18nChange}
           />
         </Form.Group>

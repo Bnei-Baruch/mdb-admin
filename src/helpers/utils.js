@@ -1,7 +1,6 @@
-import words from 'lodash/words';
-import capitalize from 'lodash/capitalize';
+import { words, capitalize, uniq } from 'lodash';
 
-import { I18N_ORDER, MEDIA_TYPES } from './consts';
+import { I18N_ORDER, MEDIA_TYPES, REQUIRED_LANGUAGES, LANGUAGES } from './consts';
 
 export const isEmpty = (obj) => {
   // null and undefined are "empty"
@@ -239,3 +238,19 @@ export const hierarchyNodeToTreeNode = (hierarchy, node) => {
   const children = node && node.id ? hierarchy.childMap.get(node.id) : [];
   return { ...node, children: !children ? children : children.map(id => ({ id })) };
 };
+
+/**
+ * compare i18n object with languages that must to be
+ * @param i18n
+ * @returns {{i18nErrors: Map of errors, addedKeys: (Array.<LangsKeys>), i18nUnique: new i18n}}
+ */
+export const compareI18nWithMust = (i18n, addLang) => {
+  const langs = Object.keys(i18n);
+
+  const addedKeys  = REQUIRED_LANGUAGES.filter(l => !langs.includes(l));
+  const i18nErrors = addedKeys.reduce((r, l) => ({ ...r, [l]: true }), {});
+  const newI18n    = { ...i18n, ...addedKeys.reduce((r, l) => ({ ...r, [l]: addLang(l) }), {}) };
+
+  return { i18nErrors, addedKeys, newI18n };
+}
+;

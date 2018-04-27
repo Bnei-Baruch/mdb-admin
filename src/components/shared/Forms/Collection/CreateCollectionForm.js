@@ -62,17 +62,6 @@ class CreateCollectionForm extends BaseCollectionForm {
     this.props.create(typeID, properties, i18n);
   }
 
-  validate() {
-    const errors = super.validate();
-    // validate at least one valid translation
-    const i18n   = this.state.i18n;
-    if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
-      errors.i18n = true;
-    }
-
-    return errors;
-  }
-
   renderContentTypeField = () => (
     <Form.Dropdown
       search
