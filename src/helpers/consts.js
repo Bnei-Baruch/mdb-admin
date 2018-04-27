@@ -328,7 +328,7 @@ export const MAJOR_LANGUAGES = [
   LANG_SPANISH,
 ];
 
-export const MUST_BE_ADDED_LANGUAGES = [
+export const REQUIRED_LANGUAGES = [
   LANG_HEBREW,
   LANG_ENGLISH,
   LANG_RUSSIAN,

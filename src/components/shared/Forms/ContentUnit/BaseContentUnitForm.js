@@ -20,7 +20,7 @@ import {
   CT_VIDEO_PROGRAM_CHAPTER,
   CT_VIRTUAL_LESSON,
   CT_WOMEN_LESSON,
-  MUST_BE_ADDED_LANGUAGES,
+  REQUIRED_LANGUAGES,
 } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import { FilmDateField, LanguageField } from '../../Fields';
@@ -134,7 +134,7 @@ class BaseContentUnitForm extends Component {
     const errors = {};
     // validate at least one valid translation
     const i18n   = this.state.i18n;
-    if (MUST_BE_ADDED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
+    if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }
 

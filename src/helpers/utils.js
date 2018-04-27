@@ -1,6 +1,6 @@
 import { words, capitalize, uniq } from 'lodash';
 
-import { I18N_ORDER, MEDIA_TYPES, MUST_BE_ADDED_LANGUAGES, LANGUAGES } from './consts';
+import { I18N_ORDER, MEDIA_TYPES, REQUIRED_LANGUAGES, LANGUAGES } from './consts';
 
 export const isEmpty = (obj) => {
   // null and undefined are "empty"
@@ -247,7 +247,7 @@ export const hierarchyNodeToTreeNode = (hierarchy, node) => {
 export const compareI18nWithMust = (i18n, addLang) => {
   const langs = Object.keys(i18n);
 
-  const addedKeys  = MUST_BE_ADDED_LANGUAGES.filter(l => !langs.includes(l));
+  const addedKeys  = REQUIRED_LANGUAGES.filter(l => !langs.includes(l));
   const i18nErrors = addedKeys.reduce((r, l) => ({ ...r, [l]: true }), {});
   const newI18n    = { ...i18n, ...addedKeys.reduce((r, l) => ({ ...r, [l]: addLang(l) }), {}) };
 

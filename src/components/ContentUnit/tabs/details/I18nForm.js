@@ -11,7 +11,7 @@ import {
   LANG_UNKNOWN,
   LANGUAGES,
   RTL_LANGUAGES,
-  MUST_BE_ADDED_LANGUAGES
+  REQUIRED_LANGUAGES
 } from '../../../../helpers/consts';
 import { formatError, compareI18nWithMust } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/content_units';
@@ -60,7 +60,7 @@ class I18nForm extends Component {
     const { i18n, errors } = this.state;
     const langKey          = e.target.name;
 
-    if (MUST_BE_ADDED_LANGUAGES.includes(langKey)) {
+    if (REQUIRED_LANGUAGES.includes(langKey)) {
       errors[langKey] = !value;
     }
     i18n[langKey].name = value;
@@ -130,7 +130,7 @@ class I18nForm extends Component {
               </Table.Cell>
               <Table.Cell collapsing>
                 {
-                  !MUST_BE_ADDED_LANGUAGES.includes(k) ?
+                  !REQUIRED_LANGUAGES.includes(k) ?
                     <Button
                       circular
                       compact

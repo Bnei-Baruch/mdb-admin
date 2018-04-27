@@ -16,7 +16,7 @@ import {
   CT_VIRTUAL_LESSONS,
   CT_WOMEN_LESSONS,
   CT_ARTICLES,
-  MUST_BE_ADDED_LANGUAGES,
+  REQUIRED_LANGUAGES,
 
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
@@ -215,7 +215,7 @@ class BaseCollectionForm extends Component {
     const errors = {};
     // validate at least one valid translation
     const i18n   = this.state.i18n;
-    if (MUST_BE_ADDED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
+    if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }
 
