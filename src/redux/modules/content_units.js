@@ -471,7 +471,10 @@ const onReceiveItemsCollections = (state, action) => {
 
 const onRemoveItemCollections = (state, action) => {
   const byID = update(state.byID, action.payload.ccuId,
-    x => ({ ...x, collections: x.collections.filter(c => c.collection_id !== action.payload.collectionId) }));
+    x => ({
+      ...x,
+      collections: x.collections ? x.collections.filter(c => c.collection_id !== action.payload.collectionId) : []
+    }));
   return { ...state, byID };
 };
 
