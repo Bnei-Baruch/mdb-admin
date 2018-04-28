@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { selectors } from '../../redux/modules/user';
+import { actions as actionsSystem, selectors as selectorsSystem } from '../../redux/modules/system';
 import AppLayout from './AppLayout';
 import AppRoutes from './AppRoutes';
 import LoginRoutes from './LoginRoutes';
@@ -19,14 +21,17 @@ class MainPage extends PureComponent {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, currentLanguage, updateCurrentLanguage } = this.props;
 
     if (!user || user.expired) {
       return <LoginRoutes />;
     }
 
     return (
-      <AppLayout user={user}>
+      <AppLayout
+        user={user}
+        currentLanguage={currentLanguage}
+        updateCurrentLanguage={updateCurrentLanguage}>
         <AppRoutes />
       </AppLayout>
     );
@@ -36,8 +41,15 @@ class MainPage extends PureComponent {
 function mapState(state) {
   return {
     user: selectors.getUser(state.user),
+    currentLanguage: selectorsSystem.getCurrentLanguage(state.system),
   };
 }
 
-export default withRouter(connect(mapState)(MainPage));
+function mapDispatch(dispatch) {
+  return bindActionCreators({
+    updateCurrentLanguage: actionsSystem.updateCurrentLanguage
+  }, dispatch);
+}
+
+export default withRouter(connect(mapState, mapDispatch)(MainPage));
 
