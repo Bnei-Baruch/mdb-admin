@@ -3,10 +3,17 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { Button, Flag, Header, Input, Menu, Message, Segment, Table } from 'semantic-ui-react';
+import { Button, Flag, Header, Input, Menu, Segment, Table } from 'semantic-ui-react';
 
-import { ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGES, RTL_LANGUAGES } from '../../../../helpers/consts';
-import { formatError } from '../../../../helpers/utils';
+import {
+  ALL_LANGUAGES,
+  LANG_MULTI,
+  LANG_UNKNOWN,
+  LANGUAGES,
+  RTL_LANGUAGES,
+  REQUIRED_LANGUAGES
+} from '../../../../helpers/consts';
+import { formatError, compareI18nWithMust } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
@@ -30,23 +37,34 @@ class I18nForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      i18n: { ...props.unit.i18n },
-      submitted: false,
-      errors: {}
-    };
+
+    const { i18n }                           = props.unit;
+    const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
+
+    this.state = { i18n: newI18n, submitted: false, errors: i18nErrors, addedKeys };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.unit.i18n !== nextProps.unit.i18n) {
-      this.setState({ i18n: nextProps.unit.i18n, errors: {} });
+    const { i18n } = nextProps.unit;
+
+    if (this.props.unit.i18n !== i18n) {
+      const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
+
+      this.setState({ i18n: newI18n, errors: i18nErrors, addedKeys });
     }
   }
 
+  i18nObjectFromKey = (language) => ({ language, name: '', description: '' });
+
   onNameChange = (e, { value }) => {
-    const i18n               = this.state.i18n;
-    i18n[e.target.name].name = value;
-    this.setState({ i18n });
+    const { i18n, errors } = this.state;
+    const langKey          = e.target.name;
+
+    if (REQUIRED_LANGUAGES.includes(langKey)) {
+      errors[langKey] = !value;
+    }
+    i18n[langKey].name = value;
+    this.setState({ i18n, errors });
   };
 
   onDescriptionChange = (e, { value }) => {
@@ -56,9 +74,8 @@ class I18nForm extends Component {
   };
 
   addLanguage = (e, data) => {
-    const language = data.value;
     const i18n     = this.state.i18n;
-    i18n[language] = { language, name: '', description: '' };
+    i18n[data.value] = this.i18nObjectFromKey(data.value);
     this.setState({ i18n });
   };
 
@@ -70,26 +87,23 @@ class I18nForm extends Component {
 
   handleSubmit = () => {
     const { unit, updateI18n } = this.props;
-    const i18n                 = this.state.i18n;
-    const data                 = Object.keys(i18n).map(x => i18n[x]);
+    const { i18n }             = this.state;
+
+    const data = Object.keys(i18n).map(x => i18n[x]);
     updateI18n(unit.id, data);
 
     this.setState({ submitted: true });
   };
 
   renderI18ns() {
-    const i18n = this.state.i18n;
-    const keys = Object.keys(i18n)
+    const { i18n, errors } = this.state;
+    const keys             = Object.keys(i18n)
       .sort((a, b) => ALL_LANGUAGES.indexOf(a) - ALL_LANGUAGES.indexOf(b));
-
-    if (keys.length === 0) {
-      return <Message size="tiny">No translations found</Message>;
-    }
     return (
       <Table basic compact>
         <Table.Body>
           {keys.map(k => (
-            <Table.Row key={k}>
+            <Table.Row key={k} error={errors[k]}>
               <Table.Cell collapsing>
                 <Flag name={LANGUAGES[k].flag} />
                 {LANGUAGES[k].text}
@@ -115,15 +129,19 @@ class I18nForm extends Component {
                 />
               </Table.Cell>
               <Table.Cell collapsing>
-                <Button
-                  circular
-                  compact
-                  size="mini"
-                  icon="remove"
-                  color="red"
-                  inverted
-                  onClick={() => this.removeLanguage(k)}
-                />
+                {
+                  !REQUIRED_LANGUAGES.includes(k) ?
+                    <Button
+                      circular
+                      compact
+                      size="mini"
+                      icon="remove"
+                      color="red"
+                      inverted
+                      onClick={() => this.removeLanguage(k)}
+                    />
+                    : null
+                }
               </Table.Cell>
             </Table.Row>))
           }
@@ -133,9 +151,11 @@ class I18nForm extends Component {
   }
 
   render() {
-    const { wip, err }        = this.props;
-    const { i18n, submitted } = this.state;
-    const exclude             = [LANG_MULTI, LANG_UNKNOWN].concat(Object.keys(i18n));
+    const { wip, err }                = this.props;
+    const { i18n, submitted, errors } = this.state;
+
+    const hasError = Object.keys(errors).some(e => errors[e]);
+    const exclude  = [LANG_MULTI, LANG_UNKNOWN].concat(Object.keys(i18n));
 
     return (
       <div>
@@ -175,7 +195,7 @@ class I18nForm extends Component {
             size="tiny"
             floated="right"
             loading={wip}
-            disabled={wip}
+            disabled={wip || hasError}
             onClick={this.handleSubmit}
           />
         </Segment>

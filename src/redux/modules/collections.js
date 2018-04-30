@@ -270,7 +270,7 @@ const onSuccess = (state, action) => {
   case ASSOCIATE_UNIT_SUCCESS:
     byID = update(state.byID, action.payload.id, x => ({
       ...x,
-      content_units: [...x.content_units, ...action.payload.properties]
+      content_units: [...(x.content_units || []), ...action.payload.properties]
     }));
 
     break;
