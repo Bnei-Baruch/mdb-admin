@@ -42,15 +42,6 @@ class AppLayout extends PureComponent {
         <Grid.Row>
           <Grid.Column>
             <Menu pointing>
-              <Menu.Item>
-                <Dropdown
-                  button
-                  text={selected.text}
-                  icon={<Flag name={selected.flag} style={{ margin: '3px 10px 0 0', float: 'left' }} />}
-                  onChange={this.changeLanguage}
-                  options={options}
-                  selectOnBlur={false} />
-              </Menu.Item>
               <Menu.Item as={Link} to="/">
                 <Image spaced="right" src={logo} />
                 <strong>BB Archive</strong>
@@ -65,7 +56,15 @@ class AppLayout extends PureComponent {
               <Menu.Item key={9} as={NavLink} to="/publishers">Publishers</Menu.Item>
 
               <Menu.Menu position="right">
-                <Menu.Item />
+                <Menu.Item>
+                  <Dropdown
+                    button
+                    text={selected.text}
+                    icon={<Flag name={selected.flag} style={{ margin: '3px 10px 0 0', float: 'left' }} />}
+                    onChange={this.changeLanguage}
+                    options={options}
+                    selectOnBlur={false} />
+                </Menu.Item>
                 <Menu.Item>
                   <Dropdown item text={user.profile.name}>
                     <Dropdown.Menu>
