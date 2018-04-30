@@ -7,8 +7,8 @@ const shouldUpdate = (WrappedComponent) => {
       if (!nextProps.children) {
         return true;
       }
-      const nProps = nextProps.children.props;
-      const props  = this.props.children.props;
+      const nProps = nextProps.children;
+      const props  = this.props.children;
       if (nextProps.propForUpdate) {
         return !isEqualWith(nProps[nextProps.propForUpdate], props[nextProps.propForUpdate]);
       }

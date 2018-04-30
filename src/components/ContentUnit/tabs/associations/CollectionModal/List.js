@@ -24,6 +24,7 @@ class CollectionsList extends PureComponent {
     selectCollection: PropTypes.func,
     selectAllCollections: PropTypes.func,
     associatedCIds: PropTypes.arrayOf(PropTypes.number),
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -49,8 +50,9 @@ class CollectionsList extends PureComponent {
 
   renderItem = (item) => {
 
-    const { selectedCIds, getTagByUID, selectCollection, associatedCIds } = this.props;
-    let properties                                                        = extractI18n(item.i18n, ['name'])[0];
+    const { selectedCIds, getTagByUID, selectCollection, associatedCIds, currentLanguage } = this.props;
+
+    let properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
 
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[item.type_id]) {
@@ -65,7 +67,7 @@ class CollectionsList extends PureComponent {
       }
       case CT_HOLIDAY: {
         const tag  = getTagByUID(item.properties.holiday_tag);
-        properties = tag ? extractI18n(tag.i18n, ['label'])[0] : tag;
+        properties = tag ? extractI18n(tag.i18n, ['label'], currentLanguage)[0] : tag;
         if (item.properties.start_date) {
           properties += `  ${item.properties.start_date.substring(0, 4)}`;
         }

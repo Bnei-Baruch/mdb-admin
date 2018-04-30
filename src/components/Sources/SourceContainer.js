@@ -7,6 +7,8 @@ import { Divider, Grid } from 'semantic-ui-react';
 
 import { actions, selectors } from '../../redux/modules/sources';
 import { selectors as authors } from '../../redux/modules/authors';
+import { selectors as system } from '../../redux/modules/system';
+
 import * as shapes from '../shapes';
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import SourceMenu from './SourceMenu';
@@ -82,6 +84,7 @@ const mapState = (state, props) => ({
   getWIP: selectors.getWIP(state.sources),
   getError: selectors.getError(state.sources),
   getAuthorByCollectionId: authors.getAuthorByCollectionId(state.authors),
+  currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 function mapDispatch(dispatch) {

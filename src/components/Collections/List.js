@@ -29,7 +29,7 @@ class CollectionsList extends PureComponent {
 
   renderItem = (item) => {
     const { currentLanguage } = this.props;
-    let properties            = extractI18n(item.i18n, ['name'], undefined, currentLanguage)[0];
+    let properties            = extractI18n(item.i18n, ['name'], currentLanguage)[0];
 
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[item.type_id]) {
@@ -44,7 +44,7 @@ class CollectionsList extends PureComponent {
       }
       case CT_HOLIDAY: {
         const tag  = this.props.getTagByUID(item.properties.holiday_tag);
-        properties = tag ? extractI18n(tag.i18n, ['label'], undefined, currentLanguage)[0] : tag;
+        properties = tag ? extractI18n(tag.i18n, ['label'], currentLanguage)[0] : tag;
         if (item.properties.start_date) {
           properties += `  ${item.properties.start_date.substring(0, 4)}`;
         }

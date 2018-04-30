@@ -7,6 +7,7 @@ import { Button, Grid, Header, Icon, Menu, Sticky } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/collections';
+import { selectors as system } from '../../../../redux/modules/system';
 import * as shapes from '../../../shapes';
 import Units from './Units';
 import './style.css';
@@ -191,6 +192,7 @@ class AssociationsContainer extends Component {
 const mapState = state => ({
   errDeleteCu: selectors.getError(state.collections, 'deleteItemUnit'),
   errUpdateCu: selectors.getError(state.collections, 'updateItemUnitProperties'),
+  currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 function mapDispatch(dispatch) {

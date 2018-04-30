@@ -73,7 +73,7 @@ export const buildHierarchy = (nodeMap) => {
  * @param {Array.<String>} [languages] Language fallback order, defaults to ['he', 'en', 'ru']
  * @returns {Array.<String>} Translated fields
  */
-export const extractI18n = (i18ns, fields, languages = I18N_ORDER, defaultLanguage = LANG_ENGLISH) => {
+export const extractI18n = (i18ns, fields, defaultLanguage = LANG_ENGLISH, languages = I18N_ORDER) => {
 
   // Order i18ns by language
   const orderedI18ns = [];

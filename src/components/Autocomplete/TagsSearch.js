@@ -8,6 +8,7 @@ import { Search } from 'semantic-ui-react';
 import * as shapes from '../shapes';
 import { selectors } from '../../redux/modules/tags';
 import { EMPTY_HIERARCHY, EMPTY_MAP } from '../../helpers/consts';
+import { selectors as system } from '../../redux/modules/system';
 import { extractI18n } from '../../helpers/utils';
 
 class TagsSearch extends Component {
@@ -73,7 +74,7 @@ class TagsSearch extends Component {
 
       if (results.length > 0) {
         const root = tagsById.get(rootID);
-        const name = extractI18n(root.i18n, ['label'])[0];
+        const name = extractI18n(root.i18n, ['label'], this.props.currentLanguage)[0];
         acc.push({ name, results });
       }
 
@@ -131,6 +132,7 @@ class TagsSearch extends Component {
 const mapState = state => ({
   tagsById: selectors.getTags(state.tags),
   hierarchy: selectors.getHierarchy(state.tags),
+  currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 export default connect(mapState)(TagsSearch);

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { actions, selectors } from '../../redux/modules/sources';
 import { selectors as authors } from '../../redux/modules/authors';
+import { selectors as system } from '../../redux/modules/system';
 import SourcesHierarchy from './SourcesHierarchy';
 
 class SourcesContainer extends Component {
@@ -28,6 +29,7 @@ const mapState = state => ({
   getWIP: selectors.getWIP(state.sources),
   getError: selectors.getError(state.sources),
   authors: authors.getAuthorsList(state.authors),
+  currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 function mapDispatch(dispatch) {

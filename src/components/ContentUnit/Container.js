@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/content_units';
+import { selectors as system } from '../../redux/modules/system';
 import MainPage from './MainPage';
 
 class Container extends Component {
@@ -45,6 +46,7 @@ const mapState = (state, props) => ({
   unit: selectors.getContentUnitById(state.content_units, parseInt(props.match.params.id, 10)),
   wip: selectors.getWIP(state.content_units, 'fetchItem'),
   err: selectors.getError(state.content_units, 'fetchItem'),
+  currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 function mapDispatch(dispatch) {

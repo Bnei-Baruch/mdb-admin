@@ -15,6 +15,7 @@ import TabsMenu from '../../../shared/TabsMenu';
 import Pagination from '../../../shared/Pagination';
 import ResultsPageHeader from '../../../shared/ResultsPageHeader';
 import { selectors as unitsSelectors, actions as unitActions } from '../../../../redux/modules/content_units';
+import { selectors as system } from '../../../../redux/modules/system';
 
 import ContentUnitList from './List';
 import DateRange from './filters/DateRange';
@@ -218,6 +219,7 @@ const mapState = (state) => {
     units: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items).filter(u => u) : EMPTY_ARRAY,
     wipMerge,
     errMerge: unitsSelectors.getError(state.content_units, 'mergeUnits'),
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 
