@@ -43,7 +43,7 @@ class TagsSearch extends Component {
 
     const regex = new RegExp(escapedValue, 'i');
 
-    const { tagsById, hierarchy } = this.props;
+    const { tagsById, hierarchy, currentLanguage } = this.props;
 
     // search in each tag family
     const suggestions = hierarchy.roots.reduce((acc, rootID) => {
@@ -74,7 +74,7 @@ class TagsSearch extends Component {
 
       if (results.length > 0) {
         const root = tagsById.get(rootID);
-        const name = extractI18n(root.i18n, ['label'], this.props.currentLanguage)[0];
+        const name = extractI18n(root.i18n, ['label'], currentLanguage)[0];
         acc.push({ name, results });
       }
 
