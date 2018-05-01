@@ -16,8 +16,8 @@ import {
   CT_VIRTUAL_LESSONS,
   CT_WOMEN_LESSONS,
   CT_ARTICLES,
+  CT_CLIPS,
   REQUIRED_LANGUAGES,
-
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
 import { formatError, isValidPattern } from '../../../../helpers/utils';
@@ -100,6 +100,7 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
     case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
     case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
+    case COLLECTION_TYPES[CT_CLIPS].value:
       data.pattern          = state.pattern;
       data.active           = state.active;
       data.default_language = state.default_language;
@@ -339,6 +340,7 @@ class BaseCollectionForm extends Component {
       {this.renderGenresField()}
     </div>
   );
+
   renderLesson       = () => (
     <div>
       {this.renderPatternField()}
@@ -392,6 +394,7 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
     case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
     case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
+    case COLLECTION_TYPES[CT_CLIPS].value:
       return this.renderLesson();
     case COLLECTION_TYPES[CT_ARTICLES].value:
       return this.renderArticles();
