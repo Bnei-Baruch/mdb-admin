@@ -40,6 +40,7 @@ export const CT_PICNIC             = 'PICNIC';
 export const CT_UNITY_DAY          = 'UNITY_DAY';
 export const CT_CLIPS              = 'CLIPS';
 export const CT_ARTICLES           = 'ARTICLES';
+export const CT_LESSONS_SERIES           = 'LESSONS_SERIES';
 
 // Content Unit Types
 export const CT_LESSON_PART           = 'LESSON_PART';
@@ -93,6 +94,7 @@ export const CONTENT_TYPE_BY_ID = {
   36: CT_PUBLICATION,
   37: CT_ARTICLES,
   38: CT_LELO_MIKUD,
+  39: CT_LESSONS_SERIES,
 };
 
 // Collection types
@@ -112,6 +114,7 @@ export const COLLECTION_TYPES = {
   [CT_WOMEN_LESSONS]: { text: CT_WOMEN_LESSONS, value: 34 },
   [CT_CLIPS]: { text: CT_CLIPS, value: 35 },
   [CT_ARTICLES]: { text: CT_ARTICLES, value: 37 },
+  [CT_LESSONS_SERIES]: { text: CT_LESSONS_SERIES, value: 39 },
 };
 
 // Content Unit types

@@ -40,6 +40,12 @@ class UpdateCollectionPropertiesForm extends BaseCollectionForm {
     this.props.update(this.props.collection.id, properties);
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  validateLanguages() {
+    // no need to validate i18ns as we're not modifying them here
+    return {};
+  }
+
   renderForm() {
     return (
       <Form onSubmit={this.handleSubmit}>

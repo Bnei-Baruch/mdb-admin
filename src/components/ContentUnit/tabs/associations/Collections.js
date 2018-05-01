@@ -13,7 +13,7 @@ import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import {
   CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT,
-  CT_SPECIAL_LESSON, CT_DAILY_LESSONCT_HOLIDAY, CT_DAILY_LESSON, CT_HOLIDAY
+  CT_SPECIAL_LESSON, CT_DAILY_LESSON, CT_HOLIDAY
 } from '../../../../helpers/consts';
 
 import NewCollections from './CollectionModal/Container';

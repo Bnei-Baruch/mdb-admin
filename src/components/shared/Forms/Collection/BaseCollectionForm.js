@@ -4,19 +4,20 @@ import { Button, Header, Segment } from 'semantic-ui-react';
 
 import {
   COLLECTION_TYPES,
+  CT_ARTICLES,
   CT_CHILDREN_LESSONS,
+  CT_CLIPS,
   CT_CONGRESS,
   CT_DAILY_LESSON,
   CT_HOLIDAY,
   CT_LECTURE_SERIES,
+  CT_LESSONS_SERIES,
   CT_PICNIC,
   CT_SPECIAL_LESSON,
   CT_UNITY_DAY,
   CT_VIDEO_PROGRAM,
   CT_VIRTUAL_LESSONS,
   CT_WOMEN_LESSONS,
-  CT_ARTICLES,
-  CT_CLIPS,
   REQUIRED_LANGUAGES,
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
@@ -26,11 +27,12 @@ import {
   DateRangeField,
   FilenamePatternField,
   FilmDateField,
+  GenresField,
   HolidayField,
   LanguageField,
   LocationField,
+  SourceField,
   ToggleField,
-  GenresField,
 } from '../../Fields';
 import './collections.css';
 
@@ -108,6 +110,11 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_ARTICLES].value:
       data.pattern = state.pattern;
       break;
+    case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
+      data.source     = state.source;
+      data.start_date = state.start_date;
+      data.end_date   = state.end_date;
+      break;
     default:
       break;
     }
@@ -173,6 +180,13 @@ class BaseCollectionForm extends Component {
     this.setState({ holiday_tag: data.value, errors });
   };
 
+  handleSourceChange = (source) => {
+    console.log('handleSourceChange', source);
+    const errors = this.state.errors;
+    delete errors.source;
+    this.setState({ source: source.uid, errors });
+  };
+
   handleGenresChange = (e, data) =>
     this.setState({ genres: data.value });
 
@@ -184,6 +198,7 @@ class BaseCollectionForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     if (!this.isValid()) {
+      console.log('BCF.handleSubmit: !this.isValid', this.validate());
       return;
     }
 
@@ -329,6 +344,16 @@ class BaseCollectionForm extends Component {
     />
   );
 
+  renderSourceField = () => (
+    <SourceField
+      value={this.state.source}
+      err={this.state.errors.source}
+      onChange={this.handleSourceChange}
+      required
+      width={16}
+    />
+  );
+
   renderDailyLesson = () =>
     (this.renderFilmDateField());
 
@@ -341,7 +366,7 @@ class BaseCollectionForm extends Component {
     </div>
   );
 
-  renderLesson       = () => (
+  renderLesson = () => (
     <div>
       {this.renderPatternField()}
       {this.renderActiveField()}
@@ -376,6 +401,13 @@ class BaseCollectionForm extends Component {
   renderArticles = () =>
     (this.renderPatternField());
 
+  renderLessonsSeries = () => (
+    <div>
+      {this.renderSourceField()}
+      {this.renderDateRangeFields()}
+    </div>
+  );
+
   renderProperties = () => {
     switch (this.state.type_id) {
     case COLLECTION_TYPES[CT_DAILY_LESSON].value:
@@ -398,6 +430,8 @@ class BaseCollectionForm extends Component {
       return this.renderLesson();
     case COLLECTION_TYPES[CT_ARTICLES].value:
       return this.renderArticles();
+    case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
+      return this.renderLessonsSeries();
     default:
       return null;
     }
