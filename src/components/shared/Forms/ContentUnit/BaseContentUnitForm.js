@@ -20,7 +20,6 @@ import {
   CT_VIDEO_PROGRAM_CHAPTER,
   CT_VIRTUAL_LESSON,
   CT_WOMEN_LESSON,
-  REQUIRED_LANGUAGES,
 } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import { FilmDateField, LanguageField } from '../../Fields';
@@ -127,18 +126,11 @@ class BaseContentUnitForm extends Component {
         acc[k] = true;
       }
       return acc;
-    }, this.validateLanguages());
+    }, this.getI18nErrors());
   }
 
-  validateLanguages() {
-    const errors = {};
-    // validate at least one valid translation
-    const i18n   = this.state.i18n;
-    if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
-      errors.i18n = true;
-    }
-
-    return errors;
+  getI18nErrors() {
+    return {};
   }
 
   isValid() {

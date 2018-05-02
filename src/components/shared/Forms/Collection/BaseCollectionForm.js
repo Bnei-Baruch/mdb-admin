@@ -18,7 +18,6 @@ import {
   CT_VIDEO_PROGRAM,
   CT_VIRTUAL_LESSONS,
   CT_WOMEN_LESSONS,
-  REQUIRED_LANGUAGES,
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
 import { formatError, isValidPattern } from '../../../../helpers/utils';
@@ -198,7 +197,6 @@ class BaseCollectionForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     if (!this.isValid()) {
-      console.log('BCF.handleSubmit: !this.isValid', this.validate());
       return;
     }
 
@@ -224,18 +222,11 @@ class BaseCollectionForm extends Component {
         acc[k] = true;
       }
       return acc;
-    }, this.validateLanguages());
+    }, this.getI18nErrors());
   }
 
-  validateLanguages() {
-    const errors = {};
-    // validate at least one valid translation
-    const i18n   = this.state.i18n;
-    if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
-      errors.i18n = true;
-    }
-
-    return errors;
+  getI18nErrors() {
+    return {};
   }
 
   isValid() {
