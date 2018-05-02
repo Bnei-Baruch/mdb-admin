@@ -1,6 +1,8 @@
-import { words, capitalize, uniq } from 'lodash';
+import capitalize from 'lodash/capitalize';
+import words from 'lodash/words';
 
-import { I18N_ORDER, MEDIA_TYPES, LANG_ENGLISH, REQUIRED_LANGUAGES, LANGUAGES } from './consts';
+import { I18N_ORDER, LANG_ENGLISH, MEDIA_TYPES, REQUIRED_LANGUAGES } from './consts';
+import * as env from './env';
 
 export const isEmpty = (obj) => {
   // null and undefined are "empty"
@@ -223,24 +225,22 @@ export const physicalFile = (file, ext = false) => {
   if (ext) {
     suffix = `.${filenameExtension(file.name)}`;
   }
-  return `http://app.mdb.bbdomain.org/links/${file.uid}${suffix}`;
+  return `${env.LINKER_URL}${file.uid}${suffix}`;
 };
 
-/**
- * Convert hierarchy to tree
- * @param file
- * @param ext {boolean} include file name extension in url or not
- */
-export const hierarchyToTree = (hierarchy) => {
-  return hierarchy.roots.map(id => recursiveAddChildren(id, hierarchy.childMap));
-};
-const recursiveAddChildren   = (id, allMap) => {
+const recursiveAddChildren = (id, allMap) => {
   const children = allMap.get(id);
   if (children && children.length > 0) {
     return { id, children: children.map(i => recursiveAddChildren(i, allMap)) };
   }
   return { id };
 };
+
+/**
+ * Convert hierarchy to tree
+ */
+export const hierarchyToTree = hierarchy =>
+  hierarchy.roots.map(id => recursiveAddChildren(id, hierarchy.childMap));
 
 /**
  * Convert hierarchyNodeToTreeNode insert to node his children
@@ -265,5 +265,4 @@ export const compareI18nWithMust = (i18n, addLang) => {
   const newI18n    = { ...i18n, ...addedKeys.reduce((r, l) => ({ ...r, [l]: addLang(l) }), {}) };
 
   return { i18nErrors, addedKeys, newI18n };
-}
-;
+};
