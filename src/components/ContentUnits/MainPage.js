@@ -18,7 +18,6 @@ import FreeText from './filters/FreeText';
 import Sources from './filters/Sources';
 import Topics from './filters/Topics';
 
-
 const filterTabs = [
   { name: 'Free Text', element: FreeText },
   { name: 'Date Range', element: DateRange },
@@ -87,7 +86,8 @@ class ContentUnitMainPage extends Component {
             onFiltersHydrated,
             wipOfCreate,
             errOfCreate,
-            create
+            create,
+            currentLanguage,
           } = this.props;
 
     return (
@@ -141,7 +141,7 @@ class ContentUnitMainPage extends Component {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <ContentUnitList items={items} />
+              <ContentUnitList items={items} currentLanguage={currentLanguage} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

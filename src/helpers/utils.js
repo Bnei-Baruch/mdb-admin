@@ -1,6 +1,6 @@
 import { words, capitalize, uniq } from 'lodash';
 
-import { I18N_ORDER, MEDIA_TYPES, REQUIRED_LANGUAGES, LANGUAGES } from './consts';
+import { I18N_ORDER, MEDIA_TYPES, LANG_ENGLISH, REQUIRED_LANGUAGES, LANGUAGES } from './consts';
 
 export const isEmpty = (obj) => {
   // null and undefined are "empty"
@@ -72,14 +72,25 @@ export const buildHierarchy = (nodeMap) => {
  * @param {Array.<String>} [languages] Language fallback order, defaults to ['he', 'en', 'ru']
  * @returns {Array.<String>} Translated fields
  */
-export const extractI18n = (i18ns, fields, languages = I18N_ORDER) => {
+export const extractI18n = (i18ns, fields, defaultLanguage = LANG_ENGLISH, languages = I18N_ORDER) => {
+
   // Order i18ns by language
   const orderedI18ns = [];
+  let defaultI18n;
   for (let i = 0; i < languages.length; i++) {
+    if (languages[i] === defaultLanguage) {
+      defaultI18n = i18ns[languages[i]];
+      continue;
+    }
+
     const i18n = i18ns[languages[i]];
     if (i18n) {
       orderedI18ns.push(i18n);
     }
+  }
+
+  if (defaultI18n) {
+    orderedI18ns.unshift(defaultI18n);
   }
 
   // Coalesce values per field
@@ -207,28 +218,30 @@ export const fileIcon = (file) => {
  * @param file
  * @param ext {boolean} include file name extension in url or not
  */
-export const physicalFile            = (file, ext = false) => {
+export const physicalFile = (file, ext = false) => {
   let suffix = '';
   if (ext) {
     suffix = `.${filenameExtension(file.name)}`;
   }
   return `http://app.mdb.bbdomain.org/links/${file.uid}${suffix}`;
 };
+
 /**
  * Convert hierarchy to tree
  * @param file
  * @param ext {boolean} include file name extension in url or not
  */
-export const hierarchyToTree         = (hierarchy) => {
+export const hierarchyToTree = (hierarchy) => {
   return hierarchy.roots.map(id => recursiveAddChildren(id, hierarchy.childMap));
 };
-const recursiveAddChildren           = (id, allMap) => {
+const recursiveAddChildren   = (id, allMap) => {
   const children = allMap.get(id);
   if (children && children.length > 0) {
     return { id, children: children.map(i => recursiveAddChildren(i, allMap)) };
   }
   return { id };
 };
+
 /**
  * Convert hierarchyNodeToTreeNode insert to node his children
  * @param hierarchy

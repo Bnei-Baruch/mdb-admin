@@ -17,13 +17,15 @@ class SourcesHierarchy extends Component {
     location: shapes.HistoryLocation.isRequired,
     authors: PropTypes.arrayOf(shapes.Author),
     hierarchy: shapes.Hierarchy,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
     authors: [],
     hierarchy: {
       roots: [],
-      childMap: new Map()
+      childMap: new Map(),
+      currentLanguage: PropTypes.string.isRequired,
     }
   };
 
@@ -63,7 +65,7 @@ class SourcesHierarchy extends Component {
   hideModal = () => this.setState({ modalOpen: false });
 
   renderSources() {
-    const { author } = this.state;
+    const { author }  = this.state;
     const { sources } = author;
     const hasSources  = Array.isArray(sources) && sources.length > 0;
 
@@ -71,13 +73,14 @@ class SourcesHierarchy extends Component {
       return <FrownSplash text="No sources found in DB" subtext="Come on, go ahead and add some !" />;
     }
 
-    const { getSourceById } = this.props;
+    const { getSourceById, currentLanguage } = this.props;
 
     return (
       <List relaxed divided className="rtl-dir">
         {sources.map((x) => {
-          const source      = getSourceById(x);
-          const i18n        = extractI18n(source.i18n, ['name', 'description']);
+          const source = getSourceById(x);
+          const i18n   = extractI18n(source.i18n, ['name', 'description'], currentLanguage);
+
           const name        = i18n[0];
           const description = i18n[1];
 
@@ -97,9 +100,9 @@ class SourcesHierarchy extends Component {
   }
 
   renderHierarchy() {
-    const { authors, hierarchy, getWIP } = this.props;
-    const wip                            = getWIP('fetchAll');
-    const isEmpty                        = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
+    const { authors, hierarchy, getWIP, currentLanguage } = this.props;
+    const wip                                             = getWIP('fetchAll');
+    const isEmpty                                         = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
 
     if (isEmpty) {
       return wip ?
@@ -122,7 +125,7 @@ class SourcesHierarchy extends Component {
             <Menu fluid vertical tabular="right">
               {
                 authors.map((x) => {
-                  const name = extractI18n(x.i18n, ['name'])[0];
+                  const name = extractI18n(x.i18n, ['name'], currentLanguage)[0];
 
                   return (
                     <Menu.Item

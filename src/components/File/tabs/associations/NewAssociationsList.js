@@ -15,6 +15,7 @@ class FilesList extends PureComponent {
     associatedCUId: PropTypes.number,
     handleSelectCU: PropTypes.func,
     selectedCUId: PropTypes.number,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   checkHandler = (cu, checked) => {
@@ -23,8 +24,9 @@ class FilesList extends PureComponent {
   };
 
   renderItem = (unit) => {
-    const properties                       = extractI18n(unit.i18n, ['name'])[0];
-    const { selectedCUId, associatedCUId } = this.props;
+    const properties = extractI18n(unit.i18n, ['name'], currentLanguage)[0];
+
+    const { selectedCUId, associatedCUId, currentLanguage } = this.props;
 
     return (
       <Table.Row key={unit.id} disabled={associatedCUId === unit.id}>

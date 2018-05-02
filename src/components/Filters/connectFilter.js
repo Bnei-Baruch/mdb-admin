@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  selectors as filterSelectors,
-  actions as filterActions
-} from '../../redux/modules/filters';
+import {  selectors as filterSelectors,  actions as filterActions} from '../../redux/modules/filters';
+import {  selectors as system} from '../../redux/modules/system';
 
 const connectFilter = (options = {}) => (WrappedComponent) => {
   const isMultiple = options.isMultiple;
@@ -65,6 +63,7 @@ const connectFilter = (options = {}) => (WrappedComponent) => {
       activeValueIndex: filterSelectors.getActiveValueIndex(state.filters, ownProps.namespace, ownProps.name),
       value: filterSelectors.getActiveValue(state.filters, ownProps.namespace, ownProps.name),
       allValues: filterSelectors.getFilterAllValues(state.filters, ownProps.namespace, ownProps.name),
+      currentLanguage: system.getCurrentLanguage(state.system),
     }),
     filterActions
   )(ConnectFilterHOC);

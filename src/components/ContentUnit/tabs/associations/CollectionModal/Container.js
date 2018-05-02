@@ -126,7 +126,8 @@ class NewCollections extends PureComponent {
             errAssociate,
             getTagByUID,
             associatedCIds,
-            isShowAssociateModal
+            isShowAssociateModal,
+            currentLanguage,
           }                             = this.props;
     if (!isShowAssociateModal) {
       return null;
@@ -200,7 +201,8 @@ class NewCollections extends PureComponent {
                   selectedCIds={selectedCIds}
                   associatedCIds={associatedCIds}
                   selectCollection={this.selectCollection}
-                  selectAllCollections={this.selectAllCollections} />
+                  selectAllCollections={this.selectAllCollections}
+                  currentLanguage={currentLanguage} />
               </Grid.Column>
             </Grid.Row>
           </Grid>

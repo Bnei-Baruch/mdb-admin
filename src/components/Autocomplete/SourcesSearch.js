@@ -8,6 +8,7 @@ import { Search } from 'semantic-ui-react';
 import * as shapes from '../shapes';
 import { selectors } from '../../redux/modules/sources';
 import { selectors as authorsSelectors } from '../../redux/modules/authors';
+import { selectors as system } from '../../redux/modules/system';
 import { EMPTY_ARRAY, EMPTY_HIERARCHY, EMPTY_MAP } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
 
@@ -44,10 +45,10 @@ class SourcesSearch extends Component {
 
     const regex = new RegExp(escapedValue, 'i');
 
-    const { authors, sourcesById, hierarchy } = this.props;
+    const { authors, sourcesById, hierarchy, currentLanguage } = this.props;
 
     const suggestions = authors.reduce((acc, author) => {
-      const authorName  = extractI18n(author.i18n, ['name'])[0];
+      const authorName  = extractI18n(author.i18n, ['name'], currentLanguage)[0];
       const collections = author.sources || [];
 
       // search in author's collections themselves
@@ -101,7 +102,7 @@ class SourcesSearch extends Component {
 
         if (results.length > 0) {
           const collection = sourcesById.get(cID);
-          const name       = extractI18n(collection.i18n, ['name'])[0];
+          const name       = extractI18n(collection.i18n, ['name'], currentLanguage)[0];
           acc.push({ name: `${authorName} - ${name}`, results });
         }
       });
@@ -161,6 +162,7 @@ const mapState = state => ({
   authors: authorsSelectors.getAuthorsList(state.authors),
   sourcesById: selectors.getSources(state.sources),
   hierarchy: selectors.getHierarchy(state.sources),
+  currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 export default connect(mapState)(SourcesSearch);

@@ -11,6 +11,7 @@ import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, extractI18n } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/content_units';
 import { selectors as personsSelectors, actions as personsAction } from '../../../../redux/modules/persons';
+import { selectors as system } from '../../../../redux/modules/system';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 
@@ -22,6 +23,7 @@ class Persons extends Component {
     removePerson: PropTypes.func.isRequired,
     persons: PropTypes.arrayOf(shapes.Person),
     status: shapes.AsyncStatusMap,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -102,7 +104,8 @@ class Persons extends Component {
   };
 
   render() {
-    const { persons, status } = this.props;
+    const { persons, status, currentLanguage } = this.props;
+
     const { query, searched } = this.state;
     const { wip, err }        = status.fetchItemPersons;
 
@@ -133,7 +136,7 @@ class Persons extends Component {
                   </List.Content>
                   <List.Content>
                     <Link to={`/persons/${x.id}`}>
-                      {extractI18n(x.i18n, ['name'])}
+                      {extractI18n(x.i18n, ['name'], currentLanguage)}
                     </Link>
                   </List.Content>
                 </List.Item>
@@ -194,6 +197,7 @@ const mapState = (state, ownProps) => {
     status,
     allPersons: personsSelectors.getPersonList(state.persons),
     persons: personIDs ? denormIDs(personIDs) : EMPTY_ARRAY,
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 

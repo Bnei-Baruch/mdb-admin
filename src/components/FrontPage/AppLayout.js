@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import { Dropdown, Grid, Image, Menu } from 'semantic-ui-react';
+import { Dropdown, Grid, Image, Menu, Flag } from 'semantic-ui-react';
+import { browserHistory } from 'react-router';
 
-import { AUTH_URL } from '../../helpers/env';
+import { AUTH_URL, } from '../../helpers/env';
+import { LANGUAGE_OPTIONS, SITE_LANGUAGES } from '../../helpers/consts';
 import userManager from '../../helpers/userManager';
 
 import logo from './KL_Tree_32.png';
@@ -13,10 +15,16 @@ class AppLayout extends PureComponent {
   static propTypes = {
     children: PropTypes.element,
     user: PropTypes.object.isRequired,
+    updateCurrentLanguage: PropTypes.func.isRequired,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
     children: null,
+  };
+
+  changeLanguage = (e, { value }) => {
+    this.props.updateCurrentLanguage(value);
   };
 
   handleSignout = (e) => {
@@ -25,10 +33,12 @@ class AppLayout extends PureComponent {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, currentLanguage } = this.props;
 
+    const options  = LANGUAGE_OPTIONS.filter(x => SITE_LANGUAGES.includes(x.value) && currentLanguage !== x.value);
+    const selected = LANGUAGE_OPTIONS.find(x => currentLanguage === x.value);
     return (
-      <Grid container>
+      <Grid>
         <Grid.Row>
           <Grid.Column>
             <Menu pointing>
@@ -46,15 +56,26 @@ class AppLayout extends PureComponent {
               <Menu.Item key={9} as={NavLink} to="/publishers">Publishers</Menu.Item>
 
               <Menu.Menu position="right">
-                <Dropdown item text={user.profile.name}>
-                  <Dropdown.Menu>
-                    <Dropdown.Item as="a" href={`${AUTH_URL}/account`} target="_blank">
-                      My Account
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item onClick={this.handleSignout}>Sign Out</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <Menu.Item>
+                  <Dropdown
+                    button
+                    text={selected.text}
+                    icon={<Flag name={selected.flag} style={{ margin: '3px 10px 0 0', float: 'left' }} />}
+                    onChange={this.changeLanguage}
+                    options={options}
+                    selectOnBlur={false} />
+                </Menu.Item>
+                <Menu.Item>
+                  <Dropdown item text={user.profile.name}>
+                    <Dropdown.Menu>
+                      <Dropdown.Item as="a" href={`${AUTH_URL}/account`} target="_blank">
+                        My Account
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item onClick={this.handleSignout}>Sign Out</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Menu.Item>
               </Menu.Menu>
             </Menu>
             {this.props.children}

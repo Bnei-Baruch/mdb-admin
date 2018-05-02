@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 import { actions, selectors } from '../../redux/modules/lists';
 import { actions as personActions, selectors as persons } from '../../redux/modules/persons';
+
+import { selectors as system } from '../../redux/modules/system';
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PERSONS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
@@ -78,9 +80,8 @@ const mapState = (state) => {
     ...status,
     wipOfCreate: persons.getWIP(state.persons, 'create'),
     errOfCreate: persons.getError(state.persons, 'create'),
-    items: Array.isArray(status.items) && status.items.length > 0 ?
-      denormIDs(status.items) :
-      EMPTY_ARRAY,
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 

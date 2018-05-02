@@ -31,6 +31,7 @@ class Units extends PureComponent {
     err: shapes.Error,
     errDeleteCu: shapes.Error,
     errUpdateCu: shapes.Error,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -56,11 +57,12 @@ class Units extends PureComponent {
   };
 
   renderItem = (item) => {
-    const { collection, errUpdateCu, errDeleteCu, selectedCCU } = this.props;
-    const unit                                                  = item.content_unit;
-    const error                                                 = errDeleteCu || errUpdateCu;
+    const { collection, errUpdateCu, errDeleteCu, selectedCCU, currentLanguage } = this.props;
 
-    let properties = extractI18n(unit.i18n, ['name'])[0];
+    const unit  = item.content_unit;
+    const error = errDeleteCu || errUpdateCu;
+
+    let properties = extractI18n(unit.i18n, ['name'], currentLanguage)[0];
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
       case CT_SPECIAL_LESSON:
@@ -83,7 +85,7 @@ class Units extends PureComponent {
         error={error && error.content_units_id === unit.id}
         title={error ? formatError(error) : ''}
       >
-        <Cell collapsing propForUpdate={'checked'}>
+        <Cell collapsing propForUpdate={'props'}>
           <Checkbox
             type="checkbox"
             onChange={(e, data) => this.handleSelectionChange(item, data)}
@@ -98,7 +100,7 @@ class Units extends PureComponent {
         <Cell collapsing>
           {unit.uid}
         </Cell>
-        <Cell>
+        <Cell  propForUpdate={''}>
           {properties}
         </Cell>
         <Cell collapsing>

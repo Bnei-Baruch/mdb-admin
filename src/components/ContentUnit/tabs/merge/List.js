@@ -16,6 +16,7 @@ class ContentUnitList extends PureComponent {
     selectedCUIds: PropTypes.arrayOf(PropTypes.number),
     selectCU: PropTypes.func,
     associatedCUIds: PropTypes.object,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -30,8 +31,9 @@ class ContentUnitList extends PureComponent {
     if (!item || this.props.unit.id === item.id) {
       return null;
     }
-    const properties        = extractI18n(item.i18n, ['name'])[0];
-    const { selectedCUIds } = this.props;
+    const { selectedCUIds, currentLanguage } = this.props;
+
+    const properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
     return (
       <Table.Row key={item.id}>
         <Table.Cell>
@@ -84,7 +86,7 @@ class ContentUnitList extends PureComponent {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell/>
+            <Table.HeaderCell />
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>

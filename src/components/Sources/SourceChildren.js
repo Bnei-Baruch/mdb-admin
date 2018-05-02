@@ -16,13 +16,14 @@ class SourceChildren extends Component {
     getError: PropTypes.func.isRequired,
     source: shapes.Source,
     hierarchy: shapes.Hierarchy,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
     source: EMPTY_OBJECT,
     hierarchy: {
       childMap: new Map()
-    }
+    },
   };
 
   state = {
@@ -44,10 +45,11 @@ class SourceChildren extends Component {
   hideModal = () => this.setState({ modalOpen: false });
 
   render() {
-    const { source, hierarchy, getSourceById } = this.props;
-    const children                             = hierarchy.childMap.get(source.id);
-    const hasChildren                          = Array.isArray(children) && children.length > 0;
-    const modalOpen                            = this.state.modalOpen;
+    const { source, hierarchy, getSourceById, currentLanguage } = this.props;
+
+    const children    = hierarchy.childMap.get(source.id);
+    const hasChildren = Array.isArray(children) && children.length > 0;
+    const modalOpen   = this.state.modalOpen;
 
     return (
       <div>
@@ -72,7 +74,7 @@ class SourceChildren extends Component {
               <List relaxed divided className="rtl-dir">
                 {children.map((x, i) => {
                   const node  = getSourceById(x);
-                  const label = extractI18n(node.i18n, ['name'])[0];
+                  const label = extractI18n(node.i18n, ['name'], currentLanguage)[0];
 
                   return (
                     <List.Item key={node.id}>
