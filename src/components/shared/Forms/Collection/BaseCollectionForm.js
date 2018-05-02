@@ -16,7 +16,6 @@ import {
   CT_VIRTUAL_LESSONS,
   CT_WOMEN_LESSONS,
   CT_ARTICLES,
-  REQUIRED_LANGUAGES,
 
 } from '../../../../helpers/consts';
 import { countries } from '../../../../helpers/countries';
@@ -208,18 +207,11 @@ class BaseCollectionForm extends Component {
         acc[k] = true;
       }
       return acc;
-    }, this.validateLanguages());
+    }, this.getI18nErrors());
   }
 
-  validateLanguages() {
-    const errors = {};
-    // validate at least one valid translation
-    const i18n   = this.state.i18n;
-    if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
-      errors.i18n = true;
-    }
-
-    return errors;
+  getI18nErrors() {
+    return {};
   }
 
   isValid() {
