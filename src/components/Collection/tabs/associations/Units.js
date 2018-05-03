@@ -106,6 +106,9 @@ class Units extends PureComponent {
         <Cell collapsing>
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Cell>
+        <Table.Cell collapsing>
+          {unit.properties && unit.properties.film_date ? moment.utc(unit.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
+        </Table.Cell>
         <Cell collapsing>
           {
             unit.properties && unit.properties.duration ?
@@ -123,7 +126,7 @@ class Units extends PureComponent {
               <Icon name="ban" color="red" />
           }
         </Cell>
-        <Cell propForUpdate={'value'}>
+        <Cell propForUpdate={'value'} collapsing>
           <EditedField
             value={item.name}
             onSave={val => this.saveCCUName(collection.id, item, val)}
@@ -134,7 +137,7 @@ class Units extends PureComponent {
   };
 
   renderSeparator = (type_id) => (<Table.Row key={`type_id_${type_id}`}>
-    <Table.Cell colSpan={9} collapsing>
+    <Table.Cell colSpan={10} collapsing>
       <Header textAlign="center" block color="blue">
         {CONTENT_TYPE_BY_ID[type_id]}
       </Header>
@@ -184,6 +187,7 @@ class Units extends PureComponent {
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
+            <Table.HeaderCell>Film Date</Table.HeaderCell>
             <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>
