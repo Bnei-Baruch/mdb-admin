@@ -79,7 +79,7 @@ class FilesList extends PureComponent {
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell collapsing>
-          {unit.properties ? moment.utc(unit.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
+          {unit.properties && unit.properties.film_date ? moment.utc(unit.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
         </Table.Cell>
         <Table.Cell>
           {

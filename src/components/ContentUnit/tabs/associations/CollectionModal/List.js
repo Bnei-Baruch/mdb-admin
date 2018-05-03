@@ -105,7 +105,7 @@ class CollectionsList extends PureComponent {
           {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell collapsing>
-          {item.properties ? moment.utc(item.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
+          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />
