@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header, Segment } from 'semantic-ui-react';
 
-import { NS_COLLECTIONS } from '../../../helpers/consts';
+import { NS_COLLECTIONS, COLLECTION_TYPES } from '../../../helpers/consts';
 import { ContentTypeFilter, SecureFilter, PublishedFilter } from '../../Filters/filterComponents';
 
 const Others = props => (
@@ -15,6 +15,7 @@ const Others = props => (
             namespace={NS_COLLECTIONS}
             name="content_type"
             onApply={props.onFilterApplication}
+            options={Array.from(Object.keys(COLLECTION_TYPES)).map(x => ({ key: x, value: x, text: x }))}
           />
         </Grid.Column>
         <Grid.Column width={4}>

@@ -9,12 +9,12 @@ class ContentTypeFilter extends Component {
 
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
-    allValues: PropTypes.arrayOf(PropTypes.any),
+    options: PropTypes.arrayOf(PropTypes.any),
     onApply: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    allValues: EMPTY_ARRAY,
+    options: Array.from(Object.values(CONTENT_TYPE_BY_ID)).map(x => ({ key: x, value: x, text: x }))
   };
 
   handleChange = (e, data) => {
@@ -23,18 +23,13 @@ class ContentTypeFilter extends Component {
   };
 
   render() {
-    const { allValues } = this.props;
-    const options       = Array.from(Object.values(CONTENT_TYPE_BY_ID))
-      .filter(x => allValues.findIndex(y => y === x) === -1)
-      .map(x => ({ key: x, value: x, text: x }));
-
     return (
       <Dropdown
         search
         selection
         fluid
         placeholder="Content Type"
-        options={options}
+        options={this.props.options}
         onChange={this.handleChange}
         selectOnBlur={false}
       />
