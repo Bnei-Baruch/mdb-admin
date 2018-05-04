@@ -9,6 +9,7 @@ const DateRange = props => (
     namespace={NS_OPERATIONS}
     name="date-range-filter"
     onApply={props.onFilterApplication}
+    isUpdateQuery={true}
   />
 );
 

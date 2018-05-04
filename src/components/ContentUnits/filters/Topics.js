@@ -12,6 +12,7 @@ const Topics = props => (
     namespace={NS_UNITS}
     name="topics-filter"
     onApply={props.onFilterApplication}
+    isUpdateQuery={true}
     {...props}
   />
 );

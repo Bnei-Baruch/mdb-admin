@@ -15,8 +15,10 @@ import { filtersTransformer } from '../filters';
  */
 
 function* updateFilterValuesInQuery(action) {
-  const filters = yield select(state => filterSelectors.getFilters(state.filters, action.payload.namespace));
-  yield* updateQuery(query => Object.assign(query, filtersTransformer.toQueryParams(filters)));
+  if (action.payload.isUpdateQuery) {
+    const filters = yield select(state => filterSelectors.getFilters(state.filters, action.payload.namespace));
+    yield* updateQuery(query => Object.assign(query, filtersTransformer.toQueryParams(filters)));
+  }
 }
 
 function* hydrateFilters(action) {
@@ -25,7 +27,7 @@ function* hydrateFilters(action) {
 
   if (from === 'query') {
     const query = yield* getQuery();
-    filters = filtersTransformer.fromQueryParams(query);
+    filters     = filtersTransformer.fromQueryParams(query);
   }
 
   if (filters) {

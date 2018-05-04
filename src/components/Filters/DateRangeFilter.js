@@ -176,7 +176,7 @@ class DateFilter extends Component {
       from: this.state.from,
       to: this.state.to,
       datePreset: this.state.datePreset
-    });
+    }, this.props.isUpdateQuery);
     this.props.onApply();
   };
 

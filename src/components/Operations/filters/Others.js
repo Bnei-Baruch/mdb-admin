@@ -15,6 +15,7 @@ const Others = props => (
             namespace={NS_OPERATIONS}
             name="operation_type"
             onApply={props.onFilterApplication}
+            isUpdateQuery={true}
           />
         </Grid.Column>
       </Grid.Row>

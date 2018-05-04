@@ -31,20 +31,20 @@ const connectFilter = (options = {}) => (WrappedComponent) => {
       this.props.stopEditingFilter(this.props.namespace, this.props.name);
     }
 
-    updateValue = (value) => {
+    updateValue = (value, isUpdateQuery) => {
       const { isEditing, activeValueIndex, namespace, name } = this.props;
       if (isEditing) {
-        this.props.setFilterValue(namespace, name, value, activeValueIndex);
+        this.props.setFilterValue(namespace, name, value, isUpdateQuery, activeValueIndex);
       } else if (isMultiple) {
-        this.props.addFilterValue(namespace, name, value);
+        this.props.addFilterValue(namespace, name, value, isUpdateQuery);
       } else {
-        this.props.setFilterValue(namespace, name, value);
+        this.props.setFilterValue(namespace, name, value, isUpdateQuery);
       }
     };
 
     removeValue = () => {
-      const { namespace, name, activeValueIndex } = this.props;
-      this.props.removeFilterValue(namespace, name, activeValueIndex);
+      const { namespace, name, activeValueIndex, isUpdateQuery } = this.props;
+      this.props.removeFilterValue(namespace, name, activeValueIndex, isUpdateQuery);
     };
 
     render() {

@@ -17,8 +17,9 @@ class TextFilter extends Component {
   };
 
   handleChange = (e, data) => {
-    this.props.updateValue(data.value);
-    this.props.onApply();
+    const { updateValue, onApply, isUpdateQuery } = this.props;
+    updateValue(data.value, isUpdateQuery);
+    onApply();
   };
 
   render() {
