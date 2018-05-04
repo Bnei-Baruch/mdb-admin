@@ -86,6 +86,7 @@ class CollectionsMainPage extends Component {
         onFiltersHydrated,
         create,
         getTagByUID,
+        currentLanguage
       } = this.props;
 
     return (
@@ -97,7 +98,7 @@ class CollectionsMainPage extends Component {
           <Menu.Menu position="right">
             <Menu.Item onClick={this.toggleFilters}>
               <Icon name="filter" />
-              {showFilters ? 'Hide' : 'Show' } Filters
+              {showFilters ? 'Hide' : 'Show'} Filters
             </Menu.Item>
             <Menu.Item onClick={this.toggleNewCollection}>
               <Icon name="plus" />
@@ -149,7 +150,7 @@ class CollectionsMainPage extends Component {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <CollectionsList items={items} getTagByUID={getTagByUID} />
+              <CollectionsList items={items} getTagByUID={getTagByUID} currentLanguage={currentLanguage} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

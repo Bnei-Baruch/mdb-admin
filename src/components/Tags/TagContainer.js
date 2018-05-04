@@ -7,6 +7,7 @@ import { Divider, Grid } from 'semantic-ui-react';
 
 import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/tags';
+import { selectors as system } from '../../redux/modules/system';
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import TagMenu from './TagMenu';
 import TagInfoForm from './TagInfoForm';
@@ -88,6 +89,7 @@ const mapState = (state, props) => ({
   hierarchy: selectors.getHierarchy(state.tags),
   getWIP: selectors.getWIP(state.tags),
   getError: selectors.getError(state.tags),
+  currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 function mapDispatch(dispatch) {

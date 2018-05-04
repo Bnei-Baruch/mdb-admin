@@ -15,6 +15,7 @@ class FilesList extends PureComponent {
     associatedCUId: PropTypes.number,
     handleSelectCU: PropTypes.func,
     selectedCUId: PropTypes.number,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   checkHandler = (cu, checked) => {
@@ -23,8 +24,9 @@ class FilesList extends PureComponent {
   };
 
   renderItem = (unit) => {
-    const properties                       = extractI18n(unit.i18n, ['name'])[0];
-    const { selectedCUId, associatedCUId } = this.props;
+    const properties = extractI18n(unit.i18n, ['name'], currentLanguage)[0];
+
+    const { selectedCUId, associatedCUId, currentLanguage } = this.props;
 
     return (
       <Table.Row key={unit.id} disabled={associatedCUId === unit.id}>
@@ -51,6 +53,9 @@ class FilesList extends PureComponent {
         </Table.Cell>
         <Table.Cell>
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+        </Table.Cell>
+        <Table.Cell collapsing>
+          {unit.properties && unit.properties.film_date ? moment.utc(unit.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
         </Table.Cell>
         <Table.Cell>
           {
@@ -84,6 +89,7 @@ class FilesList extends PureComponent {
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
+            <Table.HeaderCell>Film Date</Table.HeaderCell>
             <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>

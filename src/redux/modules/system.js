@@ -1,46 +1,58 @@
 import { createAction, handleActions } from 'redux-actions';
+import { LANG_ENGLISH } from '../../helpers/consts';
 
 /* Types */
 
-const BOOT  = 'System/BOOT';
-const INIT  = 'System/INIT';
-const READY = 'System/READY';
+const BOOT                    = 'System/BOOT';
+const INIT                    = 'System/INIT';
+const READY                   = 'System/READY';
+const UPDATE_CURRENT_LANGUAGE = 'System/UPDATE_CURRENT_LANGUAGE';
 
 export const types = {
   BOOT,
   INIT,
-  READY
+  READY,
+  UPDATE_CURRENT_LANGUAGE
 };
 
 /* Actions */
 
-const boot  = createAction(BOOT);
-const init  = createAction(INIT);
-const ready = createAction(READY);
+const boot                  = createAction(BOOT);
+const init                  = createAction(INIT);
+const ready                 = createAction(READY);
+const updateCurrentLanguage = createAction(UPDATE_CURRENT_LANGUAGE);
 
 export const actions = {
   boot,
   init,
-  ready
+  ready,
+  updateCurrentLanguage
 };
 
 /* Reducer */
 
 const initialState = {
-  isReady: false
+  isReady: false,
+  currentLanguage: LANG_ENGLISH
 };
 
 export const reducer = handleActions({
   [READY]: state => ({
     ...state,
     isReady: true
+  }),
+  [UPDATE_CURRENT_LANGUAGE]: (state, action) => ({
+    ...state,
+    currentLanguage: action.payload
   })
 }, initialState);
 
 /* Selectors */
 
-const isReady = state => state.isReady;
+const isReady            = state => state.isReady;
+const getCurrentLanguage = state => state.currentLanguage;
 
 export const selectors = {
-  isReady
+  isReady,
+  getCurrentLanguage
 };

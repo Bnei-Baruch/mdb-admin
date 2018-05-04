@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Divider, Form, Message } from 'semantic-ui-react';
 
-import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES } from '../../../../helpers/consts';
+import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES, REQUIRED_LANGUAGES } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../../shared/Fields';
 import BaseCollectionForm from './BaseCollectionForm';
 
@@ -34,6 +34,7 @@ class CreateCollectionForm extends BaseCollectionForm {
       full_address: '',
       default_language: '',
       holiday_tag: '',
+      source: '',
     };
   }
 
@@ -58,7 +59,19 @@ class CreateCollectionForm extends BaseCollectionForm {
     }, {});
   }
 
+  getI18nErrors() {
+    const errors = {};
+    // validate at least one valid translation
+    const i18n   = this.state.i18n;
+    if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
+      errors.i18n = true;
+    }
+
+    return errors;
+  }
+
   doSubmit(typeID, properties, i18n) {
+    console.log('CCF.doSubmit');
     this.props.create(typeID, properties, i18n);
   }
 

@@ -18,14 +18,14 @@
     "eslint-plugin-jest": "^20.0.3",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
+    "node-sass": "^4.5.3",
+    "node-sass-chokidar": "^1.1.2",
+    "npm-run-all": "^4.0.2",
     "react-app-rewire-vendor-splitting": "^1.1.2",
     "react-app-rewired": "^1.4.0",
     "react-scripts": "^1.0.7",
     "react-test-renderer": "^15.6.1",
-    "why-did-you-update": "0.0.8",
-    "node-sass": "^4.5.3",
-    "node-sass-chokidar": "^1.1.2",
-    "npm-run-all": "^4.0.2"
+    "why-did-you-update": "0.0.8"
   },
   "dependencies": {
     "amdefine": "^1.0.1",

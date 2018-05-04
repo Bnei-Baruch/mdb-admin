@@ -31,6 +31,7 @@ class Units extends PureComponent {
     err: shapes.Error,
     errDeleteCu: shapes.Error,
     errUpdateCu: shapes.Error,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -56,11 +57,12 @@ class Units extends PureComponent {
   };
 
   renderItem = (item) => {
-    const { collection, errUpdateCu, errDeleteCu, selectedCCU } = this.props;
-    const unit                                                  = item.content_unit;
-    const error                                                 = errDeleteCu || errUpdateCu;
+    const { collection, errUpdateCu, errDeleteCu, selectedCCU, currentLanguage } = this.props;
 
-    let properties = extractI18n(unit.i18n, ['name'])[0];
+    const unit  = item.content_unit;
+    const error = errDeleteCu || errUpdateCu;
+
+    let properties = extractI18n(unit.i18n, ['name'], currentLanguage)[0];
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
       case CT_SPECIAL_LESSON:
@@ -83,7 +85,7 @@ class Units extends PureComponent {
         error={error && error.content_units_id === unit.id}
         title={error ? formatError(error) : ''}
       >
-        <Cell collapsing propForUpdate={'checked'}>
+        <Cell collapsing propForUpdate={'props'}>
           <Checkbox
             type="checkbox"
             onChange={(e, data) => this.handleSelectionChange(item, data)}
@@ -98,12 +100,15 @@ class Units extends PureComponent {
         <Cell collapsing>
           {unit.uid}
         </Cell>
-        <Cell>
+        <Cell  propForUpdate={''}>
           {properties}
         </Cell>
         <Cell collapsing>
           {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Cell>
+        <Table.Cell collapsing>
+          {unit.properties && unit.properties.film_date ? moment.utc(unit.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
+        </Table.Cell>
         <Cell collapsing>
           {
             unit.properties && unit.properties.duration ?
@@ -121,7 +126,7 @@ class Units extends PureComponent {
               <Icon name="ban" color="red" />
           }
         </Cell>
-        <Cell propForUpdate={'value'}>
+        <Cell propForUpdate={'value'} collapsing>
           <EditedField
             value={item.name}
             onSave={val => this.saveCCUName(collection.id, item, val)}
@@ -132,7 +137,7 @@ class Units extends PureComponent {
   };
 
   renderSeparator = (type_id) => (<Table.Row key={`type_id_${type_id}`}>
-    <Table.Cell colSpan={9} collapsing>
+    <Table.Cell colSpan={10} collapsing>
       <Header textAlign="center" block color="blue">
         {CONTENT_TYPE_BY_ID[type_id]}
       </Header>
@@ -182,6 +187,7 @@ class Units extends PureComponent {
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
+            <Table.HeaderCell>Film Date</Table.HeaderCell>
             <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>

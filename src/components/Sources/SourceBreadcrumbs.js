@@ -10,7 +10,7 @@ import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 const SourceBreadcrumbs = (props) => {
-  const { path, author, lastIsLink } = props;
+  const { path, author, lastIsLink, currentLanguage } = props;
 
   // convert path to breadcrumbs
   const crumbs = [];
@@ -18,7 +18,7 @@ const SourceBreadcrumbs = (props) => {
   // source's path
   for (let i = 0; i < path.length; i++) {
     const x    = path[i];
-    const name = extractI18n(x.i18n, ['name'])[0];
+    const name = extractI18n(x.i18n, ['name'], currentLanguage)[0];
 
     let crumb = (
       <Breadcrumb.Section key={x.id} as="span" link>
@@ -36,7 +36,7 @@ const SourceBreadcrumbs = (props) => {
 
   // author
   if (author) {
-    const name = extractI18n(author.i18n, ['name'])[0];
+    const name = extractI18n(author.i18n, ['name'], currentLanguage)[0];
     crumbs.push((
       <Breadcrumb.Section key={author.code} as="span" link>
         <Link to={{ pathname: '/sources', state: { author } }}>{name}</Link>
@@ -52,7 +52,8 @@ SourceBreadcrumbs.propTypes = {
   source: shapes.Source.isRequired,
   path: PropTypes.arrayOf(shapes.Source),
   author: shapes.Author,
-  lastIsLink: PropTypes.bool
+  lastIsLink: PropTypes.bool,
+  currentLanguage: PropTypes.string.isRequired,
 };
 
 SourceBreadcrumbs.defaultProps = {

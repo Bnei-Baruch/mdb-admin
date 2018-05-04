@@ -7,6 +7,7 @@ import { EMPTY_ARRAY, EMPTY_OBJECT, NS_FILE_UNITS } from '../../../../helpers/co
 import { actions, selectors } from '../../../../redux/modules/lists';
 import { actions as fileActions } from '../../../../redux/modules/files';
 import { selectors as unitsSelectors } from '../../../../redux/modules/content_units';
+import { selectors as system } from '../../../../redux/modules/system';
 import * as shapes from '../../../shapes';
 import NewAssociations from './NewAssociations';
 
@@ -33,6 +34,7 @@ const mapState = (state) => {
   return {
     ...status,
     items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 

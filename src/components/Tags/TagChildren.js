@@ -16,6 +16,7 @@ class TagChildren extends Component {
     getError: PropTypes.func.isRequired,
     tag: shapes.Tag,
     hierarchy: shapes.Hierarchy,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -44,10 +45,10 @@ class TagChildren extends Component {
   hideModal = () => this.setState({ modalOpen: false });
 
   renderNode(node) {
-    const { getTagById, hierarchy } = this.props;
+    const { getTagById, hierarchy, currentLanguage } = this.props;
     const children                  = hierarchy.childMap.get(node.id);
     const hasChildren               = Array.isArray(children) && children.length > 0;
-    const label                     = extractI18n(node.i18n, ['label'])[0];
+    const label                     = extractI18n(node.i18n, ['label'], currentLanguage)[0];
 
     return (
       <List.Item key={node.id}>

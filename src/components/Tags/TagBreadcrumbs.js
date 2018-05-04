@@ -9,7 +9,7 @@ import * as shapes from '../shapes';
 import { extractI18n } from '../../helpers/utils';
 
 const TagBreadcrumbs = (props) => {
-  const { path, lastIsLink } = props;
+  const { path, lastIsLink, currentLanguage } = props;
 
   // convert path to breadcrumbs
   const crumbs = [];
@@ -17,7 +17,7 @@ const TagBreadcrumbs = (props) => {
   // source's path
   for (let i = 0; i < path.length; i++) {
     const x     = path[i];
-    const label = extractI18n(x.i18n, ['label'])[0];
+    const label = extractI18n(x.i18n, ['label'], currentLanguage)[0];
 
     let crumb = (
       <Breadcrumb.Section key={x.id} as="span" link>
@@ -42,7 +42,8 @@ const TagBreadcrumbs = (props) => {
 TagBreadcrumbs.propTypes = {
   tag: shapes.Tag.isRequired,
   path: PropTypes.arrayOf(shapes.Tag),
-  lastIsLink: PropTypes.bool
+  lastIsLink: PropTypes.bool,
+  currentLanguage: PropTypes.string.isRequired,
 };
 
 TagBreadcrumbs.defaultProps = {

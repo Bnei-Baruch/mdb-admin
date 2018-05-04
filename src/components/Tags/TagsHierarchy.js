@@ -15,6 +15,7 @@ class TagsHierarchy extends Component {
     getWIP: PropTypes.func.isRequired,
     getError: PropTypes.func.isRequired,
     hierarchy: shapes.Hierarchy,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -54,10 +55,11 @@ class TagsHierarchy extends Component {
   hideModal = () => this.setState({ modalOpen: false });
 
   renderNode(node) {
-    const { getTagById, hierarchy } = this.props;
-    const children                  = hierarchy.childMap.get(node.id);
-    const hasChildren               = Array.isArray(children) && children.length > 0;
-    const label                     = extractI18n(node.i18n, ['label'])[0];
+    const { getTagById, hierarchy, currentLanguage } = this.props;
+
+    const children    = hierarchy.childMap.get(node.id);
+    const hasChildren = Array.isArray(children) && children.length > 0;
+    const label       = extractI18n(node.i18n, ['label'], currentLanguage)[0];
 
     return (
       <List.Item key={node.id}>
@@ -81,9 +83,10 @@ class TagsHierarchy extends Component {
   }
 
   renderHierarchy() {
-    const { getTagById, hierarchy, getWIP } = this.props;
-    const wip                               = getWIP('fetchAll');
-    const isEmpty                           = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
+    const { getTagById, hierarchy, getWIP, currentLanguage } = this.props;
+
+    const wip     = getWIP('fetchAll');
+    const isEmpty = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
 
     if (isEmpty) {
       return wip ?
@@ -116,7 +119,7 @@ class TagsHierarchy extends Component {
                   const node        = getTagById(x);
                   const children    = hierarchy.childMap.get(x);
                   const hasChildren = Array.isArray(children) && children.length > 0;
-                  const label       = extractI18n(node.i18n, ['label'])[0];
+                  const label       = extractI18n(node.i18n, ['label'], currentLanguage)[0];
                   return (
                     <Menu.Item
                       key={x}

@@ -5,7 +5,7 @@ import { Button, Menu, Segment, Container } from 'semantic-ui-react';
 
 import connectFilter from './connectFilter';
 
-import { hierarchyToTree, hierarchyNodeToTreeNode } from '../../helpers/utils';
+import { hierarchyToTree, hierarchyNodeToTreeNode, extractI18n } from '../../helpers/utils';
 
 class DeepListFilter extends React.Component {
 
@@ -116,7 +116,7 @@ class DeepListFilter extends React.Component {
   };
 
   createList = (depth, items, selectedId, otherSelectedIds) => {
-    const { getSubItemById, hierarchy } = this.props;
+    const { getSubItemById, hierarchy, currentLanguage } = this.props;
 
     return (
       <div key={selectedId} className="filter-steps__column-wrapper" ref={el => this.menus[depth] = el}>
@@ -138,7 +138,7 @@ class DeepListFilter extends React.Component {
                     onClick={this.onSelectionChange}
                     style={style}
                   >
-                    {node.i18n.he.name || node.i18n.he.label}
+                    {extractI18n(node.i18n, ['name', 'label'], currentLanguage)}
                   </Menu.Item>
                 );
               })
@@ -155,7 +155,8 @@ class DeepListFilter extends React.Component {
 
   render() {
     const { hierarchy, emptyLabel, allValues } = this.props;
-    const roots                                = hierarchyToTree(hierarchy);
+
+    const roots = hierarchyToTree(hierarchy);
     return (
       <Container className="padded-horizontally">
         <Segment

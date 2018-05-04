@@ -14,3 +14,5 @@ export const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 // Base url of our beloved backend API
 export const API_BACKEND = process.env.REACT_APP_MDB_URL;
 
+// Physical files links service url
+export const LINKER_URL = process.env.REACT_APP_LINKER_URL;

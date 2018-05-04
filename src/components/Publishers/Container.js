@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PUBLISHERS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';
 import { actions as publisherActions, selectors as publishers } from '../../redux/modules/publishers';
+import { selectors as system } from '../../redux/modules/system';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
@@ -78,9 +79,8 @@ const mapState = (state) => {
     ...status,
     wipOfCreate: publishers.getWIP(state.publishers, 'create'),
     errOfCreate: publishers.getError(state.publishers, 'create'),
-    items: Array.isArray(status.items) && status.items.length > 0 ?
-      denormIDs(status.items) :
-      EMPTY_ARRAY,
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 

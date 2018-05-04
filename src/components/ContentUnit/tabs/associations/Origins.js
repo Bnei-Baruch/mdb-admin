@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import { selectors } from '../../../../redux/modules/content_units';
+import { selectors as system } from '../../../../redux/modules/system';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
@@ -48,11 +49,10 @@ class Origins extends Component {
                       secure,
                       published,
                       properties,
-                    }    = x.content_unit;
-              const name = extractI18n(i18n, ['name'])[0];
-              const type = CONTENT_TYPE_BY_ID[typeID];
-
-              const { duration, film_date: filmDate } = properties || {};
+                    }                                                  = x.content_unit;
+              const { duration, film_date: filmDate, currentLanguage } = properties || {};
+              const name                                               = extractI18n(i18n, ['name'], currentLanguage)[0];
+              const type                                               = CONTENT_TYPE_BY_ID[typeID];
 
               return (
                 <List.Item key={id}>
@@ -118,6 +118,7 @@ const mapState = (state, ownProps) => {
     cuds: cuIDs ? denormCUDs(cuIDs) : EMPTY_ARRAY,
     wip: selectors.getWIP(state.content_units, 'fetchItemOrigins'),
     err: selectors.getError(state.content_units, 'fetchItemOrigins'),
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 

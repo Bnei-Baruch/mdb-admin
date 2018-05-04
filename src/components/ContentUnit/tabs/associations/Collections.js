@@ -8,12 +8,13 @@ import { Header, Icon, Menu, Message, Segment, Table, Button } from 'semantic-ui
 
 import { selectors } from '../../../../redux/modules/content_units';
 import { actions as collectionActions, selectors as collections } from '../../../../redux/modules/collections';
+import { selectors as system } from '../../../../redux/modules/system';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import {
   CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT,
-  CT_SPECIAL_LESSON, CT_DAILY_LESSONCT_HOLIDAY, CT_DAILY_LESSON, CT_HOLIDAY
+  CT_SPECIAL_LESSON, CT_DAILY_LESSON, CT_HOLIDAY
 } from '../../../../helpers/consts';
 
 import NewCollections from './CollectionModal/Container';
@@ -24,6 +25,7 @@ class Collections extends Component {
     ccus: PropTypes.arrayOf(shapes.CollectionContentUnit),
     wip: PropTypes.bool,
     err: shapes.Error,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -45,7 +47,9 @@ class Collections extends Component {
   };
 
   getProperties = (item) => {
-    let properties = extractI18n(item.i18n, ['name'])[0];
+    const { getTagByUID, currentLanguage } = this.props;
+
+    let properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
 
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[item.type_id]) {
@@ -59,8 +63,8 @@ class Collections extends Component {
         break;
       }
       case CT_HOLIDAY: {
-        const tag  = this.props.getTagByUID(item.properties.holiday_tag);
-        properties = tag ? extractI18n(tag.i18n, ['label'])[0] : tag;
+        const tag  = getTagByUID(item.properties.holiday_tag);
+        properties = tag ? extractI18n(tag.i18n, ['label'], currentLanguage)[0] : tag;
         if (item.properties.start_date) {
           properties += `  ${item.properties.start_date.substring(0, 4)}`;
         }
@@ -166,6 +170,7 @@ const mapState = (state, ownProps) => {
     err: selectors.getError(state.content_units, 'fetchItemCollections'),
     wipAssociate: collections.getWIP(state.collections, 'associateUnit'),
     errAssociate: collections.getError(state.collections, 'associateUnit'),
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 

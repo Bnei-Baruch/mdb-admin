@@ -22,6 +22,7 @@ class NewSourceForm extends Component {
     getError: PropTypes.func.isRequired,
     source: shapes.Source,
     authors: PropTypes.arrayOf(shapes.Author),
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -127,14 +128,15 @@ class NewSourceForm extends Component {
   }
 
   render() {
-    const { getWIP, getError, source, authors } = this.props;
-    const wip                                   = getWIP('create');
-    const err                                   = getError('create');
+    const { getWIP, getError, source, authors, currentLanguage } = this.props;
+
+    const wip = getWIP('create');
+    const err = getError('create');
 
     const { author, type_id: typeID, description, pattern, i18n, submitted, errors } = this.state;
 
     const authorsOptions = source ? null : authors.map(x => ({
-      text: extractI18n(x.i18n, ['name'])[0],
+      text: extractI18n(x.i18n, ['name'], currentLanguage)[0],
       value: x.id
     }));
 
@@ -182,7 +184,7 @@ class NewSourceForm extends Component {
               </small>
             </Form.Field>
 
-            <Form.Field >
+            <Form.Field>
               <label htmlFor="description">Description</label>
               <Input
                 id="description"

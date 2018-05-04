@@ -16,6 +16,7 @@ class ContentUnitList extends PureComponent {
     selectedCUIds: PropTypes.arrayOf(PropTypes.number),
     selectCU: PropTypes.func,
     associatedCUIds: PropTypes.object,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -30,8 +31,9 @@ class ContentUnitList extends PureComponent {
     if (!item || this.props.unit.id === item.id) {
       return null;
     }
-    const properties        = extractI18n(item.i18n, ['name'])[0];
-    const { selectedCUIds } = this.props;
+    const { selectedCUIds, currentLanguage } = this.props;
+
+    const properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
     return (
       <Table.Row key={item.id}>
         <Table.Cell>
@@ -57,6 +59,9 @@ class ContentUnitList extends PureComponent {
         </Table.Cell>
         <Table.Cell>
           {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+        </Table.Cell>
+        <Table.Cell collapsing>
+          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
         </Table.Cell>
         <Table.Cell>
           {
@@ -84,12 +89,13 @@ class ContentUnitList extends PureComponent {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell/>
+            <Table.HeaderCell />
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
+            <Table.HeaderCell>Film Date</Table.HeaderCell>
             <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>

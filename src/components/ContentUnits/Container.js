@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 
 import { actions, selectors } from '../../redux/modules/lists';
 import { actions as unitActions, selectors as units } from '../../redux/modules/content_units';
+import { selectors as system } from '../../redux/modules/system';
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNITS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
-import { selectors as collections } from '../../redux/modules/collections';
 
 class ContentUnitsContainer extends Component {
 
@@ -84,9 +84,8 @@ const mapState = (state) => {
     ...status,
     wipOfCreate: units.getWIP(state.content_units, 'create'),
     errOfCreate: units.getError(state.content_units, 'create'),
-    items: Array.isArray(status.items) && status.items.length > 0 ?
-      denormIDs(status.items) :
-      EMPTY_ARRAY,
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 

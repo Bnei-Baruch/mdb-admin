@@ -24,6 +24,7 @@ class CollectionsList extends PureComponent {
     selectCollection: PropTypes.func,
     selectAllCollections: PropTypes.func,
     associatedCIds: PropTypes.arrayOf(PropTypes.number),
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -49,8 +50,9 @@ class CollectionsList extends PureComponent {
 
   renderItem = (item) => {
 
-    const { selectedCIds, getTagByUID, selectCollection, associatedCIds } = this.props;
-    let properties                                                        = extractI18n(item.i18n, ['name'])[0];
+    const { selectedCIds, getTagByUID, selectCollection, associatedCIds, currentLanguage } = this.props;
+
+    let properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
 
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[item.type_id]) {
@@ -65,7 +67,7 @@ class CollectionsList extends PureComponent {
       }
       case CT_HOLIDAY: {
         const tag  = getTagByUID(item.properties.holiday_tag);
-        properties = tag ? extractI18n(tag.i18n, ['label'])[0] : tag;
+        properties = tag ? extractI18n(tag.i18n, ['label'], currentLanguage)[0] : tag;
         if (item.properties.start_date) {
           properties += `  ${item.properties.start_date.substring(0, 4)}`;
         }
@@ -102,6 +104,9 @@ class CollectionsList extends PureComponent {
         <Table.Cell collapsing>
           {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
+        <Table.Cell collapsing>
+          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
+        </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />
         </Table.Cell>
@@ -135,6 +140,7 @@ class CollectionsList extends PureComponent {
             <Table.HeaderCell>Type</Table.HeaderCell>
             <Table.HeaderCell>Properties</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
+            <Table.HeaderCell>Film Date</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>
           </Table.Row>

@@ -8,6 +8,7 @@ import {
   MAJOR_LANGUAGES,
   CONTENT_UNIT_TYPES,
   CT_LESSON_PART,
+  REQUIRED_LANGUAGES,
 } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../Fields/index';
 import BaseContentUnitForm from './BaseContentUnitForm';
@@ -54,6 +55,17 @@ class CreateContentUnitForm extends BaseContentUnitForm {
       }
       return acc;
     }, {});
+  }
+
+  getI18nErrors() {
+    const errors = {};
+    // validate at least one valid translation
+    const i18n   = this.state.i18n;
+    if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
+      errors.i18n = true;
+    }
+
+    return errors;
   }
 
   doSubmit(typeID, properties, i18n) {

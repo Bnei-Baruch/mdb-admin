@@ -19,6 +19,7 @@ const editableProperties = [
   'full_address',
   'holiday_tag',
   'genres',
+  'source',
 ];
 
 const DetailsTab = (props) => {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actions, selectors } from '../../redux/modules/tags';
+import { selectors as system } from '../../redux/modules/system';
 import TagsHierarchy from './TagsHierarchy';
 
 class TagsContainer extends Component {
@@ -25,6 +26,7 @@ const mapState = state => ({
   hierarchy: selectors.getHierarchy(state.tags),
   getWIP: selectors.getWIP(state.tags),
   getError: selectors.getError(state.tags),
+  currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 function mapDispatch(dispatch) {

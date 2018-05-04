@@ -233,6 +233,18 @@ const getPathByID = createSelector(getSources, byID =>
     return path;
   }));
 
+const getSourceByUID = state => (uid) => {
+  const it = state.byID.values();
+  let t    = it.next();
+  while (!t.done) {
+    if (t.value.uid === uid) {
+      return t.value;
+    }
+    t = it.next();
+  }
+  return null;
+};
+
 export const selectors = {
   getSources,
   getSourceById,
@@ -241,4 +253,5 @@ export const selectors = {
   getHierarchy,
   denormIDs,
   getPathByID,
+  getSourceByUID,
 };

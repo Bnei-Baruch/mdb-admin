@@ -177,7 +177,7 @@ class AddFiles extends PureComponent {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
+                <div style={{ textAlign: 'right' }}>
 
                 <ResultsPageHeader pageNo={pageNo} total={total} />
                 &nbsp;&nbsp;
