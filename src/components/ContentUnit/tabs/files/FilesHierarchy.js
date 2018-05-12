@@ -245,17 +245,50 @@ class FilesHierarchy extends Component {
     );
   }
 
+  renderFiles = () => {
+
+    const { hierarchy, currentFile } = this.state;
+    return (
+      <Segment attached>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={10}>
+              <div>
+                {hierarchy.roots.map(x => this.renderFile(hierarchy.byID.get(x)))}
+              </div>
+            </Grid.Column>
+            <Grid.Column width={6} textAlign="center">
+              {
+                currentFile ?
+                  <div>
+                    <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false} />
+                    <br />
+                    <Button
+                      content="Download"
+                      icon="download"
+                      color="orange"
+                      onClick={e => this.handleDownload(e, currentFile)}
+                    />
+                  </div> :
+                  null
+              }
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>);
+  };
+
   render() {
     const { wip, err } = this.props;
+    const { total }    = this.state;
+    let content;
 
     if (err) {
-      return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
+      content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     }
 
-    const { total, hierarchy, currentFile } = this.state;
-
     if (total === 0) {
-      return wip ?
+      content = wip ?
         <LoadingSplash text="Loading files" subtext="We'll be here before you'll know it" /> :
         <Message>No files found for this unit</Message>;
     }
@@ -263,42 +296,14 @@ class FilesHierarchy extends Component {
     return (
       <div>
         <Menu attached borderless size="large">
-          <Menu.Item>
-            {total} files
-          </Menu.Item>
+          {!content ? <Menu.Item>{total} files </Menu.Item> : null}
           <Menu.Menu position="right">
             <Menu.Item onClick={this.handleSwitchToAddFiles}>
               <Icon name="plus" /> Add Files
             </Menu.Item>
           </Menu.Menu>
         </Menu>
-        <Segment attached>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={10}>
-                <div>
-                  {hierarchy.roots.map(x => this.renderFile(hierarchy.byID.get(x)))}
-                </div>
-              </Grid.Column>
-              <Grid.Column width={6} textAlign="center">
-                {
-                  currentFile ?
-                    <div>
-                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false} />
-                      <br />
-                      <Button
-                        content="Download"
-                        icon="download"
-                        color="orange"
-                        onClick={e => this.handleDownload(e, currentFile)}
-                      />
-                    </div> :
-                    null
-                }
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
+        {!content ? this.renderFiles() : content}
       </div>
     );
   }
