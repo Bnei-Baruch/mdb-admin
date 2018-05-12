@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
+import { Header, Icon, Menu, Message, Segment, Table, Button } from 'semantic-ui-react';
 
-import { selectors } from '../../../../redux/modules/content_units';
+import { selectors, actions } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
 
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
+
+import NewUnits from './CUModal/Container';
 
 class Derivatives extends Component {
 
@@ -27,76 +30,78 @@ class Derivatives extends Component {
     err: null,
   };
 
-  render() {
+  state = {
+    isShowAssociateModal: false,
+  };
+
+  handleToggleModal = () => {
+    this.setState({ isShowAssociateModal: !this.state.isShowAssociateModal });
+  };
+
+  handleUnAssociate = (cu) => {
+    this.props.removeAssociate(this.props.unit.id, cu.id);
+  };
+
+  renderRow = (item) => {
+    const {
+            id,
+            uid,
+            i18n,
+            type_id,
+            secure,
+            published,
+            properties,
+            currentLanguage
+          } = item;
+
+    const { duration, film_date: filmDate } = properties || {};
+    return (
+      <Table.Row key={id}>
+        <Table.Cell><Link to={`/collections/${id}`}>{extractI18n(i18n, ['name'], currentLanguage)[0] || uid}</Link></Table.Cell>
+        <Table.Cell>{titleize(CONTENT_TYPE_BY_ID[type_id])}</Table.Cell>
+        <Table.Cell>{filmDate}</Table.Cell>
+        <Table.Cell>{duration ? moment.utc(moment.duration(duration, 's').asMilliseconds()).format('HH:mm:ss') : null}</Table.Cell>
+        <Table.Cell>
+          <Header size="tiny" content={SECURITY_LEVELS[secure].text} color={SECURITY_LEVELS[secure].color} /></Table.Cell>
+        <Table.Cell>{published ? <Icon name="checkmark" color="green" /> :
+          <Icon name="ban" color="red" />}</Table.Cell>
+        <Table.Cell width="1">
+          <Button circular compact size="mini" icon="remove" color="red" inverted onClick={() => this.handleUnAssociate(item)} /></Table.Cell>
+      </Table.Row>
+    );
+  };
+
+  renderTable = () => {
     const { cuds, wip, err } = this.props;
-
-    let content;
     if (err) {
-      content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
+      return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     } else if (cuds.length === 0) {
-      content = wip ?
-        <LoadingSplash text="Loading derivatives" /> :
-        <Message>No derivatives found for this unit</Message>;
-    } else {
-      content = (
-        <List divided relaxed>
-          {
-            cuds.map((x) => {
-              const {
-                      id,
-                      uid,
-                      type_id: typeID,
-                      i18n,
-                      secure,
-                      published,
-                      properties,
-                      currentLanguage,
-                    }    = x.content_unit;
-              const name = extractI18n(i18n, ['name'], currentLanguage)[0];
-              const type = CONTENT_TYPE_BY_ID[typeID];
-
-              const { duration, film_date: filmDate } = properties || {};
-
-              return (
-                <List.Item key={id}>
-                  <List.Content>
-                    <List.Header>
-                      <Link to={`/content_units/${id}`}>{name || uid}</Link>
-                    </List.Header>
-                    <List.Description>
-                      <List horizontal>
-                        <List.Item>{titleize(type)}</List.Item>
-                        <List.Item>{filmDate}</List.Item>
-                        {
-                          duration ?
-                            <List.Item>
-                              {moment.utc(moment.duration(duration, 's').asMilliseconds()).format('HH:mm:ss')}
-                            </List.Item>
-                            : null
-                        }
-                        <List.Item>
-                          <Header
-                            size="tiny"
-                            content={SECURITY_LEVELS[secure].text}
-                            color={SECURITY_LEVELS[secure].color}
-                          />
-                        </List.Item>
-                        <List.Item>
-                          {
-                            published ?
-                              <Icon name="checkmark" color="green" /> :
-                              <Icon name="ban" color="red" />
-                          }
-                        </List.Item>
-                      </List>
-                    </List.Description>
-                  </List.Content>
-                </List.Item>
-              );
-            })
-          }
-        </List>);
+      return ( wip ?
+        <LoadingSplash text="Loading origins" /> :
+        <Message>No origins found for this unit</Message>);
     }
+    return (
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>UID</Table.HeaderCell>
+            <Table.HeaderCell>Type</Table.HeaderCell>
+            <Table.HeaderCell>Film Date</Table.HeaderCell>
+            <Table.HeaderCell>Durtion</Table.HeaderCell>
+            <Table.HeaderCell>Security</Table.HeaderCell>
+            <Table.HeaderCell>Published</Table.HeaderCell>
+            <Table.HeaderCell>&nbsp;</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {cuds.map(x => this.renderRow(x.content_unit))}
+        </Table.Body>
+      </Table>
+    );
+  };
+
+  render() {
+    const { associate, associatedIds, currentLanguage, unit } = this.props;
 
     return (
       <div>
@@ -104,9 +109,22 @@ class Derivatives extends Component {
           <Menu.Item header>
             <Header content="Derivatives" size="medium" color="blue" />
           </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item onClick={this.handleToggleModal}>
+              <Icon name="plus" /> Add Derivatives
+            </Menu.Item>
+          </Menu.Menu>
         </Menu>
         <Segment attached>
-          {content}
+          {this.renderTable()}
+          <NewUnits
+            unit={unit}
+            isShowAssociateModal={this.state.isShowAssociateModal}
+            handleToggleModal={this.handleToggleModal}
+            associate={associate}
+            associatedIds={associatedIds}
+            currentLanguage={currentLanguage}>
+          </NewUnits>
         </Segment>
       </div>
     );
@@ -114,15 +132,26 @@ class Derivatives extends Component {
 }
 
 const mapState = (state, ownProps) => {
-  const { unit = EMPTY_OBJECT } = ownProps;
-  const cuIDs                   = unit.derivatives;
-  const denormCUDs              = selectors.denormCUDs(state.content_units);
+  const { unit = EMPTY_OBJECT }            = ownProps;
+  const { origins = [], derivatives = [] } = unit;
+  const denormCUDs                         = selectors.denormCUDs(state.content_units);
+
   return {
-    cuds: cuIDs ? denormCUDs(cuIDs) : EMPTY_ARRAY,
+    cuds: derivatives.length > 0 ? denormCUDs(derivatives) : EMPTY_ARRAY,
     wip: selectors.getWIP(state.content_units, 'fetchItemDerivatives'),
     err: selectors.getError(state.content_units, 'fetchItemDerivatives'),
     currentLanguage: system.getCurrentLanguage(state.system),
+    associatedIds: [...origins, ...derivatives].map(cu => cu.content_unit_id),
+    wipAssociate: selectors.getWIP(state.content_units, 'addItemDerivatives'),
+    errAssociate: selectors.getError(state.content_units, 'addItemDerivatives'),
   };
 };
 
-export default connect(mapState)(Derivatives);
+function mapDispatch(dispatch) {
+  return bindActionCreators({
+    associate: actions.addItemDerivatives,
+    removeAssociate: actions.removeItemDerivatives,
+  }, dispatch);
+}
+
+export default connect(mapState, mapDispatch)(Derivatives);

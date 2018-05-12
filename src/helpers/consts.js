@@ -15,6 +15,7 @@ export const NS_COLLECTION_UNITS            = 'collections/content_units';
 export const NS_MERGE_UNITS                 = 'content_units/merge_units';
 export const NS_UNIT_FILE_UNITS             = 'content_units/files';
 export const NS_UNIT_ASSOCIATION_COLLECTION = 'content_units/association_collection';
+export const NS_UNIT_ASSOCIATION_CU         = 'content_units/association_cu';
 export const NS_FILE_UNITS                  = 'files/content_units';
 export const NS_UNITS                       = 'content_units';
 export const NS_FILES                       = 'files';
@@ -40,7 +41,7 @@ export const CT_PICNIC             = 'PICNIC';
 export const CT_UNITY_DAY          = 'UNITY_DAY';
 export const CT_CLIPS              = 'CLIPS';
 export const CT_ARTICLES           = 'ARTICLES';
-export const CT_LESSONS_SERIES           = 'LESSONS_SERIES';
+export const CT_LESSONS_SERIES     = 'LESSONS_SERIES';
 
 // Content Unit Types
 export const CT_LESSON_PART           = 'LESSON_PART';

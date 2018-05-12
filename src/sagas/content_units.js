@@ -51,6 +51,26 @@ function* fetchItemDerivatives(action) {
   }
 }
 
+function* addItemDerivatives(action) {
+  try {
+    const { id, duID } = action.payload;
+    yield call(api.put, `/content_units/${parseInt(id)}/derivatives/${duID}`);
+    yield put(actions.addItemDerivativesSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.addItemDerivativesFailure(err));
+  }
+}
+
+function* removeItemDerivatives(action) {
+  try {
+    const { id, duID } = action.payload;
+    yield call(api.delete, `/content_units/${parseInt(id)}/derivatives/${duID}`);
+    yield put(actions.removeItemDerivativesSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.removeItemDerivativesFailure(err));
+  }
+}
+
 function* fetchItemOrigins(action) {
   try {
     const id   = action.payload;
@@ -230,6 +250,14 @@ function* watchFetchItemDerivatives() {
   yield takeEvery(types.FETCH_ITEM_DERIVATIVES, fetchItemDerivatives);
 }
 
+function* watchAddItemDerivatives() {
+  yield takeEvery(types.ADD_ITEM_DERIVATIVES, addItemDerivatives);
+}
+
+function* watchRemoveItemDerivatives() {
+  yield takeEvery(types.REMOVE_ITEM_DERIVATIVES, removeItemDerivatives);
+}
+
 function* watchFetchItemOrigins() {
   yield takeEvery(types.FETCH_ITEM_ORIGINS, fetchItemOrigins);
 }
@@ -299,6 +327,8 @@ export const sagas = [
   watchFetchItemFiles,
   watchFetchItemCollections,
   watchFetchItemDerivatives,
+  watchAddItemDerivatives,
+  watchRemoveItemDerivatives,
   watchFetchItemOrigins,
   watchFetchItemSources,
   watchFetchItemTags,
