@@ -33,7 +33,7 @@ export const actions = {
 
 const initialState = {
   isReady: false,
-  currentLanguage: LANG_ENGLISH
+  currentLanguage: localStorage.getItem('currentLanguage') || LANG_ENGLISH
 };
 
 export const reducer = handleActions({
@@ -41,10 +41,13 @@ export const reducer = handleActions({
     ...state,
     isReady: true
   }),
-  [UPDATE_CURRENT_LANGUAGE]: (state, action) => ({
-    ...state,
-    currentLanguage: action.payload
-  })
+  [UPDATE_CURRENT_LANGUAGE]: (state, action) => {
+    localStorage.setItem('currentLanguage', action.payload);
+    return ({
+      ...state,
+      currentLanguage: action.payload
+    });
+  }
 }, initialState);
 
 /* Selectors */
