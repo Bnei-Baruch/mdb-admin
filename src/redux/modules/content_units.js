@@ -21,6 +21,9 @@ const FETCH_ITEM_DERIVATIVES_FAILURE  = 'ContentUnits/FETCH_ITEM_DERIVATIVES_FAI
 const ADD_ITEM_DERIVATIVES            = 'ContentUnits/ADD_ITEM_DERIVATIVES';
 const ADD_ITEM_DERIVATIVES_SUCCESS    = 'ContentUnits/ADD_ITEM_DERIVATIVES_SUCCESS';
 const ADD_ITEM_DERIVATIVES_FAILURE    = 'ContentUnits/ADD_ITEM_DERIVATIVES_FAILURE';
+const UPDATE_ITEM_DERIVATIVES         = 'ContentUnits/UPDATE_ITEM_DERIVATIVES';
+const UPDATE_ITEM_DERIVATIVES_SUCCESS = 'ContentUnits/UPDATE_ITEM_DERIVATIVES_SUCCESS';
+const UPDATE_ITEM_DERIVATIVES_FAILURE = 'ContentUnits/UPDATE_ITEM_DERIVATIVES_FAILURE';
 const REMOVE_ITEM_DERIVATIVES         = 'ContentUnits/REMOVE_ITEM_DERIVATIVES';
 const REMOVE_ITEM_DERIVATIVES_SUCCESS = 'ContentUnits/REMOVE_ITEM_DERIVATIVES_SUCCESS';
 const REMOVE_ITEM_DERIVATIVES_FAILURE = 'ContentUnits/REMOVE_ITEM_DERIVATIVES_FAILURE';
@@ -94,6 +97,9 @@ export const types = {
   ADD_ITEM_DERIVATIVES,
   ADD_ITEM_DERIVATIVES_SUCCESS,
   ADD_ITEM_DERIVATIVES_FAILURE,
+  UPDATE_ITEM_DERIVATIVES,
+  UPDATE_ITEM_DERIVATIVES_SUCCESS,
+  UPDATE_ITEM_DERIVATIVES_FAILURE,
   REMOVE_ITEM_DERIVATIVES,
   REMOVE_ITEM_DERIVATIVES_SUCCESS,
   REMOVE_ITEM_DERIVATIVES_FAILURE,
@@ -170,6 +176,13 @@ const fetchItemDerivativesFailure  = createAction(FETCH_ITEM_DERIVATIVES_FAILURE
 const addItemDerivatives           = createAction(ADD_ITEM_DERIVATIVES, (id, duID) => ({ id, duID }));
 const addItemDerivativesSuccess    = createAction(ADD_ITEM_DERIVATIVES_SUCCESS);
 const addItemDerivativesFailure    = createAction(ADD_ITEM_DERIVATIVES_FAILURE);
+const updateItemDerivatives        = createAction(UPDATE_ITEM_DERIVATIVES, (id, duID, params) => ({
+  id,
+  duID,
+  params
+}));
+const updateItemDerivativesSuccess = createAction(UPDATE_ITEM_DERIVATIVES_SUCCESS);
+const updateItemDerivativesFailure = createAction(UPDATE_ITEM_DERIVATIVES_FAILURE);
 const removeItemDerivatives        = createAction(REMOVE_ITEM_DERIVATIVES, (id, duID) => ({ id, duID }));
 const removeItemDerivativesSuccess = createAction(REMOVE_ITEM_DERIVATIVES_SUCCESS);
 const removeItemDerivativesFailure = createAction(REMOVE_ITEM_DERIVATIVES_FAILURE);
@@ -248,6 +261,9 @@ export const actions = {
   addItemDerivatives,
   addItemDerivativesSuccess,
   addItemDerivativesFailure,
+  updateItemDerivatives,
+  updateItemDerivativesSuccess,
+  updateItemDerivativesFailure,
   removeItemDerivatives,
   removeItemDerivativesSuccess,
   removeItemDerivativesFailure,
@@ -325,6 +341,9 @@ const keys = new Map([
   [ADD_ITEM_DERIVATIVES, 'addItemDerivatives'],
   [ADD_ITEM_DERIVATIVES_SUCCESS, 'addItemDerivatives'],
   [ADD_ITEM_DERIVATIVES_FAILURE, 'addItemDerivatives'],
+  [UPDATE_ITEM_DERIVATIVES, 'updateItemDerivatives'],
+  [UPDATE_ITEM_DERIVATIVES_SUCCESS, 'updateItemDerivatives'],
+  [UPDATE_ITEM_DERIVATIVES_FAILURE, 'updateItemDerivatives'],
   [REMOVE_ITEM_DERIVATIVES, 'removeItemDerivatives'],
   [REMOVE_ITEM_DERIVATIVES_SUCCESS, 'removeItemDerivatives'],
   [REMOVE_ITEM_DERIVATIVES_FAILURE, 'removeItemDerivatives'],
@@ -438,13 +457,31 @@ const onSuccess = (state, action) => {
     byID = update(byID, aDuID,
       x => ({ ...x, origins: [...x.origins || [], { name: '', content_unit_id: aId }] }));
     break;
+  case UPDATE_ITEM_DERIVATIVES_SUCCESS:
+    const { id: uId, duID: uDuID, params } = action.payload;
+
+    byID = update(state.byID, uId,
+      x => ({
+        ...x,
+        derivatives: x.derivatives ? [
+          { ...x.derivatives.find(d => d.content_unit_id === uDuID), ...params }, ...x.derivatives.filter(d => d.content_unit_id !== uDuID)
+        ] : []
+      }));
+    byID = update(byID, uDuID,
+      x => ({
+        ...x,
+        origins: x.origins ? [
+          { ...x.origins.find(d => d.content_unit_id === uId), ...params }, ...x.origins.filter(d => d.content_unit_id !== uId)
+        ] : []
+      }));
+    break;
   case REMOVE_ITEM_DERIVATIVES_SUCCESS:
     const { id: dId, duID: dDuID } = action.payload;
 
     byID = update(state.byID, dId,
-      x => ({ ...x, derivatives: x.derivatives.filter(d => d.content_unit_id !== dDuID) }));
+      x => ({ ...x, derivatives: x.derivatives ? x.derivatives.filter(d => d.content_unit_id !== dDuID) : [] }));
     byID = update(byID, dDuID,
-      x => ({ ...x, origins: x.origins.filter(d => d.content_unit_id !== dId) }));
+      x => ({ ...x, origins: x.origins ? x.origins.filter(d => d.content_unit_id !== dId) : [] }));
     break;
   case FETCH_ITEM_ORIGINS_SUCCESS:
     byID = merge(state.byID, {
@@ -549,6 +586,9 @@ export const reducer = handleActions({
   [ADD_ITEM_DERIVATIVES]: onRequest,
   [ADD_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
   [ADD_ITEM_DERIVATIVES_FAILURE]: onFailure,
+  [UPDATE_ITEM_DERIVATIVES]: onRequest,
+  [UPDATE_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
+  [UPDATE_ITEM_DERIVATIVES_FAILURE]: onFailure,
   [REMOVE_ITEM_DERIVATIVES]: onRequest,
   [REMOVE_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
   [REMOVE_ITEM_DERIVATIVES_FAILURE]: onFailure,

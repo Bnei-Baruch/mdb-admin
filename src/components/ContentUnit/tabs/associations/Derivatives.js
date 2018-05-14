@@ -1,3 +1,8 @@
+/**
+ * @TODO
+ * use base class common with ./Origins.js
+ */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -10,6 +15,7 @@ import { selectors, actions } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
 
 import * as shapes from '../../../shapes';
+import EditedField from '../../../shared/Fields/EditedField';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
@@ -38,8 +44,12 @@ class Derivatives extends Component {
     this.setState({ isShowAssociateModal: !this.state.isShowAssociateModal });
   };
 
-  handleUnAssociate = (cu) => {
-    this.props.removeAssociate(this.props.unit.id, cu.id);
+  handleUnAssociate = (id) => {
+    this.props.removeAssociate(this.props.unit.id, id);
+  };
+
+  handleUpdateAssociation = (cuId, name) => {
+    this.props.updateAssociation(this.props.unit.id, cuId, { name });
   };
 
   renderRow = (item) => {
@@ -51,13 +61,12 @@ class Derivatives extends Component {
             secure,
             published,
             properties,
-            currentLanguage
-          } = item;
+          } = item.content_unit;
 
     const { duration, film_date: filmDate } = properties || {};
     return (
       <Table.Row key={id}>
-        <Table.Cell><Link to={`/collections/${id}`}>{extractI18n(i18n, ['name'], currentLanguage)[0] || uid}</Link></Table.Cell>
+        <Table.Cell><Link to={`/content_units/${id}`}>{extractI18n(i18n, ['name'], this.props.currentLanguage)[0] || uid}</Link></Table.Cell>
         <Table.Cell>{titleize(CONTENT_TYPE_BY_ID[type_id])}</Table.Cell>
         <Table.Cell>{filmDate}</Table.Cell>
         <Table.Cell>{duration ? moment.utc(moment.duration(duration, 's').asMilliseconds()).format('HH:mm:ss') : null}</Table.Cell>
@@ -65,8 +74,14 @@ class Derivatives extends Component {
           <Header size="tiny" content={SECURITY_LEVELS[secure].text} color={SECURITY_LEVELS[secure].color} /></Table.Cell>
         <Table.Cell>{published ? <Icon name="checkmark" color="green" /> :
           <Icon name="ban" color="red" />}</Table.Cell>
+        <Table.Cell>
+          <EditedField
+            value={item.name}
+            onSave={val => this.handleUpdateAssociation(id, val)}
+          />
+        </Table.Cell>
         <Table.Cell width="1">
-          <Button circular compact size="mini" icon="remove" color="red" inverted onClick={() => this.handleUnAssociate(item)} /></Table.Cell>
+          <Button circular compact size="mini" icon="remove" color="red" inverted onClick={() => this.handleUnAssociate(id)} /></Table.Cell>
       </Table.Row>
     );
   };
@@ -84,17 +99,18 @@ class Derivatives extends Component {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>UID</Table.HeaderCell>
+            <Table.HeaderCell>Description</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
             <Table.HeaderCell>Film Date</Table.HeaderCell>
-            <Table.HeaderCell>Durtion</Table.HeaderCell>
+            <Table.HeaderCell>Duration</Table.HeaderCell>
             <Table.HeaderCell>Security</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>
+            <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>&nbsp;</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {cuds.map(x => this.renderRow(x.content_unit))}
+          {cuds.map(this.renderRow)}
         </Table.Body>
       </Table>
     );
@@ -151,6 +167,7 @@ function mapDispatch(dispatch) {
   return bindActionCreators({
     associate: actions.addItemDerivatives,
     removeAssociate: actions.removeItemDerivatives,
+    updateAssociation: actions.updateItemDerivatives,
   }, dispatch);
 }
 

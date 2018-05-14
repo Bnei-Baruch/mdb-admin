@@ -134,7 +134,7 @@ class NewUnits extends PureComponent {
         size="fullscreen"
         open={isShowAssociateModal}
         onClose={this.handleClose}>
-        <Modal.Header content="Associate Collections" />
+        <Modal.Header content="Associate Content Units" />
         <Modal.Content scrolling>
           <Menu borderless size="large">
             <Menu.Item onClick={this.toggleFilters}>

@@ -49,11 +49,11 @@ function* fetchList(action) {
   let urlParam;
   switch (namespace) {
   case  NS_UNIT_ASSOCIATION_COLLECTION:
-  case  NS_UNIT_ASSOCIATION_CU:
     urlParam = NS_COLLECTIONS;
     break;
   case  NS_FILE_UNITS:
   case  NS_MERGE_UNITS:
+  case  NS_UNIT_ASSOCIATION_CU:
   case  NS_COLLECTION_UNITS:
     urlParam = NS_UNITS;
     break;

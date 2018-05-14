@@ -54,10 +54,20 @@ function* fetchItemDerivatives(action) {
 function* addItemDerivatives(action) {
   try {
     const { id, duID } = action.payload;
-    yield call(api.put, `/content_units/${parseInt(id)}/derivatives/${duID}`);
+    yield call(api.post, `/content_units/${parseInt(id)}/derivatives/`, { derived_id: duID, name: "" });
     yield put(actions.addItemDerivativesSuccess(action.payload));
   } catch (err) {
     yield put(actions.addItemDerivativesFailure(err));
+  }
+}
+
+function* updateItemDerivatives(action) {
+  try {
+    const { id, duID, params } = action.payload;
+    yield call(api.put, `/content_units/${parseInt(id)}/derivatives/${duID}`, params);
+    yield put(actions.updateItemDerivativesSuccess(action.payload));
+  } catch (err) {
+    yield put(actions.updateItemDerivativesFailure(err));
   }
 }
 
@@ -254,6 +264,10 @@ function* watchAddItemDerivatives() {
   yield takeEvery(types.ADD_ITEM_DERIVATIVES, addItemDerivatives);
 }
 
+function* watchUpdateItemDerivatives() {
+  yield takeEvery(types.UPDATE_ITEM_DERIVATIVES, updateItemDerivatives);
+}
+
 function* watchRemoveItemDerivatives() {
   yield takeEvery(types.REMOVE_ITEM_DERIVATIVES, removeItemDerivatives);
 }
@@ -328,6 +342,7 @@ export const sagas = [
   watchFetchItemCollections,
   watchFetchItemDerivatives,
   watchAddItemDerivatives,
+  watchUpdateItemDerivatives,
   watchRemoveItemDerivatives,
   watchFetchItemOrigins,
   watchFetchItemSources,
