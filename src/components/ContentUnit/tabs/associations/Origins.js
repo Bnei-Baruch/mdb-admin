@@ -53,23 +53,17 @@ class Origins extends Component {
             uid,
             i18n,
             type_id,
-            secure,
-            published,
             properties,
           } = item.content_unit;
 
-    const { duration, film_date: filmDate } = properties || {};
+    const { film_date: filmDate } = properties || {};
     return (
       <Table.Row key={id}>
-        <Table.Cell><Link to={`/content_units/${id}`}>{extractI18n(i18n, ['name'], this.props.currentLanguage)[0] || uid}</Link></Table.Cell>
+        <Table.Cell><Link to={`/content_units/${id}`}>{uid}</Link></Table.Cell>
+        <Table.Cell>{extractI18n(i18n, ['name'], this.props.currentLanguage)[0] || uid}</Table.Cell>
         <Table.Cell>{titleize(CONTENT_TYPE_BY_ID[type_id])}</Table.Cell>
         <Table.Cell>{filmDate}</Table.Cell>
-        <Table.Cell>{duration ? moment.utc(moment.duration(duration, 's').asMilliseconds()).format('HH:mm:ss') : null}</Table.Cell>
-        <Table.Cell>
-          <Header size="tiny" content={SECURITY_LEVELS[secure].text} color={SECURITY_LEVELS[secure].color} /></Table.Cell>
-        <Table.Cell>{published ? <Icon name="checkmark" color="green" /> :
-          <Icon name="ban" color="red" />}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell collapsing>
           <EditedField
             value={item.name}
             onSave={val => this.handleUpdateAssociation(id, val)}
@@ -94,12 +88,10 @@ class Origins extends Component {
       <Table>
         <Table.Header>
           <Table.Row>
+            <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Description</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
             <Table.HeaderCell>Film Date</Table.HeaderCell>
-            <Table.HeaderCell>Duration</Table.HeaderCell>
-            <Table.HeaderCell>Security</Table.HeaderCell>
-            <Table.HeaderCell>Published</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>&nbsp;</Table.HeaderCell>
           </Table.Row>
