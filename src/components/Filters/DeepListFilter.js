@@ -33,9 +33,6 @@ class DeepListFilter extends React.Component {
   };
 
   componentDidMount() {
-    const { allValues, value } = this.props;
-    console.log('componentDidMount', allValues, value);
-
     this.scrollToSelections(this.state.selection);
   }
 
@@ -73,12 +70,13 @@ class DeepListFilter extends React.Component {
   menus = {};
 
   apply = () => {
-    const selection = this.state.selection;
+    const { updateValue, onApply, isUpdateQuery } = this.props;
+    const selection                               = this.state.selection;
     if (Array.isArray(selection) && selection.length === 0) {
       return;
     }
-    this.props.updateValue(selection);
-    this.props.onApply();
+    updateValue(selection, isUpdateQuery);
+    onApply();
   };
 
   canApply = () => this.state.selection && this.state.selection.length > 0;
@@ -86,7 +84,6 @@ class DeepListFilter extends React.Component {
   scrollToSelections = (selections) => {
     if (this.menus[0]) {
       selections.forEach((selection, depth) => {
-        console.log('scrollToSelections', this.menus, depth);
         const selectedItems = this.menus[depth].getElementsByClassName('active');
 
         if (selectedItems.length) {

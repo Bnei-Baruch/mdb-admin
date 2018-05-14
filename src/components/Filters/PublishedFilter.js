@@ -21,8 +21,9 @@ class PublishedFilter extends Component {
 
   handleChange = (value) => {
     if (value !== this.props.value) {
-      this.props.updateValue(value);
-      this.props.onApply();
+      const { updateValue, onApply, isUpdateQuery } = this.props;
+      updateValue(value, isUpdateQuery);
+      onApply();
     }
   };
 

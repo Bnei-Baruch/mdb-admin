@@ -9,6 +9,7 @@ const FreeText = props => (
     namespace={NS_UNITS}
     name="query"
     onApply={props.onFilterApplication}
+    isUpdateQuery={true}
   />
 );
 

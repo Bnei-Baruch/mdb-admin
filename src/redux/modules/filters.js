@@ -41,22 +41,28 @@ const editExistingFilter = createAction(EDIT_EXISTING_FILTER, (namespace, name, 
   index
 }));
 
-const addFilterValue          = createAction(ADD_FILTER_VALUE, (namespace, name, value) => ({
-  namespace,
-  name,
-  value
-}));
-const setFilterValue          = createAction(SET_FILTER_VALUE, (namespace, name, value, index) => ({
+const addFilterValue = createAction(ADD_FILTER_VALUE, (namespace, name, value, isUpdateQuery = false) => ({
   namespace,
   name,
   value,
-  index
+  isUpdateQuery
 }));
-const removeFilterValue       = createAction(REMOVE_FILTER_VALUE, (namespace, name, value) => ({
+
+const setFilterValue = createAction(SET_FILTER_VALUE, (namespace, name, value, isUpdateQuery = false, index) => ({
   namespace,
   name,
-  value
+  value,
+  index,
+  isUpdateQuery
 }));
+
+const removeFilterValue = createAction(REMOVE_FILTER_VALUE, (namespace, name, value, isUpdateQuery = false) => ({
+  namespace,
+  name,
+  value,
+  isUpdateQuery
+}));
+
 const setHydratedFilterValues = createAction(
   SET_HYDRATED_FILTER_VALUES,
   (namespace, filters) => ({ namespace, filters })

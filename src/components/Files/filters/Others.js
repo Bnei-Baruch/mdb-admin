@@ -15,6 +15,7 @@ const Others = props => (
             namespace={NS_FILES}
             name="secure"
             onApply={props.onFilterApplication}
+            isUpdateQuery={true}
           />
         </Grid.Column>
         <Grid.Column width={4}>
@@ -23,6 +24,7 @@ const Others = props => (
             namespace={NS_FILES}
             name="published"
             onApply={props.onFilterApplication}
+            isUpdateQuery={true}
           />
         </Grid.Column>
       </Grid.Row>

@@ -14,6 +14,7 @@ const Sources = props => (
     namespace={NS_UNITS}
     name="sources-filter"
     onApply={props.onFilterApplication}
+    isUpdateQuery={true}
     {...props}
   />
 );

@@ -16,6 +16,7 @@ const Others = props => (
             name="content_type"
             onApply={props.onFilterApplication}
             options={Array.from(Object.keys(COLLECTION_TYPES)).map(x => ({ key: x, value: x, text: x }))}
+            isUpdateQuery={true}
           />
         </Grid.Column>
         <Grid.Column width={4}>
@@ -24,6 +25,7 @@ const Others = props => (
             namespace={NS_COLLECTIONS}
             name="secure"
             onApply={props.onFilterApplication}
+            isUpdateQuery={true}
           />
         </Grid.Column>
         <Grid.Column width={4}>
@@ -32,6 +34,7 @@ const Others = props => (
             namespace={NS_COLLECTIONS}
             name="published"
             onApply={props.onFilterApplication}
+            isUpdateQuery={true}
           />
         </Grid.Column>
       </Grid.Row>
