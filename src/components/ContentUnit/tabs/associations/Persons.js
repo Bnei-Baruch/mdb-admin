@@ -87,11 +87,19 @@ class Persons extends Component {
   };
 
   doFilter = debounce(() => {
-    const regExp   = new RegExp(escapeRegExp(this.state.query), 'i');
-    const searched = this.props.allPersons
-      .filter(p => (regExp.test(extractI18n(p.i18n, ['name'])))).map(p => ({
+    const regExp                          = new RegExp(escapeRegExp(this.state.query), 'i');
+    const { allPersons, currentLanguage } = this.props;
+
+    const searched = allPersons
+      .filter(p => {
+        const allLangsName = Object.keys(p.i18n).reduce((acc, k) => {
+          acc += p.i18n[k].name;
+          return acc;
+        }, '');
+        return regExp.test(allLangsName);
+      }).map(p => ({
         id: p.id,
-        title: extractI18n(p.i18n, ['name'])[0],
+        title: extractI18n(p.i18n, ['name'], currentLanguage)[0],
       }));
     this.setState({ searched });
   }, 150);
