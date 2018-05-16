@@ -22,6 +22,7 @@ class PublishersMainPage extends Component {
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -37,7 +38,6 @@ class PublishersMainPage extends Component {
   state = {
     newPublisher: false,
   };
-
 
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
@@ -65,6 +65,7 @@ class PublishersMainPage extends Component {
         errOfCreate,
         onPageChange,
         create,
+        currentLanguage,
       } = this.props;
 
     return (
@@ -109,7 +110,7 @@ class PublishersMainPage extends Component {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <PublishersList items={items} />
+              <PublishersList items={items} currentLanguage={currentLanguage} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

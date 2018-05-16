@@ -22,6 +22,7 @@ class PersonsMainPage extends Component {
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -37,7 +38,6 @@ class PersonsMainPage extends Component {
   state = {
     newPerson: false,
   };
-
 
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
@@ -65,6 +65,7 @@ class PersonsMainPage extends Component {
         errOfCreate,
         onPageChange,
         create,
+        currentLanguage,
       } = this.props;
 
     return (
@@ -109,7 +110,7 @@ class PersonsMainPage extends Component {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <PersonsList items={items} />
+              <PersonsList items={items} currentLanguage={currentLanguage} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
