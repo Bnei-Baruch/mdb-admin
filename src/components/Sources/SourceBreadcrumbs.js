@@ -6,6 +6,7 @@ import { Breadcrumb } from 'semantic-ui-react';
 
 import { selectors as sources } from '../../redux/modules/sources';
 import { selectors as authors } from '../../redux/modules/authors';
+import { selectors as system } from '../../redux/modules/system';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
@@ -69,6 +70,7 @@ const mapState = (state, ownProps) => {
   return {
     path,
     author: root ? authors.getAuthorByCollectionId(state.authors)(root.id) : null,
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 
