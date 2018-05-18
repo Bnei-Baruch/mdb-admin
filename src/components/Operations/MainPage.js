@@ -5,19 +5,20 @@ import { Grid, Header, Icon, Label, Menu } from 'semantic-ui-react';
 import { EMPTY_ARRAY, NS_OPERATIONS } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
-import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../Filters/FilterTags/FilterTags';
 import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
 import OperationsList from './List';
-import DateRange from './filters/DateRange';
+
+import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
+import FilterTags from '../Filters/FilterTags/FilterTags';
+import DateRange from '../Filters/DateRange';
+import FreeText from '../Filters/FreeText';
 import Others from './filters/Others';
-import FreeText from './filters/FreeText';
 
 const filterTabs = [
-  { name: 'Free Text', element: FreeText },
-  { name: 'Date Range', element: DateRange },
+  { name: 'Free Text', element: FreeText, namespace: NS_OPERATIONS },
+  { name: 'Date Range', element: DateRange, namespace: NS_OPERATIONS },
   { name: 'Others', element: Others },
 ];
 
@@ -62,7 +63,7 @@ class FilesMainPage extends Component {
           <Menu.Menu position="right">
             <Menu.Item onClick={this.toggleFilters}>
               <Icon name="filter" />
-              {showFilters ? 'Hide' : 'Show' } Filters
+              {showFilters ? 'Hide' : 'Show'} Filters
             </Menu.Item>
           </Menu.Menu>
         </Menu>

@@ -38,7 +38,6 @@ class PublishersMainPage extends Component {
     newPublisher: false,
   };
 
-
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
     const nWip            = nextProps.wipOfCreate;
@@ -65,6 +64,7 @@ class PublishersMainPage extends Component {
         errOfCreate,
         onPageChange,
         create,
+        currentLanguage
       } = this.props;
 
     return (
@@ -109,7 +109,7 @@ class PublishersMainPage extends Component {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <PublishersList items={items} />
+              <PublishersList items={items} currentLanguage={currentLanguage} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

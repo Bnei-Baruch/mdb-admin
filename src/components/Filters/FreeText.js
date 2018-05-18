@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { NS_FILE_UNITS } from '../../../../../helpers/consts';
-import TextFilter from '../../../../Filters/TextFilter';
+import TextFilter from './TextFilter';
 
 const FreeText = props => (
   <TextFilter
-    namespace={NS_FILE_UNITS}
+    namespace={props.namespace}
     name="query"
     onApply={props.onFilterApplication}
+    isUpdateQuery={true}
   />
 );
 

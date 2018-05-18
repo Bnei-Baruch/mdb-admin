@@ -8,27 +8,32 @@ import uniq from 'lodash/uniq';
 
 import { formatError } from '../../../../../helpers/utils';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_COLLECTION } from '../../../../../helpers/consts';
+import {
+  EMPTY_ARRAY,
+  EMPTY_OBJECT,
+  NS_UNIT_ASSOCIATION_COLLECTION,
+  COLLECTION_TYPES
+} from '../../../../../helpers/consts';
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { selectors as collections } from '../../../../../redux/modules/collections';
 import { selectors as tagSelectors } from '../../../../../redux/modules/tags';
 
 import ResultsPageHeader from '../../../../shared/ResultsPageHeader';
-import FiltersHydrator from '../../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../../Filters/FilterTags/FilterTags';
 import TabsMenu from '../../../../shared/TabsMenu';
 import Pagination from '../../../../shared/Pagination';
 
 import * as shapes from '../../../../shapes';
 import CollectionsList from './List';
-import DateRange from './filters/DateRange';
-import Others from './filters/Others';
-import FreeText from './filters/FreeText';
+import FiltersHydrator from '../../../../Filters/FiltersHydrator/FiltersHydrator';
+import FilterTags from '../../../../Filters/FilterTags/FilterTags';
+import DateRange from '../../../../Filters/DateRange';
+import Others from '../../../../Filters/Others';
+import FreeText from '../../../../Filters/FreeText';
 
 const filterTabs = [
-  { name: 'Free Text', element: FreeText },
-  { name: 'Date Range', element: DateRange },
-  { name: 'Others', element: Others },
+  { name: 'Free Text', element: FreeText, namespace: NS_UNIT_ASSOCIATION_COLLECTION },
+  { name: 'Date Range', element: DateRange, namespace: NS_UNIT_ASSOCIATION_COLLECTION },
+  { name: 'Others', element: Others, namespace: NS_UNIT_ASSOCIATION_COLLECTION, contentTypes: COLLECTION_TYPES },
 ];
 
 class NewCollections extends PureComponent {
@@ -221,7 +226,7 @@ class NewCollections extends PureComponent {
 }
 
 const mapState = (state) => {
-  const status    = selectors.getNamespaceState(state.lists, NS_UNIT_ASSOCIATION_COLLECTION) || EMPTY_OBJECT;
+  const status = selectors.getNamespaceState(state.lists, NS_UNIT_ASSOCIATION_COLLECTION) || EMPTY_OBJECT;
   const denormIDs = collections.denormIDs(state.collections);
   return {
     ...status,

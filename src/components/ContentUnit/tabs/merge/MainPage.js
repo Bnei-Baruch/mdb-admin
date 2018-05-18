@@ -5,31 +5,31 @@ import PropTypes from 'prop-types';
 import uniq from 'lodash/uniq';
 import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_MERGE_UNITS } from '../../../../helpers/consts';
+import { EMPTY_ARRAY, EMPTY_OBJECT, NS_MERGE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
 import { actions, selectors } from '../../../../redux/modules/lists';
 import { formatError } from '../../../../helpers/utils';
-import FiltersHydrator from '../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../Filters/FilterTags/FilterTags';
 import TabsMenu from '../../../shared/TabsMenu';
 import Pagination from '../../../shared/Pagination';
 import ResultsPageHeader from '../../../shared/ResultsPageHeader';
 import { selectors as unitsSelectors, actions as unitActions } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
-
 import ContentUnitList from './List';
-import DateRange from './filters/DateRange';
-import Others from './filters/Others';
-import FreeText from './filters/FreeText';
-import Sources from './filters/Sources';
-import Topics from './filters/Topics';
+
+import FiltersHydrator from '../../../Filters/FiltersHydrator/FiltersHydrator';
+import FilterTags from '../../../Filters/FilterTags/FilterTags';
+import DateRange from '../../../Filters/DateRange';
+import FreeText from '../../../Filters/FreeText';
+import Sources from '../../../Filters/Sources';
+import Topics from '../../../Filters/Topics';
+import Others from '../../../Filters/Others';
 
 const filterTabs = [
-  { name: 'Date Range', element: DateRange },
-  { name: 'Free Text', element: FreeText },
-  { name: 'Sources', element: Sources },
-  { name: 'Topics', element: Topics },
-  { name: 'Others', element: Others },
+  { name: 'Date Range', element: DateRange, namespace: NS_MERGE_UNITS },
+  { name: 'Free Text', element: FreeText, namespace: NS_MERGE_UNITS },
+  { name: 'Sources', element: Sources, namespace: NS_MERGE_UNITS },
+  { name: 'Topics', element: Topics, namespace: NS_MERGE_UNITS },
+  { name: 'Others', element: Others, namespace: NS_MERGE_UNITS, contentTypes: CONTENT_UNIT_TYPES },
 ];
 
 class MergeContentUnitTab extends PureComponent {

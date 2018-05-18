@@ -24,10 +24,9 @@ class FilesList extends PureComponent {
   };
 
   renderItem = (unit) => {
-    const properties = extractI18n(unit.i18n, ['name'], currentLanguage)[0];
-
     const { selectedCUId, associatedCUId, currentLanguage } = this.props;
 
+    const properties = extractI18n(unit.i18n, ['name'], currentLanguage)[0];
     return (
       <Table.Row key={unit.id} disabled={associatedCUId === unit.id}>
         <Table.Cell>

@@ -38,7 +38,6 @@ class PersonsMainPage extends Component {
     newPerson: false,
   };
 
-
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
     const nWip            = nextProps.wipOfCreate;
@@ -65,6 +64,7 @@ class PersonsMainPage extends Component {
         errOfCreate,
         onPageChange,
         create,
+        currentLanguage
       } = this.props;
 
     return (
@@ -109,7 +109,7 @@ class PersonsMainPage extends Component {
                 &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
-              <PersonsList items={items} />
+              <PersonsList items={items} currentLanguage={currentLanguage} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

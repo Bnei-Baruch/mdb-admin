@@ -2,21 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
-import { selectors } from '../../../../../redux/modules/tags';
+import { selectors } from '../../redux/modules/tags';
 
-import DeepListFilter from '../../../../Filters/DeepListFilter';
+import DeepListFilter from './DeepListFilter';
 
 const Topics = props => (
   <DeepListFilter
-    namespace={NS_COLLECTION_UNITS}
+    namespace={props.namespace}
     name="topics-filter"
     onApply={props.onFilterApplication}
+    isUpdateQuery={true}
     {...props}
   />
 );
 
-Topics.propTypes = {
+Topics.propTypes              = {
   onFilterApplication: PropTypes.func.isRequired
 };
 
@@ -24,7 +24,6 @@ const mapState = (state) => {
   return {
     emptyLabel: 'No Tags',
     hierarchy: selectors.getHierarchy(state.tags),
-    //roots: selectors.getRoots(state.tags).filter(x => TOPICS_FOR_DISPLAY.indexOf(x) !== -1),
     getSubItemById: selectors.getTagById(state.tags),
   };
 };
