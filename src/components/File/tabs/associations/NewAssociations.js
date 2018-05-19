@@ -60,14 +60,18 @@ class FileContentUnit extends PureComponent {
     this.toggleFilters();
   };
 
+  handleChangeFilterFromTag;
+
   handleFiltersHydrated = () => {
     this.handlePageChange(1);
   };
 
   handleSelectCU = (cu) => this.setState({ selectedCUId: cu.id });
 
-  toggleFilters = () =>
-    this.setState({ showFilters: !this.state.showFilters });
+  toggleFilters = (isShow) => {
+    const showFilters = isShow === undefined ? !this.state.showFilters : isShow;
+    this.setState({ showFilters });
+  };
 
   associate = () => {
     const { selectedCUId }           = this.state;
@@ -125,7 +129,7 @@ class FileContentUnit extends PureComponent {
                   </div> :
                   null
               }
-              <FilterTags namespace={NS_FILE_UNITS} onClose={this.handleFiltersChange} />
+              <FilterTags namespace={NS_FILE_UNITS} changeFilterFromTag={this.handleChangeFilterFromTag} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
