@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb } from 'semantic-ui-react';
 
 import { selectors } from '../../redux/modules/tags';
+import { selectors as system } from '../../redux/modules/system';
 import * as shapes from '../shapes';
 import { extractI18n } from '../../helpers/utils';
 
@@ -56,6 +57,7 @@ const mapState = (state, ownProps) => {
   const { tag } = ownProps;
   return {
     path: selectors.getPathByID(state.tags)(tag.id),
+    currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 

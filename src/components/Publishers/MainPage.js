@@ -22,6 +22,7 @@ class PublishersMainPage extends Component {
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
     onPageChange: PropTypes.func.isRequired,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -64,7 +65,7 @@ class PublishersMainPage extends Component {
         errOfCreate,
         onPageChange,
         create,
-        currentLanguage
+        currentLanguage,
       } = this.props;
 
     return (
