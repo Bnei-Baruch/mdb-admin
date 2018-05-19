@@ -73,6 +73,8 @@ class MergeContentUnitTab extends PureComponent {
     this.askForData(pageNo);
   };
 
+  handleFiltersCancel = () => this.toggleFilters();
+
   handleFiltersChange = () => {
     this.handlePageChange(1);
   };
@@ -172,7 +174,7 @@ class MergeContentUnitTab extends PureComponent {
               {
                 showFilters ?
                   <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} />
+                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
                     <br />
                   </div> :
                   null

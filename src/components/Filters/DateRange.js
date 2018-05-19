@@ -8,12 +8,13 @@ const DateRange = props => (
     namespace={props.namespace}
     name="date-range-filter"
     onApply={props.onFilterApplication}
-    isUpdateQuery={true}
+    onCancel={props.onFilterCancel}
   />
 );
 
 DateRange.propTypes = {
-  onFilterApplication: PropTypes.func.isRequired
+  onFilterApplication: PropTypes.func.isRequired,
+  onFilterCancel: PropTypes.func.isRequired
 };
 
 export default DateRange;

@@ -47,6 +47,13 @@ class FilesMainPage extends Component {
     showFilters: false,
   };
 
+  handleFiltersCancel = () => this.toggleFilters();
+
+  handleFiltersChange = () => {
+    this.toggleFilters();
+    this.props.onFiltersChange();
+  };
+
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
 
   render() {
@@ -76,7 +83,7 @@ class FilesMainPage extends Component {
               {
                 showFilters ?
                   <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={onFiltersChange} />
+                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
                     <br />
                   </div> :
                   null

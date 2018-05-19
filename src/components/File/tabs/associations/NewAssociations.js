@@ -55,6 +55,11 @@ class FileContentUnit extends PureComponent {
     this.handlePageChange(1);
   };
 
+  handleFiltersCancel = () => {
+    this.handlePageChange(1);
+    this.toggleFilters();
+  };
+
   handleFiltersHydrated = () => {
     this.handlePageChange(1);
   };
@@ -115,7 +120,7 @@ class FileContentUnit extends PureComponent {
               {
                 showFilters ?
                   <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} />
+                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
                     <br />
                   </div> :
                   null

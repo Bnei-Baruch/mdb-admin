@@ -11,13 +11,15 @@ const Topics = props => (
     namespace={props.namespace}
     name="topics-filter"
     onApply={props.onFilterApplication}
+    onCancel={props.onFilterCancel}
     isUpdateQuery={true}
     {...props}
   />
 );
 
 Topics.propTypes              = {
-  onFilterApplication: PropTypes.func.isRequired
+  onFilterApplication: PropTypes.func.isRequired,
+  onFilterCancel: PropTypes.func.isRequired
 };
 
 const mapState = (state) => {

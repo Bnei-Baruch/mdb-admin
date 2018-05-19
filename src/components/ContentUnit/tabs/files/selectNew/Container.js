@@ -65,10 +65,12 @@ class AddFiles extends PureComponent {
     fetchList(NS_UNIT_FILE_UNITS, pageNo);
   };
 
+  handleFiltersCancel = () => this.toggleFilters();
+
   handleFiltersChange = () => {
+    this.toggleFilters();
     this.handlePageChange(1);
   };
-
   handleFiltersHydrated = () => {
     this.handlePageChange(1);
   };
@@ -166,7 +168,7 @@ class AddFiles extends PureComponent {
                 {
                   showFilters ?
                     <div>
-                      <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} />
+                      <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel}  />
                       <br />
                     </div> :
                     null

@@ -76,7 +76,12 @@ class NewCollections extends PureComponent {
     this.askForData(pageNo);
   };
 
-  onFiltersChange = () => this.onPageChange(1);
+  handleFiltersCancel = () => this.toggleFilters();
+
+  handleFiltersChange = () => {
+    this.onPageChange(1);
+    this.toggleFilters();
+  };
 
   onFiltersHydrated = () => this.onPageChange(1);
 
@@ -168,12 +173,12 @@ class NewCollections extends PureComponent {
                 {
                   showFilters ?
                     <div>
-                      <TabsMenu items={filterTabs} onFilterApplication={this.onFiltersChange} />
+                      <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
                       <br />
                     </div> :
                     null
                 }
-                <FilterTags namespace={NS_UNIT_ASSOCIATION_COLLECTION} onClose={this.onFiltersChange} />
+                <FilterTags namespace={NS_UNIT_ASSOCIATION_COLLECTION} onClose={this.handleFiltersChange} />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -226,7 +231,7 @@ class NewCollections extends PureComponent {
 }
 
 const mapState = (state) => {
-  const status = selectors.getNamespaceState(state.lists, NS_UNIT_ASSOCIATION_COLLECTION) || EMPTY_OBJECT;
+  const status    = selectors.getNamespaceState(state.lists, NS_UNIT_ASSOCIATION_COLLECTION) || EMPTY_OBJECT;
   const denormIDs = collections.denormIDs(state.collections);
   return {
     ...status,

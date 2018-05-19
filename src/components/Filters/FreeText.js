@@ -13,7 +13,8 @@ const FreeText = props => (
 );
 
 FreeText.propTypes = {
-  onFilterApplication: PropTypes.func.isRequired
+  onFilterApplication: PropTypes.func.isRequired,
+  onFilterCancel: PropTypes.func.isRequired
 };
 
 export default FreeText;

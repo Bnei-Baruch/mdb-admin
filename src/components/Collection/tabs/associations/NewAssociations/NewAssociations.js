@@ -56,6 +56,13 @@ class NewAssociations extends PureComponent {
   toggleFilters = () =>
     this.setState({ showFilters: !this.state.showFilters });
 
+  handleFiltersCancel = () => this.toggleFilters();
+
+  handleFiltersChange = () => {
+    this.toggleFilters();
+    this.props.onFiltersChange();
+  };
+
   handleViewMode = () =>
     this.props.setEditMode(false);
 
@@ -113,7 +120,7 @@ class NewAssociations extends PureComponent {
               {
                 showFilters ?
                   <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={onFiltersChange} />
+                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
                     <br />
                   </div> :
                   null

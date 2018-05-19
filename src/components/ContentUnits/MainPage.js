@@ -70,6 +70,13 @@ class ContentUnitMainPage extends Component {
   toggleFilters = () =>
     this.setState({ showFilters: !this.state.showFilters });
 
+  handleFiltersCancel = () => this.toggleFilters();
+
+  handleFiltersChange = () => {
+    this.toggleFilters();
+    this.props.onFiltersChange();
+  };
+
   toggleNewCU = () =>
     this.setState({ showNewCU: !this.state.showNewCU });
 
@@ -117,7 +124,7 @@ class ContentUnitMainPage extends Component {
               {
                 showFilters ?
                   <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={onFiltersChange} />
+                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel}  />
                     <br />
                   </div> :
                   null

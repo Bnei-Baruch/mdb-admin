@@ -7,9 +7,9 @@ import { EMPTY_ARRAY } from '../../helpers/consts';
 import { filterConfigShape } from '../shapes';
 
 const Filters = (props) => {
-  const { filters, namespace, onFilterApplication } = props;
-  const filterChunks                                = chunk(filters, 4);
+  const { filters, namespace, onFilterApplication, onFilterCancel } = props;
 
+  const filterChunks = chunk(filters, 4);
   return (
     <Segment color="blue">
       <Form>
@@ -24,6 +24,7 @@ const Filters = (props) => {
                       namespace={namespace}
                       name={filter.name}
                       onApply={onFilterApplication}
+                      onCancel={onFilterCancel}
                       {...filter.props}
                     />
                   </Form.Field>
@@ -40,7 +41,8 @@ const Filters = (props) => {
 Filters.propTypes = {
   namespace: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(filterConfigShape),
-  onFilterApplication: PropTypes.func.isRequired
+  onFilterApplication: PropTypes.func.isRequired,
+  onFilterCancel: PropTypes.func.isRequired
 };
 
 Filters.defaultProps = {

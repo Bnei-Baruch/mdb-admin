@@ -63,11 +63,16 @@ class CollectionsMainPage extends Component {
     }
   }
 
-  toggleFilters = () =>
-    this.setState({ showFilters: !this.state.showFilters });
+  handleFiltersCancel = () => this.toggleFilters();
 
-  toggleNewCollection = () =>
-    this.setState({ newCollection: !this.state.newCollection });
+  handleFiltersChange = () => {
+    this.toggleFilters();
+    this.props.onFiltersChange();
+  };
+
+  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
+
+  toggleNewCollection = () => this.setState({ newCollection: !this.state.newCollection });
 
   render() {
     const { showFilters, newCollection } = this.state;
@@ -115,7 +120,7 @@ class CollectionsMainPage extends Component {
               {
                 showFilters ?
                   <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={onFiltersChange} />
+                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
                     <br />
                   </div> :
                   null

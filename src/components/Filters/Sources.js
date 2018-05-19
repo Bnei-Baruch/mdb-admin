@@ -13,13 +13,15 @@ const Sources = props => (
     namespace={props.namespace}
     name="sources-filter"
     onApply={props.onFilterApplication}
+    onCancel={props.onFilterCancel}
     isUpdateQuery={true}
     {...props}
   />
 );
 
 Sources.propTypes              = {
-  onFilterApplication: PropTypes.func.isRequired
+  onFilterApplication: PropTypes.func.isRequired,
+  onFilterCancel: PropTypes.func.isRequired
 };
 const insertAuthorsToHierarchy = (hierarchy, authors) => {
   const { childMap } = hierarchy;

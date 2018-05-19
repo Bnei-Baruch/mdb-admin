@@ -45,7 +45,8 @@ const Others = props => {
 };
 
 Others.propTypes = {
-  onFilterApplication: PropTypes.func.isRequired
+  onFilterApplication: PropTypes.func.isRequired,
+  onFilterCancel: PropTypes.func.isRequired
 };
 
 export default Others;
