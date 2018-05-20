@@ -17,9 +17,6 @@ class CollectionsMainPage extends ListWithFiltersBase {
       items: PropTypes.arrayOf(shapes.Collection),
       wipOfCreate: PropTypes.bool,
       errOfCreate: shapes.Error,
-      onPageChange: PropTypes.func.isRequired,
-      onFiltersChange: PropTypes.func.isRequired,
-      onFiltersHydrated: PropTypes.func.isRequired,
       create: PropTypes.func.isRequired,
       getTagByUID: PropTypes.func.isRequired,
     };
@@ -31,7 +28,7 @@ class CollectionsMainPage extends ListWithFiltersBase {
       errOfCreate: null
     };
 
-    this.state                       = {
+    this.state = {
       ...super.state,
       newCollection: false,
     };
@@ -49,25 +46,22 @@ class CollectionsMainPage extends ListWithFiltersBase {
     }
   }
 
-  handleFiltersChange() {
-    this.toggleFilters();
-    this.props.onFiltersChange();
-  };
-
   toggleNewCollection = () => this.setState({ newCollection: !this.state.newCollection });
 
-  getNamespace() {
+  getNamespace = () => {
     return NS_COLLECTIONS;
-  }
+  };
 
-  getContentType() {
+  getContentType = () => {
     return COLLECTION_TYPES;
-  }
+  };
 
-  renderList() {
+  renderList = () => {
     const { items, currentLanguage, getTagByUID } = this.props;
     return <CollectionsList items={items} getTagByUID={getTagByUID} currentLanguage={currentLanguage} />;
-  }
+  };
+
+  getPageNo = this.props.getPageNo;
 
   render() {
     const { showFilters, newCollection } = this.state;
