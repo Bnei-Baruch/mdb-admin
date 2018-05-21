@@ -19,7 +19,7 @@ class FilterTags extends Component {
     })),
     removeFilterValue: PropTypes.func.isRequired,
     editExistingFilter: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
+    changeFilterFromTag: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

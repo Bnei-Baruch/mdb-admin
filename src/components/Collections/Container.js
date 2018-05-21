@@ -17,8 +17,6 @@ class CollectionsContainer extends Component {
     location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
-    fetchList: PropTypes.func.isRequired,
-    setPage: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
