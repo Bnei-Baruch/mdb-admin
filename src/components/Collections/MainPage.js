@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Header, Icon, Menu, Modal } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_COLLECTIONS, COLLECTION_TYPES } from '../../helpers/consts';
+import { NS_COLLECTIONS, COLLECTION_TYPES } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import CreateCollectionForm from '../shared/Forms/Collection/CreateCollectionForm';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
@@ -23,7 +23,6 @@ class CollectionsMainPage extends ListWithFiltersBase {
 
     CollectionsMainPage.defaultProps = {
       ...super.defaultProps,
-      items: EMPTY_ARRAY,
       wipOfCreate: false,
       errOfCreate: null
     };
@@ -34,8 +33,6 @@ class CollectionsMainPage extends ListWithFiltersBase {
     };
 
   }
-
-  static propTypes = {};
 
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
@@ -48,24 +45,19 @@ class CollectionsMainPage extends ListWithFiltersBase {
 
   toggleNewCollection = () => this.setState({ newCollection: !this.state.newCollection });
 
-  getNamespace = () => {
-    return NS_COLLECTIONS;
-  };
+  getNamespace = () => NS_COLLECTIONS;
 
-  getContentType = () => {
-    return COLLECTION_TYPES;
-  };
+  getContentType = () => COLLECTION_TYPES;
+
+  getPageNo = this.props.getPageNo;
 
   renderList = () => {
     const { items, currentLanguage, getTagByUID } = this.props;
     return <CollectionsList items={items} getTagByUID={getTagByUID} currentLanguage={currentLanguage} />;
   };
 
-  getPageNo = this.props.getPageNo;
-
   render() {
-    const { showFilters, newCollection } = this.state;
-
+    const { showFilters, newCollection }       = this.state;
     const { wipOfCreate, errOfCreate, create } = this.props;
 
     return (

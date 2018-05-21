@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Grid, Header, Label } from 'semantic-ui-react';
 
+import { EMPTY_ARRAY } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import TabsMenu from '../shared/TabsMenu';
@@ -11,9 +11,17 @@ import ResultsPageHeader from '../shared/ResultsPageHeader';
 
 import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
 import FilterTags from '../Filters/FilterTags/FilterTags';
-import FreeText from '../Filters/FreeText';
 import DateRange from '../Filters/DateRange';
+import FreeText from '../Filters/FreeText';
+import Sources from '../Filters/Sources';
+import Topics from '../Filters/Topics';
 import Others from '../Filters/Others';
+
+const allFiltersByName = new Map();
+allFiltersByName.set('DateRange', { name: 'Date Range', element: DateRange });
+allFiltersByName.set('FreeText', { name: 'Free Text', element: FreeText });
+allFiltersByName.set('Sources', { name: 'Sources', element: Sources });
+allFiltersByName.set('Topics', { name: 'Topics', element: Topics });
 
 class ListWithFiltersBase extends PureComponent {
 
@@ -28,7 +36,7 @@ class ListWithFiltersBase extends PureComponent {
     wip: PropTypes.bool,
     err: shapes.Error,
     setPage: PropTypes.func.isRequired,
-    askForData: PropTypes.func.isRequired,
+    fetchList: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -36,19 +44,25 @@ class ListWithFiltersBase extends PureComponent {
     total: 0,
     wip: false,
     err: null,
+    items: EMPTY_ARRAY,
   };
 
   state = {
     showFilters: false,
   };
 
-  // eslint-disable-next-line class-methods-use-this
+  usedFiltersNames = ['FreeText', 'DateRange'];
+
   getFilterTabs = () => {
-    return [
-      { name: 'Free Text', element: FreeText },
-      { name: 'Date Range', element: DateRange },
-      { name: 'Others', element: Others, namespace: this.getNamespace(), contentTypes: this.getContentType() },
-    ];
+    let filters = this.usedFiltersNames.map(n => ({ ...allFiltersByName.get(n), namespace: this.getNamespace() }));
+
+    filters.push({
+      name: 'Others',
+      element: Others,
+      namespace: this.getNamespace(),
+      contentTypes: this.getContentType()
+    });
+    return filters;
   };
 
   handlePageChange = (pageNo) => {
@@ -144,6 +158,7 @@ class ListWithFiltersBase extends PureComponent {
 
   render() {
     throw new Error('Not Implemented');
+    // eslint-disable-next-line no-unreachable
     return null;
   }
 }
