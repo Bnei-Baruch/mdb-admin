@@ -40,7 +40,9 @@ export const CT_PICNIC             = 'PICNIC';
 export const CT_UNITY_DAY          = 'UNITY_DAY';
 export const CT_CLIPS              = 'CLIPS';
 export const CT_ARTICLES           = 'ARTICLES';
-export const CT_LESSONS_SERIES           = 'LESSONS_SERIES';
+export const CT_LESSONS_SERIES     = 'LESSONS_SERIES';
+export const CT_SONGS              = 'SONGS';
+export const CT_BOOKS              = 'BOOKS';
 
 // Content Unit Types
 export const CT_LESSON_PART           = 'LESSON_PART';
@@ -60,6 +62,9 @@ export const CT_TRAINING              = 'TRAINING';
 export const CT_KITEI_MAKOR           = 'KITEI_MAKOR';
 export const CT_PUBLICATION           = 'PUBLICATION';
 export const CT_LELO_MIKUD            = 'LELO_MIKUD';
+export const CT_SONG                  = 'SONG';
+export const CT_BOOK                  = 'BOOK';
+export const CT_BLOG_POST             = 'BLOG_POST';
 
 export const CONTENT_TYPE_BY_ID = {
   1: CT_DAILY_LESSON,
@@ -95,6 +100,11 @@ export const CONTENT_TYPE_BY_ID = {
   37: CT_ARTICLES,
   38: CT_LELO_MIKUD,
   39: CT_LESSONS_SERIES,
+  40: CT_SONG,
+  41: CT_SONGS,
+  42: CT_BOOK,
+  43: CT_BOOKS,
+  44: CT_BLOG_POST,
 };
 
 // Collection types
@@ -115,6 +125,9 @@ export const COLLECTION_TYPES = {
   [CT_CLIPS]: { text: CT_CLIPS, value: 35 },
   [CT_ARTICLES]: { text: CT_ARTICLES, value: 37 },
   [CT_LESSONS_SERIES]: { text: CT_LESSONS_SERIES, value: 39 },
+  [CT_SONGS]: { text: CT_SONGS, value: 40 },
+  [CT_BOOKS]: { text: CT_BOOKS, value: 41 },
+  [CT_UNKNOWN]: { text: CT_UNKNOWN, value: 27 },
 };
 
 // Content Unit types
@@ -136,6 +149,9 @@ export const CONTENT_UNIT_TYPES = {
   [CT_KITEI_MAKOR]: { text: CT_KITEI_MAKOR, value: 31 },
   [CT_PUBLICATION]: { text: CT_PUBLICATION, value: 36 },
   [CT_LELO_MIKUD]: { text: CT_LELO_MIKUD, value: 38 },
+  [CT_SONG]: { text: CT_SONG, value: 42 },
+  [CT_BOOK]: { text: CT_BOOK, value: 43 },
+  [CT_BLOG_POST]: { text: CT_BLOG_POST, value: 44 },
 };
 
 export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
