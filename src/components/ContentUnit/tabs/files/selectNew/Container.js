@@ -5,27 +5,27 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import uniq from 'lodash/uniq';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_FILE_UNITS } from '../../../../../helpers/consts';
+import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../../helpers/consts';
 import { formatError } from '../../../../../helpers/utils';
 import * as shapes from '../../../../shapes';
-import FiltersHydrator from '../../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../../Filters/FilterTags/FilterTags';
 import TabsMenu from '../../../../shared/TabsMenu';
 import Pagination from '../../../../shared/Pagination';
 import ResultsPageHeader from '../../../../shared/ResultsPageHeader';
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { actions as cuActions, selectors as cuSelectors } from '../../../../../redux/modules/content_units';
 import { selectors as filesSelectors } from '../../../../../redux/modules/files';
-
 import FilesList from './List';
-import DateRange from '../filters/DateRange';
-import Others from '../filters/Others';
-import FreeText from '../filters/FreeText';
+
+import FiltersHydrator from '../../../../Filters/FiltersHydrator/FiltersHydrator';
+import FilterTags from '../../../../Filters/FilterTags/FilterTags';
+import DateRange from '../../../../Filters/DateRange';
+import FreeText from '../../../../Filters/FreeText';
+import Others from '../../../../Filters/Others';
 
 const filterTabs = [
-  { name: 'Date Range', element: DateRange },
-  { name: 'Others', element: Others },
-  { name: 'Free Text', element: FreeText },
+  { name: 'Date Range', element: DateRange, namespace: NS_UNIT_FILE_UNITS },
+  { name: 'Free Text', element: FreeText, namespace: NS_UNIT_FILE_UNITS },
+  { name: 'Others', element: Others, namespace: NS_UNIT_FILE_UNITS, contentTypes: CONTENT_UNIT_TYPES },
 ];
 
 class AddFiles extends PureComponent {
@@ -65,10 +65,12 @@ class AddFiles extends PureComponent {
     fetchList(NS_UNIT_FILE_UNITS, pageNo);
   };
 
+  handleFiltersCancel = () => this.toggleFilters();
+
   handleFiltersChange = () => {
+    this.toggleFilters();
     this.handlePageChange(1);
   };
-
   handleFiltersHydrated = () => {
     this.handlePageChange(1);
   };
@@ -166,7 +168,7 @@ class AddFiles extends PureComponent {
                 {
                   showFilters ?
                     <div>
-                      <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} />
+                      <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel}  />
                       <br />
                     </div> :
                     null
@@ -177,7 +179,7 @@ class AddFiles extends PureComponent {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-                <div style={{ textAlign: 'right' }}>
+              <div style={{ textAlign: 'right' }}>
 
                 <ResultsPageHeader pageNo={pageNo} total={total} />
                 &nbsp;&nbsp;

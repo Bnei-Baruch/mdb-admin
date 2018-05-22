@@ -158,7 +158,7 @@ class DeepListFilter extends React.Component {
 
     const roots = hierarchyToTree(hierarchy);
     return (
-      <Container className="padded-horizontally">
+      <Container className="padded-horizontally" fluid>
         <Segment
           vertical
           className="tab active"

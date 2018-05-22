@@ -2,28 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header, Icon, Label, Menu, Modal } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_UNITS } from '../../helpers/consts';
+import { EMPTY_ARRAY, NS_UNITS, CONTENT_UNIT_TYPES } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
-import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../Filters/FilterTags/FilterTags';
 import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
 import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
 import ContentUnitList from './List';
-import DateRange from './filters/DateRange';
-import Others from './filters/Others';
-import FreeText from './filters/FreeText';
-import Sources from './filters/Sources';
-import Topics from './filters/Topics';
+
+import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
+import FilterTags from '../Filters/FilterTags/FilterTags';
+import DateRange from '../Filters/DateRange';
+import FreeText from '../Filters/FreeText';
+import Sources from '../Filters/Sources';
+import Topics from '../Filters/Topics';
+import Others from '../Filters/Others';
 
 const filterTabs = [
-  { name: 'Free Text', element: FreeText },
-  { name: 'Date Range', element: DateRange },
-  { name: 'Sources', element: Sources },
-  { name: 'Topics', element: Topics },
-  { name: 'Others', element: Others },
+  { name: 'Free Text', element: FreeText, namespace: NS_UNITS },
+  { name: 'Date Range', element: DateRange, namespace: NS_UNITS },
+  { name: 'Sources', element: Sources, namespace: NS_UNITS },
+  { name: 'Topics', element: Topics, namespace: NS_UNITS },
+  { name: 'Others', element: Others, namespace: NS_UNITS, contentTypes: CONTENT_UNIT_TYPES },
 ];
 
 class ContentUnitMainPage extends Component {
@@ -68,6 +69,13 @@ class ContentUnitMainPage extends Component {
 
   toggleFilters = () =>
     this.setState({ showFilters: !this.state.showFilters });
+
+  handleFiltersCancel = () => this.toggleFilters();
+
+  handleFiltersChange = () => {
+    this.toggleFilters();
+    this.props.onFiltersChange();
+  };
 
   toggleNewCU = () =>
     this.setState({ showNewCU: !this.state.showNewCU });
@@ -116,7 +124,7 @@ class ContentUnitMainPage extends Component {
               {
                 showFilters ?
                   <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={onFiltersChange} />
+                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel}  />
                     <br />
                   </div> :
                   null

@@ -3,23 +3,25 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { selectors } from '../../../../../redux/modules/sources';
-import { selectors as authors } from '../../../../../redux/modules/authors';
+import { selectors } from '../../redux/modules/sources';
+import { selectors as authors } from '../../redux/modules/authors';
 
-import { NS_COLLECTION_UNITS } from '../../../../../helpers/consts';
-import DeepListFilter from '../../../../Filters/DeepListFilter';
+import DeepListFilter from './DeepListFilter';
 
 const Sources = props => (
   <DeepListFilter
-    namespace={NS_COLLECTION_UNITS}
+    namespace={props.namespace}
     name="sources-filter"
     onApply={props.onFilterApplication}
+    onCancel={props.onFilterCancel}
+    isUpdateQuery={true}
     {...props}
   />
 );
 
 Sources.propTypes              = {
-  onFilterApplication: PropTypes.func.isRequired
+  onFilterApplication: PropTypes.func.isRequired,
+  onFilterCancel: PropTypes.func.isRequired
 };
 const insertAuthorsToHierarchy = (hierarchy, authors) => {
   const { childMap } = hierarchy;

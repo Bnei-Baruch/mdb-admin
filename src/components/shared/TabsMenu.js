@@ -10,6 +10,7 @@ class TabsMenu extends Component {
     items: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
       element: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+      namespace: PropTypes.string,
     })),
     active: PropTypes.string,
   };
@@ -68,7 +69,7 @@ class TabsMenu extends Component {
             })
           }
         </Menu>
-        {(<ElementType {...this.props} />)}
+        {(<ElementType {...this.props} namespace={activeItem.namespace} contentTypes={activeItem.contentTypes} />)}
       </div>
     );
   }

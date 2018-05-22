@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { NS_FILE_UNITS } from '../../../../../helpers/consts';
-import { DateRangeFilter } from '../../../../Filters/filterComponents';
+import { DateRangeFilter } from './filterComponents';
 
 const DateRange = props => (
   <DateRangeFilter
-    namespace={NS_FILE_UNITS}
+    namespace={props.namespace}
     name="date-range-filter"
     onApply={props.onFilterApplication}
+    onCancel={props.onFilterCancel}
   />
 );
 
 DateRange.propTypes = {
-  onFilterApplication: PropTypes.func.isRequired
+  onFilterApplication: PropTypes.func.isRequired,
+  onFilterCancel: PropTypes.func.isRequired
 };
 
 export default DateRange;

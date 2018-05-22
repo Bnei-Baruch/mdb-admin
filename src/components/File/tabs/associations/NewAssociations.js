@@ -3,23 +3,24 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_FILE_UNITS } from '../../../../helpers/consts';
+import { EMPTY_ARRAY, NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
-import FiltersHydrator from '../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../Filters/FilterTags/FilterTags';
 import TabsMenu from '../../../shared/TabsMenu';
 import Pagination from '../../../shared/Pagination';
 import ResultsPageHeader from '../../../shared/ResultsPageHeader';
 import ContentUnitList from './NewAssociationsList';
-import FreeText from './filters/FreeText';
-import DateRange from './filters/DateRange';
-import Others from './filters/Others';
+
+import FiltersHydrator from '../../../Filters/FiltersHydrator/FiltersHydrator';
+import FilterTags from '../../../Filters/FilterTags/FilterTags';
+import FreeText from '../../../Filters/FreeText';
+import DateRange from '../../../Filters/DateRange';
+import Others from '../../../Filters/Others';
 
 const filterTabs = [
   { name: 'Free Text', element: FreeText },
   { name: 'Date Range', element: DateRange },
-  { name: 'Others', element: Others },
+  { name: 'Others', element: Others, namespace: NS_FILE_UNITS, contentTypes: CONTENT_UNIT_TYPES },
 ];
 
 class FileContentUnit extends PureComponent {
@@ -52,6 +53,11 @@ class FileContentUnit extends PureComponent {
 
   handleFiltersChange = () => {
     this.handlePageChange(1);
+  };
+
+  handleFiltersCancel = () => {
+    this.handlePageChange(1);
+    this.toggleFilters();
   };
 
   handleFiltersHydrated = () => {
@@ -114,7 +120,7 @@ class FileContentUnit extends PureComponent {
               {
                 showFilters ?
                   <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} />
+                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
                     <br />
                   </div> :
                   null
