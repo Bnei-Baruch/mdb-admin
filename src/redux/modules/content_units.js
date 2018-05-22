@@ -6,30 +6,39 @@ import { bulkMerge, merge, setMap, update, delList, updateList } from '../utils'
 
 /* Types */
 
-const FETCH_ITEM                     = 'ContentUnits/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS             = 'ContentUnits/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE             = 'ContentUnits/FETCH_ITEM_FAILURE';
-const FETCH_ITEM_FILES               = 'ContentUnits/FETCH_ITEM_FILES';
-const FETCH_ITEM_FILES_SUCCESS       = 'ContentUnits/FETCH_ITEM_FILES_SUCCESS';
-const FETCH_ITEM_FILES_FAILURE       = 'ContentUnits/FETCH_ITEM_FILES_FAILURE';
-const FETCH_ITEM_COLLECTIONS         = 'ContentUnits/FETCH_ITEM_COLLECTIONS';
-const FETCH_ITEM_COLLECTIONS_SUCCESS = 'ContentUnits/FETCH_ITEM_COLLECTIONS_SUCCESS';
-const FETCH_ITEM_COLLECTIONS_FAILURE = 'ContentUnits/FETCH_ITEM_COLLECTIONS_FAILURE';
-const FETCH_ITEM_DERIVATIVES         = 'ContentUnits/FETCH_ITEM_DERIVATIVES';
-const FETCH_ITEM_DERIVATIVES_SUCCESS = 'ContentUnits/FETCH_ITEM_DERIVATIVES_SUCCESS';
-const FETCH_ITEM_DERIVATIVES_FAILURE = 'ContentUnits/FETCH_ITEM_DERIVATIVES_FAILURE';
-const FETCH_ITEM_ORIGINS             = 'ContentUnits/FETCH_ITEM_ORIGINS';
-const FETCH_ITEM_ORIGINS_SUCCESS     = 'ContentUnits/FETCH_ITEM_ORIGINS_SUCCESS';
-const FETCH_ITEM_ORIGINS_FAILURE     = 'ContentUnits/FETCH_ITEM_ORIGINS_FAILURE';
-const FETCH_ITEM_SOURCES             = 'ContentUnits/FETCH_ITEM_SOURCES';
-const FETCH_ITEM_SOURCES_SUCCESS     = 'ContentUnits/FETCH_ITEM_SOURCES_SUCCESS';
-const FETCH_ITEM_SOURCES_FAILURE     = 'ContentUnits/FETCH_ITEM_SOURCES_FAILURE';
-const FETCH_ITEM_TAGS                = 'ContentUnits/FETCH_ITEM_TAGS';
-const FETCH_ITEM_TAGS_SUCCESS        = 'ContentUnits/FETCH_ITEM_TAGS_SUCCESS';
-const FETCH_ITEM_TAGS_FAILURE        = 'ContentUnits/FETCH_ITEM_TAGS_FAILURE';
-const FETCH_ITEM_PERSONS             = 'ContentUnits/FETCH_ITEM_PERSONS';
-const FETCH_ITEM_PERSONS_SUCCESS     = 'ContentUnits/FETCH_ITEM_PERSONS_SUCCESS';
-const FETCH_ITEM_PERSONS_FAILURE     = 'ContentUnits/FETCH_ITEM_PERSONS_FAILURE';
+const FETCH_ITEM                      = 'ContentUnits/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS              = 'ContentUnits/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE              = 'ContentUnits/FETCH_ITEM_FAILURE';
+const FETCH_ITEM_FILES                = 'ContentUnits/FETCH_ITEM_FILES';
+const FETCH_ITEM_FILES_SUCCESS        = 'ContentUnits/FETCH_ITEM_FILES_SUCCESS';
+const FETCH_ITEM_FILES_FAILURE        = 'ContentUnits/FETCH_ITEM_FILES_FAILURE';
+const FETCH_ITEM_COLLECTIONS          = 'ContentUnits/FETCH_ITEM_COLLECTIONS';
+const FETCH_ITEM_COLLECTIONS_SUCCESS  = 'ContentUnits/FETCH_ITEM_COLLECTIONS_SUCCESS';
+const FETCH_ITEM_COLLECTIONS_FAILURE  = 'ContentUnits/FETCH_ITEM_COLLECTIONS_FAILURE';
+const FETCH_ITEM_DERIVATIVES          = 'ContentUnits/FETCH_ITEM_DERIVATIVES';
+const FETCH_ITEM_DERIVATIVES_SUCCESS  = 'ContentUnits/FETCH_ITEM_DERIVATIVES_SUCCESS';
+const FETCH_ITEM_DERIVATIVES_FAILURE  = 'ContentUnits/FETCH_ITEM_DERIVATIVES_FAILURE';
+const ADD_ITEM_DERIVATIVES            = 'ContentUnits/ADD_ITEM_DERIVATIVES';
+const ADD_ITEM_DERIVATIVES_SUCCESS    = 'ContentUnits/ADD_ITEM_DERIVATIVES_SUCCESS';
+const ADD_ITEM_DERIVATIVES_FAILURE    = 'ContentUnits/ADD_ITEM_DERIVATIVES_FAILURE';
+const UPDATE_ITEM_DERIVATIVES         = 'ContentUnits/UPDATE_ITEM_DERIVATIVES';
+const UPDATE_ITEM_DERIVATIVES_SUCCESS = 'ContentUnits/UPDATE_ITEM_DERIVATIVES_SUCCESS';
+const UPDATE_ITEM_DERIVATIVES_FAILURE = 'ContentUnits/UPDATE_ITEM_DERIVATIVES_FAILURE';
+const REMOVE_ITEM_DERIVATIVES         = 'ContentUnits/REMOVE_ITEM_DERIVATIVES';
+const REMOVE_ITEM_DERIVATIVES_SUCCESS = 'ContentUnits/REMOVE_ITEM_DERIVATIVES_SUCCESS';
+const REMOVE_ITEM_DERIVATIVES_FAILURE = 'ContentUnits/REMOVE_ITEM_DERIVATIVES_FAILURE';
+const FETCH_ITEM_ORIGINS              = 'ContentUnits/FETCH_ITEM_ORIGINS';
+const FETCH_ITEM_ORIGINS_SUCCESS      = 'ContentUnits/FETCH_ITEM_ORIGINS_SUCCESS';
+const FETCH_ITEM_ORIGINS_FAILURE      = 'ContentUnits/FETCH_ITEM_ORIGINS_FAILURE';
+const FETCH_ITEM_SOURCES              = 'ContentUnits/FETCH_ITEM_SOURCES';
+const FETCH_ITEM_SOURCES_SUCCESS      = 'ContentUnits/FETCH_ITEM_SOURCES_SUCCESS';
+const FETCH_ITEM_SOURCES_FAILURE      = 'ContentUnits/FETCH_ITEM_SOURCES_FAILURE';
+const FETCH_ITEM_TAGS                 = 'ContentUnits/FETCH_ITEM_TAGS';
+const FETCH_ITEM_TAGS_SUCCESS         = 'ContentUnits/FETCH_ITEM_TAGS_SUCCESS';
+const FETCH_ITEM_TAGS_FAILURE         = 'ContentUnits/FETCH_ITEM_TAGS_FAILURE';
+const FETCH_ITEM_PERSONS              = 'ContentUnits/FETCH_ITEM_PERSONS';
+const FETCH_ITEM_PERSONS_SUCCESS      = 'ContentUnits/FETCH_ITEM_PERSONS_SUCCESS';
+const FETCH_ITEM_PERSONS_FAILURE      = 'ContentUnits/FETCH_ITEM_PERSONS_FAILURE';
 
 const CREATE                        = 'ContentUnits/CREATE';
 const CREATE_SUCCESS                = 'ContentUnits/CREATE_SUCCESS';
@@ -85,6 +94,15 @@ export const types = {
   FETCH_ITEM_DERIVATIVES,
   FETCH_ITEM_DERIVATIVES_SUCCESS,
   FETCH_ITEM_DERIVATIVES_FAILURE,
+  ADD_ITEM_DERIVATIVES,
+  ADD_ITEM_DERIVATIVES_SUCCESS,
+  ADD_ITEM_DERIVATIVES_FAILURE,
+  UPDATE_ITEM_DERIVATIVES,
+  UPDATE_ITEM_DERIVATIVES_SUCCESS,
+  UPDATE_ITEM_DERIVATIVES_FAILURE,
+  REMOVE_ITEM_DERIVATIVES,
+  REMOVE_ITEM_DERIVATIVES_SUCCESS,
+  REMOVE_ITEM_DERIVATIVES_FAILURE,
   FETCH_ITEM_ORIGINS,
   FETCH_ITEM_ORIGINS_SUCCESS,
   FETCH_ITEM_ORIGINS_FAILURE,
@@ -151,21 +169,36 @@ const fetchItemFilesFailure       = createAction(FETCH_ITEM_FILES_FAILURE);
 const fetchItemCollections        = createAction(FETCH_ITEM_COLLECTIONS);
 const fetchItemCollectionsSuccess = createAction(FETCH_ITEM_COLLECTIONS_SUCCESS);
 const fetchItemCollectionsFailure = createAction(FETCH_ITEM_COLLECTIONS_FAILURE);
-const fetchItemDerivatives        = createAction(FETCH_ITEM_DERIVATIVES);
-const fetchItemDerivativesSuccess = createAction(FETCH_ITEM_DERIVATIVES_SUCCESS);
-const fetchItemDerivativesFailure = createAction(FETCH_ITEM_DERIVATIVES_FAILURE);
-const fetchItemOrigins            = createAction(FETCH_ITEM_ORIGINS);
-const fetchItemOriginsSuccess     = createAction(FETCH_ITEM_ORIGINS_SUCCESS);
-const fetchItemOriginsFailure     = createAction(FETCH_ITEM_ORIGINS_FAILURE);
-const fetchItemSources            = createAction(FETCH_ITEM_SOURCES);
-const fetchItemSourcesSuccess     = createAction(FETCH_ITEM_SOURCES_SUCCESS);
-const fetchItemSourcesFailure     = createAction(FETCH_ITEM_SOURCES_FAILURE);
-const fetchItemTags               = createAction(FETCH_ITEM_TAGS);
-const fetchItemTagsSuccess        = createAction(FETCH_ITEM_TAGS_SUCCESS);
-const fetchItemTagsFailure        = createAction(FETCH_ITEM_TAGS_FAILURE);
-const fetchItemPersons            = createAction(FETCH_ITEM_PERSONS);
-const fetchItemPersonsSuccess     = createAction(FETCH_ITEM_PERSONS_SUCCESS);
-const fetchItemPersonsFailure     = createAction(FETCH_ITEM_PERSONS_FAILURE);
+
+const fetchItemDerivatives         = createAction(FETCH_ITEM_DERIVATIVES);
+const fetchItemDerivativesSuccess  = createAction(FETCH_ITEM_DERIVATIVES_SUCCESS);
+const fetchItemDerivativesFailure  = createAction(FETCH_ITEM_DERIVATIVES_FAILURE);
+const addItemDerivatives           = createAction(ADD_ITEM_DERIVATIVES, (id, duID) => ({ id, duID }));
+const addItemDerivativesSuccess    = createAction(ADD_ITEM_DERIVATIVES_SUCCESS);
+const addItemDerivativesFailure    = createAction(ADD_ITEM_DERIVATIVES_FAILURE);
+const updateItemDerivatives        = createAction(UPDATE_ITEM_DERIVATIVES, (id, duID, params) => ({
+  id,
+  duID,
+  params
+}));
+const updateItemDerivativesSuccess = createAction(UPDATE_ITEM_DERIVATIVES_SUCCESS);
+const updateItemDerivativesFailure = createAction(UPDATE_ITEM_DERIVATIVES_FAILURE);
+const removeItemDerivatives        = createAction(REMOVE_ITEM_DERIVATIVES, (id, duID) => ({ id, duID }));
+const removeItemDerivativesSuccess = createAction(REMOVE_ITEM_DERIVATIVES_SUCCESS);
+const removeItemDerivativesFailure = createAction(REMOVE_ITEM_DERIVATIVES_FAILURE);
+
+const fetchItemOrigins        = createAction(FETCH_ITEM_ORIGINS);
+const fetchItemOriginsSuccess = createAction(FETCH_ITEM_ORIGINS_SUCCESS);
+const fetchItemOriginsFailure = createAction(FETCH_ITEM_ORIGINS_FAILURE);
+const fetchItemSources        = createAction(FETCH_ITEM_SOURCES);
+const fetchItemSourcesSuccess = createAction(FETCH_ITEM_SOURCES_SUCCESS);
+const fetchItemSourcesFailure = createAction(FETCH_ITEM_SOURCES_FAILURE);
+const fetchItemTags           = createAction(FETCH_ITEM_TAGS);
+const fetchItemTagsSuccess    = createAction(FETCH_ITEM_TAGS_SUCCESS);
+const fetchItemTagsFailure    = createAction(FETCH_ITEM_TAGS_FAILURE);
+const fetchItemPersons        = createAction(FETCH_ITEM_PERSONS);
+const fetchItemPersonsSuccess = createAction(FETCH_ITEM_PERSONS_SUCCESS);
+const fetchItemPersonsFailure = createAction(FETCH_ITEM_PERSONS_FAILURE);
 
 const create                     = createAction(CREATE, (typeID, properties, i18n) => ({
   type_id: typeID,
@@ -225,6 +258,15 @@ export const actions = {
   fetchItemDerivatives,
   fetchItemDerivativesSuccess,
   fetchItemDerivativesFailure,
+  addItemDerivatives,
+  addItemDerivativesSuccess,
+  addItemDerivativesFailure,
+  updateItemDerivatives,
+  updateItemDerivativesSuccess,
+  updateItemDerivativesFailure,
+  removeItemDerivatives,
+  removeItemDerivativesSuccess,
+  removeItemDerivativesFailure,
   fetchItemOrigins,
   fetchItemOriginsSuccess,
   fetchItemOriginsFailure,
@@ -292,9 +334,20 @@ const keys = new Map([
   [FETCH_ITEM_COLLECTIONS, 'fetchItemCollections'],
   [FETCH_ITEM_COLLECTIONS_SUCCESS, 'fetchItemCollections'],
   [FETCH_ITEM_COLLECTIONS_FAILURE, 'fetchItemCollections'],
+
   [FETCH_ITEM_DERIVATIVES, 'fetchItemDerivatives'],
   [FETCH_ITEM_DERIVATIVES_SUCCESS, 'fetchItemDerivatives'],
   [FETCH_ITEM_DERIVATIVES_FAILURE, 'fetchItemDerivatives'],
+  [ADD_ITEM_DERIVATIVES, 'addItemDerivatives'],
+  [ADD_ITEM_DERIVATIVES_SUCCESS, 'addItemDerivatives'],
+  [ADD_ITEM_DERIVATIVES_FAILURE, 'addItemDerivatives'],
+  [UPDATE_ITEM_DERIVATIVES, 'updateItemDerivatives'],
+  [UPDATE_ITEM_DERIVATIVES_SUCCESS, 'updateItemDerivatives'],
+  [UPDATE_ITEM_DERIVATIVES_FAILURE, 'updateItemDerivatives'],
+  [REMOVE_ITEM_DERIVATIVES, 'removeItemDerivatives'],
+  [REMOVE_ITEM_DERIVATIVES_SUCCESS, 'removeItemDerivatives'],
+  [REMOVE_ITEM_DERIVATIVES_FAILURE, 'removeItemDerivatives'],
+
   [FETCH_ITEM_ORIGINS, 'fetchItemOrigins'],
   [FETCH_ITEM_ORIGINS_SUCCESS, 'fetchItemOrigins'],
   [FETCH_ITEM_ORIGINS_FAILURE, 'fetchItemOrigins'],
@@ -396,6 +449,40 @@ const onSuccess = (state, action) => {
       derivatives: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.derived.id })),
     });
     break;
+  case ADD_ITEM_DERIVATIVES_SUCCESS:
+    const { id: aId, duID: aDuID } = action.payload;
+
+    byID = update(state.byID, aId,
+      x => ({ ...x, derivatives: [...x.derivatives || [], { name: '', content_unit_id: aDuID }] }));
+    byID = update(byID, aDuID,
+      x => ({ ...x, origins: [...x.origins || [], { name: '', content_unit_id: aId }] }));
+    break;
+  case UPDATE_ITEM_DERIVATIVES_SUCCESS:
+    const { id: uId, duID: uDuID, params } = action.payload;
+
+    byID = update(state.byID, uId,
+      x => ({
+        ...x,
+        derivatives: x.derivatives ? [
+          { ...x.derivatives.find(d => d.content_unit_id === uDuID), ...params }, ...x.derivatives.filter(d => d.content_unit_id !== uDuID)
+        ] : []
+      }));
+    byID = update(byID, uDuID,
+      x => ({
+        ...x,
+        origins: x.origins ? [
+          { ...x.origins.find(d => d.content_unit_id === uId), ...params }, ...x.origins.filter(d => d.content_unit_id !== uId)
+        ] : []
+      }));
+    break;
+  case REMOVE_ITEM_DERIVATIVES_SUCCESS:
+    const { id: dId, duID: dDuID } = action.payload;
+
+    byID = update(state.byID, dId,
+      x => ({ ...x, derivatives: x.derivatives ? x.derivatives.filter(d => d.content_unit_id !== dDuID) : [] }));
+    byID = update(byID, dDuID,
+      x => ({ ...x, origins: x.origins ? x.origins.filter(d => d.content_unit_id !== dId) : [] }));
+    break;
   case FETCH_ITEM_ORIGINS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
@@ -496,6 +583,15 @@ export const reducer = handleActions({
   [FETCH_ITEM_DERIVATIVES]: onRequest,
   [FETCH_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
   [FETCH_ITEM_DERIVATIVES_FAILURE]: onFailure,
+  [ADD_ITEM_DERIVATIVES]: onRequest,
+  [ADD_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
+  [ADD_ITEM_DERIVATIVES_FAILURE]: onFailure,
+  [UPDATE_ITEM_DERIVATIVES]: onRequest,
+  [UPDATE_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
+  [UPDATE_ITEM_DERIVATIVES_FAILURE]: onFailure,
+  [REMOVE_ITEM_DERIVATIVES]: onRequest,
+  [REMOVE_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
+  [REMOVE_ITEM_DERIVATIVES_FAILURE]: onFailure,
   [FETCH_ITEM_ORIGINS]: onRequest,
   [FETCH_ITEM_ORIGINS_SUCCESS]: onSuccess,
   [FETCH_ITEM_ORIGINS_FAILURE]: onFailure,

@@ -13,6 +13,7 @@ import {
   NS_COLLECTION_UNITS,
   NS_COLLECTIONS,
   NS_UNIT_ASSOCIATION_COLLECTION,
+  NS_UNIT_ASSOCIATION_CU,
   NS_FILE_UNITS,
   NS_FILES,
   NS_MERGE_UNITS,
@@ -28,6 +29,7 @@ import { updateQuery } from './helpers/url';
 const dataReceivers = {
   [NS_COLLECTIONS]: collections.receiveItems,
   [NS_UNIT_ASSOCIATION_COLLECTION]: collections.receiveItems,
+  [NS_UNIT_ASSOCIATION_CU]: units.receiveItems,
   [NS_UNITS]: units.receiveItems,
   [NS_COLLECTION_UNITS]: units.receiveItems,
   [NS_MERGE_UNITS]: units.receiveItems,
@@ -51,6 +53,7 @@ function* fetchList(action) {
     break;
   case  NS_FILE_UNITS:
   case  NS_MERGE_UNITS:
+  case  NS_UNIT_ASSOCIATION_CU:
   case  NS_COLLECTION_UNITS:
     urlParam = NS_UNITS;
     break;
