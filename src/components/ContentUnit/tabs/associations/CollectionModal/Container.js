@@ -23,40 +23,26 @@ import TabsMenu from '../../../../shared/TabsMenu';
 import Pagination from '../../../../shared/Pagination';
 
 import * as shapes from '../../../../shapes';
+import ListWithFiltersBase from '../../../../BaseClasses/ListWithFiltersBase';
 import CollectionsList from './List';
-import FiltersHydrator from '../../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../../Filters/FilterTags/FilterTags';
-import DateRange from '../../../../Filters/DateRange';
-import Others from '../../../../Filters/Others';
-import FreeText from '../../../../Filters/FreeText';
 
-const filterTabs = [
-  { name: 'Free Text', element: FreeText, namespace: NS_UNIT_ASSOCIATION_COLLECTION },
-  { name: 'Date Range', element: DateRange, namespace: NS_UNIT_ASSOCIATION_COLLECTION },
-  { name: 'Others', element: Others, namespace: NS_UNIT_ASSOCIATION_COLLECTION, contentTypes: COLLECTION_TYPES },
-];
+class NewCollections extends ListWithFiltersBase {
 
-class NewCollections extends PureComponent {
+  constructor(props) {
+    super(props);
+    NewCollections.propTypes = {
+      ...super.propTypes,
+      unit: shapes.ContentUnit,
+      items: PropTypes.arrayOf(shapes.Collection),
+      getTagByUID: PropTypes.func.isRequired,
+      associatedCIds: PropTypes.arrayOf(PropTypes.number),
+    };
 
-  static propTypes = {
-    unit: shapes.ContentUnit,
-    items: PropTypes.arrayOf(shapes.Collection),
-    getTagByUID: PropTypes.func.isRequired,
-    associatedCIds: PropTypes.arrayOf(PropTypes.number),
-    pageNo: PropTypes.number,
-    total: PropTypes.number,
-    wip: PropTypes.bool,
-    err: shapes.Error,
-  };
-
-  static defaultProps = {
-    items: EMPTY_ARRAY,
-  };
-
-  state = {
-    showFilters: false,
-    selectedCIds: []
-  };
+    this.state = {
+      ...super.state,
+      selectedCIds: []
+    };
+  }
 
   componentDidMount() {
     this.askForData(1);
@@ -70,24 +56,23 @@ class NewCollections extends PureComponent {
     }
   }
 
-  onPageChange = (pageNo) => {
-    const { setPage } = this.props;
-    setPage(NS_UNIT_ASSOCIATION_COLLECTION, pageNo);
-    this.askForData(pageNo);
+  getNamespace = () => NS_UNIT_ASSOCIATION_COLLECTION;
+
+  getContentType = () => COLLECTION_TYPES;
+
+  renderList = () => {
+    const { getTagByUID, associatedCIds, currentLanguage, items } = this.props;
+    return <CollectionsList
+      items={items}
+      getTagByUID={getTagByUID}
+      selectedCIds={this.state.selectedCIds}
+      associatedCIds={associatedCIds}
+      selectCollection={this.selectCollection}
+      selectAllCollections={this.selectAllCollections}
+      currentLanguage={currentLanguage} />;
   };
-
-  handleFiltersCancel = () => this.toggleFilters();
-
-  handleFiltersChange = () => {
-    this.onPageChange(1);
-    this.toggleFilters();
-  };
-
-  onFiltersHydrated = () => this.onPageChange(1);
 
   askForData = (pageNo) => this.props.fetchList(NS_UNIT_ASSOCIATION_COLLECTION, pageNo);
-
-  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
 
   handleAssociate = () => {
     const { associate, unit } = this.props;
@@ -125,20 +110,8 @@ class NewCollections extends PureComponent {
 
   render() {
 
-    const { showFilters, selectedCIds } = this.state;
-    const {
-            pageNo,
-            total,
-            items,
-            wip,
-            err,
-            wipAssociate,
-            errAssociate,
-            getTagByUID,
-            associatedCIds,
-            isShowAssociateModal,
-            currentLanguage,
-          }                             = this.props;
+    const { showFilters }          = this.state;
+    const { isShowAssociateModal } = this.props;
     if (!isShowAssociateModal) {
       return null;
     }
@@ -155,67 +128,10 @@ class NewCollections extends PureComponent {
               <Icon name="filter" />
               {showFilters ? 'Hide' : 'Show'} Filters
             </Menu.Item>
-            <Menu.Menu position="right">
-              <Menu.Item>
-
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
-                <Pagination pageNo={pageNo} total={total} onChange={this.onPageChange} />
-              </Menu.Item>
-            </Menu.Menu>
           </Menu>
 
-          <FiltersHydrator namespace={NS_UNIT_ASSOCIATION_COLLECTION} onHydrated={this.onFiltersHydrated} />
-
-          <Grid>
-            <Grid.Row>
-              <Grid.Column>
-                {
-                  showFilters ?
-                    <div>
-                      <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
-                      <br />
-                    </div> :
-                    null
-                }
-                <FilterTags namespace={NS_UNIT_ASSOCIATION_COLLECTION} onClose={this.handleFiltersChange} />
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column>
-                <div style={{ textAlign: 'right' }}>
-                  {
-                    wip || wipAssociate ?
-                      <Label
-                        color="yellow"
-                        icon={{ name: 'spinner', loading: true }}
-                        content="Loading"
-                      /> :
-                      null
-                  }
-                  {
-                    err || errAssociate ?
-                      <Header
-                        inverted
-                        content={formatError(err || errAssociate)}
-                        color="red"
-                        icon="warning sign"
-                        floated="left"
-                      /> :
-                      null
-                  }
-                </div>
-                <CollectionsList
-                  items={items}
-                  getTagByUID={getTagByUID}
-                  selectedCIds={selectedCIds}
-                  associatedCIds={associatedCIds}
-                  selectCollection={this.selectCollection}
-                  selectAllCollections={this.selectAllCollections}
-                  currentLanguage={currentLanguage} />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+          {this.renderFiltersHydrator()}
+          {this.renderContent()}
         </Modal.Content>
         <Modal.Actions>
           <Button content="Cancel"
