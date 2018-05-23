@@ -44,7 +44,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
   toggleNewCU = () =>
     this.setState({ showNewCU: !this.state.showNewCU });
 
-  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics'];
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
   getNamespace = () => NS_UNITS;
 

@@ -13,8 +13,6 @@ class OperationsContainer extends Component {
 
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
-    fetchList: PropTypes.func.isRequired,
-    setPage: PropTypes.func.isRequired,
   };
 
   getPageNo = (search) => {
@@ -29,35 +27,9 @@ class OperationsContainer extends Component {
     return (isNaN(page) || page <= 0) ? 1 : page;
   };
 
-  handlePageChange = (pageNo) => {
-    const { setPage } = this.props;
-    setPage(NS_OPERATIONS, pageNo);
-    this.askForData(pageNo);
-  };
-
-  handleFiltersChange = () => this.handlePageChange(1);
-
-  handleFiltersHydrated = () => {
-    const { location }       = this.props;
-    const pageNoFromLocation = this.getPageNo(location.search);
-    this.handlePageChange(pageNoFromLocation);
-  };
-
-  askForData = (pageNo) => {
-    this.props.fetchList(NS_OPERATIONS, pageNo);
-  };
-
   render() {
-    const { location, fetchList, setPage, ...rest } = this.props;
-
-    return (
-      <MainPage
-        {...rest}
-        onPageChange={this.handlePageChange}
-        onFiltersChange={this.handleFiltersChange}
-        onFiltersHydrated={this.handleFiltersHydrated}
-      />
-    );
+    const { location, ...rest } = this.props;
+    return (<MainPage {...rest} getPageNo={this.getPageNo} />);
   }
 }
 

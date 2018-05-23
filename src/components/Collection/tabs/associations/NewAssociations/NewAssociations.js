@@ -18,7 +18,7 @@ class NewAssociations extends ListWithFiltersBase {
     };
   }
 
-  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics'];
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
   getNamespace = () => NS_COLLECTION_UNITS;
 
