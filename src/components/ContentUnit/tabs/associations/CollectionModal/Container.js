@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Grid, Header, Icon, Label, Menu, Button, Modal } from 'semantic-ui-react';
+import { Icon, Menu, Button, Modal } from 'semantic-ui-react';
 import uniq from 'lodash/uniq';
-
-import { formatError } from '../../../../../helpers/utils';
 
 import {
   EMPTY_ARRAY,
@@ -17,10 +15,6 @@ import {
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { selectors as collections } from '../../../../../redux/modules/collections';
 import { selectors as tagSelectors } from '../../../../../redux/modules/tags';
-
-import ResultsPageHeader from '../../../../shared/ResultsPageHeader';
-import TabsMenu from '../../../../shared/TabsMenu';
-import Pagination from '../../../../shared/Pagination';
 
 import * as shapes from '../../../../shapes';
 import ListWithFiltersBase from '../../../../BaseClasses/ListWithFiltersBase';
