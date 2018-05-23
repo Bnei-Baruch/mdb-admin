@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Header, Icon, Menu, Modal } from 'semantic-ui-react';
 
@@ -7,9 +7,6 @@ import * as shapes from '../shapes';
 import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
 import ContentUnitList from './List';
-
-import Sources from '../Filters/Sources';
-import Topics from '../Filters/Topics';
 
 class ContentUnitMainPage extends ListWithFiltersBase {
 

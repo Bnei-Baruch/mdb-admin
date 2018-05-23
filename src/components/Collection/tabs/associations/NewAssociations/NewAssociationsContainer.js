@@ -18,8 +18,6 @@ class ContentUnitsContainer extends Component {
     collection: shapes.Collection,
     associatedCUs: PropTypes.arrayOf(shapes.CollectionContentUnit),
     associatedCUIds: PropTypes.object,
-    fetchList: PropTypes.func.isRequired,
-    setPage: PropTypes.func.isRequired,
     associateUnit: PropTypes.func.isRequired,
     setEditMode: PropTypes.func.isRequired,
   };
@@ -33,24 +31,6 @@ class ContentUnitsContainer extends Component {
     super(props);
     this.selectCCU = this.selectCCU.bind(this);
   }
-
-  handlePageChange = (pageNo) => {
-    const { setPage } = this.props;
-    setPage(NS_COLLECTION_UNITS, pageNo);
-    this.askForData(pageNo);
-  };
-
-  handleFiltersChange = () => {
-    this.handlePageChange(1);
-  };
-
-  handleFiltersHydrated = () => {
-    this.handlePageChange(1);
-  };
-
-  askForData = (pageNo) => {
-    this.props.fetchList(NS_COLLECTION_UNITS, pageNo);
-  };
 
   selectCCU = (data, checked) => {
     const selectedCCU = this.state.selectedCCU;
@@ -78,9 +58,9 @@ class ContentUnitsContainer extends Component {
   };
 
   associate = () => {
-    const { selectedCCU }       = this.state;
+    const { selectedCCU }               = this.state;
     const { collection, associatedCUs } = this.props;
-    let lastPosition            = associatedCUs.length > 0 ? associatedCUs[associatedCUs.length - 1].position : 0;
+    let lastPosition                    = associatedCUs.length > 0 ? associatedCUs[associatedCUs.length - 1].position : 0;
     if (selectedCCU.length === 0) {
       return;
     }
@@ -102,9 +82,6 @@ class ContentUnitsContainer extends Component {
         {...this.props}
         selectedCCU={this.state.selectedCCU}
         selectCCU={this.selectCCU}
-        onPageChange={this.handlePageChange}
-        onFiltersChange={this.handleFiltersChange}
-        onFiltersHydrated={this.handleFiltersHydrated}
         associate={this.associate}
         selectAllCUs={this.selectAllCUs}
       />
