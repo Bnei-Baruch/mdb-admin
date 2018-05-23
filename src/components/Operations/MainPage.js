@@ -49,8 +49,10 @@ class FilesMainPage extends Component {
 
   handleFiltersCancel = () => this.toggleFilters();
 
-  handleFiltersChange = () => {
-    this.toggleFilters();
+  handleFiltersChange = (isToggle = true) => {
+    if (isToggle) {
+      this.toggleFilters();
+    }
     this.props.onFiltersChange();
   };
 

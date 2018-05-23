@@ -78,8 +78,10 @@ class NewCollections extends PureComponent {
 
   handleFiltersCancel = () => this.toggleFilters();
 
-  handleFiltersChange = () => {
-    this.onPageChange(1);
+  handleFiltersChange = (isToggle = true) => {
+    if (isToggle) {
+      this.toggleFilters();
+    }
     this.toggleFilters();
   };
 
