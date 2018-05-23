@@ -33,7 +33,7 @@ class MergeContentUnitTab extends ListWithFiltersBase {
     this.selectCU = this.selectCU.bind(this);
   }
 
-  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics'];
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
   getNamespace = () => NS_MERGE_UNITS;
 

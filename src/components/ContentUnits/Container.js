@@ -49,13 +49,7 @@ class ContentUnitsContainer extends Component {
 
   render() {
     const { location, ...rest } = this.props;
-
-    return (
-      <MainPage
-        {...rest}
-        getPageNo={this.getPageNo}
-      />
-    );
+    return (<MainPage {...rest} getPageNo={this.getPageNo} />);
   }
 }
 

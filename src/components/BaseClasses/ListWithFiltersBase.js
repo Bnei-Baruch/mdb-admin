@@ -22,6 +22,7 @@ allFiltersByName.set('DateRange', { name: 'Date Range', element: DateRange });
 allFiltersByName.set('FreeText', { name: 'Free Text', element: FreeText });
 allFiltersByName.set('Sources', { name: 'Sources', element: Sources });
 allFiltersByName.set('Topics', { name: 'Topics', element: Topics });
+allFiltersByName.set('Others', { name: 'Others', element: Others });
 
 class ListWithFiltersBase extends PureComponent {
 
@@ -51,18 +52,16 @@ class ListWithFiltersBase extends PureComponent {
     showFilters: false,
   };
 
-  usedFiltersNames = ['FreeText', 'DateRange'];
+  usedFiltersNames = ['FreeText', 'DateRange', 'Others'];
+
+  setCustomFilter = (key, value) => allFiltersByName.set(key, value);
 
   getFilterTabs = () => {
-    let filters = this.usedFiltersNames.map(n => ({ ...allFiltersByName.get(n), namespace: this.getNamespace() }));
-
-    filters.push({
-      name: 'Others',
-      element: Others,
+    return this.usedFiltersNames.map(n => ({
+      ...allFiltersByName.get(n),
       namespace: this.getNamespace(),
-      contentTypes: this.getContentType()
-    });
-    return filters;
+      contentTypes: n === 'Others' ? this.getContentType() : null
+    }));
   };
 
   handlePageChange = (pageNo) => {
