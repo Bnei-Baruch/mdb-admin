@@ -55,7 +55,7 @@ class FilterTags extends Component {
                   onClick={() => this.props.editExistingFilter(namespace, tag.name, tag.index)}
                   onClose={() => {
                     this.props.removeFilterValue(namespace, tag.name, tag.value);
-                    this.props.onClose();
+                    this.props.changeFilterFromTag();
                   }}
                 />
               );

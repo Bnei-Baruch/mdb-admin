@@ -1,81 +1,46 @@
 import React, { PureComponent } from 'react';
-import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import uniq from 'lodash/uniq';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../../helpers/consts';
-import { formatError } from '../../../../../helpers/utils';
 import * as shapes from '../../../../shapes';
-import TabsMenu from '../../../../shared/TabsMenu';
-import Pagination from '../../../../shared/Pagination';
-import ResultsPageHeader from '../../../../shared/ResultsPageHeader';
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { actions as cuActions, selectors as cuSelectors } from '../../../../../redux/modules/content_units';
 import { selectors as filesSelectors } from '../../../../../redux/modules/files';
 import FilesList from './List';
 
-import FiltersHydrator from '../../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../../Filters/FilterTags/FilterTags';
-import DateRange from '../../../../Filters/DateRange';
-import FreeText from '../../../../Filters/FreeText';
-import Others from '../../../../Filters/Others';
-
-const filterTabs = [
-  { name: 'Date Range', element: DateRange, namespace: NS_UNIT_FILE_UNITS },
-  { name: 'Free Text', element: FreeText, namespace: NS_UNIT_FILE_UNITS },
-  { name: 'Others', element: Others, namespace: NS_UNIT_FILE_UNITS, contentTypes: CONTENT_UNIT_TYPES },
-];
-
 class AddFiles extends PureComponent {
 
-  static propTypes = {
-    total: PropTypes.number,
-    unit: shapes.ContentUnit,
-    files: PropTypes.arrayOf(shapes.File),
-    allFiles: PropTypes.arrayOf(shapes.File),
-    setEditMode: PropTypes.func,
-    wip: PropTypes.bool,
-    err: shapes.Error,
-  };
+  constructor(props) {
+    super(props);
+    AddFiles.propTypes = {
+      ...super.propTypes,
+      unit: shapes.ContentUnit,
+      files: PropTypes.arrayOf(shapes.File),
+      allFiles: PropTypes.arrayOf(shapes.File),
+      setEditMode: PropTypes.func,
+    };
 
-  static defaultProps = {
-    allFiles: EMPTY_ARRAY,
-    pageNo: 1,
-    total: 0,
-    wip: false,
-    err: null,
-  };
+    AddFiles.defaultProps = {
+      ...super.defaultProps,
+      allFiles: EMPTY_ARRAY,
+    };
 
-  state = {
-    showFilters: false,
-    selectedFilesIds: []
-  };
+    this.state = {
+      ...super.state,
+      selectedFilesIds: []
+    };
+
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.wipAddFile && !nextProps.wipAddFile) {
       this.switchToViewMode();
     }
   }
-
-  handlePageChange = (pageNo) => {
-    const { setPage, fetchList } = this.props;
-    setPage(NS_UNIT_FILE_UNITS, pageNo);
-    fetchList(NS_UNIT_FILE_UNITS, pageNo);
-  };
-
-  handleFiltersCancel = () => this.toggleFilters();
-
-  handleFiltersChange = (isToggle = true) => {
-    if (isToggle) {
-      this.toggleFilters();
-    }
-    this.handlePageChange(1);
-  };
-  handleFiltersHydrated = () => {
-    this.handlePageChange(1);
-  };
 
   selectFile = (file) => {
     const { selectedFilesIds } = this.state;
@@ -120,21 +85,24 @@ class AddFiles extends PureComponent {
     addFiles(unit.id, selectedFilesIds);
   };
 
+  getNamespace = () => NS_UNIT_FILE_UNITS;
+
+  getContentType = () => CONTENT_UNIT_TYPES;
+
+  renderList = () => {
+    const { unit, allFiles, files } = this.props;
+    return (<FilesList
+      unitId={unit.id}
+      items={allFiles}
+      currentFiles={files}
+      handleSelectFile={this.selectFile}
+      handleSelectAllFiles={this.selectAllFiles}
+      selectedFilesIds={this.stste.selectedFilesIds}
+    />);
+  };
+
   render() {
-    const {
-            showFilters,
-            selectedFilesIds
-          } = this.state;
-    const {
-            pageNo,
-            total,
-            wip,
-            err,
-            unit,
-            allFiles,
-            wipAddFile,
-            files
-          } = this.props;
+    const { showFilters, selectedFilesIds } = this.state;
     return (
       <div>
         <Segment clearing vertical>
@@ -161,59 +129,8 @@ class AddFiles extends PureComponent {
           </Button>
         </Segment>
 
-        <FiltersHydrator namespace={NS_UNIT_FILE_UNITS} onHydrated={this.handleFiltersHydrated} />
-
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              <div>
-                {
-                  showFilters ?
-                    <div>
-                      <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel}  />
-                      <br />
-                    </div> :
-                    null
-                }
-                <FilterTags namespace={NS_UNIT_FILE_UNITS} onClose={this.handleFiltersChange} />
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
-
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
-                <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
-                <div style={{ float: 'left' }}>
-                  {
-                    wip || wipAddFile ?
-                      <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
-                      null
-                  }
-                  {
-                    err ?
-                      <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
-                      null
-                  }
-                </div>
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <FilesList
-                unitId={unit.id}
-                items={allFiles}
-                currentFiles={files}
-                handleSelectFile={this.selectFile}
-                handleSelectAllFiles={this.selectAllFiles}
-                selectedFilesIds={selectedFilesIds}
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        {this.renderFiltersHydrator()}
+        {this.renderContent()}
       </div>
     );
   }
