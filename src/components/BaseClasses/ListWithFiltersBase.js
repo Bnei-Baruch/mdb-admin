@@ -70,9 +70,11 @@ class ListWithFiltersBase extends PureComponent {
     fetchList(this.getNamespace(), pageNo);
   };
 
-  handleFiltersChange = () => {
+  handleFiltersChange = (isToggle = true) => {
     this.handlePageChange(this.getPageNo());
-    this.toggleFilters();
+    if (isToggle) {
+      this.toggleFilters();
+    }
   };
 
   handleFiltersCancel = () => {
