@@ -9,8 +9,12 @@ import ListWithFiltersBase from '../../../BaseClasses/ListWithFiltersBase';
 
 class FileContentUnit extends ListWithFiltersBase {
 
-  static propTypes = {
-    file: shapes.File,
+  constructor(props) {
+    super(props);
+    FileContentUnit.propTypes = {
+      ...super.propTypes,
+      file: shapes.File,
+    };
   };
 
   usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
