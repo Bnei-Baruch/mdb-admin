@@ -82,7 +82,7 @@ class NewCollections extends PureComponent {
     if (isToggle) {
       this.toggleFilters();
     }
-    this.toggleFilters();
+    this.onPageChange(1);
   };
 
   onFiltersHydrated = () => this.onPageChange(1);
