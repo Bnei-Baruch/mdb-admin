@@ -19,6 +19,8 @@ class FilesMainPage extends ListWithFiltersBase {
 
   getContentType = () => true;
 
+  getIsUpdateQuery = () => true;
+
   renderList = () => {
     return <OperationsList items={this.props.items} />;
   };

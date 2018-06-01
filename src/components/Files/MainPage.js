@@ -17,6 +17,8 @@ class FilesMainPage extends ListWithFiltersBase {
     return <FilesList items={this.props.items} />;
   };
 
+  getIsUpdateQuery = () => true;
+
   render() {
     const { showFilters } = this.state;
 

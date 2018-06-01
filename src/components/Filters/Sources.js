@@ -8,21 +8,21 @@ import { selectors as authors } from '../../redux/modules/authors';
 
 import DeepListFilter from './DeepListFilter';
 
-const Sources = props => (
-  <DeepListFilter
-    namespace={props.namespace}
+const Sources = props => {
+  const { onFilterCancel, onFilterApplication } = props;
+  return (<DeepListFilter
     name="sources-filter"
-    onApply={props.onFilterApplication}
-    onCancel={props.onFilterCancel}
-    isUpdateQuery={true}
+    onApply={onFilterApplication}
+    onCancel={onFilterCancel}
     {...props}
-  />
-);
+  />);
+};
 
-Sources.propTypes              = {
+Sources.propTypes = {
   onFilterApplication: PropTypes.func.isRequired,
   onFilterCancel: PropTypes.func.isRequired
 };
+
 const insertAuthorsToHierarchy = (hierarchy, authors) => {
   const { childMap } = hierarchy;
   let roots          = [];

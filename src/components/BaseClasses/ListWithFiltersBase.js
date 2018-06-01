@@ -60,6 +60,7 @@ class ListWithFiltersBase extends PureComponent {
     return this.usedFiltersNames.map(n => ({
       ...allFiltersByName.get(n),
       namespace: this.getNamespace(),
+      isUpdateQuery: this.getIsUpdateQuery(),
       contentTypes: n === 'Others' ? this.getContentType() : null
     }));
   };
@@ -99,6 +100,8 @@ class ListWithFiltersBase extends PureComponent {
     const showFilters = (typeof isShow === 'boolean') ? isShow : !this.state.showFilters;
     this.setState({ showFilters });
   };
+
+  getIsUpdateQuery = () => false;
 
   getNamespace = () => {
     throw new Error('Not Implemented');

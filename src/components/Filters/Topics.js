@@ -6,18 +6,18 @@ import { selectors } from '../../redux/modules/tags';
 
 import DeepListFilter from './DeepListFilter';
 
-const Topics = props => (
-  <DeepListFilter
-    namespace={props.namespace}
-    name="topics-filter"
-    onApply={props.onFilterApplication}
-    onCancel={props.onFilterCancel}
-    isUpdateQuery={true}
-    {...props}
-  />
-);
+const Topics = props => {
+  const { onFilterCancel, onFilterApplication } = props;
 
-Topics.propTypes              = {
+  return (<DeepListFilter
+    name="topics-filter"
+    onApply={onFilterApplication}
+    onCancel={onFilterCancel}
+    {...props}
+  />  );
+};
+
+Topics.propTypes = {
   onFilterApplication: PropTypes.func.isRequired,
   onFilterCancel: PropTypes.func.isRequired
 };

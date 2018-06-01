@@ -52,6 +52,8 @@ class ContentUnitMainPage extends ListWithFiltersBase {
 
   getPageNo = this.props.getPageNo;
 
+  getIsUpdateQuery = () => true;
+
   renderList = () => {
     const { items, currentLanguage } = this.props;
     return <ContentUnitList items={items} currentLanguage={currentLanguage} />;

@@ -31,7 +31,6 @@ class CollectionsMainPage extends ListWithFiltersBase {
       ...super.state,
       newCollection: false,
     };
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,6 +49,8 @@ class CollectionsMainPage extends ListWithFiltersBase {
   getContentType = () => COLLECTION_TYPES;
 
   getPageNo = this.props.getPageNo;
+
+  getIsUpdateQuery = () => true;
 
   renderList = () => {
     const { items, currentLanguage, getTagByUID } = this.props;

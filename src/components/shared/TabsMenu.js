@@ -69,7 +69,8 @@ class TabsMenu extends Component {
             })
           }
         </Menu>
-        {(<ElementType {...this.props} namespace={activeItem.namespace} contentTypes={activeItem.contentTypes} />)}
+        {(
+          <ElementType {...this.props} namespace={activeItem.namespace} contentTypes={activeItem.contentTypes} isUpdateQuery={activeItem.isUpdateQuery} />)}
       </div>
     );
   }
