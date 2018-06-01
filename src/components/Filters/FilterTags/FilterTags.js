@@ -52,7 +52,10 @@ class FilterTags extends Component {
                   icon={icon}
                   isActive={tag.isActive}
                   label={label}
-                  onClick={() => this.props.editExistingFilter(namespace, tag.name, tag.index)}
+                  onClick={() => {
+                    this.props.changeFilterFromTag();
+                    this.props.editExistingFilter(namespace, tag.name, tag.index);
+                  }}
                   onClose={() => {
                     this.props.removeFilterValue(namespace, tag.name, tag.value);
                     this.props.changeFilterFromTag();

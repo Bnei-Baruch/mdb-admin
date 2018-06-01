@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
+import { selectors as filterSelectors } from '../../redux/modules/filters';
 
 class TabsMenu extends Component {
 
@@ -76,4 +78,10 @@ class TabsMenu extends Component {
   }
 }
 
-export default TabsMenu;
+export default connect((state, ownProps) => {
+  const filterName = filterSelectors.getActiveFilter(state.filters, ownProps.items[0].namespace);
+  return {
+    active: filterSelectors.getTabNameByFilterName(filterName)
+  };
+})(TabsMenu);
+
