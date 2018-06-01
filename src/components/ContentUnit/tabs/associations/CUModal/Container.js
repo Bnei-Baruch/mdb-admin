@@ -10,9 +10,7 @@ import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_CU, CONTENT_UNIT_TYPES }
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { selectors as units } from '../../../../../redux/modules/collections';
 
-import ResultsPageHeader from '../../../../shared/ResultsPageHeader';
 import ListWithFiltersBase from '../../../../BaseClasses/ListWithFiltersBase';
-import Pagination from '../../../../shared/Pagination';
 
 import * as shapes from '../../../../shapes';
 import CollectionsList from './List';
@@ -102,8 +100,8 @@ class NewUnits extends ListWithFiltersBase {
   };
 
   render() {
-    const { showFilters }                         = this.state;
-    const { pageNo, total, isShowAssociateModal } = this.props;
+    const { showFilters }          = this.state;
+    const { isShowAssociateModal } = this.props;
 
     if (!isShowAssociateModal) {
       return null;
@@ -123,17 +121,14 @@ class NewUnits extends ListWithFiltersBase {
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item>
-
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
-                <Pagination pageNo={pageNo} total={total} onChange={this.onPageChange} />
+                {this.renderPagination()}
               </Menu.Item>
             </Menu.Menu>
           </Menu>
 
 
           {this.renderFiltersHydrator()}
-          {this.renderContent()}
+          {this.renderContent({ usePagination: false })}
         </Modal.Content>
 
         <Modal.Actions>

@@ -112,9 +112,29 @@ class ListWithFiltersBase extends PureComponent {
     return (<FiltersHydrator namespace={this.getNamespace()} onHydrated={this.handleFiltersHydrated} />);
   };
 
-  renderContent = () => {
-    const { showFilters }             = this.state;
+  renderPagination = () => {
+
     const { pageNo, total, wip, err } = this.props;
+    return (<div style={{ textAlign: 'right' }}>
+      {
+        wip ?
+          <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
+          null
+      }
+      {
+        err ?
+          <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
+          null
+      }
+      <ResultsPageHeader pageNo={pageNo} total={total} />
+      &nbsp;&nbsp;
+      <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
+    </div>);
+  };
+
+  renderContent = (defaultOptions = {}) => {
+    const { showFilters }          = this.state;
+    const { usePagination = true } = defaultOptions;
     return (
       <Grid>
         <Grid.Row>
@@ -132,21 +152,7 @@ class ListWithFiltersBase extends PureComponent {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column>
-            <div style={{ textAlign: 'right' }}>
-              {
-                wip ?
-                  <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
-                  null
-              }
-              {
-                err ?
-                  <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
-                  null
-              }
-              <ResultsPageHeader pageNo={pageNo} total={total} />
-              &nbsp;&nbsp;
-              <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
-            </div>
+            {usePagination ? this.renderPagination() : null}
             {this.renderList()}
           </Grid.Column>
         </Grid.Row>
