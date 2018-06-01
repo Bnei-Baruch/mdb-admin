@@ -96,7 +96,7 @@ class ListWithFiltersBase extends PureComponent {
   };
 
   toggleFilters = (isShow) => {
-    const showFilters = isShow === undefined ? !this.state.showFilters : isShow;
+    const showFilters = (typeof isShow === 'boolean') ? isShow : !this.state.showFilters;
     this.setState({ showFilters });
   };
 

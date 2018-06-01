@@ -122,10 +122,15 @@ class NewCollections extends ListWithFiltersBase {
               <Icon name="filter" />
               {showFilters ? 'Hide' : 'Show'} Filters
             </Menu.Item>
+            <Menu.Menu position="right">
+              <Menu.Item>
+                {this.renderPagination()}
+              </Menu.Item>
+            </Menu.Menu>
           </Menu>
 
           {this.renderFiltersHydrator()}
-          {this.renderContent()}
+          {this.renderContent({ usePagination: false })}
         </Modal.Content>
         <Modal.Actions>
           <Button content="Cancel"
