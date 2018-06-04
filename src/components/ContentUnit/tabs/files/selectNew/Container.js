@@ -50,6 +50,7 @@ class AddFiles extends PureComponent {
           arr.splice(i, 1);
           return true;
         }
+        return false;
       });
     } else {
       selectedFilesIds.push(file.id);

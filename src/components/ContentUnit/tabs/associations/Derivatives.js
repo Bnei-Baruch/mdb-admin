@@ -7,7 +7,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Header, Icon, Menu, Message, Segment, Table, Button } from 'semantic-ui-react';
 
@@ -18,7 +17,7 @@ import * as shapes from '../../../shapes';
 import EditedField from '../../../shared/Fields/EditedField';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
+import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 
 import NewUnits from './CUModal/Container';
 

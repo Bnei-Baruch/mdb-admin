@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
 
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, SECURITY_LEVELS } from '../../../../../helpers/consts';
+import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../../../../helpers/consts';
 import { extractI18n } from '../../../../../helpers/utils';
 import * as shapes from '../../../../shapes';
 

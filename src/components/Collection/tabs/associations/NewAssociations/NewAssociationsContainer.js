@@ -42,6 +42,7 @@ class ContentUnitsContainer extends Component {
           selectedCCU.splice(i, 1);
           return true;
         }
+        return false;
       });
     }
     this.setState({ selectedCCU: [...selectedCCU] });

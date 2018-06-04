@@ -5,8 +5,6 @@ import { actions, types } from '../redux/modules/content_units';
 import { actions as files } from '../redux/modules/files';
 import { actions as collections } from '../redux/modules/collections';
 import { actions as persons } from '../redux/modules/persons';
-import { actions as lists } from '../redux/modules/lists';
-import { NS_MERGE_UNITS } from '../helpers/consts';
 
 function* fetchItem(action) {
   try {
@@ -54,7 +52,7 @@ function* fetchItemDerivatives(action) {
 function* addItemDerivatives(action) {
   try {
     const { id, duID } = action.payload;
-    yield call(api.post, `/content_units/${parseInt(id)}/derivatives/`, { derived_id: duID, name: "" });
+    yield call(api.post, `/content_units/${parseInt(id, 10)}/derivatives/`, { derived_id: duID, name: '' });
     yield put(actions.addItemDerivativesSuccess(action.payload));
   } catch (err) {
     yield put(actions.addItemDerivativesFailure(err));
@@ -64,7 +62,7 @@ function* addItemDerivatives(action) {
 function* updateItemDerivatives(action) {
   try {
     const { id, duID, params } = action.payload;
-    yield call(api.put, `/content_units/${parseInt(id)}/derivatives/${duID}`, params);
+    yield call(api.put, `/content_units/${parseInt(id, 10)}/derivatives/${duID}`, params);
     yield put(actions.updateItemDerivativesSuccess(action.payload));
   } catch (err) {
     yield put(actions.updateItemDerivativesFailure(err));
@@ -74,7 +72,7 @@ function* updateItemDerivatives(action) {
 function* removeItemDerivatives(action) {
   try {
     const { id, duID } = action.payload;
-    yield call(api.delete, `/content_units/${parseInt(id)}/derivatives/${duID}`);
+    yield call(api.delete, `/content_units/${parseInt(id, 10)}/derivatives/${duID}`);
     yield put(actions.removeItemDerivativesSuccess(action.payload));
   } catch (err) {
     yield put(actions.removeItemDerivativesFailure(err));

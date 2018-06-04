@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Header, Icon, Menu } from 'semantic-ui-react';
 
 import { NS_OPERATIONS } from '../../helpers/consts';
