@@ -22,7 +22,11 @@ export const types = {
 
 /* Actions */
 
-const setPage          = createAction(SET_PAGE, (namespace, pageNo) => ({ namespace, pageNo }));
+const setPage          = createAction(SET_PAGE, (namespace, pageNo, isUpdateQuery) => ({
+  namespace,
+  pageNo,
+  isUpdateQuery
+}));
 const fetchList        = createAction(FETCH_LIST, (namespace, pageNo, parent) => ({ namespace, pageNo, parent }));
 const fetchListSuccess = createAction(FETCH_LIST_SUCCESS, (namespace, total, data) => ({ namespace, total, data }));
 const fetchListFailure = createAction(FETCH_LIST_FAILURE, (namespace, err) => ({ namespace, err }));

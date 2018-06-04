@@ -67,7 +67,7 @@ class ListWithFiltersBase extends PureComponent {
 
   handlePageChange = (pageNo) => {
     const { setPage, fetchList } = this.props;
-    setPage(this.getNamespace(), pageNo);
+    setPage(this.getNamespace(), pageNo, this.getIsUpdateQuery());
     fetchList(this.getNamespace(), pageNo);
   };
 
