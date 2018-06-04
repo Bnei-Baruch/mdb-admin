@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Label } from 'semantic-ui-react';
+import { Grid, Header, Label, Icon, Menu } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
@@ -107,8 +107,27 @@ class ListWithFiltersBase extends PureComponent {
     throw new Error('Not Implemented');
   };
 
-  getContentType = () => {
+  getContentType        = () => {
     throw new Error('Not Implemented');
+  };
+  renderHeaderRightSide = () => null;
+
+  renderHeader = (title) => {
+    return (
+      <Menu borderless size="large">
+        <Menu.Item header>
+          <Header content={title} size="medium" color="blue" />
+        </Menu.Item>
+        <Menu.Item onClick={this.toggleFilters}>
+          <Icon name="filter" />
+          {this.state.showFilters ? 'Hide' : 'Show'} Filters
+        </Menu.Item>
+
+        <Menu.Menu position="right">
+          {this.renderHeaderRightSide()}
+        </Menu.Menu>
+      </Menu>
+    );
   };
 
   renderFiltersHydrator = () => {

@@ -66,16 +66,12 @@ class FileContentUnit extends ListWithFiltersBase {
           <Button
             onClick={this.associate}
             disabled={!selectedCUId}
-            floated="right"
             content="Associate content unit to this file"
-            color="blue"
-          />
+            color="blue" />
           <Button
             onClick={this.toggleFilters}
             color="blue"
-            floated="right"
-            inverted
-          >
+            inverted>
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>

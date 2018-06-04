@@ -1,5 +1,4 @@
 import React from 'react';
-import { Header, Icon, Menu } from 'semantic-ui-react';
 
 import { NS_FILES, CONTENT_UNIT_TYPES } from '../../helpers/consts';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
@@ -20,22 +19,9 @@ class FilesMainPage extends ListWithFiltersBase {
   getIsUpdateQuery = () => true;
 
   render() {
-    const { showFilters } = this.state;
-
     return (
       <div>
-        <Menu borderless size="large">
-          <Menu.Item header>
-            <Header content="Files" size="medium" color="blue" />
-          </Menu.Item>
-          <Menu.Menu position="right">
-            <Menu.Item onClick={this.toggleFilters}>
-              <Icon name="filter" />
-              {showFilters ? 'Hide' : 'Show'} Filters
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
-
+        {this.renderHeader('Files')}
         {this.renderFiltersHydrator()}
         {this.renderContent()}
       </div>

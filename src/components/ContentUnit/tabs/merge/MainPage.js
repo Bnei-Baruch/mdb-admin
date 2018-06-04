@@ -106,16 +106,12 @@ class MergeContentUnitTab extends ListWithFiltersBase {
           <Button
             onClick={this.toggleFilters}
             color="blue"
-            floated="right"
             inverted
           >
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
-          <Button
-            onClick={this.mergeCU}
-            floated="right"
-          >
+          <Button onClick={this.mergeCU}>
             Merge
           </Button>
         </Segment>

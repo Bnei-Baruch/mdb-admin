@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header, Icon, Menu, Modal } from 'semantic-ui-react';
+import { Icon, Menu, Modal } from 'semantic-ui-react';
 
 import { NS_COLLECTIONS, COLLECTION_TYPES } from '../../helpers/consts';
 import * as shapes from '../shapes';
@@ -52,40 +52,33 @@ class CollectionsMainPage extends ListWithFiltersBase {
 
   getIsUpdateQuery = () => true;
 
+  renderHeaderRightSide = () => {
+    return (
+      <Menu.Item onClick={this.toggleNewCollection}>
+        <Icon name="plus" />
+        New Collection
+      </Menu.Item>
+    );
+  };
+
   renderList = () => {
     const { items, currentLanguage, getTagByUID } = this.props;
     return <CollectionsList items={items} getTagByUID={getTagByUID} currentLanguage={currentLanguage} />;
   };
 
   render() {
-    const { showFilters, newCollection }       = this.state;
     const { wipOfCreate, errOfCreate, create } = this.props;
 
     return (
       <div>
-        <Menu borderless size="large">
-          <Menu.Item header>
-            <Header content="Collections" size="medium" color="blue" />
-          </Menu.Item>
-          <Menu.Menu position="right">
-            <Menu.Item onClick={this.toggleFilters}>
-              <Icon name="filter" />
-              {showFilters ? 'Hide' : 'Show'} Filters
-            </Menu.Item>
-            <Menu.Item onClick={this.toggleNewCollection}>
-              <Icon name="plus" />
-              New Collection
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
-
+        {this.renderHeader('Collections')}
         {this.renderFiltersHydrator()}
         {this.renderContent()}
 
         <Modal
           closeIcon
           size="small"
-          open={newCollection}
+          open={this.state.newCollection}
           onClose={this.toggleNewCollection}>
           <Modal.Header>Create New Collection</Modal.Header>
           <Modal.Content>

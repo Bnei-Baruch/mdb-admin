@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header, Icon, Menu, Modal } from 'semantic-ui-react';
+import { Icon, Menu, Modal } from 'semantic-ui-react';
 
 import { NS_UNITS, CONTENT_UNIT_TYPES } from '../../helpers/consts';
 import * as shapes from '../shapes';
@@ -54,40 +54,33 @@ class ContentUnitMainPage extends ListWithFiltersBase {
 
   getIsUpdateQuery = () => true;
 
+  renderHeaderRightSide = () => {
+    return (
+      <Menu.Item onClick={this.toggleNewCU}>
+        <Icon name="plus" />
+        New Content Unit
+      </Menu.Item>
+    );
+  };
+
   renderList = () => {
     const { items, currentLanguage } = this.props;
     return <ContentUnitList items={items} currentLanguage={currentLanguage} />;
   };
 
   render() {
-    const { showFilters, showNewCU }            = this.state;
     const { wipOfCreate, errOfCreate, create, } = this.props;
 
     return (
       <div>
-        <Menu borderless size="large">
-          <Menu.Item header>
-            <Header content="Content Units" size="medium" color="blue" />
-          </Menu.Item>
-          <Menu.Menu position="right">
-            <Menu.Item onClick={this.toggleFilters}>
-              <Icon name="filter" />
-              {showFilters ? 'Hide' : 'Show'} Filters
-            </Menu.Item>
-            <Menu.Item onClick={this.toggleNewCU}>
-              <Icon name="plus" />
-              New Content Unit
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
-
+        {this.renderHeader('Content Units')}
         {this.renderFiltersHydrator()}
         {this.renderContent()}
 
         <Modal
           closeIcon
           size="small"
-          open={showNewCU}
+          open={this.state.showNewCU}
           onClose={this.toggleNewCU}>
           <Modal.Header>Create New Content Unit</Modal.Header>
           <Modal.Content>

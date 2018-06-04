@@ -51,14 +51,14 @@ class NewAssociations extends ListWithFiltersBase {
         <Segment clearing vertical>
           <Button
             onClick={this.props.associate}
-            floated="right"
+            floated="left"
             content="Associate content units to this collection"
             color="blue"
           />
           <Button
             onClick={this.toggleFilters}
             color="blue"
-            floated="right"
+            floated="left"
             inverted
           >
             <Icon name="filter" />
