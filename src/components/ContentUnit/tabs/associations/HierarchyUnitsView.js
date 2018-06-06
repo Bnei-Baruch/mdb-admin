@@ -1,27 +1,17 @@
-/**
- * @TODO
- * use base class common with ./Origins.js
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { Header, Icon, Menu, Message, Segment, Table, Button } from 'semantic-ui-react';
-
-import { selectors, actions } from '../../../../redux/modules/content_units';
-import { selectors as system } from '../../../../redux/modules/system';
 
 import * as shapes from '../../../shapes';
 import EditedField from '../../../shared/Fields/EditedField';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
+import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../../../helpers/consts';
 
 import NewUnits from './CUModal/Container';
 
-class Derivatives extends Component {
+export default class HierarchyUnitsView extends Component {
 
   static propTypes = {
     cuds: PropTypes.arrayOf(shapes.ContentUnitDerivation),
@@ -80,13 +70,13 @@ class Derivatives extends Component {
   };
 
   renderTable = () => {
-    const { cuds, wip, err } = this.props;
+    const { cuds, wip, err, blockName } = this.props;
     if (err) {
       return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     } else if (cuds.length === 0) {
       return ( wip ?
-        <LoadingSplash text="Loading origins" /> :
-        <Message>No origins found for this unit</Message>);
+        <LoadingSplash text={`Loading ${blockName}`} /> :
+        <Message>{`No ${blockName} found for this unit`}</Message>);
     }
     return (
       <Table>
@@ -108,17 +98,17 @@ class Derivatives extends Component {
   };
 
   render() {
-    const { associate, associatedIds, currentLanguage, unit } = this.props;
+    const { associate, associatedIds, currentLanguage, unit, blockName } = this.props;
 
     return (
       <div>
         <Menu attached borderless size="large">
           <Menu.Item header>
-            <Header content="Derivatives" size="medium" color="blue" />
+            <Header content={blockName} size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
             <Menu.Item onClick={this.handleToggleModal}>
-              <Icon name="plus" /> Add Derivatives
+              <Icon name="plus" />{`Add ${blockName}`}
             </Menu.Item>
           </Menu.Menu>
         </Menu>
@@ -137,29 +127,3 @@ class Derivatives extends Component {
     );
   }
 }
-
-const mapState = (state, ownProps) => {
-  const { unit = EMPTY_OBJECT }            = ownProps;
-  const { origins = [], derivatives = [] } = unit;
-  const denormCUDs                         = selectors.denormCUDs(state.content_units);
-
-  return {
-    cuds: derivatives.length > 0 ? denormCUDs(derivatives) : EMPTY_ARRAY,
-    wip: selectors.getWIP(state.content_units, 'fetchItemDerivatives'),
-    err: selectors.getError(state.content_units, 'fetchItemDerivatives'),
-    currentLanguage: system.getCurrentLanguage(state.system),
-    associatedIds: [...origins, ...derivatives].map(cu => cu.content_unit_id),
-    wipAssociate: selectors.getWIP(state.content_units, 'addItemDerivatives'),
-    errAssociate: selectors.getError(state.content_units, 'addItemDerivatives'),
-  };
-};
-
-function mapDispatch(dispatch) {
-  return bindActionCreators({
-    associate: actions.addItemDerivatives,
-    removeAssociate: actions.removeItemDerivatives,
-    updateAssociation: actions.updateItemDerivatives,
-  }, dispatch);
-}
-
-export default connect(mapState, mapDispatch)(Derivatives);
