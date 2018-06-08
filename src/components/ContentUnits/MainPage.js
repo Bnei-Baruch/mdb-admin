@@ -5,7 +5,7 @@ import { Icon, Menu, Modal } from 'semantic-ui-react';
 import { NS_UNITS, CONTENT_UNIT_TYPES } from '../../helpers/consts';
 import * as shapes from '../shapes';
 
-import CUListBase from '../BaseClasses/CUListBase';
+import CUList from '../BaseClasses/CUList';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
 import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
 
@@ -66,7 +66,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
 
   renderList = () => {
     const { items, currentLanguage } = this.props;
-    return <CUListBase items={items} currentLanguage={currentLanguage} withCheckBox={false} />;
+    return <CUList items={items} currentLanguage={currentLanguage} withCheckBox={false} />;
   };
 
   render() {

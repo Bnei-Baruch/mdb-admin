@@ -11,7 +11,7 @@ import { formatError } from '../../../../helpers/utils';
 import { selectors as unitsSelectors, actions as unitActions } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
 
-import CUListBase from '../../../BaseClasses/CUListBase';
+import CUList from '../../../BaseClasses/CUList';
 import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
 class MergeContentUnitTab extends ListWithCheckboxBase {
@@ -34,7 +34,7 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
 
   renderList = () => {
     const { items, currentLanguage } = this.props;
-    return (<CUListBase
+    return (<CUList
       {...this.getSelectListProps()}
       items={items}
       currentLanguage={currentLanguage} />);

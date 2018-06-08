@@ -8,7 +8,7 @@ import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
-class CUListBase extends PureComponent {
+class CUList extends PureComponent {
 
   static propTypes = {
     items: PropTypes.arrayOf(shapes.ContentUnit),
@@ -140,4 +140,4 @@ class CUListBase extends PureComponent {
   }
 }
 
-export default CUListBase;
+export default CUList;

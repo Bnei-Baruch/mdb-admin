@@ -5,7 +5,7 @@ import { Button, Icon, Segment } from 'semantic-ui-react';
 import { NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
 
-import CUListBase from '../../../BaseClasses/CUListBase';
+import CUList from '../../../BaseClasses/CUList';
 import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
 class FileContentUnit extends ListWithCheckboxBase {
@@ -28,7 +28,7 @@ class FileContentUnit extends ListWithCheckboxBase {
 
   renderList = () => {
     const { currentLanguage, items, file } = this.props;
-    return (<CUListBase
+    return (<CUList
       {...this.getSelectListProps()}
       items={items}
       associatedIds={[file.content_unit_id]}

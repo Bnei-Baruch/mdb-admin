@@ -8,7 +8,7 @@ import * as shapes from '../../../../shapes';
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { selectors as units } from '../../../../../redux/modules/collections';
 
-import CUListBase from '../../../../BaseClasses/CUListBase';
+import CUList from '../../../../BaseClasses/CUList';
 import ListWithCheckboxBase from '../../../../BaseClasses/ListWithCheckboxBase';
 
 class NewUnits extends ListWithCheckboxBase {
@@ -39,7 +39,7 @@ class NewUnits extends ListWithCheckboxBase {
 
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
-    return (<CUListBase
+    return (<CUList
       {...this.getSelectListProps()}
       items={items}
       associatedIds={associatedIds}
