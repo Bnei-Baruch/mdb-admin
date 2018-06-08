@@ -4,10 +4,11 @@ import { Button, Icon, Segment } from 'semantic-ui-react';
 
 import { NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
-import ContentUnitList from './NewAssociationsList';
-import ListWithFiltersBase from '../../../BaseClasses/ListWithFiltersBase';
 
-class FileContentUnit extends ListWithFiltersBase {
+import CUListBase from '../../../BaseClasses/CUListBase';
+import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
+
+class FileContentUnit extends ListWithCheckboxBase {
 
   constructor(props) {
     super(props);
@@ -17,6 +18,8 @@ class FileContentUnit extends ListWithFiltersBase {
     };
   };
 
+  isSingleSelect = true;
+
   usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
   getNamespace = () => NS_FILE_UNITS;
@@ -25,11 +28,11 @@ class FileContentUnit extends ListWithFiltersBase {
 
   renderList = () => {
     const { currentLanguage, items, file } = this.props;
-    return (<ContentUnitList
-      associatedCUId={file.content_unit_id}
+    return (<CUListBase
+      {...this.getSelectListProps()}
       items={items}
-      handleSelectCU={this.handleSelectCU}
-      selectedCUId={this.state.selectedCUId}
+      associatedIds={[file.content_unit_id]}
+      hasSelectAll={false}
       currentLanguage={currentLanguage} />);
   };
 
@@ -39,18 +42,14 @@ class FileContentUnit extends ListWithFiltersBase {
   };
 
   associate = () => {
-    const { selectedCUId }           = this.state;
     const { file, updateProperties } = this.props;
-    if (!selectedCUId) {
-      return;
-    }
-    updateProperties(file.id, { content_unit_id: selectedCUId });
-    this.handleSelectCU({});
+    updateProperties(file.id, { content_unit_id: this.state.selectedIds[0] });
+    this.selectItem({});
   };
 
   render() {
-    const { showFilters, selectedCUId } = this.state;
-    const { file }                      = this.props;
+    const { file }                     = this.props;
+    const { showFilters, selectedIds } = this.state;
 
     return (
       <div>
@@ -65,7 +64,7 @@ class FileContentUnit extends ListWithFiltersBase {
         <Segment clearing vertical>
           <Button
             onClick={this.associate}
-            disabled={!selectedCUId}
+            disabled={selectedIds.length === 0}
             content="Associate content unit to this file"
             color="blue" />
           <Button

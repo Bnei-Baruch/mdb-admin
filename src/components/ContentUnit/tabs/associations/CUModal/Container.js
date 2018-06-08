@@ -1,40 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon, Menu, Button, Modal } from 'semantic-ui-react';
-import uniq from 'lodash/uniq';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_CU, CONTENT_UNIT_TYPES } from '../../../../../helpers/consts';
+import * as shapes from '../../../../shapes';
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { selectors as units } from '../../../../../redux/modules/collections';
 
-import ListWithFiltersBase from '../../../../BaseClasses/ListWithFiltersBase';
+import CUListBase from '../../../../BaseClasses/CUListBase';
+import ListWithCheckboxBase from '../../../../BaseClasses/ListWithCheckboxBase';
 
-import * as shapes from '../../../../shapes';
-import CollectionsList from './List';
-
-class NewUnits extends ListWithFiltersBase {
+class NewUnits extends ListWithCheckboxBase {
 
   constructor(props) {
     super(props);
     NewUnits.propTypes = {
       ...super.propTypes,
       unit: shapes.ContentUnit,
-      items: PropTypes.arrayOf(shapes.ContentUnit),
-      associatedIds: PropTypes.arrayOf(PropTypes.number),
     };
-
-    NewUnits.defaultProps = {
-      ...super.defaultProps,
-      associatedIds: []
-    };
-
-    this.state = {
-      ...super.state,
-      selectedIds: []
-    };
-
   }
 
   componentDidMount() {
@@ -55,12 +39,10 @@ class NewUnits extends ListWithFiltersBase {
 
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
-    return (<CollectionsList
+    return (<CUListBase
+      {...this.getSelectListProps()}
       items={items}
-      selectedIds={this.state.selectedIds}
       associatedIds={associatedIds}
-      selectCU={this.selectCU}
-      selectAllCUs={this.selectAllCUs}
       currentLanguage={currentLanguage} />);
   };
 
@@ -76,26 +58,6 @@ class NewUnits extends ListWithFiltersBase {
   handleClose = () => {
     this.setState({ selectedIds: [], showFilters: false });
     this.props.handleToggleModal();
-  };
-
-  selectCU = (id, checked) => {
-    const selectedIds = this.state.selectedIds;
-    if (checked) {
-      selectedIds.push(id);
-    } else {
-      selectedIds.splice(selectedIds.findIndex(x => id === x), 1);
-    }
-    this.setState({ selectedIds: [...selectedIds] });
-  };
-
-  selectAllCUs = (checked) => {
-    const { items, associatedIds } = this.props;
-    const { selectedIds }          = this.state;
-    if (checked) {
-      this.setState({ selectedIds: uniq([...selectedIds, ...items.filter(c => !associatedIds.includes(c.id)).map(x => x.id)]) });
-    } else {
-      this.setState({ selectedIds: selectedIds.filter(id => !items.some(y => id === y.id)) });
-    }
   };
 
   render() {
