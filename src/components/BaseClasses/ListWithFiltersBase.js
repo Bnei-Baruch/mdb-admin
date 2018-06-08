@@ -45,7 +45,6 @@ class ListWithFiltersBase extends PureComponent {
     total: 0,
     wip: false,
     err: null,
-    items: EMPTY_ARRAY,
   };
 
   state = {

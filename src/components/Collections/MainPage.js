@@ -6,7 +6,7 @@ import { NS_COLLECTIONS, COLLECTION_TYPES } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import CreateCollectionForm from '../shared/Forms/Collection/CreateCollectionForm';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
-import CollectionsList from './List';
+import CollectionsList from '../BaseClasses/CollectionList';
 
 class CollectionsMainPage extends ListWithFiltersBase {
 
@@ -62,8 +62,7 @@ class CollectionsMainPage extends ListWithFiltersBase {
   };
 
   renderList = () => {
-    const { items, currentLanguage, getTagByUID } = this.props;
-    return <CollectionsList items={items} getTagByUID={getTagByUID} currentLanguage={currentLanguage} />;
+    return <CollectionsList items={this.props.items} withCheckBox={false} />;
   };
 
   render() {

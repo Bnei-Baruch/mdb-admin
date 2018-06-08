@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon, Menu, Button, Modal } from 'semantic-ui-react';
-import uniq from 'lodash/uniq';
 
 import {
   EMPTY_ARRAY,
@@ -13,13 +12,12 @@ import {
 } from '../../../../../helpers/consts';
 import { actions, selectors } from '../../../../../redux/modules/lists';
 import { selectors as collections } from '../../../../../redux/modules/collections';
-import { selectors as tagSelectors } from '../../../../../redux/modules/tags';
 
 import * as shapes from '../../../../shapes';
-import ListWithFiltersBase from '../../../../BaseClasses/ListWithFiltersBase';
-import CollectionsList from './List';
+import ListWithCheckboxBase from '../../../../BaseClasses/ListWithCheckboxBase';
+import CollectionList from '../../../../BaseClasses/CollectionList';
 
-class NewCollections extends ListWithFiltersBase {
+class NewCollections extends ListWithCheckboxBase {
 
   constructor(props) {
     super(props);
@@ -27,13 +25,7 @@ class NewCollections extends ListWithFiltersBase {
       ...super.propTypes,
       unit: shapes.ContentUnit,
       items: PropTypes.arrayOf(shapes.Collection),
-      getTagByUID: PropTypes.func.isRequired,
-      associatedCIds: PropTypes.arrayOf(PropTypes.number),
-    };
-
-    this.state = {
-      ...super.state,
-      selectedCIds: []
+      associatedIds: PropTypes.arrayOf(PropTypes.number),
     };
   }
 
@@ -54,22 +46,19 @@ class NewCollections extends ListWithFiltersBase {
   getContentType = () => COLLECTION_TYPES;
 
   renderList = () => {
-    const { getTagByUID, associatedCIds, currentLanguage, items } = this.props;
-    return <CollectionsList
-      items={items}
-      getTagByUID={getTagByUID}
-      selectedCIds={this.state.selectedCIds}
-      associatedCIds={associatedCIds}
-      selectCollection={this.selectCollection}
-      selectAllCollections={this.selectAllCollections}
-      currentLanguage={currentLanguage} />;
+    const { associatedIds, items } = this.props;
+    return (<CollectionList
+        {...this.getSelectListProps()}
+        items={items}
+        selectedIds={this.state.selectedIds}
+        associatedIds={associatedIds} />);
   };
 
   askForData = (pageNo) => this.props.fetchList(NS_UNIT_ASSOCIATION_COLLECTION, pageNo);
 
   handleAssociate = () => {
     const { associate, unit } = this.props;
-    this.state.selectedCIds.forEach(cId => associate(cId, [{
+    this.state.selectedIds.forEach(cId => associate(cId, [{
       content_unit_id: unit.id,
       name: '',
       position: 0
@@ -77,32 +66,11 @@ class NewCollections extends ListWithFiltersBase {
   };
 
   handleClose = () => {
-    this.setState({ selectedCIds: [], showFilters: false });
+    this.setState({ selectedIds: [], showFilters: false });
     this.props.handleShowAssociateModal();
   };
 
-  selectCollection = (id, checked) => {
-    const selectedCIds = this.state.selectedCIds;
-    if (checked) {
-      selectedCIds.push(id);
-    } else {
-      selectedCIds.splice(selectedCIds.findIndex(x => id === x), 1);
-    }
-    this.setState({ selectedCIds: [...selectedCIds] });
-  };
-
-  selectAllCollections = (checked) => {
-    const { items, associatedCIds } = this.props;
-    const { selectedCIds }          = this.state;
-    if (checked) {
-      this.setState({ selectedCIds: uniq([...selectedCIds, ...items.filter(c => !associatedCIds.includes(c.id)).map(x => x.id)]) });
-    } else {
-      this.setState({ selectedCIds: selectedCIds.filter(id => !items.some(y => id === y.id)) });
-    }
-  };
-
   render() {
-
     const { showFilters }          = this.state;
     const { isShowAssociateModal } = this.props;
     if (!isShowAssociateModal) {
@@ -149,12 +117,7 @@ const mapState = (state) => {
   const denormIDs = collections.denormIDs(state.collections);
   return {
     ...status,
-    wip: collections.getWIP(state.collections, 'fetchList'),
-    err: collections.getError(state.collections, 'fetchList'),
-    items: Array.isArray(status.items) && status.items.length > 0 ?
-      denormIDs(status.items) :
-      EMPTY_ARRAY,
-    getTagByUID: tagSelectors.getTagByUID(state.tags),
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
   };
 };
 

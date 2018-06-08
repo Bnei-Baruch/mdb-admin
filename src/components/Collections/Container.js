@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTIONS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';
 import { actions as collectionActions, selectors as collections } from '../../redux/modules/collections';
-import { selectors as system } from '../../redux/modules/system';
-import { selectors as tagSelectors } from '../../redux/modules/tags';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
@@ -68,11 +66,7 @@ const mapState = (state) => {
     ...status,
     wipOfCreate: collections.getWIP(state.collections, 'create'),
     errOfCreate: collections.getError(state.collections, 'create'),
-    items: Array.isArray(status.items) && status.items.length > 0 ?
-      denormIDs(status.items) :
-      EMPTY_ARRAY,
-    getTagByUID: tagSelectors.getTagByUID(state.tags),
-    currentLanguage: system.getCurrentLanguage(state.system),
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
   };
 };
 

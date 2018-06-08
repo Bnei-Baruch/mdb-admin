@@ -3,54 +3,61 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Icon, Table, Checkbox } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+
+import { selectors as system } from '../../redux/modules/system';
+import { selectors as tagSelectors } from '../../redux/modules/tags';
 
 import {
   CONTENT_TYPE_BY_ID,
   CT_DAILY_LESSON,
   CT_HOLIDAY,
   CT_SPECIAL_LESSON,
-  EMPTY_ARRAY,
   SECURITY_LEVELS
-} from '../../../../../helpers/consts';
-import { extractI18n } from '../../../../../helpers/utils';
-import * as shapes from '../../../../shapes';
+} from '../../helpers/consts';
+import { extractI18n } from '../../helpers/utils';
+import * as shapes from '../shapes';
 
-class CollectionsList extends PureComponent {
-
+class CollectionList extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(shapes.Collection),
+    select: PropTypes.func,
+    selectAll: PropTypes.func,
+    selectedIds: PropTypes.arrayOf(PropTypes.number),
+    associatedIds: PropTypes.arrayOf(PropTypes.number),
+    withCheckBox: PropTypes.bool,
+    hasSelectAll: PropTypes.bool,
     getTagByUID: PropTypes.func.isRequired,
-    selectedCIds: PropTypes.arrayOf(PropTypes.number),
-    selectCollection: PropTypes.func,
-    selectAllCollections: PropTypes.func,
-    associatedCIds: PropTypes.arrayOf(PropTypes.number),
-    currentLanguage: PropTypes.string.isRequired,
+    currentLanguage: PropTypes.string.isRequired
   };
 
   static defaultProps = {
-    items: EMPTY_ARRAY,
+    items: [],
+    selectedIds: [],
+    associatedIds: [],
+    withCheckBox: true,
+    hasSelectAll: true
   };
 
   isAllSelected = () => {
-    const { selectedCIds, items, associatedCIds } = this.props;
+    const { selectedIds, items, associatedIds } = this.props;
 
     //prevent check
-    if (selectedCIds.length < (items.length - associatedCIds.length)) {
+    if (selectedIds.length < (items.length - associatedIds.length)) {
       return false;
     }
 
-    const countAssociatedInPage = items.filter(u => associatedCIds.includes(u.id)).length;
+    const countAssociatedInPage = items.filter(u => associatedIds.includes(u.id)).length;
     //check that not all associated
     if (countAssociatedInPage === items.length) {
       return false;
     }
 
-    return (countAssociatedInPage + items.filter(u => selectedCIds.includes(u.id)).length) === items.length;
+    return (countAssociatedInPage + items.filter(u => selectedIds.includes(u.id)).length) === items.length;
   };
 
   renderItem = (item) => {
-
-    const { selectedCIds, getTagByUID, selectCollection, associatedCIds, currentLanguage } = this.props;
+    const { select, selectedIds, currentLanguage, associatedIds, withCheckBox } = this.props;
 
     let properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
 
@@ -66,7 +73,7 @@ class CollectionsList extends PureComponent {
         break;
       }
       case CT_HOLIDAY: {
-        const tag  = getTagByUID(item.properties.holiday_tag);
+        const tag  = this.props.getTagByUID(item.properties.holiday_tag);
         properties = tag ? extractI18n(tag.i18n, ['label'], currentLanguage)[0] : tag;
         if (item.properties.start_date) {
           properties += `  ${item.properties.start_date.substring(0, 4)}`;
@@ -79,14 +86,16 @@ class CollectionsList extends PureComponent {
     }
 
     return (
-      <Table.Row key={item.id} disabled={associatedCIds.includes(item.id)}>
-        <Table.Cell width="1">
-          <Checkbox
-            type="checkbox"
-            onChange={(event, data) => selectCollection(item.id, data.checked)}
-            checked={selectedCIds.includes(item.id)}
-          />
-        </Table.Cell>
+      <Table.Row key={item.id} disabled={!item || associatedIds.includes(item.id)}>
+        {withCheckBox ? (
+          <Table.Cell width="1">
+            <Checkbox
+              type="checkbox"
+              onChange={(event, data) => select(item.id, data.checked)}
+              checked={selectedIds.includes(item.id)}
+            />
+          </Table.Cell>
+        ) : null}
         <Table.Cell collapsing>
           <Link to={`/collections/${item.id}`}>
             {item.id}
@@ -104,9 +113,6 @@ class CollectionsList extends PureComponent {
         <Table.Cell collapsing>
           {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
-        <Table.Cell collapsing>
-          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
-        </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />
         </Table.Cell>
@@ -122,25 +128,25 @@ class CollectionsList extends PureComponent {
   };
 
   render() {
-    const { items } = this.props;
-
+    const { items, withCheckBox, selectAll, hasSelectAll } = this.props;
     return (
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell width="1">
-              <Checkbox
-                type="checkbox"
-                onChange={(event, data) => this.props.selectAllCollections(data.checked)}
-                checked={this.isAllSelected()}
-              />
-            </Table.HeaderCell>
+            {withCheckBox && hasSelectAll ? (
+              <Table.HeaderCell width="1">
+                <Checkbox
+                  type="checkbox"
+                  onChange={(event, data) => selectAll(data.checked)}
+                  checked={this.isAllSelected()}
+                />
+              </Table.HeaderCell>
+            ) : null}
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
             <Table.HeaderCell>Properties</Table.HeaderCell>
             <Table.HeaderCell>Created At</Table.HeaderCell>
-            <Table.HeaderCell>Film Date</Table.HeaderCell>
             <Table.HeaderCell>Secure</Table.HeaderCell>
             <Table.HeaderCell>Published</Table.HeaderCell>
           </Table.Row>
@@ -153,4 +159,7 @@ class CollectionsList extends PureComponent {
   }
 }
 
-export default CollectionsList;
+export default connect(state => ({
+  getTagByUID: tagSelectors.getTagByUID(state.tags),
+  currentLanguage: system.getCurrentLanguage(state.system),
+}))(CollectionList);

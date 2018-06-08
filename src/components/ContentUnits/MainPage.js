@@ -15,7 +15,6 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     super(props);
     ContentUnitMainPage.propTypes = {
       ...super.propTypes,
-      items: PropTypes.arrayOf(shapes.ContentUnit),
       wipOfCreate: PropTypes.bool,
       errOfCreate: shapes.Error,
       create: PropTypes.func.isRequired,
