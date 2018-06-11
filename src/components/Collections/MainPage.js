@@ -18,7 +18,6 @@ class CollectionsMainPage extends ListWithFiltersBase {
       wipOfCreate: PropTypes.bool,
       errOfCreate: shapes.Error,
       create: PropTypes.func.isRequired,
-      getTagByUID: PropTypes.func.isRequired,
     };
 
     CollectionsMainPage.defaultProps = {
