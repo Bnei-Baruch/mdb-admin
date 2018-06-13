@@ -1,4 +1,4 @@
-import  { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 class ListBase extends PureComponent {
@@ -8,12 +8,16 @@ class ListBase extends PureComponent {
     selectAll: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.number),
     associatedIds: PropTypes.arrayOf(PropTypes.number),
+    withCheckBox: PropTypes.bool,
+    hasSelectAll: PropTypes.bool,
   };
 
   static defaultProps = {
     items: [],
     selectedIds: [],
     associatedIds: [],
+    withCheckBox: true,
+    hasSelectAll: true
   };
 
   selectHandler = (x, checked) => {

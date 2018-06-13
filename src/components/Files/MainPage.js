@@ -2,7 +2,7 @@ import React from 'react';
 
 import { NS_FILES, CONTENT_UNIT_TYPES } from '../../helpers/consts';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
-import FilesList from './List';
+import FileList from '../BaseClasses/FileList';
 
 class FilesMainPage extends ListWithFiltersBase {
 
@@ -13,7 +13,9 @@ class FilesMainPage extends ListWithFiltersBase {
   getContentType = () => CONTENT_UNIT_TYPES;
 
   renderList = () => {
-    return <FilesList items={this.props.items} />;
+    return <FileList
+      items={this.props.items}
+      withCheckBox={false} />;
   };
 
   getIsUpdateQuery = () => true;

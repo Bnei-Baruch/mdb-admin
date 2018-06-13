@@ -14,15 +14,7 @@ class CUList extends ListBase {
   static propTypes = {
     ...ListBase.propTypes,
     items: PropTypes.arrayOf(shapes.ContentUnit),
-    withCheckBox: PropTypes.bool,
-    hasSelectAll: PropTypes.bool,
     currentLanguage: PropTypes.string.isRequired
-  };
-
-  static defaultProps = {
-    ...ListBase.defaultProps,
-    withCheckBox: true,
-    hasSelectAll: true
   };
 
   renderItem = (item) => {
