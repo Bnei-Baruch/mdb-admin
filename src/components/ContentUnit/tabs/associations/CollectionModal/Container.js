@@ -19,15 +19,12 @@ import CollectionList from '../../../../BaseClasses/CollectionList';
 
 class NewCollections extends ListWithCheckboxBase {
 
-  constructor(props) {
-    super(props);
-    NewCollections.propTypes = {
-      ...super.propTypes,
-      unit: shapes.ContentUnit,
-      items: PropTypes.arrayOf(shapes.Collection),
-      associatedIds: PropTypes.arrayOf(PropTypes.number),
-    };
-  }
+  static propTypes = {
+    ...ListWithCheckboxBase.propTypes,
+    unit: shapes.ContentUnit,
+    items: PropTypes.arrayOf(shapes.Collection),
+    associatedIds: PropTypes.arrayOf(PropTypes.number),
+  };
 
   componentDidMount() {
     this.askForData(1);
@@ -48,10 +45,10 @@ class NewCollections extends ListWithCheckboxBase {
   renderList = () => {
     const { associatedIds, items } = this.props;
     return (<CollectionList
-        {...this.getSelectListProps()}
-        items={items}
-        selectedIds={this.state.selectedIds}
-        associatedIds={associatedIds} />);
+      {...this.getSelectListProps()}
+      items={items}
+      selectedIds={this.state.selectedIds}
+      associatedIds={associatedIds} />);
   };
 
   askForData = (pageNo) => this.props.fetchList(NS_UNIT_ASSOCIATION_COLLECTION, pageNo);

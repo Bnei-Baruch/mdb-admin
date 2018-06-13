@@ -10,26 +10,23 @@ import CollectionsList from '../BaseClasses/CollectionList';
 
 class CollectionsMainPage extends ListWithFiltersBase {
 
+  static propTypes = {
+    ...ListWithFiltersBase.propTypes,
+    items: PropTypes.arrayOf(shapes.Collection),
+    wipOfCreate: PropTypes.bool,
+    errOfCreate: shapes.Error,
+    create: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    ...ListWithFiltersBase.defaultProps,
+    wipOfCreate: false,
+    errOfCreate: null
+  };
+
   constructor(props) {
     super(props);
-    CollectionsMainPage.propTypes = {
-      ...super.propTypes,
-      items: PropTypes.arrayOf(shapes.Collection),
-      wipOfCreate: PropTypes.bool,
-      errOfCreate: shapes.Error,
-      create: PropTypes.func.isRequired,
-    };
-
-    CollectionsMainPage.defaultProps = {
-      ...super.defaultProps,
-      wipOfCreate: false,
-      errOfCreate: null
-    };
-
-    this.state = {
-      ...super.state,
-      newCollection: false,
-    };
+    this.state.newCollection = false;
   }
 
   componentWillReceiveProps(nextProps) {

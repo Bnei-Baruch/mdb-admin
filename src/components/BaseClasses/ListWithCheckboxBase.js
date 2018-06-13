@@ -1,36 +1,28 @@
 import uniq from 'lodash/uniq';
 import PropTypes from 'prop-types';
-import * as shapes from '../shapes';
 
 import ListWithFiltersBase from './ListWithFiltersBase';
 
 class ListWithCheckboxBase extends ListWithFiltersBase {
+  static propTypes = {
+    ...ListWithFiltersBase.propTypes,
+    items: PropTypes.arrayOf(PropTypes.object),
+  };
 
   constructor(props) {
     super(props);
-    this.props = props;
-
-    ListWithCheckboxBase.propTypes = {
-      ...super.propTypes,
-      items: PropTypes.arrayOf(shapes.ContentUnit),
-      associatedIds: PropTypes.arrayOf(PropTypes.number),
-    };
-
-    ListWithCheckboxBase.defaultProps = {
-      ...super.defaultProps,
-      associatedIds: []
-    };
-
-    this.state = {
-      ...super.state,
-      selectedIds: []
-    };
+    this.state.selectedIds = [];
   }
 
   isSingleSelect = false;
 
   getSelectListProps = () => {
-    return { select: this.selectItem, selectAll: this.selectAllItems, selectedIds: this.state.selectedIds };
+    return {
+      select: this.selectItem,
+      selectAll: this.selectAllItems,
+      selectedIds: this.state.selectedIds,
+      associatedIds: this.props.associatedIds,
+    };
   };
 
   selectItem = (id, checked) => {

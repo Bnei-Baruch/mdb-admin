@@ -10,12 +10,9 @@ import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
 class FileContentUnit extends ListWithCheckboxBase {
 
-  constructor(props) {
-    super(props);
-    FileContentUnit.propTypes = {
-      ...super.propTypes,
-      file: shapes.File,
-    };
+  static propTypes = {
+    ...ListWithCheckboxBase.propTypes,
+    file: shapes.File,
   };
 
   isSingleSelect = true;

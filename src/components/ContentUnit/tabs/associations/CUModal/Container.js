@@ -13,13 +13,10 @@ import ListWithCheckboxBase from '../../../../BaseClasses/ListWithCheckboxBase';
 
 class NewUnits extends ListWithCheckboxBase {
 
-  constructor(props) {
-    super(props);
-    NewUnits.propTypes = {
-      ...super.propTypes,
-      unit: shapes.ContentUnit,
-    };
-  }
+  static propTypes = {
+    ...ListWithCheckboxBase.propTypes,
+    unit: shapes.ContentUnit,
+  };
 
   componentDidMount() {
     this.askForData(1);

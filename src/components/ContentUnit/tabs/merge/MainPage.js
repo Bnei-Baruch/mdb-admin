@@ -16,15 +16,12 @@ import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
 class MergeContentUnitTab extends ListWithCheckboxBase {
 
-  constructor(props) {
-    super(props);
-    MergeContentUnitTab.propTypes = {
-      ...super.propTypes,
-      unit: shapes.ContentUnit,
-      items: PropTypes.arrayOf(shapes.ContentUnit),
-      mergeUnits: PropTypes.func.isRequired,
-    };
-  }
+  static propTypes = {
+    ...ListWithCheckboxBase.propTypes,
+    unit: shapes.ContentUnit,
+    items: PropTypes.arrayOf(shapes.ContentUnit),
+    mergeUnits: PropTypes.func.isRequired,
+  };
 
   usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 

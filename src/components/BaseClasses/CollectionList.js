@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -17,47 +17,25 @@ import {
 } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
+import ListBase from './ListBase';
 
-class CollectionList extends PureComponent {
+class CollectionList extends ListBase {
   static propTypes = {
+    ...ListBase.propTypes,
     items: PropTypes.arrayOf(shapes.Collection),
-    select: PropTypes.func,
-    selectAll: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.number),
-    associatedIds: PropTypes.arrayOf(PropTypes.number),
     withCheckBox: PropTypes.bool,
     hasSelectAll: PropTypes.bool,
-    getTagByUID: PropTypes.func.isRequired,
     currentLanguage: PropTypes.string.isRequired
   };
 
   static defaultProps = {
-    items: [],
-    selectedIds: [],
-    associatedIds: [],
+    ...ListBase.defaultProps,
     withCheckBox: true,
     hasSelectAll: true
   };
 
-  isAllSelected = () => {
-    const { selectedIds, items, associatedIds } = this.props;
-
-    //prevent check
-    if (selectedIds.length < (items.length - associatedIds.length)) {
-      return false;
-    }
-
-    const countAssociatedInPage = items.filter(u => associatedIds.includes(u.id)).length;
-    //check that not all associated
-    if (countAssociatedInPage === items.length) {
-      return false;
-    }
-
-    return (countAssociatedInPage + items.filter(u => selectedIds.includes(u.id)).length) === items.length;
-  };
-
   renderItem = (item) => {
-    const { select, selectedIds, currentLanguage, associatedIds, withCheckBox } = this.props;
+    const { selectedIds, currentLanguage, associatedIds, withCheckBox } = this.props;
 
     let properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
 
@@ -91,7 +69,7 @@ class CollectionList extends PureComponent {
           <Table.Cell width="1">
             <Checkbox
               type="checkbox"
-              onChange={(event, data) => select(item.id, data.checked)}
+              onChange={(event, data) => this.selectHandler(item, data.checked)}
               checked={selectedIds.includes(item.id)}
             />
           </Table.Cell>
@@ -128,7 +106,7 @@ class CollectionList extends PureComponent {
   };
 
   render() {
-    const { items, withCheckBox, selectAll, hasSelectAll } = this.props;
+    const { items, withCheckBox, hasSelectAll } = this.props;
     return (
       <Table>
         <Table.Header>
@@ -137,7 +115,7 @@ class CollectionList extends PureComponent {
               <Table.HeaderCell width="1">
                 <Checkbox
                   type="checkbox"
-                  onChange={(event, data) => selectAll(data.checked)}
+                  onChange={this.selectAllHandler}
                   checked={this.isAllSelected()}
                 />
               </Table.HeaderCell>
@@ -152,7 +130,7 @@ class CollectionList extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {items.map(this.renderItem)}
+          {items.filter((x, i) => i < 5).map(this.renderItem)}
         </Table.Body>
       </Table>
     );

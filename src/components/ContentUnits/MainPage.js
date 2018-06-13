@@ -11,38 +11,35 @@ import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnit
 
 class ContentUnitMainPage extends ListWithFiltersBase {
 
+  static propTypes = {
+    ...ListWithFiltersBase.propTypes,
+    wipOfCreate: PropTypes.bool,
+    errOfCreate: shapes.Error,
+    create: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    ...ListWithFiltersBase.defaultProps,
+    wipOfCreate: false,
+    errOfCreate: null
+  };
+
   constructor(props) {
     super(props);
-    ContentUnitMainPage.propTypes = {
-      ...super.propTypes,
-      wipOfCreate: PropTypes.bool,
-      errOfCreate: shapes.Error,
-      create: PropTypes.func.isRequired,
-    };
-
-    ContentUnitMainPage.defaultProps = {
-      ...super.defaultProps,
-      wipOfCreate: false,
-      errOfCreate: null
-    };
-
-    this.state = {
-      ...super.state,
-      showNewCU: false,
-    };
+    this.state.showNewCU = false;
   }
 
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
-    const nWip            = nextProps.wipOfCreate;
-    const nErr            = nextProps.errOfCreate;
+
+    const nWip = nextProps.wipOfCreate;
+    const nErr = nextProps.errOfCreate;
     if (wipOfCreate && !nWip && !nErr) {
       this.toggleNewCU();
     }
   }
 
-  toggleNewCU = () =>
-    this.setState({ showNewCU: !this.state.showNewCU });
+  toggleNewCU = () => this.setState({ showNewCU: !this.state.showNewCU });
 
   usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
@@ -64,8 +61,13 @@ class ContentUnitMainPage extends ListWithFiltersBase {
   };
 
   renderList = () => {
-    const { items, currentLanguage } = this.props;
-    return <CUList items={items} currentLanguage={currentLanguage} withCheckBox={false} />;
+    const { items, currentLanguage, associatedIds } = this.props;
+
+    return (<CUList
+      items={items}
+      associatedIds={associatedIds}
+      currentLanguage={currentLanguage}
+      withCheckBox={false} />);
   };
 
   render() {

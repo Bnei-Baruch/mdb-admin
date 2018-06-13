@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -7,47 +7,22 @@ import { Icon, Table, Checkbox } from 'semantic-ui-react';
 import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
+import ListBase from './ListBase';
 
-class CUList extends PureComponent {
+class CUList extends ListBase {
 
   static propTypes = {
+    ...ListBase.propTypes,
     items: PropTypes.arrayOf(shapes.ContentUnit),
-    select: PropTypes.func,
-    selectAll: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.number),
-    associatedIds: PropTypes.arrayOf(PropTypes.number),
     withCheckBox: PropTypes.bool,
     hasSelectAll: PropTypes.bool,
     currentLanguage: PropTypes.string.isRequired
   };
 
   static defaultProps = {
-    items: [],
-    selectedIds: [],
-    associatedIds: [],
+    ...ListBase.defaultProps,
     withCheckBox: true,
     hasSelectAll: true
-  };
-
-  checkHandler = (cu, checked) => {
-    this.props.select(cu.id, checked);
-  };
-
-  isAllSelected = () => {
-    const { selectedIds, items, associatedIds } = this.props;
-
-    //prevent check
-    if (selectedIds.length < (items.length - associatedIds.length)) {
-      return false;
-    }
-
-    const countAssociatedInPage = items.filter(u => associatedIds.includes(u.id)).length;
-    //check that not all associated
-    if (countAssociatedInPage === items.length) {
-      return false;
-    }
-
-    return (countAssociatedInPage + items.filter(u => selectedIds.includes(u.id)).length) === items.length;
   };
 
   renderItem = (item) => {
@@ -60,7 +35,7 @@ class CUList extends PureComponent {
           <Table.Cell>
             <Checkbox
               type="checkbox"
-              onChange={(event, data) => this.checkHandler(item, data.checked)}
+              onChange={(event, data) => this.selectHandler(item, data.checked)}
               checked={selectedIds.includes(item.id)}
             />
           </Table.Cell>
@@ -107,7 +82,7 @@ class CUList extends PureComponent {
   };
 
   render() {
-    const { items, withCheckBox, selectAll, hasSelectAll } = this.props;
+    const { items, withCheckBox, hasSelectAll } = this.props;
     return (
       <Table>
         <Table.Header>
@@ -116,7 +91,7 @@ class CUList extends PureComponent {
               <Table.HeaderCell width="1">
                 <Checkbox
                   type="checkbox"
-                  onChange={(event, data) => selectAll(data.checked)}
+                  onChange={this.selectAllHandler}
                   checked={this.isAllSelected()}
                 />
               </Table.HeaderCell>
@@ -133,7 +108,7 @@ class CUList extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {items.map(this.renderItem)}
+          {items.filter((x, i) => i < 5).map(this.renderItem)}
         </Table.Body>
       </Table>
     );

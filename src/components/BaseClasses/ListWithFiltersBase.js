@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header, Label, Icon, Menu } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import TabsMenu from '../shared/TabsMenu';
@@ -26,11 +25,6 @@ allFiltersByName.set('Others', { name: 'Others', element: Others });
 
 class ListWithFiltersBase extends PureComponent {
 
-  constructor(props) {
-    super(props);
-    this.props = props;
-  }
-
   static propTypes = {
     total: PropTypes.number,
     pageNo: PropTypes.number,
@@ -38,6 +32,7 @@ class ListWithFiltersBase extends PureComponent {
     err: shapes.Error,
     setPage: PropTypes.func.isRequired,
     fetchList: PropTypes.func.isRequired,
+    associatedIds: PropTypes.arrayOf(PropTypes.number),
   };
 
   static defaultProps = {
@@ -45,6 +40,7 @@ class ListWithFiltersBase extends PureComponent {
     total: 0,
     wip: false,
     err: null,
+    associatedIds: []
   };
 
   state = {

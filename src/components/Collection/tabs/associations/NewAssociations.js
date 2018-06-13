@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { delay, orderBy, uniqBy } from 'lodash';
+import { delay, orderBy } from 'lodash';
 import { Icon, Button, Segment } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
@@ -16,16 +16,14 @@ import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 import CUList from '../../../BaseClasses/CUList';
 
 class NewAssociations extends ListWithCheckboxBase {
-  constructor(props) {
-    super(props);
-    NewAssociations.propTypes = {
-      ...super.propTypes,
-      collection: shapes.Collection,
-      items: PropTypes.arrayOf(shapes.ContentUnit),
-      associateUnit: PropTypes.func.isRequired,
-      setEditMode: PropTypes.func.isRequired,
-    };
-  }
+
+  static propTypes = {
+    ...ListWithCheckboxBase.propTypes,
+    collection: shapes.Collection,
+    items: PropTypes.arrayOf(shapes.ContentUnit),
+    associateUnit: PropTypes.func.isRequired,
+    setEditMode: PropTypes.func.isRequired,
+  };
 
   usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
@@ -88,7 +86,7 @@ class NewAssociations extends ListWithCheckboxBase {
         <Segment clearing vertical>
           <Button
             onClick={this.associate}
-            disabled={selectedIds.length == 0}
+            disabled={selectedIds.length === 0}
             floated="left"
             content="Associate content units to this collection"
             color="blue"
