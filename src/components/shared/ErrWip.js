@@ -16,8 +16,8 @@ const ErrWip = (props) => {
 };
 
 ErrWip.propTypes = {
-  wip: PropTypes.object.required,
-  err: PropTypes.object.required,
+  wip: PropTypes.any,
+  err: PropTypes.any,
 };
 
 ErrWip.defaultProps = {
