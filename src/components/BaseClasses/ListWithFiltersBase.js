@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Label, Icon, Menu } from 'semantic-ui-react';
+import { Grid, Header, Label, Icon, Menu, Sticky } from 'semantic-ui-react';
 
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
@@ -144,36 +144,48 @@ class ListWithFiltersBase extends PureComponent {
           null
       }
       <ResultsPageHeader pageNo={pageNo} total={total} />
-      &nbsp;&nbsp;
+
       <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
     </div>);
   };
 
+  handlePaginationContextRef = paginationContextRef => this.setState({ paginationContextRef });
+
   renderContent = (defaultOptions = {}) => {
-    const { showFilters }          = this.state;
-    const { usePagination = true } = defaultOptions;
+    const { showFilters, paginationContextRef } = this.state;
+    const { usePagination = true }              = defaultOptions;
     return (
-      <Grid>
-        <Grid.Row>
-          <Grid.Column>
-            {
-              showFilters ?
-                <div>
-                  <TabsMenu items={this.getFilterTabs()} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
-                  <br />
-                </div> :
-                null
-            }
-            <FilterTags namespace={this.getNamespace()} changeFilterFromTag={this.handleChangeFilterFromTag} />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            {usePagination ? this.renderPagination() : null}
-            {this.renderList()}
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>);
+      <div ref={this.handlePaginationContextRef}>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column>
+              {
+                showFilters ?
+                  <div>
+                    <TabsMenu items={this.getFilterTabs()} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
+                    <br />
+                  </div> :
+                  null
+              }
+              <FilterTags namespace={this.getNamespace()} changeFilterFromTag={this.handleChangeFilterFromTag} />
+            </Grid.Column>
+          </Grid.Row>
+          {usePagination ?
+            <Grid.Row>
+              <Grid.Column>
+                <Sticky className={'stickyMenu'} context={paginationContextRef}>
+                  {this.renderPagination()}
+                </Sticky>
+              </Grid.Column>
+            </Grid.Row>
+            : null}
+          <Grid.Row>
+            <Grid.Column>
+              {this.renderList()}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>);
   };
 
   renderList = () => {

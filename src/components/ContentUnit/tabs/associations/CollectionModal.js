@@ -1,21 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon, Menu, Button, Modal } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_CU, CONTENT_UNIT_TYPES } from '../../../../../helpers/consts';
-import * as shapes from '../../../../shapes';
-import { actions, selectors } from '../../../../../redux/modules/lists';
-import { selectors as units } from '../../../../../redux/modules/collections';
+import {
+  EMPTY_ARRAY,
+  EMPTY_OBJECT,
+  NS_UNIT_ASSOCIATION_COLLECTION,
+  COLLECTION_TYPES
+} from '../../../../helpers/consts';
+import { actions, selectors } from '../../../../redux/modules/lists';
+import { selectors as collections } from '../../../../redux/modules/collections';
 
-import CUList from '../../../../BaseClasses/CUList';
-import ListWithCheckboxBase from '../../../../BaseClasses/ListWithCheckboxBase';
+import * as shapes from '../../../shapes';
+import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
+import CollectionList from '../../../BaseClasses/CollectionList';
 
-class NewUnits extends ListWithCheckboxBase {
+class CollectionModal extends ListWithCheckboxBase {
 
   static propTypes = {
     ...ListWithCheckboxBase.propTypes,
     unit: shapes.ContentUnit,
+    items: PropTypes.arrayOf(shapes.Collection),
+    associatedIds: PropTypes.arrayOf(PropTypes.number),
   };
 
   componentDidMount() {
@@ -30,37 +38,38 @@ class NewUnits extends ListWithCheckboxBase {
     }
   }
 
-  getNamespace = () => NS_UNIT_ASSOCIATION_CU;
+  getNamespace = () => NS_UNIT_ASSOCIATION_COLLECTION;
 
-  getContentType = () => CONTENT_UNIT_TYPES;
+  getContentType = () => COLLECTION_TYPES;
 
   renderList = () => {
-    const { items, currentLanguage, associatedIds } = this.props;
-    return (<CUList
+    const { associatedIds, items } = this.props;
+    return (<CollectionList
       {...this.getSelectListProps()}
       items={items}
-      associatedIds={associatedIds}
-      currentLanguage={currentLanguage} />);
+      selectedIds={this.state.selectedIds}
+      associatedIds={associatedIds} />);
   };
 
-  askForData = (pageNo) => this.props.fetchList(NS_UNIT_ASSOCIATION_CU, pageNo);
+  askForData = (pageNo) => this.props.fetchList(NS_UNIT_ASSOCIATION_COLLECTION, pageNo);
 
   handleAssociate = () => {
     const { associate, unit } = this.props;
-    this.state.selectedIds.forEach(cId => associate(unit.id, cId));
-    this.handleClose();
-
+    this.state.selectedIds.forEach(cId => associate(cId, [{
+      content_unit_id: unit.id,
+      name: '',
+      position: 0
+    }]));
   };
 
   handleClose = () => {
     this.setState({ selectedIds: [], showFilters: false });
-    this.props.handleToggleModal();
+    this.props.handleShowAssociateModal();
   };
 
   render() {
     const { showFilters }          = this.state;
     const { isShowAssociateModal } = this.props;
-
     if (!isShowAssociateModal) {
       return null;
     }
@@ -70,7 +79,7 @@ class NewUnits extends ListWithCheckboxBase {
         size="fullscreen"
         open={isShowAssociateModal}
         onClose={this.handleClose}>
-        <Modal.Header content="Associate Content Units" />
+        <Modal.Header content="Associate Collections" />
         <Modal.Content scrolling>
           <Menu borderless size="large">
             <Menu.Item onClick={this.toggleFilters}>
@@ -84,13 +93,12 @@ class NewUnits extends ListWithCheckboxBase {
             </Menu.Menu>
           </Menu>
 
-
           {this.renderFiltersHydrator()}
           {this.renderContent({ usePagination: false })}
         </Modal.Content>
-
         <Modal.Actions>
-          <Button content="Cancel" onClick={this.handleClose} />
+          <Button content="Cancel"
+                  onClick={this.handleClose} />
           <Button
             onClick={this.handleAssociate}
             content="Associate content unit to collections"
@@ -102,12 +110,10 @@ class NewUnits extends ListWithCheckboxBase {
 }
 
 const mapState = (state) => {
-  const status    = selectors.getNamespaceState(state.lists, NS_UNIT_ASSOCIATION_CU) || EMPTY_OBJECT;
-  const denormIDs = units.denormIDs(state.content_units);
+  const status    = selectors.getNamespaceState(state.lists, NS_UNIT_ASSOCIATION_COLLECTION) || EMPTY_OBJECT;
+  const denormIDs = collections.denormIDs(state.collections);
   return {
     ...status,
-    wip: units.getWIP(state.content_units, 'fetchList'),
-    err: units.getError(state.content_units, 'fetchList'),
     items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
   };
 };
@@ -119,4 +125,4 @@ function mapDispatch(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(NewUnits);
+export default connect(mapState, mapDispatch)(CollectionModal);

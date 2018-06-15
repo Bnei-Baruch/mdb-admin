@@ -9,7 +9,7 @@ import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../../../helpers/consts';
 
-import NewUnits from './CUModal/Container';
+import CUModal from './CUModal';
 
 export default class HierarchyUnitsView extends Component {
 
@@ -114,14 +114,13 @@ export default class HierarchyUnitsView extends Component {
         </Menu>
         <Segment attached>
           {this.renderTable()}
-          <NewUnits
+          <CUModal
             unit={unit}
             isShowAssociateModal={this.state.isShowAssociateModal}
             handleToggleModal={this.handleToggleModal}
             associate={associate}
             associatedIds={associatedIds}
-            currentLanguage={currentLanguage}>
-          </NewUnits>
+            currentLanguage={currentLanguage} />
         </Segment>
       </div>
     );
