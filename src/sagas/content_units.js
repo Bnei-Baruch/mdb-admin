@@ -234,8 +234,6 @@ function* mergeUnits(action) {
   try {
     const { id, cuIds } = action.payload;
     yield call(api.post, `/content_units/${id}/merge`, cuIds);
-    //TODO: If need realisation of remove list of items
-    //yield put(lists.removeItems(NS_MERGE_UNITS, cuIds));
     yield put(actions.mergeUnitsSuccess(action.payload));
   } catch (err) {
     yield put(actions.mergeUnitsFailure(err));

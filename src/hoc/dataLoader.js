@@ -30,8 +30,6 @@ const dataLoader = (propsToPromise) => (WrappedComponent) => {
             );
         }
     };
-
-    // TODO (yaniv): change displayName
 };
 
 export default dataLoader;
