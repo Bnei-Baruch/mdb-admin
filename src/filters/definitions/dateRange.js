@@ -10,21 +10,21 @@ const dateRange = {
       return null;
     }
 
-    return `${moment(value.from).format('DD-MM-YYYY')}_${moment(value.to).format('DD-MM-YYYY')}`;
+    return `${moment.utc(value.from).format('DD-MM-YYYY')}_${moment.utc(value.to).format('DD-MM-YYYY')}`;
   },
   queryToValue: (queryValue) => {
     const parts = queryValue.split('_');
 
     return {
-      from: moment(parts[0], 'DD-MM-YYYY').toDate(),
-      to: moment(parts[1], 'DD-MM-YYYY').toDate()
+      from: moment.utc(parts[0], 'DD-MM-YYYY').toDate(),
+      to: moment.utc(parts[1], 'DD-MM-YYYY').toDate()
     };
   },
   valueToApiParam: (value) => {
     const { from, to } = value;
     return {
-      start_date: moment(new Date(from)).format('YYYY-MM-DD'),
-      end_date: moment(new Date(to)).format('YYYY-MM-DD')
+      start_date: moment.utc(new Date(from)).format('YYYY-MM-DD'),
+      end_date: moment.utc(new Date(to)).format('YYYY-MM-DD')
     };
   },
   tagIcon: 'calendar',
@@ -34,7 +34,7 @@ const dateRange = {
     }
 
     const { from, to } = value;
-    const dateFormat   = date => moment(new Date(date)).format('D MMM YYYY');
+    const dateFormat   = date => moment.utc(new Date(date)).format('D MMM YYYY');
 
     if (value.from === value.to) {
       return dateFormat(from);
