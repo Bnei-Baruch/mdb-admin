@@ -61,34 +61,30 @@ class AddNewFiles extends ListWithCheckboxBase {
     const { showFilters, selectedIds } = this.state;
     return (
       <div>
+        <Segment clearing secondary size="large">
+          Add Files To Content Unit
+        </Segment>
         <Segment clearing vertical>
           <Button
             onClick={this.toggleFilters}
             color="blue"
-            floated="left"
             inverted>
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
-          <Button
-            onClick={this.switchToViewMode}
-            floated="right"
-            content="Cancel" />
+
           <Button
             onClick={this.addFiles}
             disabled={selectedIds.length === 0}
-            floated="right"
             content="Add files to this content unit"
             color="blue" />
+          <Button
+            onClick={this.switchToViewMode}
+            icon="close"
+            content="Cancel" />
         </Segment>
 
         {this.renderFiltersHydrator()}
-
-        <Menu borderless size="large">
-          <Menu.Item header>
-            <Header content="Add Files To Content Unit" size="medium" color="blue" />
-          </Menu.Item>
-        </Menu>
         {this.renderContent()}
       </div>
     );

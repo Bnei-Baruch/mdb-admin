@@ -56,8 +56,8 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
   };
 
   render() {
-    const { showFilters }         = this.state;
-    const { wipMerge, errMerge, } = this.props;
+    const { showFilters, selectedIds } = this.state;
+    const { wipMerge, errMerge, }      = this.props;
 
     return (
       <div>
@@ -73,9 +73,11 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
-          <Button onClick={this.mergeCU}>
-            Merge
-          </Button>
+          <Button
+            onClick={this.mergeCU}
+            disabled={selectedIds.length === 0}
+            content="Merge"
+            color="blue" />
 
           {this.renderIsMergedMessage(wipMerge, errMerge)}
         </Segment>

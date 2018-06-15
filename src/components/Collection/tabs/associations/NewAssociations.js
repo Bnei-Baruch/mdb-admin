@@ -72,34 +72,27 @@ class NewAssociations extends ListWithCheckboxBase {
     return (
       <div>
         <Segment clearing secondary size="large">
-          <div>
             Associate content units to this collection
-            <Button
-              onClick={this.handleViewMode}
-              floated="right"
-              icon="close"
-              content="Cancel"
-            />
-          </div>
         </Segment>
 
         <Segment clearing vertical>
           <Button
-            onClick={this.associate}
-            disabled={selectedIds.length === 0}
-            floated="left"
-            content="Associate content units to this collection"
-            color="blue"
-          />
-          <Button
             onClick={this.toggleFilters}
             color="blue"
-            floated="left"
-            inverted
-          >
+            inverted>
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
+
+          <Button
+            onClick={this.associate}
+            disabled={selectedIds.length === 0}
+            content="Associate content units to this collection"
+            color="blue" />
+          <Button
+            onClick={this.handleViewMode}
+            icon="close"
+            content="Cancel" />
         </Segment>
 
         {this.renderFiltersHydrator()}
