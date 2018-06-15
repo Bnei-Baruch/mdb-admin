@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTIONS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';
 import { actions as collectionActions, selectors as collections } from '../../redux/modules/collections';
-import { selectors as system } from '../../redux/modules/system';
-import { selectors as tagSelectors } from '../../redux/modules/tags';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
@@ -17,8 +15,6 @@ class CollectionsContainer extends Component {
     location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
-    fetchList: PropTypes.func.isRequired,
-    setPage: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -31,14 +27,18 @@ class CollectionsContainer extends Component {
     const nWip            = nextProps.wipOfCreate;
     const nErr            = nextProps.errOfCreate;
     if (wipOfCreate && !nWip && !nErr) {
-      this.askForData(this.getPageNo());
+      this.askForData(this.getPageNo(true));
     }
   }
 
-  getPageNo = (search) => {
+  askForData = (pageNo) => {
+    this.props.fetchList(NS_COLLECTIONS, pageNo);
+  };
+
+  getPageNo = (notUseLocation) => {
     let page = 0;
-    if (search) {
-      const match = search.match(/page=(\d+)/);
+    if (!notUseLocation) {
+      const match = this.props.location.search.match(/page=(\d+)/);
       if (match) {
         page = parseInt(match[1], 10);
       }
@@ -47,33 +47,13 @@ class CollectionsContainer extends Component {
     return (isNaN(page) || page <= 0) ? 1 : page;
   };
 
-  handlePageChange = (pageNo) => {
-    const { setPage } = this.props;
-    setPage(NS_COLLECTIONS, pageNo);
-    this.askForData(pageNo);
-  };
-
-  handleFiltersChange = () => this.handlePageChange(1);
-
-  handleFiltersHydrated = () => {
-    const { location }       = this.props;
-    const pageNoFromLocation = this.getPageNo(location.search);
-    this.handlePageChange(pageNoFromLocation);
-  };
-
-  askForData = (pageNo) => {
-    this.props.fetchList(NS_COLLECTIONS, pageNo);
-  };
-
   render() {
-    const { location, fetchList, setPage, ...rest } = this.props;
+    const { location, ...rest } = this.props;
 
     return (
       <MainPage
         {...rest}
-        onPageChange={this.handlePageChange}
-        onFiltersChange={this.handleFiltersChange}
-        onFiltersHydrated={this.handleFiltersHydrated}
+        getPageNo={this.getPageNo}
       />
     );
   }
@@ -86,11 +66,7 @@ const mapState = (state) => {
     ...status,
     wipOfCreate: collections.getWIP(state.collections, 'create'),
     errOfCreate: collections.getError(state.collections, 'create'),
-    items: Array.isArray(status.items) && status.items.length > 0 ?
-      denormIDs(status.items) :
-      EMPTY_ARRAY,
-    getTagByUID: tagSelectors.getTagByUID(state.tags),
-    currentLanguage: system.getCurrentLanguage(state.system),
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
   };
 };
 

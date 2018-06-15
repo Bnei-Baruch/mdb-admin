@@ -17,7 +17,7 @@ import {
   CT_SPECIAL_LESSON, CT_DAILY_LESSON, CT_HOLIDAY
 } from '../../../../helpers/consts';
 
-import NewCollections from './CollectionModal/Container';
+import CollectionModal from './CollectionModal';
 
 class Collections extends Component {
 
@@ -149,7 +149,7 @@ class Collections extends Component {
         </Menu>
         <Segment attached>
           {content}
-          <NewCollections
+          <CollectionModal
             {...this.props}
             handleShowAssociateModal={this.handleShowAssociateModal}
             isShowAssociateModal={this.state.isShowAssociateModal} />

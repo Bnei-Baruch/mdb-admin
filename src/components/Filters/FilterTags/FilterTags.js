@@ -19,7 +19,7 @@ class FilterTags extends Component {
     })),
     removeFilterValue: PropTypes.func.isRequired,
     editExistingFilter: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
+    changeFilterFromTag: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -30,9 +30,32 @@ class FilterTags extends Component {
     store: PropTypes.object.isRequired
   };
 
+  renderTag = (tag) => {
+    const { namespace }                    = this.props;
+    const { name, value, index, isActive } = tag;
+
+    const icon  = filtersTransformer.getTagIcon(name);
+    const label = filtersTransformer.valueToTagLabel(name, value, this.props, this.context.store);
+    return (
+      <FilterTag
+        key={`${name}_${index}`}
+        icon={icon}
+        isActive={isActive}
+        label={label}
+        onClick={() => {
+          this.props.changeFilterFromTag();
+          this.props.editExistingFilter(namespace, name, index);
+        }}
+        onClose={() => {
+          this.props.removeFilterValue(namespace, name, value);
+          this.props.changeFilterFromTag();
+        }}
+      />
+    );
+  };
+
   render() {
-    const { tags, namespace } = this.props;
-    const store               = this.context.store;
+    const { tags } = this.props;
 
     if (tags.length === 0) {
       return null;
@@ -43,23 +66,7 @@ class FilterTags extends Component {
         <span>Active Filters:</span>&nbsp;&nbsp;
         <Label.Group style={{ display: 'inline-block' }}>
           {
-            tags.map((tag) => {
-              const icon  = filtersTransformer.getTagIcon(tag.name);
-              const label = filtersTransformer.valueToTagLabel(tag.name, tag.value, this.props, store);
-              return (
-                <FilterTag
-                  key={`${tag.name}_${tag.index}`}
-                  icon={icon}
-                  isActive={tag.isActive}
-                  label={label}
-                  onClick={() => this.props.editExistingFilter(namespace, tag.name, tag.index)}
-                  onClose={() => {
-                    this.props.removeFilterValue(namespace, tag.name, tag.value);
-                    this.props.onClose();
-                  }}
-                />
-              );
-            })
+            tags.map(this.renderTag)
           }
         </Label.Group>
       </div>

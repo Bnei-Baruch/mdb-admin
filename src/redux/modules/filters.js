@@ -310,6 +310,19 @@ const getActiveFilter = (state, namespace) => (
     : ''
 );
 
+const tabsWithFilterNames = {
+  'date-range-filter': 'Date Range',
+  'query': 'Free Text',
+  'sources-filter': 'Sources',
+  'topics-filter': 'Topics',
+  'operation_type': 'Others',
+  'content_type': 'Others',
+  'secure': 'Others',
+  'published': 'Others'
+};
+
+const getTabNameByFilterName = fName => tabsWithFilterNames[fName];
+
 export const selectors = {
   getFilters,
   getFilterValue,
@@ -319,5 +332,6 @@ export const selectors = {
   getActiveValue,
   getIsEditingExistingFilter,
   getIsHydrated,
-  getActiveFilter
+  getActiveFilter,
+  getTabNameByFilterName
 };

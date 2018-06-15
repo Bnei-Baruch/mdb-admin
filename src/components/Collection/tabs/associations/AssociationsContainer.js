@@ -91,6 +91,7 @@ class AssociationsContainer extends Component {
           selectedCCU.splice(i, 1);
           return true;
         }
+          return false;
       });
     }
     this.setState({ selectedCCU: [...selectedCCU] });

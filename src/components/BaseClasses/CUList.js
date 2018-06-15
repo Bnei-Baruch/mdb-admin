@@ -1,48 +1,37 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Icon, Table } from 'semantic-ui-react';
+import { Icon, Table, Checkbox } from 'semantic-ui-react';
 
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, SECURITY_LEVELS } from '../../../../helpers/consts';
-import { extractI18n } from '../../../../helpers/utils';
-import * as shapes from '../../../shapes';
+import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../helpers/consts';
+import { extractI18n } from '../../helpers/utils';
+import * as shapes from '../shapes';
+import ListBase from './ListBase';
 
-class ContentUnitList extends PureComponent {
+class CUList extends ListBase {
 
   static propTypes = {
-    unit: shapes.ContentUnit,
-    units: PropTypes.arrayOf(shapes.ContentUnit),
-    selectedCUIds: PropTypes.arrayOf(PropTypes.number),
-    selectCU: PropTypes.func,
-    associatedCUIds: PropTypes.object,
-    currentLanguage: PropTypes.string.isRequired,
-  };
-
-  static defaultProps = {
-    units: EMPTY_ARRAY,
-  };
-
-  checkHandler = (cu, checked) => {
-    this.props.selectCU(cu.id, checked);
+    ...ListBase.propTypes,
+    items: PropTypes.arrayOf(shapes.ContentUnit),
+    currentLanguage: PropTypes.string.isRequired
   };
 
   renderItem = (item) => {
-    if (!item || this.props.unit.id === item.id) {
-      return null;
-    }
-    const { selectedCUIds, currentLanguage } = this.props;
+    const { selectedIds, currentLanguage, associatedIds, withCheckBox } = this.props;
 
     const properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
     return (
-      <Table.Row key={item.id}>
-        <Table.Cell>
-          <Checkbox
-            type="checkbox"
-            onChange={(event, data) => this.checkHandler(item, data.checked)}
-            checked={selectedCUIds.includes(item.id)}
-          />
-        </Table.Cell>
+      <Table.Row key={item.id} disabled={!item || associatedIds.includes(item.id)}>
+        {withCheckBox ? (
+          <Table.Cell>
+            <Checkbox
+              type="checkbox"
+              onChange={(event, data) => this.selectHandler(item, data.checked)}
+              checked={selectedIds.includes(item.id)}
+            />
+          </Table.Cell>
+        ) : null}
         <Table.Cell>
           <Link to={`/content_units/${item.id}`}>
             {item.id}
@@ -85,11 +74,20 @@ class ContentUnitList extends PureComponent {
   };
 
   render() {
+    const { items, withCheckBox, hasSelectAll } = this.props;
     return (
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
+            {withCheckBox && hasSelectAll ? (
+              <Table.HeaderCell width="1">
+                <Checkbox
+                  type="checkbox"
+                  onChange={this.selectAllHandler}
+                  checked={this.isAllSelected()}
+                />
+              </Table.HeaderCell>
+            ) : null}
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
@@ -102,11 +100,11 @@ class ContentUnitList extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {this.props.units.map(this.renderItem)}
+          {items.map(this.renderItem)}
         </Table.Body>
       </Table>
     );
   }
 }
 
-export default ContentUnitList;
+export default CUList;

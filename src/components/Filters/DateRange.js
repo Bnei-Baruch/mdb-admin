@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 import { DateRangeFilter } from './filterComponents';
 
-const DateRange = props => (
-  <DateRangeFilter
-    namespace={props.namespace}
+const DateRange = props => {
+  const { namespace, onFilterApplication, isUpdateQuery, onFilterCancel } = props;
+  return (<DateRangeFilter
+    namespace={namespace}
     name="date-range-filter"
-    onApply={props.onFilterApplication}
-    onCancel={props.onFilterCancel}
-  />
-);
+    onApply={onFilterApplication}
+    onCancel={onFilterCancel}
+    isUpdateQuery={isUpdateQuery} />);
+};
 
 DateRange.propTypes = {
   onFilterApplication: PropTypes.func.isRequired,

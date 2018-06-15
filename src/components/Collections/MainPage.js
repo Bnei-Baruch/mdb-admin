@@ -1,58 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Icon, Label, Menu, Modal } from 'semantic-ui-react';
+import { Icon, Menu, Modal } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_COLLECTIONS, COLLECTION_TYPES } from '../../helpers/consts';
-import { formatError } from '../../helpers/utils';
+import { NS_COLLECTIONS, COLLECTION_TYPES } from '../../helpers/consts';
 import * as shapes from '../shapes';
-import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../Filters/FilterTags/FilterTags';
-import TabsMenu from '../shared/TabsMenu';
-import Pagination from '../shared/Pagination';
-import ResultsPageHeader from '../shared/ResultsPageHeader';
 import CreateCollectionForm from '../shared/Forms/Collection/CreateCollectionForm';
-import CollectionsList from './List';
-import DateRange from '../Filters/DateRange';
-import FreeText from '../Filters/FreeText';
-import Others from '../Filters/Others';
+import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
+import CollectionsList from '../BaseClasses/CollectionList';
 
-const filterTabs = [
-  { name: 'Free Text', element: FreeText, namespace: NS_COLLECTIONS },
-  { name: 'Date Range', element: DateRange, namespace: NS_COLLECTIONS },
-  { name: 'Others', element: Others, namespace: NS_COLLECTIONS, contentTypes: COLLECTION_TYPES },
-];
-
-class CollectionsMainPage extends Component {
+class CollectionsMainPage extends ListWithFiltersBase {
 
   static propTypes = {
-    pageNo: PropTypes.number,
-    total: PropTypes.number,
+    ...ListWithFiltersBase.propTypes,
     items: PropTypes.arrayOf(shapes.Collection),
-    wip: PropTypes.bool,
-    err: shapes.Error,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
-    onPageChange: PropTypes.func.isRequired,
-    onFiltersChange: PropTypes.func.isRequired,
-    onFiltersHydrated: PropTypes.func.isRequired,
     create: PropTypes.func.isRequired,
-    getTagByUID: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    items: EMPTY_ARRAY,
-    pageNo: 1,
-    total: 0,
-    wip: false,
-    err: null,
+    ...ListWithFiltersBase.defaultProps,
     wipOfCreate: false,
     errOfCreate: null
   };
 
-  state = {
-    showFilters: false,
-    newCollection: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state.newCollection = false;
+  }
 
   componentWillReceiveProps(nextProps) {
     const { wipOfCreate } = this.props;
@@ -63,110 +38,43 @@ class CollectionsMainPage extends Component {
     }
   }
 
-  handleFiltersCancel = () => this.toggleFilters();
-
-  handleFiltersChange = (isToggle = true) => {
-    if (isToggle) {
-      this.toggleFilters();
-    }
-    this.props.onFiltersChange();
-  };
-
-  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
-
   toggleNewCollection = () => this.setState({ newCollection: !this.state.newCollection });
 
-  render() {
-    const { showFilters, newCollection } = this.state;
+  getNamespace = () => NS_COLLECTIONS;
 
-    const
-      {
-        pageNo,
-        total,
-        items,
-        wip,
-        wipOfCreate,
-        err,
-        errOfCreate,
-        onPageChange,
-        onFiltersChange,
-        onFiltersHydrated,
-        create,
-        getTagByUID,
-        currentLanguage
-      } = this.props;
+  getContentType = () => COLLECTION_TYPES;
+
+  getPageNo = this.props.getPageNo;
+
+  getIsUpdateQuery = () => true;
+
+  renderHeaderRightSide = () => {
+    return (
+      <Menu.Item onClick={this.toggleNewCollection}>
+        <Icon name="plus" />
+        New Collection
+      </Menu.Item>
+    );
+  };
+
+  renderList = () => {
+    return <CollectionsList items={this.props.items} withCheckBox={false} />;
+  };
+
+  render() {
+    const { wipOfCreate, errOfCreate, create } = this.props;
 
     return (
       <div>
-        <Menu borderless size="large">
-          <Menu.Item header>
-            <Header content="Collections" size="medium" color="blue" />
-          </Menu.Item>
-          <Menu.Menu position="right">
-            <Menu.Item onClick={this.toggleFilters}>
-              <Icon name="filter" />
-              {showFilters ? 'Hide' : 'Show'} Filters
-            </Menu.Item>
-            <Menu.Item onClick={this.toggleNewCollection}>
-              <Icon name="plus" />
-              New Collection
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
+        {this.renderHeader('Collections')}
+        {this.renderFiltersHydrator()}
+        {this.renderContent()}
 
-        <FiltersHydrator namespace={NS_COLLECTIONS} onHydrated={onFiltersHydrated} />
-
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              {
-                showFilters ?
-                  <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
-                    <br />
-                  </div> :
-                  null
-              }
-              <FilterTags namespace={NS_COLLECTIONS} onClose={onFiltersChange} />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
-                {
-                  wip ?
-                    <Label
-                      color="yellow"
-                      icon={{ name: 'spinner', loading: true }}
-                      content="Loading"
-                    /> :
-                    null
-                }
-                {
-                  err ?
-                    <Header
-                      inverted
-                      content={formatError(err)}
-                      color="red"
-                      icon="warning sign"
-                      floated="left"
-                    /> :
-                    null
-                }
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
-                <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
-              </div>
-              <CollectionsList items={items} getTagByUID={getTagByUID} currentLanguage={currentLanguage} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
         <Modal
           closeIcon
           size="small"
-          open={newCollection}
-          onClose={this.toggleNewCollection}
-        >
+          open={this.state.newCollection}
+          onClose={this.toggleNewCollection}>
           <Modal.Header>Create New Collection</Modal.Header>
           <Modal.Content>
             <CreateCollectionForm wip={wipOfCreate} err={errOfCreate} create={create} />

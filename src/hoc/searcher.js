@@ -59,8 +59,6 @@ const searcher = (options) => (WrappedComponent) => {
         }),
         searchActions
     )(Searcher);
-
-    // TODO (yaniv): change displayName
 };
 
 export default searcher;

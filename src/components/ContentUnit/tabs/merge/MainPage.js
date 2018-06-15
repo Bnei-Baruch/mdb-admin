@@ -1,146 +1,57 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import uniq from 'lodash/uniq';
-import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_MERGE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
+import { renderErrWip } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
+import ErrWip from '../../../shared/ErrWip';
 import { actions, selectors } from '../../../../redux/modules/lists';
-import { formatError } from '../../../../helpers/utils';
-import TabsMenu from '../../../shared/TabsMenu';
-import Pagination from '../../../shared/Pagination';
-import ResultsPageHeader from '../../../shared/ResultsPageHeader';
 import { selectors as unitsSelectors, actions as unitActions } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
-import ContentUnitList from './List';
 
-import FiltersHydrator from '../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../Filters/FilterTags/FilterTags';
-import DateRange from '../../../Filters/DateRange';
-import FreeText from '../../../Filters/FreeText';
-import Sources from '../../../Filters/Sources';
-import Topics from '../../../Filters/Topics';
-import Others from '../../../Filters/Others';
+import CUList from '../../../BaseClasses/CUList';
+import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
-const filterTabs = [
-  { name: 'Date Range', element: DateRange, namespace: NS_MERGE_UNITS },
-  { name: 'Free Text', element: FreeText, namespace: NS_MERGE_UNITS },
-  { name: 'Sources', element: Sources, namespace: NS_MERGE_UNITS },
-  { name: 'Topics', element: Topics, namespace: NS_MERGE_UNITS },
-  { name: 'Others', element: Others, namespace: NS_MERGE_UNITS, contentTypes: CONTENT_UNIT_TYPES },
-];
-
-class MergeContentUnitTab extends PureComponent {
+class MergeContentUnitTab extends ListWithCheckboxBase {
 
   static propTypes = {
-    pageNo: PropTypes.number,
-    total: PropTypes.number,
-    wip: PropTypes.bool,
-    err: shapes.Error,
+    ...ListWithCheckboxBase.propTypes,
     unit: shapes.ContentUnit,
-    units: PropTypes.arrayOf(shapes.ContentUnit),
-    fetchList: PropTypes.func.isRequired,
-    setPage: PropTypes.func.isRequired,
+    items: PropTypes.arrayOf(shapes.ContentUnit),
     mergeUnits: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    items: EMPTY_ARRAY,
-    pageNo: 1,
-    total: 0,
-    wip: false,
-    err: null,
-  };
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
-  state = {
-    showFilters: false,
-    selectedCUIds: []
-  };
+  getNamespace = () => NS_MERGE_UNITS;
 
-  toggleFilters = () =>
-    this.setState({ showFilters: !this.state.showFilters });
+  getContentType = () => CONTENT_UNIT_TYPES;
 
-  constructor(props) {
-    super(props);
-    this.selectCU = this.selectCU.bind(this);
-  }
-
-  handlePageChange = (pageNo) => {
-    const { setPage } = this.props;
-    setPage(NS_MERGE_UNITS, pageNo);
-    this.askForData(pageNo);
-  };
-
-  handleFiltersCancel = () => this.toggleFilters();
-
-  handleFiltersChange = () => {
-    this.handlePageChange(1);
-  };
-
-  handleFiltersHydrated = () => {
-    this.handlePageChange(1);
-  };
-
-  askForData = (pageNo) => {
-    this.props.fetchList(NS_MERGE_UNITS, pageNo);
-  };
-
-  selectCU = (id, checked) => {
-    const selectedCUIds = this.state.selectedCUIds;
-    if (checked) {
-      selectedCUIds.push(id);
-    } else {
-      selectedCUIds.some((cuId, i) => {
-        if (cuId === id) {
-          selectedCUIds.splice(i, 1);
-          return true;
-        }
-      });
-    }
-    this.setState({ selectedCUIds: [...selectedCUIds] });
-  };
-
-  selectAllCUs = (checked) => {
-    const { units }         = this.props;
-    const { selectedCUIds } = this.state;
-    if (checked) {
-      this.setState({ selectedCUIds: uniq([...selectedCUIds, ...units.map(u => u.id)]) });
-    } else {
-      this.setState({ selectedCUIds: selectedCUIds.filter(x => !units.some(y => x === y.id)) });
-    }
+  renderList = () => {
+    const { items, currentLanguage } = this.props;
+    return (<CUList
+      {...this.getSelectListProps()}
+      items={items}
+      currentLanguage={currentLanguage} />);
   };
 
   mergeCU = () => {
-    const { selectedCUIds } = this.state;
-    if (selectedCUIds.length === 0) {
+    const { selectedIds } = this.state;
+    if (selectedIds.length === 0) {
       return;
     }
     const { unit, mergeUnits } = this.props;
-    mergeUnits(unit.id, selectedCUIds);
-    this.setState({ selectedCUIds: [] });
-  };
-
-  renderIsMergedMessage = (wip, err) => {
-    if (err) {
-      return <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" />;
-    }
-    return wip ? <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> : null;
-
+    mergeUnits(unit.id, selectedIds);
+    this.setState({ selectedIds: [] });
   };
 
   render() {
-    const { showFilters } = this.state;
+    const { showFilters, selectedIds } = this.state;
+    const { wipMerge, errMerge, }      = this.props;
 
-    const {
-            pageNo,
-            total,
-            wip,
-            err,
-            wipMerge,
-            errMerge,
-          } = this.props;
     return (
       <div>
         <Segment clearing secondary size="large">
@@ -148,65 +59,23 @@ class MergeContentUnitTab extends PureComponent {
         </Segment>
 
         <Segment clearing vertical>
-          {this.renderIsMergedMessage(wipMerge, errMerge)}
           <Button
             onClick={this.toggleFilters}
             color="blue"
-            floated="right"
-            inverted
-          >
+            inverted>
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
           <Button
             onClick={this.mergeCU}
-            floated="right"
-          >
-            Merge
-          </Button>
+            disabled={selectedIds.length === 0}
+            content="Merge"
+            color="blue" />
+          <ErrWip err={errMerge} wip={wipMerge} />
         </Segment>
 
-        <FiltersHydrator namespace={NS_MERGE_UNITS} onHydrated={this.handleFiltersHydrated} />
-
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              {
-                showFilters ?
-                  <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
-                    <br />
-                  </div> :
-                  null
-              }
-              <FilterTags namespace={NS_MERGE_UNITS} onClose={this.handleFiltersChange} />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
-                {
-                  wip ?
-                    <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
-                    null
-                }
-                {
-                  err ?
-                    <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
-                    null
-                }
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
-                <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
-              </div>
-              <ContentUnitList
-                {...this.props}
-                selectedCUIds={this.state.selectedCUIds}
-                selectCU={this.selectCU}
-                selectAllCUs={this.selectAllCUs} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        {this.renderFiltersHydrator()}
+        {this.renderContent()}
       </div>
     );
   }
@@ -218,7 +87,8 @@ const mapState = (state) => {
   const wipMerge  = unitsSelectors.getWIP(state.content_units, 'mergeUnits');
   return {
     ...status,
-    units: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items).filter(u => u) : EMPTY_ARRAY,
+    //todo - check if need filter
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items).filter(u => u) : EMPTY_ARRAY,
     wipMerge,
     errMerge: unitsSelectors.getError(state.content_units, 'mergeUnits'),
     currentLanguage: system.getCurrentLanguage(state.system),

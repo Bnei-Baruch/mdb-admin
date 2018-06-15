@@ -4,10 +4,13 @@ import { Grid, Header, Icon, Label, Menu, Modal } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
 import { formatError } from '../../helpers/utils';
+
 import * as shapes from '../shapes';
+import ErrWip from '../shared/ErrWip';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
 import CreatePublisherForm from '../shared/Forms/Publishers/CreatePublisherForm';
+
 import PublishersList from './List';
 
 class PublishersMainPage extends Component {
@@ -86,28 +89,8 @@ class PublishersMainPage extends Component {
           <Grid.Row>
             <Grid.Column>
               <div style={{ textAlign: 'right' }}>
-                {
-                  wip ?
-                    <Label
-                      color="yellow"
-                      icon={{ name: 'spinner', loading: true }}
-                      content="Loading"
-                    /> :
-                    null
-                }
-                {
-                  err ?
-                    <Header
-                      inverted
-                      content={formatError(err)}
-                      color="red"
-                      icon="warning sign"
-                      floated="left"
-                    /> :
-                    null
-                }
+                <ErrWip err={err} wip={wip} />
                 <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
               <PublishersList items={items} currentLanguage={currentLanguage} />
@@ -118,8 +101,7 @@ class PublishersMainPage extends Component {
           closeIcon
           size="small"
           open={newPublisher}
-          onClose={this.toggleNewPublisher}
-        >
+          onClose={this.toggleNewPublisher}>
           <Modal.Header>Create New Publisher</Modal.Header>
           <Modal.Content>
             <CreatePublisherForm wip={wipOfCreate} err={errOfCreate} create={create} />

@@ -75,9 +75,11 @@ function* fetchList(action) {
 }
 
 function* updatePageInQuery(action) {
-  const { pageNo } = action.payload;
-  const page       = pageNo > 1 ? pageNo : null;
-  yield* updateQuery(query => Object.assign(query, { page }));
+  const { pageNo, isUpdateQuery } = action.payload;
+  if (isUpdateQuery) {
+    const page = pageNo > 1 ? pageNo : null;
+    yield* updateQuery(query => Object.assign(query, { page }));
+  }
 }
 
 function* watchFetchList() {

@@ -8,7 +8,7 @@ import { actions, selectors } from '../../../../redux/modules/collections';
 import { selectors as units } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';
 import AssociationsContainer from './AssociationsContainer';
-import NewAssociationsContainer from './NewAssociations/NewAssociationsContainer';
+import NewAssociations from './NewAssociations';
 import './style.css';
 
 class AssociationsTab extends Component {
@@ -47,11 +47,18 @@ class AssociationsTab extends Component {
     this.setState({ editMode });
 
   render() {
+    const { collection, associatedCUs, associatedCUIds, fetchItemUnits } = this.props;
     if (this.state.editMode) {
-      return (<NewAssociationsContainer {...this.props} setEditMode={this.setEditMode} />);
+      return (<NewAssociations
+        collection={collection}
+        associatedIds={associatedCUIds}
+        setEditMode={this.setEditMode} />);
     }
-    const { associatedCUs, ...props } = this.props;
-    return (<AssociationsContainer {...props} units={this.props.associatedCUs} setEditMode={this.setEditMode} />);
+    return (<AssociationsContainer
+      setEditMode={this.setEditMode}
+      units={associatedCUs}
+      collection={collection}
+      fetchItemUnits={fetchItemUnits} />);
   }
 }
 
@@ -71,15 +78,11 @@ function orderUnits(u1, u2) {
 
 const mapState = (state, ownProps) => {
   const { collection = EMPTY_OBJECT } = ownProps;
-  const unitIDs                       = collection.content_units;
   const denormCCUs                    = units.denormCCUs(state.content_units);
-  const CCUs                          = unitIDs ? denormCCUs(unitIDs).sort(orderUnits) : EMPTY_ARRAY;
 
   return {
-    associatedCUs: CCUs,
-    associatedCUIds: collection.content_units ?
-      new Map(collection.content_units.map(x => [x.content_unit_id, true])) :
-      new Map(),
+    associatedCUs: collection.content_units ? denormCCUs(collection.content_units).sort(orderUnits) : EMPTY_ARRAY,
+    associatedCUIds: collection.content_units ? collection.content_units.map(x => x.content_unit_id) : [],
     wip: selectors.getWIP(state.collections, 'fetchItemUnits'),
     err: selectors.getError(state.collections, 'fetchItemUnits'),
   };

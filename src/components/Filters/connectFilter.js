@@ -67,8 +67,6 @@ const connectFilter = (options = {}) => (WrappedComponent) => {
     }),
     filterActions
   )(ConnectFilterHOC);
-
-  // TODO (yaniv): change displayName
 };
 
 export default connectFilter;
