@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Grid, Header, Icon, Label, Menu, Modal } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
-import { formatError } from '../../helpers/utils';
+
 import * as shapes from '../shapes';
+import ErrWip from '../shared/ErrWip';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
 import CreatePersonForm from '../shared/Forms/Persons/CreatePersonForm';
@@ -86,28 +87,9 @@ class PersonsMainPage extends Component {
           <Grid.Row>
             <Grid.Column>
               <div style={{ textAlign: 'right' }}>
-                {
-                  wip ?
-                    <Label
-                      color="yellow"
-                      icon={{ name: 'spinner', loading: true }}
-                      content="Loading"
-                    /> :
-                    null
-                }
-                {
-                  err ?
-                    <Header
-                      inverted
-                      content={formatError(err)}
-                      color="red"
-                      icon="warning sign"
-                      floated="left"
-                    /> :
-                    null
-                }
+
+                <ErrWip err={err} wip={wip} />
                 <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
                 <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
               </div>
               <PersonsList items={items} currentLanguage={currentLanguage} />

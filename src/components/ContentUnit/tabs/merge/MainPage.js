@@ -2,12 +2,13 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, Header, Icon, Label, Segment } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_MERGE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
+import { renderErrWip } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
+import ErrWip from '../../../shared/ErrWip';
 import { actions, selectors } from '../../../../redux/modules/lists';
-import { formatError } from '../../../../helpers/utils';
 import { selectors as unitsSelectors, actions as unitActions } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
 
@@ -47,14 +48,6 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
     this.setState({ selectedIds: [] });
   };
 
-//todo - move to utils
-  renderIsMergedMessage = (wip, err) => {
-    if (err) {
-      return <Header inverted content={formatError(err)} color="red" icon="warning sign" as="span" />;
-    }
-    return wip ? <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> : null;
-  };
-
   render() {
     const { showFilters, selectedIds } = this.state;
     const { wipMerge, errMerge, }      = this.props;
@@ -78,8 +71,7 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
             disabled={selectedIds.length === 0}
             content="Merge"
             color="blue" />
-
-          {this.renderIsMergedMessage(wipMerge, errMerge)}
+          <ErrWip err={errMerge} wip={wipMerge} />
         </Segment>
 
         {this.renderFiltersHydrator()}

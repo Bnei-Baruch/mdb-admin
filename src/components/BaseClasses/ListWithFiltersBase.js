@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Label, Icon, Menu, Sticky } from 'semantic-ui-react';
+import { Grid, Header, Icon, Menu, Sticky } from 'semantic-ui-react';
 
-import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
+import ErrWip from '../shared/ErrWip';
 import TabsMenu from '../shared/TabsMenu';
 import Pagination from '../shared/Pagination';
 import ResultsPageHeader from '../shared/ResultsPageHeader';
@@ -132,21 +132,13 @@ class ListWithFiltersBase extends PureComponent {
   renderPagination = () => {
 
     const { pageNo, total, wip, err } = this.props;
-    return (<div style={{ textAlign: 'right' }}>
-      {
-        wip ?
-          <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
-          null
-      }
-      {
-        err ?
-          <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
-          null
-      }
-      <ResultsPageHeader pageNo={pageNo} total={total} />
-
-      <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
-    </div>);
+    return (
+      <div style={{ textAlign: 'right' }}>
+        <ErrWip err={err} wip={wip} />
+        <ResultsPageHeader pageNo={pageNo} total={total} />
+        <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
+      </div>
+    );
   };
 
   handlePaginationContextRef = paginationContextRef => this.setState({ paginationContextRef });
