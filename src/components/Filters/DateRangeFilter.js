@@ -240,10 +240,10 @@ class DateFilter extends Component {
     const { onCancel }                                           = this.props;
 
     return (
-      <Segment basic attached="bottom" className="tab active">
+      <Segment basic attached="bottom" floated="left" className="tab active" compact={true} container>
         <Grid divided>
-          <Grid.Row columns={16}>
-            <Grid.Column width={11}>
+          <Grid.Row>
+            <div>
               <DayPicker
                 numberOfMonths={2}
                 selectedDays={{ from, to }}
@@ -252,8 +252,8 @@ class DateFilter extends Component {
                 // eslint-disable-next-line no-return-assign
                 ref={el => this.datePicker = el}
               />
-            </Grid.Column>
-            <Grid.Column width={5}>
+            </div>
+            <div>
               <Header textAlign="center">Select a start index</Header>
               <Grid>
                 <Grid.Row>
@@ -294,7 +294,7 @@ class DateFilter extends Component {
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
-            </Grid.Column>
+            </div>
           </Grid.Row>
         </Grid>
       </Segment>
