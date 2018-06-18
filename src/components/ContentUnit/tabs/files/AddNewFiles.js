@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Segment, Menu, Header } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

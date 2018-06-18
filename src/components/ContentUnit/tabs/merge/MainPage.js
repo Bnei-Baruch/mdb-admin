@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_MERGE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
-import { renderErrWip } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import ErrWip from '../../../shared/ErrWip';
 import { actions, selectors } from '../../../../redux/modules/lists';
@@ -87,8 +86,7 @@ const mapState = (state) => {
   const wipMerge  = unitsSelectors.getWIP(state.content_units, 'mergeUnits');
   return {
     ...status,
-    //todo - check if need filter
-    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items).filter(u => u) : EMPTY_ARRAY,
+    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
     wipMerge,
     errMerge: unitsSelectors.getError(state.content_units, 'mergeUnits'),
     currentLanguage: system.getCurrentLanguage(state.system),
