@@ -47,10 +47,10 @@ class CUList extends ListBase {
           {CONTENT_TYPE_BY_ID[item.type_id]}
         </Table.Cell>
         <Table.Cell>
-          {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell collapsing>
-          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
+          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).format('YYYY-MM-DD HH:mm:ss') : null}
         </Table.Cell>
         <Table.Cell>
           {

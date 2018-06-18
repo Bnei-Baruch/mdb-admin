@@ -57,7 +57,7 @@ class FilesList extends PureComponent {
           {item.station}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
       </Table.Row>
     );

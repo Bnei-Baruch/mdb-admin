@@ -100,14 +100,14 @@ class Units extends PureComponent {
         <Cell collapsing>
           {unit.uid}
         </Cell>
-        <Cell  propForUpdate={''}>
+        <Cell propForUpdate={''}>
           {properties}
         </Cell>
         <Cell collapsing>
-          {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+          {moment.utc(unit.created_at).format('YYYY-MM-DD HH:mm:ss')}
         </Cell>
         <Table.Cell collapsing>
-          {unit.properties && unit.properties.film_date ? moment.utc(unit.properties.film_date).local().format('YYYY-MM-DD HH:mm:ss') : null}
+          {unit.properties && unit.properties.film_date ? moment.utc(unit.properties.film_date).format('YYYY-MM-DD HH:mm:ss') : null}
         </Table.Cell>
         <Cell collapsing>
           {

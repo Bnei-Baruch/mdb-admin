@@ -53,7 +53,7 @@ const Details = (props) => {
           <List.Item>
             <strong>DB created_at</strong>
             <List.Content floated="right">
-              {moment.utc(file.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+              {moment.utc(file.created_at).format('YYYY-MM-DD HH:mm:ss')}
             </List.Content>
           </List.Item>
           <List.Item>
@@ -61,7 +61,7 @@ const Details = (props) => {
             <List.Content floated="right">
               {
                 file.file_created_at ?
-                  moment.utc(file.file_created_at).local().format('YYYY-MM-DD HH:mm:ss') :
+                  moment.utc(file.file_created_at).format('YYYY-MM-DD HH:mm:ss') :
                   null
               }
             </List.Content>
@@ -140,7 +140,7 @@ const Details = (props) => {
             <List.Content floated="right">
               {
                 file.removed_at ?
-                  moment.utc(file.removed_at).local().format('YYYY-MM-DD HH:mm:ss') :
+                  moment.utc(file.removed_at).format('YYYY-MM-DD HH:mm:ss') :
                   null
               }
             </List.Content>

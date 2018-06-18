@@ -36,7 +36,7 @@ const Details = (props) => {
           <List.Item>
             <strong>DB created_at</strong>
             <List.Content floated="right">
-              {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+              {moment.utc(unit.created_at).format('YYYY-MM-DD HH:mm:ss')}
             </List.Content>
           </List.Item>
           <List.Item>

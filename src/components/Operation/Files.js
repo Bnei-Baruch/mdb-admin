@@ -150,7 +150,7 @@ class Files extends Component {
     } else {
       content = (
         <List divided relaxed>
-          { files.map(file => this.renderFile(file)) }
+          {files.map(file => this.renderFile(file))}
         </List>
       );
     }

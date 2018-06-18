@@ -45,7 +45,7 @@ class FilesList extends ListBase {
           {filesize(item.size)}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />

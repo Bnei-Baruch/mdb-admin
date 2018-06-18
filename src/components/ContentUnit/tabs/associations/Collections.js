@@ -87,7 +87,7 @@ class Collections extends Component {
         <Table.Cell><Link to={`/collections/${id}`}>{uid}</Link></Table.Cell>
         <Table.Cell>{titleize(type)}</Table.Cell>
         <Table.Cell>{this.getProperties(item)}</Table.Cell>
-        <Table.Cell>{moment.utc(created_at).local().format('YYYY-MM-DD HH:mm:ss')}</Table.Cell>
+        <Table.Cell>{moment.utc(created_at).format('YYYY-MM-DD HH:mm:ss')}</Table.Cell>
         <Table.Cell width="1">
           <Button
             circular
