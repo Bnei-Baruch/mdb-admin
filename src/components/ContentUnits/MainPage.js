@@ -81,6 +81,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
 
         <Modal
           closeIcon
+          centered="false"
           size="small"
           open={this.state.showNewCU}
           onClose={this.toggleNewCU}>

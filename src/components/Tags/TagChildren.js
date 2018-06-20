@@ -107,6 +107,7 @@ class TagChildren extends Component {
 
         <Modal
           closeIcon
+          centered="false"
           size="small"
           open={modalOpen}
           onClose={this.hideModal}

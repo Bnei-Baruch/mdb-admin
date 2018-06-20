@@ -98,6 +98,7 @@ class PersonsMainPage extends Component {
         </Grid>
         <Modal
           closeIcon
+          centered="false"
           size="small"
           open={newPerson}
           onClose={this.toggleNewPerson}

@@ -72,6 +72,7 @@ class CollectionsMainPage extends ListWithFiltersBase {
 
         <Modal
           closeIcon
+          centered="false"
           size="small"
           open={this.state.newCollection}
           onClose={this.toggleNewCollection}>
