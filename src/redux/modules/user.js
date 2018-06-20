@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { USER_EXPIRED, USER_FOUND, USER_LOADED, USER_SIGNED_OUT } from 'redux-oidc';
+import { USER_EXPIRED, USER_FOUND, USER_SIGNED_OUT } from 'redux-oidc';
 import { jws } from 'jsrsasign';
 
 import api from '../../helpers/apiClient';
@@ -33,7 +33,6 @@ const onNoUser = () => {
 };
 
 export const reducer = handleActions({
-  [USER_LOADED]: onUser,
   [USER_FOUND]: onUser,
   [USER_EXPIRED]: onNoUser,
   [USER_SIGNED_OUT]: onNoUser,
