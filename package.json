@@ -15,8 +15,8 @@
     "babel-preset-env": "^1.5.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
-    "eslint-plugin-jest": "^20.0.3",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
+    "eslint-plugin-jest": "^21.17.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.0.1",
     "node-sass": "^4.5.3",
     "node-sass-chokidar": "^1.1.2",
@@ -24,12 +24,12 @@
     "react-app-rewire-vendor-splitting": "^1.1.2",
     "react-app-rewired": "^1.4.0",
     "react-scripts": "^1.0.7",
-    "react-test-renderer": "^15.6.1",
-    "why-did-you-update": "0.0.8"
+    "react-test-renderer": "^16.4.1",
+    "why-did-you-update": "0.1.1"
   },
   "dependencies": {
     "amdefine": "^1.0.1",
-    "axios": "^0.16.2",
+    "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "eslint-plugin-import": "^2.8.0",
     "filesize": "^3.5.10",
@@ -51,10 +51,10 @@
     "redux": "^3.7.0",
     "redux-actions": "^2.0.2",
     "redux-oidc": "^3.0.0-beta.14",
-    "redux-saga": "^0.15.3",
+    "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "semantic-ui-css": "^2.2.10",
-    "semantic-ui-react": "^0.73.0"
+    "semantic-ui-css": "^2.3.2",
+    "semantic-ui-react": "^0.81.1"
   },
   "scripts": {
     "start": "npm-run-all -p watch-css start-js",
