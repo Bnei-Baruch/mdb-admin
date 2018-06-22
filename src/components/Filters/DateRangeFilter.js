@@ -240,7 +240,7 @@ class DateFilter extends Component {
     const { onCancel }                                           = this.props;
 
     return (
-      <Segment basic attached="bottom" floated="left" className="tab active" compact={true} container>
+      <Segment basic attached="bottom" floated="left" className="tab active" compact={true}>
         <Grid divided>
           <Grid.Row>
             <div>

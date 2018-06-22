@@ -67,7 +67,7 @@ class CUModal extends ListWithCheckboxBase {
     return (
       <Modal
         closeIcon
-        centered="false"
+        centered={false}
         size="fullscreen"
         open={isShowAssociateModal}
         onClose={this.handleClose}>

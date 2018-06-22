@@ -98,7 +98,7 @@ class PublishersMainPage extends Component {
         </Grid>
         <Modal
           closeIcon
-          centered="false"
+          centered={false}
           size="small"
           open={newPublisher}
           onClose={this.toggleNewPublisher}>

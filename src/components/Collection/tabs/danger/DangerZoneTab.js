@@ -157,7 +157,7 @@ class DangerZoneTab extends Component {
             </Segment>
             <Modal
               basic
-              centered="false"
+              centered={false}
               size="small"
               open={this.state.modals.confirmChangeSecurityLevel}
             >
@@ -176,7 +176,7 @@ class DangerZoneTab extends Component {
             </Modal>
             <Modal
               basic
-              centered="false"
+              centered={false}
               size="small"
               open={this.state.modals.confirmDelete}
             >

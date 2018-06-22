@@ -75,7 +75,7 @@ class DangerZoneTab extends Component {
             </Segment>
             <Modal
               basic
-              centered="false"
+              centered={false}
               size="small"
               open={this.state.confirmDelete}
             >

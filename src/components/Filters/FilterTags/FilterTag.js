@@ -29,7 +29,7 @@ class FilterTag extends PureComponent {
     const color = isActive ? 'green' : 'blue';
 
     return (
-      <Label as="a" basic ref={el => this.label = el} onClick={this.handleClick} color={color}>
+      <Label as="a" ref={el => this.label = el} onClick={this.handleClick} color={color}>
         <Icon name={icon} />
         {label}
         <Icon name="close" onClick={this.handleClose} />
