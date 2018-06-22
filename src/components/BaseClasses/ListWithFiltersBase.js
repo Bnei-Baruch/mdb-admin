@@ -147,7 +147,7 @@ class ListWithFiltersBase extends PureComponent {
     const { showFilters, paginationContextRef } = this.state;
     const { usePagination = true }              = defaultOptions;
     return (
-      <div ref={this.handlePaginationContextRef}>
+      <div ref={this.handlePaginationContextRef} style={{ clear: 'both', marginTop: '5px' }}>
         <Grid>
           <Grid.Row>
             <Grid.Column>
