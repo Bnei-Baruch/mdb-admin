@@ -552,7 +552,7 @@ const onSuccess = (state, action) => {
 
 const onReceiveItemsCollections = (state, action) => {
   const byID = updateList(state.byID, action.payload.ids,
-    (x, id) => ({ ...x, collections: [...x.collections, action.payload.collections.get(id)] }));
+    (x, id) => ({ ...x, collections: [...x.collections || {}, action.payload.collections.get(id)] }));
   return { ...state, byID };
 };
 
