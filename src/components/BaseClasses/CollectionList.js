@@ -122,7 +122,7 @@ class CollectionList extends ListBase {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {items.map(this.renderItem)}
+          {items.filter(x => x).map(this.renderItem)}
         </Table.Body>
       </Table>
     );
