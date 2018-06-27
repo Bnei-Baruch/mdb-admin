@@ -6,7 +6,7 @@ import FileList from '../BaseClasses/FileList';
 
 class FilesMainPage extends ListWithFiltersBase {
 
-  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
+  usedFiltersNames = ['FreeText', 'DateRange', 'Others'];
 
   getNamespace = () => NS_FILES;
 
