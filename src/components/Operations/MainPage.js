@@ -12,7 +12,7 @@ class FilesMainPage extends ListWithFiltersBase {
     this.setCustomFilter('Others', { name: 'Others', element: Others });
   }
 
-  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
+  usedFiltersNames = ['FreeText', 'DateRange', 'Others'];
 
   getNamespace = () => NS_OPERATIONS;
 
