@@ -10,14 +10,14 @@ const dateRange = {
       return null;
     }
 
-    return `${moment.utc(value.from).format('DD-MM-YYYY')}_${moment.utc(value.to).format('DD-MM-YYYY')}`;
+    return `${moment.utc(value.from).format('YYYY-MM-DD')}_${moment.utc(value.to).format('YYYY-MM-DD')}`;
   },
   queryToValue: (queryValue) => {
     const parts = queryValue.split('_');
 
     return {
-      from: moment.utc(parts[0], 'DD-MM-YYYY').toDate(),
-      to: moment.utc(parts[1], 'DD-MM-YYYY').toDate()
+      from: moment.utc(parts[0], 'YYYY-MM-DD').toDate(),
+      to: moment.utc(parts[1], 'YYYY-MM-DD').toDate()
     };
   },
   valueToApiParam: (value) => {

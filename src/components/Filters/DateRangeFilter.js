@@ -10,7 +10,7 @@ import connectFilter from './connectFilter';
 
 // TODO (yaniv -> oleg): need indication for user when clicking on a bad date (after today) or when typing bad dates
 
-const format = 'DD-MM-YYYY';
+const format = 'YYYY-MM-DD';
 
 const now = () =>
   moment(new Date())
@@ -142,8 +142,8 @@ class DateFilter extends Component {
     from: props.value.from,
     to: props.value.to,
     datePreset: props.value.datePreset || rangeToPreset(props.value.from, props.value.to),
-    fromInputValue: moment(props.value.from, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-    toInputValue: moment(props.value.to, 'DD-MM-YYYY').format('DD-MM-YYYY')
+    fromInputValue: moment(props.value.from, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+    toInputValue: moment(props.value.to, 'YYYY-MM-DD').format('YYYY-MM-DD')
   });
 
   setRange(datePreset, from, to, fromInputValue = '', toInputValue = '') {
@@ -275,7 +275,7 @@ class DateFilter extends Component {
                       value={fromInputValue}
                       onChange={this.handleFromInputChange}
                       fluid
-                      placeholder="DD-MM-YYYY"
+                      placeholder="YYYY-MM-DD"
                     />
                   </Grid.Column>
                   <Grid.Column width={8}>
@@ -283,7 +283,7 @@ class DateFilter extends Component {
                       value={toInputValue}
                       onChange={this.handleToInputChange}
                       fluid
-                      placeholder="DD-MM-YYYY"
+                      placeholder="YYYY-MM-DD"
                     />
                   </Grid.Column>
                 </Grid.Row>
