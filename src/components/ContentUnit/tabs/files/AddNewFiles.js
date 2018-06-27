@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
+import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_FILE_UNITS } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
 import { actions, selectors } from '../../../../redux/modules/lists';
 import { actions as cuActions, selectors as cuSelectors } from '../../../../redux/modules/content_units';
@@ -46,7 +46,7 @@ class AddNewFiles extends ListWithCheckboxBase {
 
   getNamespace = () => NS_UNIT_FILE_UNITS;
 
-  getContentType = () => CONTENT_UNIT_TYPES;
+  getContentType = () => null;
 
   renderList = () => {
     const { unit, items } = this.props;

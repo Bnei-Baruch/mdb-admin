@@ -102,9 +102,10 @@ class ListWithFiltersBase extends PureComponent {
     throw new Error('Not Implemented');
   };
 
-  getContentType        = () => {
+  getContentType = () => {
     throw new Error('Not Implemented');
   };
+
   renderHeaderRightSide = () => null;
 
   renderHeader = (title) => {

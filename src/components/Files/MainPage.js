@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NS_FILES, CONTENT_UNIT_TYPES } from '../../helpers/consts';
+import { NS_FILES } from '../../helpers/consts';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
 import FileList from '../BaseClasses/FileList';
 
@@ -10,7 +10,7 @@ class FilesMainPage extends ListWithFiltersBase {
 
   getNamespace = () => NS_FILES;
 
-  getContentType = () => CONTENT_UNIT_TYPES;
+  getContentType = () => null;
 
   renderList = () => {
     return <FileList

@@ -5,12 +5,12 @@ import { Grid, Header, Segment } from 'semantic-ui-react';
 import { ContentTypeFilter, PublishedFilter, SecureFilter } from './filterComponents';
 
 const Others = props => {
-  const { withoutType, namespace, onFilterApplication, contentTypes, isUpdateQuery } = props;
+  const { namespace, onFilterApplication, contentTypes, isUpdateQuery } = props;
   return (
     <Segment>
       <Grid>
         <Grid.Row>
-          {withoutType ? null :
+          {contentTypes === null ? null :
             <Grid.Column width={4}>
               <Header content="Content Type" size="small" />
               <ContentTypeFilter
