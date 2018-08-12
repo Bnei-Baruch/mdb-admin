@@ -4,23 +4,30 @@ import { Grid, Header, Segment } from 'semantic-ui-react';
 
 import { ContentTypeFilter, PublishedFilter, SecureFilter } from './filterComponents';
 
-const Others = props => {
-  const { namespace, onFilterApplication, contentTypes, isUpdateQuery } = props;
+const Others = (props) => {
+  const {
+    namespace, onFilterApplication, contentTypes, isUpdateQuery
+  } = props;
+
   return (
     <Segment>
       <Grid>
         <Grid.Row>
-          {contentTypes === null ? null :
-            <Grid.Column width={4}>
-              <Header content="Content Type" size="small" />
-              <ContentTypeFilter
-                namespace={namespace}
-                name="content_type"
-                onApply={onFilterApplication}
-                isUpdateQuery={isUpdateQuery}
-                options={Array.from(Object.keys(contentTypes)).map(x => ({ key: x, value: x, text: x }))}
-              />
-            </Grid.Column>}
+          {contentTypes === null
+            ? null
+            : (
+              <Grid.Column width={4}>
+                <Header content="Content Type" size="small" />
+                <ContentTypeFilter
+                  namespace={namespace}
+                  name="content_type"
+                  onApply={onFilterApplication}
+                  isUpdateQuery={isUpdateQuery}
+                  options={Array.from(Object.keys(contentTypes)).map(x => ({ key: x, value: x, text: x }))}
+                />
+              </Grid.Column>
+            )
+          }
           <Grid.Column width={4}>
             <Header content="Security Level" size="small" />
             <SecureFilter
@@ -51,4 +58,3 @@ Others.propTypes = {
 };
 
 export default Others;
-

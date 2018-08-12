@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Icon, Table, Checkbox } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-
-import { selectors as system } from '../../redux/modules/system';
-import { selectors as tagSelectors } from '../../redux/modules/tags';
 
 import {
   CONTENT_TYPE_BY_ID,
@@ -16,6 +13,8 @@ import {
   SECURITY_LEVELS
 } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
+import { selectors as system } from '../../redux/modules/system';
+import { selectors as tagSelectors } from '../../redux/modules/tags';
 import * as shapes from '../shapes';
 import ListBase from './ListBase';
 
@@ -27,7 +26,9 @@ class CollectionList extends ListBase {
   };
 
   renderItem = (item) => {
-    const { selectedIds, currentLanguage, associatedIds, withCheckBox } = this.props;
+    const {
+      selectedIds, currentLanguage, associatedIds, withCheckBox
+    } = this.props;
 
     let properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
 
@@ -88,9 +89,9 @@ class CollectionList extends ListBase {
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           {
-            item.published ?
-              <Icon name="checkmark" color="green" /> :
-              <Icon name="ban" color="red" />
+            item.published
+              ? <Icon name="checkmark" color="green" />
+              : <Icon name="ban" color="red" />
           }
         </Table.Cell>
       </Table.Row>

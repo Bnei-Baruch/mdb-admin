@@ -3,7 +3,9 @@ import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Grid, Header, Icon, Menu, Sticky } from 'semantic-ui-react';
+import {
+  Button, Grid, Header, Icon, Menu, Sticky
+} from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/collections';
@@ -13,7 +15,6 @@ import Units from './Units';
 import './style.css';
 
 class AssociationsContainer extends Component {
-
   static propTypes = {
     collection: shapes.Collection,
     units: PropTypes.arrayOf(shapes.CollectionContentUnit),
@@ -43,8 +44,9 @@ class AssociationsContainer extends Component {
     if (this.props.units.length > 0 && nextProps.units.length > this.props.units.length) {
       ReactDom.findDOMNode(this).scrollIntoView(false);
     }
-    if (nextProps.collection && !this.props.collection &&
-      nextProps.collection.id !== this.props.collection.id) {
+    if (nextProps.collection
+      && !this.props.collection
+      && nextProps.collection.id !== this.props.collection.id) {
       this.askForData(nextProps.collection.id);
     }
   }
@@ -82,7 +84,7 @@ class AssociationsContainer extends Component {
   };
 
   handleSelectionChange = (unit, checked) => {
-    const selectedCCU = this.state.selectedCCU;
+    const { selectedCCU } = this.state;
     if (checked) {
       selectedCCU.push(unit);
     } else {
@@ -91,7 +93,7 @@ class AssociationsContainer extends Component {
           selectedCCU.splice(i, 1);
           return true;
         }
-          return false;
+        return false;
       });
     }
     this.setState({ selectedCCU: [...selectedCCU] });
@@ -126,10 +128,13 @@ class AssociationsContainer extends Component {
     const { selectedCCU, contextRef } = this.state;
     const { units }                   = this.props;
 
-    const isLast  = selectedCCU.length === 0 || units.length === 0 ||
-      selectedCCU[selectedCCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
-    const isFirst = selectedCCU.length === 0 || units.length === 0 ||
-      selectedCCU[0].content_unit_id === units[0].content_unit_id;
+    const isLast = selectedCCU.length === 0
+      || units.length === 0
+      || selectedCCU[selectedCCU.length - 1].content_unit_id === units[units.length - 1].content_unit_id;
+
+    const isFirst = selectedCCU.length === 0
+      || units.length === 0
+      || selectedCCU[0].content_unit_id === units[0].content_unit_id;
 
     return (
       <div>
@@ -144,7 +149,7 @@ class AssociationsContainer extends Component {
           </Menu.Menu>
         </Menu>
         <div ref={this.handleContextRef}>
-          <Sticky className={'stickyMenu'} context={contextRef}>
+          <Sticky className="stickyMenu" context={contextRef}>
             <Button.Group>
               <Button
                 basic

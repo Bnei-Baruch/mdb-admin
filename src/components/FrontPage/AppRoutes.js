@@ -19,7 +19,7 @@ import Sources from '../Sources/SourcesContainer';
 import Source from '../Sources/SourceContainer';
 import Welcome from './Welcome';
 
-const Routes = () => (
+const AppRoutes = () => (
   <Switch>
     <Route exact path="/" component={Welcome} />
     <Route exact path="/files" component={Files} />
@@ -42,4 +42,4 @@ const Routes = () => (
   </Switch>
 );
 
-export default Routes;
+export default AppRoutes;

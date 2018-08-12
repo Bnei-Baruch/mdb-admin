@@ -1,9 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import { Header, Icon, List, Menu, Segment } from 'semantic-ui-react';
+import {
+  Header, Icon, List, Menu, Segment
+} from 'semantic-ui-react';
 
-import * as shapes from '../../../shapes';
 import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../../../helpers/consts';
+import * as shapes from '../../../shapes';
 
 const Details = (props) => {
   const { collection } = props;
@@ -59,9 +61,9 @@ const Details = (props) => {
             <strong>Published</strong>
             <List.Content floated="right">
               {
-                collection.published ?
-                  <Icon name="checkmark" color="green" /> :
-                  <Icon name="ban" color="red" />
+                collection.published
+                  ? <Icon name="checkmark" color="green" />
+                  : <Icon name="ban" color="red" />
               }
             </List.Content>
           </List.Item>

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import noop from 'lodash/noop';
 import DayPicker, { DateUtils } from 'react-day-picker';
-import { Button, Divider, Dropdown, Grid, Header, Input, Segment } from 'semantic-ui-react';
+import {
+  Button, Divider, Dropdown, Grid, Header, Input, Segment
+} from 'semantic-ui-react';
 
 import 'react-day-picker/lib/style.css';
 import connectFilter from './connectFilter';
@@ -74,7 +76,8 @@ const rangeToPreset = (from, to) => {
   if (moment(from, 'day').isSame(to, 'day')) {
     if (moment(to).isSame(now(), 'day')) {
       return TODAY;
-    } else if (moment(to).isSame(moment().subtract(1, 'days'), 'days')) {
+    }
+    if (moment(to).isSame(moment().subtract(1, 'days'), 'days')) {
       return YESTERDAY;
     }
   } else if (moment(to).subtract(6, 'days').isSame(from, 'day')) {
@@ -97,14 +100,13 @@ const isValidDateRange = (fromValue, toValue) => {
   const fromMoment = moment(fromValue, format, true);
   const toMoment   = moment(toValue, format, true);
 
-  return fromMoment.isValid() &&
-    toMoment.isValid() &&
-    fromMoment.isSameOrBefore(toMoment) &&
-    toMoment.isSameOrBefore(now());
+  return fromMoment.isValid()
+    && toMoment.isValid()
+    && fromMoment.isSameOrBefore(toMoment)
+    && toMoment.isSameOrBefore(now());
 };
 
 class DateFilter extends Component {
-
   static propTypes = {
     value: PropTypes.shape({
       from: PropTypes.objectOf(Date),
@@ -194,7 +196,7 @@ class DateFilter extends Component {
   handleDatePresetsChange = (event, data) => this.setRange(data.value);
 
   handleFromInputChange = (event) => {
-    const value       = event.target.value;
+    const { value }   = event.target;
     const momentValue = moment(value, format, true);
 
     const isValid = momentValue.isValid();
@@ -214,7 +216,7 @@ class DateFilter extends Component {
   };
 
   handleToInputChange = (event) => {
-    const value       = event.target.value;
+    const { value }   = event.target;
     const momentValue = moment(value, format, true);
 
     const isValid = momentValue.isValid();
@@ -236,11 +238,14 @@ class DateFilter extends Component {
   canApply = () => isValidDateRange(this.state.fromInputValue, this.state.toInputValue);
 
   render() {
-    const { fromInputValue, toInputValue, from, to, datePreset } = this.state;
-    const { onCancel }                                           = this.props;
+    const { onCancel } = this.props;
+
+    const {
+      fromInputValue, toInputValue, from, to, datePreset
+    } = this.state;
 
     return (
-      <Segment basic attached="bottom" floated="left" className="tab active" compact={true}>
+      <Segment basic compact attached="bottom" floated="left" className="tab active">
         <Grid divided>
           <Grid.Row>
             <div>

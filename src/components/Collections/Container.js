@@ -10,11 +10,11 @@ import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class CollectionsContainer extends Component {
-
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
+    fetchList: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -44,7 +44,7 @@ class CollectionsContainer extends Component {
       }
     }
 
-    return (isNaN(page) || page <= 0) ? 1 : page;
+    return (Number.isNaN(page) || page <= 0) ? 1 : page;
   };
 
   render() {

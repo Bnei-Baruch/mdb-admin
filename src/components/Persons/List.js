@@ -8,7 +8,6 @@ import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 class PersonsList extends PureComponent {
-
   static propTypes = {
     items: PropTypes.arrayOf(shapes.Person),
     currentLanguage: PropTypes.string.isRequired,

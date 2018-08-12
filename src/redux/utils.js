@@ -18,7 +18,7 @@ export const update = (m, k, updater) => {
 
 export const updateList = (m, l, updater) => {
   const nm = new Map(m);
-  l.forEach(k => {
+  l.forEach((k) => {
     const old = m.get(k) || {};
     nm.set(k, updater(old, k));
   });

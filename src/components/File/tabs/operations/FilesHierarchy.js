@@ -4,7 +4,9 @@ import classnames from 'classnames';
 import moment from 'moment';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
-import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
+import {
+  Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment
+} from 'semantic-ui-react';
 
 import {
   ALL_FILE_TYPES,
@@ -15,7 +17,9 @@ import {
   OPERATION_TYPE_BY_ID,
   SECURITY_LEVELS
 } from '../../../../helpers/consts';
-import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
+import {
+  buildHierarchy, fileIcon, fileTypes, formatError, physicalFile
+} from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import JWPlayer from '../../../shared/JWPlayer';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
@@ -23,7 +27,6 @@ import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import './files.css';
 
 class FilesHierarchy extends Component {
-
   static propTypes = {
     files: PropTypes.arrayOf(shapes.File),
     operations: PropTypes.arrayOf(shapes.Operation),
@@ -33,6 +36,7 @@ class FilesHierarchy extends Component {
 
   static defaultProps = {
     files: EMPTY_ARRAY,
+    operations: EMPTY_ARRAY,
     wip: false,
     err: null,
   };
@@ -44,11 +48,11 @@ class FilesHierarchy extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { files } = nextProps;
-    const props     = this.props;
+    const { files }         = this.props;
+    const { files: nFiles } = nextProps;
 
     // no change ?
-    if (files === props.files) {
+    if (files === nFiles) {
       return;
     }
 
@@ -175,34 +179,29 @@ class FilesHierarchy extends Component {
     const { childMap }               = hierarchy;
 
     const {
-            id,
-            name,
-            size,
-            language,
-            secure,
-            published,
-            properties,
-            removed_at: removedAt,
-          }               = file;
+      id, name, size, language, secure, published, properties, removed_at: removedAt
+    } = file;
+
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
     const lang            = LANGUAGES[language || LANG_UNKNOWN];
     const children        = childMap.get(id) || [];
-    const duration        = (properties || {}).duration;
-    const durationDisplay = duration ?
-      moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
-      null;
+    const { duration }    = properties || {};
+    const durationDisplay = duration
+      ? moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss')
+      : null;
     const operations      = this.props.operations
       .filter(o =>
-        o &&
-        file.operations &&
-        file.operations.some(x => (o.id === x)));
+        o
+        && file.operations
+        && file.operations.some(x => (o.id === x)));
 
     // sort by created_at
     operations.sort((a, b) => {
       if (a.created_at < b.created_at) {
         return -1;
-      } else if (a.created_at > b.created_at) {
+      }
+      if (a.created_at > b.created_at) {
         return 1;
       }
       return 0;
@@ -231,9 +230,7 @@ class FilesHierarchy extends Component {
                 </List.Item>
                 <List.Item>{sizeDisplay}</List.Item>
                 {
-                  durationDisplay ?
-                    <List.Item>{durationDisplay}</List.Item> :
-                    null
+                  durationDisplay ? <List.Item>{durationDisplay}</List.Item> : null
                 }
                 <List.Item>
                   <Header
@@ -244,22 +241,23 @@ class FilesHierarchy extends Component {
                 </List.Item>
                 <List.Item>
                   {
-                    published ?
-                      <Icon name="checkmark" color="green" /> :
-                      <Icon name="ban" color="red" />
+                    published
+                      ? <Icon name="checkmark" color="green" />
+                      : <Icon name="ban" color="red" />
                   }
                 </List.Item>
                 <List.Item>
-                  Operations: {
-                  operations.map((o, i) => (
-                    <span key={o.id}>
-                      {i === 0 ? '' : ', '}
-                      <Link to={`/operations/${o.id}`} title={o.uid}>
-                        {OPERATION_TYPE_BY_ID[o.type_id]}
-                      </Link>
-                    </span>
-                  ))
-                }
+                  Operations:
+                  {
+                    operations.map((o, i) => (
+                      <span key={o.id}>
+                        {i === 0 ? '' : ', '}
+                        <Link to={`/operations/${o.id}`} title={o.uid}>
+                          {OPERATION_TYPE_BY_ID[o.type_id]}
+                        </Link>
+                      </span>
+                    ))
+                  }
                 </List.Item>
               </List>
             </Header.Subheader>
@@ -282,9 +280,9 @@ class FilesHierarchy extends Component {
     const { total, hierarchy, currentFile } = this.state;
 
     if (total === 0) {
-      return wip ?
-        <LoadingSplash text="Loading files" subtext="We'll be here before you'll know it" /> :
-        <Message>No files found for this unit</Message>;
+      return wip
+        ? <LoadingSplash text="Loading files" subtext="We'll be here before you'll know it" />
+        : <Message>No files found for this unit</Message>;
     }
 
     return (
@@ -304,18 +302,20 @@ class FilesHierarchy extends Component {
               </Grid.Column>
               <Grid.Column width={6} textAlign="center">
                 {
-                  currentFile ?
-                    <div>
-                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false} />
-                      <br />
-                      <Button
-                        content="Download"
-                        icon="download"
-                        color="orange"
-                        onClick={e => this.handleDownload(e, currentFile)}
-                      />
-                    </div> :
-                    null
+                  currentFile
+                    ? (
+                      <div>
+                        <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false} />
+                        <br />
+                        <Button
+                          content="Download"
+                          icon="download"
+                          color="orange"
+                          onClick={e => this.handleDownload(e, currentFile)}
+                        />
+                      </div>
+                    )
+                    : null
                 }
               </Grid.Column>
             </Grid.Row>

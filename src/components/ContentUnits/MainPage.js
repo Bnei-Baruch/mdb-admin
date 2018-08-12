@@ -4,13 +4,11 @@ import { Icon, Menu, Modal } from 'semantic-ui-react';
 
 import { NS_UNITS, CONTENT_UNIT_TYPES } from '../../helpers/consts';
 import * as shapes from '../shapes';
-
 import CUList from '../BaseClasses/CUList';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
 import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
 
 class ContentUnitMainPage extends ListWithFiltersBase {
-
   static propTypes = {
     ...ListWithFiltersBase.propTypes,
     wipOfCreate: PropTypes.bool,

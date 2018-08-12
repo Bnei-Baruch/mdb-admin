@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Flag, Header, Input, Menu, Message, Segment, Table } from 'semantic-ui-react';
 import classNames from 'classnames';
+import {
+  Button, Flag, Header, Input, Menu, Message, Segment, Table
+} from 'semantic-ui-react';
 
+import {
+  ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGES, RTL_LANGUAGES
+} from '../../helpers/consts';
+import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import LanguageSelector from '../shared/LanguageSelector';
-import { formatError } from '../../helpers/utils';
-import { ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGES, RTL_LANGUAGES } from '../../helpers/consts';
 
 class TagI18nForm extends Component {
-
   static propTypes = {
     updateI18n: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
@@ -28,38 +31,37 @@ class TagI18nForm extends Component {
     this.state = {
       i18n: { ...props.tag.i18n },
       submitted: false,
-      errors: {}
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.tag.i18n !== nextProps.tag.i18n) {
-      this.setState({ i18n: nextProps.tag.i18n, errors: {} });
+      this.setState({ i18n: nextProps.tag.i18n });
     }
   }
 
   onLabelChange = (e, { value }) => {
-    const i18n                = this.state.i18n;
+    const { i18n }            = this.state;
     i18n[e.target.name].label = value;
     this.setState({ i18n });
   };
 
   addLanguage = (e, data) => {
     const language = data.value;
-    const i18n     = this.state.i18n;
+    const { i18n } = this.state;
     i18n[language] = { language, label: '' };
     this.setState({ i18n });
   };
 
   removeLanguage = (language) => {
-    const i18n = this.state.i18n;
+    const { i18n } = this.state;
     delete i18n[language];
     this.setState({ i18n });
   };
 
   handleSubmit = () => {
     const { tag, updateI18n } = this.props;
-    const i18n                = this.state.i18n;
+    const { i18n }            = this.state;
     const data                = Object.keys(i18n).map(x => i18n[x]);
     updateI18n(tag.id, data);
 
@@ -67,8 +69,8 @@ class TagI18nForm extends Component {
   };
 
   renderI18ns() {
-    const i18n = this.state.i18n;
-    const keys = Object.keys(i18n)
+    const { i18n } = this.state;
+    const keys     = Object.keys(i18n)
       .sort((a, b) => ALL_LANGUAGES.indexOf(a) - ALL_LANGUAGES.indexOf(b));
 
     if (keys.length === 0) {
@@ -144,16 +146,20 @@ class TagI18nForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-            : null}
+          {
+            submitted && err
+              ? (
+                <Header
+                  inverted
+                  content={formatError(err)}
+                  color="red"
+                  icon="warning sign"
+                  floated="left"
+                  style={{ marginTop: '0.2rem', marginBottom: '0' }}
+                />
+              )
+              : null
+          }
           <Button
             primary
             content="Save"

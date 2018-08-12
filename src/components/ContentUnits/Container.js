@@ -11,11 +11,11 @@ import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class ContentUnitsContainer extends Component {
-
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
+    fetchList: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -41,7 +41,7 @@ class ContentUnitsContainer extends Component {
       }
     }
 
-    return (isNaN(page) || page <= 0) ? 1 : page;
+    return (Number.isNaN(page) || page <= 0) ? 1 : page;
   };
 
   askForData = pageNo =>

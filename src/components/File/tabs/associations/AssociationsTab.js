@@ -12,9 +12,8 @@ import * as shapes from '../../../shapes';
 import NewAssociations from './NewAssociations';
 
 class AssociationsTab extends Component {
-
   static propTypes = {
-    file: shapes.File,
+    file: shapes.File.isRequired,
     units: PropTypes.arrayOf(shapes.ContentUnit),
     fetchList: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
@@ -22,9 +21,7 @@ class AssociationsTab extends Component {
   };
 
   render() {
-    return (
-      <NewAssociations {...this.props} />
-    );
+    return <NewAssociations {...this.props} />;
   }
 }
 

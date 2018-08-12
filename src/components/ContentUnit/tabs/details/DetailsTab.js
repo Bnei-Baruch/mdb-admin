@@ -10,7 +10,7 @@ import I18nForm from './I18nForm';
 const editableProperties = ['film_date', 'original_language'];
 
 const DetailsTab = (props) => {
-  const unit = props.unit;
+  const { unit } = props;
   if (!unit) {
     return null;
   }

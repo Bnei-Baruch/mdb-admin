@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Icon, Menu, Button, Modal } from 'semantic-ui-react';
+import {
+  Icon, Menu, Button, Modal
+} from 'semantic-ui-react';
 
 import {
   EMPTY_ARRAY,
@@ -18,7 +20,6 @@ import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 import CollectionList from '../../../BaseClasses/CollectionList';
 
 class CollectionModal extends ListWithCheckboxBase {
-
   static propTypes = {
     ...ListWithCheckboxBase.propTypes,
     unit: shapes.ContentUnit,
@@ -44,14 +45,18 @@ class CollectionModal extends ListWithCheckboxBase {
 
   renderList = () => {
     const { associatedIds, items } = this.props;
-    return (<CollectionList
-      {...this.getSelectListProps()}
-      items={items}
-      selectedIds={this.state.selectedIds}
-      associatedIds={associatedIds} />);
+    return (
+      <CollectionList
+        {...this.getSelectListProps()}
+        items={items}
+        selectedIds={this.state.selectedIds}
+        associatedIds={associatedIds}
+      />
+    );
   };
 
-  askForData = (pageNo) => this.props.fetchList(NS_UNIT_ASSOCIATION_COLLECTION, pageNo);
+  askForData = pageNo =>
+    this.props.fetchList(NS_UNIT_ASSOCIATION_COLLECTION, pageNo);
 
   handleAssociate = () => {
     const { associate, unit } = this.props;
@@ -79,7 +84,8 @@ class CollectionModal extends ListWithCheckboxBase {
         centered={false}
         size="fullscreen"
         open={isShowAssociateModal}
-        onClose={this.handleClose}>
+        onClose={this.handleClose}
+      >
         <Modal.Header content="Associate Collections" />
         <Modal.Content scrolling>
           <Menu borderless size="large">
@@ -98,12 +104,15 @@ class CollectionModal extends ListWithCheckboxBase {
           {this.renderContent({ usePagination: false })}
         </Modal.Content>
         <Modal.Actions>
-          <Button content="Cancel"
-                  onClick={this.handleClose} />
           <Button
-            onClick={this.handleAssociate}
+            content="Cancel"
+            onClick={this.handleClose}
+          />
+          <Button
+            color="blue"
             content="Associate content unit to collections"
-            color="blue" />
+            onClick={this.handleAssociate}
+          />
         </Modal.Actions>
       </Modal>
     );

@@ -4,15 +4,13 @@ import { Button, Icon, Segment } from 'semantic-ui-react';
 
 import { NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
-
 import CUList from '../../../BaseClasses/CUList';
 import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
 class FileContentUnit extends ListWithCheckboxBase {
-
   static propTypes = {
     ...ListWithCheckboxBase.propTypes,
-    file: shapes.File,
+    file: shapes.File.isRequired,
   };
 
   isSingleSelect = true;
@@ -25,12 +23,15 @@ class FileContentUnit extends ListWithCheckboxBase {
 
   renderList = () => {
     const { currentLanguage, items, file } = this.props;
-    return (<CUList
-      {...this.getSelectListProps()}
-      items={items}
-      associatedIds={[file.content_unit_id]}
-      hasSelectAll={false}
-      currentLanguage={currentLanguage} />);
+    return (
+      <CUList
+        {...this.getSelectListProps()}
+        items={items}
+        associatedIds={[file.content_unit_id]}
+        hasSelectAll={false}
+        currentLanguage={currentLanguage}
+      />
+    );
   };
 
   toggleFilters = (isShow) => {
@@ -60,14 +61,16 @@ class FileContentUnit extends ListWithCheckboxBase {
 
         <Segment clearing vertical>
           <Button
-            onClick={this.associate}
-            disabled={selectedIds.length === 0}
             content="Associate content unit to this file"
-            color="blue" />
-          <Button
-            onClick={this.toggleFilters}
             color="blue"
-            inverted>
+            disabled={selectedIds.length === 0}
+            onClick={this.associate}
+          />
+          <Button
+            inverted
+            color="blue"
+            onClick={this.toggleFilters}
+          >
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>

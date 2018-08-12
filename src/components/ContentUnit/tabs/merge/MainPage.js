@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_MERGE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
-import * as shapes from '../../../shapes';
-import ErrWip from '../../../shared/ErrWip';
+import {
+  EMPTY_ARRAY, EMPTY_OBJECT, NS_MERGE_UNITS, CONTENT_UNIT_TYPES
+} from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/lists';
 import { selectors as unitsSelectors, actions as unitActions } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
-
+import * as shapes from '../../../shapes';
+import ErrWip from '../../../shared/ErrWip';
 import CUList from '../../../BaseClasses/CUList';
 import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
 class MergeContentUnitTab extends ListWithCheckboxBase {
-
   static propTypes = {
     ...ListWithCheckboxBase.propTypes,
     unit: shapes.ContentUnit,
@@ -31,10 +31,13 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
 
   renderList = () => {
     const { items, currentLanguage } = this.props;
-    return (<CUList
-      {...this.getSelectListProps()}
-      items={items}
-      currentLanguage={currentLanguage} />);
+    return (
+      <CUList
+        {...this.getSelectListProps()}
+        items={items}
+        currentLanguage={currentLanguage}
+      />
+    );
   };
 
   mergeCU = () => {
@@ -59,17 +62,19 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
 
         <Segment clearing vertical>
           <Button
-            onClick={this.toggleFilters}
+            inverted
             color="blue"
-            inverted>
+            onClick={this.toggleFilters}
+          >
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
           <Button
-            onClick={this.mergeCU}
-            disabled={selectedIds.length === 0}
             content="Merge"
-            color="blue" />
+            color="blue"
+            disabled={selectedIds.length === 0}
+            onClick={this.mergeCU}
+          />
           <ErrWip err={errMerge} wip={wipMerge} />
         </Segment>
 

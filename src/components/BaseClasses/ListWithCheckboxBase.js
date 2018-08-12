@@ -16,14 +16,12 @@ class ListWithCheckboxBase extends ListWithFiltersBase {
 
   isSingleSelect = false;
 
-  getSelectListProps = () => {
-    return {
-      select: this.selectItem,
-      selectAll: this.selectAllItems,
-      selectedIds: this.state.selectedIds,
-      associatedIds: this.props.associatedIds,
-    };
-  };
+  getSelectListProps = () => ({
+    select: this.selectItem,
+    selectAll: this.selectAllItems,
+    selectedIds: this.state.selectedIds,
+    associatedIds: this.props.associatedIds,
+  });
 
   selectItem = (id, checked) => {
     const { selectedIds } = this.state;

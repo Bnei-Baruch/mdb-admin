@@ -1,8 +1,8 @@
 .stickyMenu {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .stickyMenu > div {
-    z-index: 1;
-    background-color: #fff;
+  z-index: 1;
+  background-color: #fff;
 }

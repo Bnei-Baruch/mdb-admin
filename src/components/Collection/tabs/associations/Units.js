@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Header, Icon, Message, Table } from 'semantic-ui-react';
+import {
+  Checkbox, Header, Icon, Message, Table
+} from 'semantic-ui-react';
 
 import {
   CONTENT_TYPE_BY_ID,
@@ -20,7 +22,6 @@ import EditedField from '../../../shared/Fields/EditedField';
 const Cell = shouldUpdate(Table.Cell);
 
 class Units extends PureComponent {
-
   static propTypes = {
     collection: shapes.Collection,
     units: PropTypes.arrayOf(shapes.CollectionContentUnit),
@@ -48,16 +49,19 @@ class Units extends PureComponent {
     this.props.updateItemUnitProperties(id, item.content_unit_id, { name: val, position: item.position });
   };
 
-  handleSelectionChange    = (unit, data) => {
-    const checked = data.checked;
+  handleSelectionChange = (unit, data) => {
+    const { checked } = data.checked;
     this.props.onSelectionChange(unit, checked);
   };
+
   handleSelectionAllChange = ({ checked }) => {
     this.props.onSelectionAllChange(checked);
   };
 
   renderItem = (item) => {
-    const { collection, errUpdateCu, errDeleteCu, selectedCCU, currentLanguage } = this.props;
+    const {
+      collection, errUpdateCu, errDeleteCu, selectedCCU, currentLanguage
+    } = this.props;
 
     const unit  = item.content_unit;
     const error = errDeleteCu || errUpdateCu;
@@ -85,11 +89,11 @@ class Units extends PureComponent {
         error={error && error.content_units_id === unit.id}
         title={error ? formatError(error) : ''}
       >
-        <Cell collapsing propForUpdate={'props'}>
+        <Cell collapsing propForUpdate="props">
           <Checkbox
             type="checkbox"
-            onChange={(e, data) => this.handleSelectionChange(item, data)}
             checked={isChecked}
+            onChange={(e, data) => this.handleSelectionChange(item, data)}
           />
         </Cell>
         <Cell collapsing>
@@ -100,20 +104,24 @@ class Units extends PureComponent {
         <Cell collapsing>
           {unit.uid}
         </Cell>
-        <Cell propForUpdate={''}>
+        <Cell propForUpdate="">
           {properties}
         </Cell>
         <Cell collapsing>
           {moment.utc(unit.created_at).format('YYYY-MM-DD HH:mm:ss')}
         </Cell>
         <Table.Cell collapsing>
-          {unit.properties && unit.properties.film_date ? moment.utc(unit.properties.film_date).format('YYYY-MM-DD HH:mm:ss') : null}
+          {
+            unit.properties && unit.properties.film_date
+              ? moment.utc(unit.properties.film_date).format('YYYY-MM-DD HH:mm:ss')
+              : null
+          }
         </Table.Cell>
         <Cell collapsing>
           {
-            unit.properties && unit.properties.duration ?
-              moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
-              '??'
+            unit.properties && unit.properties.duration
+              ? moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss')
+              : '??'
           }
         </Cell>
         <Cell textAlign="center" collapsing>
@@ -121,12 +129,12 @@ class Units extends PureComponent {
         </Cell>
         <Cell textAlign="center" collapsing>
           {
-            unit.published ?
-              <Icon name="checkmark" color="green" /> :
-              <Icon name="ban" color="red" />
+            unit.published
+              ? <Icon name="checkmark" color="green" />
+              : <Icon name="ban" color="red" />
           }
         </Cell>
-        <Cell propForUpdate={'value'} collapsing>
+        <Cell propForUpdate="value" collapsing>
           <EditedField
             value={item.name}
             onSave={val => this.saveCCUName(collection.id, item, val)}
@@ -136,13 +144,15 @@ class Units extends PureComponent {
     );
   };
 
-  renderSeparator = (type_id) => (<Table.Row key={`type_id_${type_id}`}>
-    <Table.Cell colSpan={10} collapsing>
-      <Header textAlign="center" block color="blue">
-        {CONTENT_TYPE_BY_ID[type_id]}
-      </Header>
-    </Table.Cell>
-  </Table.Row>);
+  renderSeparator = typeID => (
+    <Table.Row key={`type_id_${typeID}`}>
+      <Table.Cell colSpan={10} collapsing>
+        <Header block color="blue" textAlign="center">
+          {CONTENT_TYPE_BY_ID[typeID]}
+        </Header>
+      </Table.Cell>
+    </Table.Row>
+  );
 
   /**
    *  Render list of units that ordered by type.
@@ -151,7 +161,8 @@ class Units extends PureComponent {
   separateByType = list =>
     list.reduce((acc, val, i, arr) => {
       const unit = val.content_unit;
-      //if unit type was changed
+
+      // if unit type was changed
       if (i === 0 || arr[i - 1].content_unit.type_id !== unit.type_id) {
         acc.push(this.renderSeparator(unit.type_id));
       }
@@ -160,16 +171,18 @@ class Units extends PureComponent {
     }, []);
 
   render() {
-    const { units, selectedCCU, wip, err } = this.props;
+    const {
+      units, selectedCCU, wip, err
+    } = this.props;
 
     if (err) {
       return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     }
 
     if (units.length === 0) {
-      return wip ?
-        <LoadingSplash text="Loading content units" /> :
-        <Message>No content units found for this collection</Message>;
+      return wip
+        ? <LoadingSplash text="Loading content units" />
+        : <Message>No content units found for this collection</Message>;
     }
 
     return (

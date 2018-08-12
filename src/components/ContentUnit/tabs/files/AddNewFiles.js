@@ -5,16 +5,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_FILE_UNITS } from '../../../../helpers/consts';
-import * as shapes from '../../../shapes';
 import { actions, selectors } from '../../../../redux/modules/lists';
 import { actions as cuActions, selectors as cuSelectors } from '../../../../redux/modules/content_units';
 import { selectors as filesSelectors } from '../../../../redux/modules/files';
-
+import * as shapes from '../../../shapes';
 import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 import FileList from '../../../BaseClasses/FileList';
 
 class AddNewFiles extends ListWithCheckboxBase {
-
   static propTypes = {
     ...ListWithCheckboxBase.propTypes,
     unit: shapes.ContentUnit,
@@ -50,11 +48,13 @@ class AddNewFiles extends ListWithCheckboxBase {
 
   renderList = () => {
     const { unit, items } = this.props;
-    return (<FileList
-      {...this.getSelectListProps()}
-      items={items}
-      associatedIds={unit.files}
-    />);
+    return (
+      <FileList
+        {...this.getSelectListProps()}
+        items={items}
+        associatedIds={unit.files}
+      />
+    );
   };
 
   render() {
@@ -66,22 +66,25 @@ class AddNewFiles extends ListWithCheckboxBase {
         </Segment>
         <Segment clearing vertical>
           <Button
-            onClick={this.toggleFilters}
+            inverted
             color="blue"
-            inverted>
+            onClick={this.toggleFilters}
+          >
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
 
           <Button
-            onClick={this.addFiles}
-            disabled={selectedIds.length === 0}
             content="Add files to this content unit"
-            color="blue" />
+            disabled={selectedIds.length === 0}
+            color="blue"
+            onClick={this.addFiles}
+          />
           <Button
-            onClick={this.switchToViewMode}
+            content="Cancel"
             icon="close"
-            content="Cancel" />
+            onClick={this.switchToViewMode}
+          />
         </Segment>
 
         {this.renderFiltersHydrator()}

@@ -12,7 +12,6 @@ import NewAssociations from './NewAssociations';
 import './style.css';
 
 class AssociationsTab extends Component {
-
   static propTypes = {
     fetchItemUnits: PropTypes.func.isRequired,
     collection: shapes.Collection,
@@ -47,18 +46,27 @@ class AssociationsTab extends Component {
     this.setState({ editMode });
 
   render() {
-    const { collection, associatedCUs, associatedCUIds, fetchItemUnits } = this.props;
+    const {
+      collection, associatedCUs, associatedCUIds, fetchItemUnits
+    } = this.props;
+
     if (this.state.editMode) {
-      return (<NewAssociations
-        collection={collection}
-        associatedIds={associatedCUIds}
-        setEditMode={this.setEditMode} />);
+      return (
+        <NewAssociations
+          collection={collection}
+          associatedIds={associatedCUIds}
+          setEditMode={this.setEditMode}
+        />
+      );
     }
-    return (<AssociationsContainer
-      setEditMode={this.setEditMode}
-      units={associatedCUs}
-      collection={collection}
-      fetchItemUnits={fetchItemUnits} />);
+    return (
+      <AssociationsContainer
+        setEditMode={this.setEditMode}
+        units={associatedCUs}
+        collection={collection}
+        fetchItemUnits={fetchItemUnits}
+      />
+    );
   }
 }
 
@@ -73,7 +81,14 @@ function orderUnits(u1, u2) {
 
   const d1 = new Date(u1.content_unit.created_at);
   const d2 = new Date(u2.content_unit.created_at);
-  return d1 > d2 ? 1 : d1 === d2 ? 0 : -1;
+
+  if (d1 > d2) {
+    return 1;
+  }
+  if (d1 === d2) {
+    return 0;
+  }
+  return -1;
 }
 
 const mapState = (state, ownProps) => {

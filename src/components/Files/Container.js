@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { actions, selectors } from '../../redux/modules/lists';
-import { selectors as files } from '../../redux/modules/files';
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_FILES } from '../../helpers/consts';
+import { selectors as files } from '../../redux/modules/files';
+import { actions, selectors } from '../../redux/modules/lists';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class FilesContainer extends Component {
-
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
   };
@@ -23,7 +22,7 @@ class FilesContainer extends Component {
       }
     }
 
-    return (isNaN(page) || page <= 0) ? 1 : page;
+    return (Number.isNaN(page) || page <= 0) ? 1 : page;
   };
 
   render() {
@@ -37,9 +36,9 @@ const mapState = (state) => {
   const denormIDs = files.denormIDs(state.files);
   return {
     ...status,
-    items: Array.isArray(status.items) && status.items.length > 0 ?
-      denormIDs(status.items) :
-      EMPTY_ARRAY,
+    items: Array.isArray(status.items) && status.items.length > 0
+      ? denormIDs(status.items)
+      : EMPTY_ARRAY,
   };
 };
 

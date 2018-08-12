@@ -9,7 +9,6 @@ import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
 import CollectionsList from '../BaseClasses/CollectionList';
 
 class CollectionsMainPage extends ListWithFiltersBase {
-
   static propTypes = {
     ...ListWithFiltersBase.propTypes,
     items: PropTypes.arrayOf(shapes.Collection),
@@ -57,9 +56,8 @@ class CollectionsMainPage extends ListWithFiltersBase {
     );
   };
 
-  renderList = () => {
-    return <CollectionsList items={this.props.items} withCheckBox={false} />;
-  };
+  renderList = () =>
+    <CollectionsList items={this.props.items} withCheckBox={false} />;
 
   render() {
     const { wipOfCreate, errOfCreate, create } = this.props;
@@ -75,7 +73,8 @@ class CollectionsMainPage extends ListWithFiltersBase {
           centered={false}
           size="small"
           open={this.state.newCollection}
-          onClose={this.toggleNewCollection}>
+          onClose={this.toggleNewCollection}
+        >
           <Modal.Header>Create New Collection</Modal.Header>
           <Modal.Content>
             <CreateCollectionForm wip={wipOfCreate} err={errOfCreate} create={create} />

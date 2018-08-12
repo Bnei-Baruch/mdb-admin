@@ -1,8 +1,8 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+// eslint-disable-next-line react/require-render-return
 class ListBase extends PureComponent {
-
   static propTypes = {
     select: PropTypes.func,
     selectAll: PropTypes.func,
@@ -31,13 +31,13 @@ class ListBase extends PureComponent {
   isAllSelected = () => {
     const { selectedIds, items, associatedIds } = this.props;
 
-    //prevent check
+    // prevent check
     if (selectedIds.length < (items.length - associatedIds.length)) {
       return false;
     }
 
     const countAssociatedInPage = items.filter(x => associatedIds.includes(x.id)).length;
-    //check that not all associated
+    // check that not all associated
     if (countAssociatedInPage === items.length) {
       return false;
     }
@@ -47,8 +47,6 @@ class ListBase extends PureComponent {
 
   render() {
     throw new Error('Not Implemented');
-    // eslint-disable-next-line no-unreachable
-    return null;
   }
 }
 

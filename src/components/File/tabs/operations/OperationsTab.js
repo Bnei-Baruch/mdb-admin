@@ -7,13 +7,13 @@ import uniq from 'lodash/uniq';
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { selectors as operations } from '../../../../redux/modules/operations';
 import { actions, selectors } from '../../../../redux/modules/files';
+import * as shapes from '../../../shapes';
 import FilesHierarchy from './FilesHierarchy';
 
 class OperationsTab extends Component {
-
   static propTypes = {
     fetchTreeWithOperations: PropTypes.func.isRequired,
-    file: PropTypes.object,
+    file: shapes.File,
   };
 
   static defaultProps = {
@@ -28,8 +28,8 @@ class OperationsTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (((nextProps.file && !nextProps.file) ||
-        (nextProps.file && this.props.file && nextProps.file.id !== this.props.file.id))) {
+    if (((nextProps.file && !nextProps.file)
+      || (nextProps.file && this.props.file && nextProps.file.id !== this.props.file.id))) {
       this.props.fetchTreeWithOperations(nextProps.file.id);
     }
   }

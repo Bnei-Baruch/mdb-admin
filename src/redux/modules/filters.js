@@ -113,7 +113,7 @@ const setFilterState = (state, namespace, name, newFilterStateReducer) => {
   };
 };
 
-const _stopEditing = (state, action) => {
+const onStopEditing = (state, action) => {
   const { namespace, name } = action.payload;
   return setFilterState(state, namespace, name, {
     editingExistingValue: false,
@@ -121,14 +121,14 @@ const _stopEditing = (state, action) => {
   });
 };
 
-const _closeActiveFilter = (state, action) => {
-  const newState = _stopEditing(state, action);
+const onCloseActiveFilter = (state, action) => {
+  const newState = onStopEditing(state, action);
 
   newState[action.payload.namespace].activeFilter = '';
   return newState;
 };
 
-const _editNewFilter = (state, action) => {
+const onEditNewFilter = (state, action) => {
   const { namespace, name } = action.payload;
 
   const newState                   = setFilterState(state, namespace, name, (filterState) => ({
@@ -139,7 +139,7 @@ const _editNewFilter = (state, action) => {
   return newState;
 };
 
-const _editExistingFilter = (state, action) => {
+const onEditExistingFilter = (state, action) => {
   const { namespace, name, index } = action.payload;
   const newState                   = setFilterState(state, namespace, name, {
     activeValueIndex: index,
@@ -150,7 +150,7 @@ const _editExistingFilter = (state, action) => {
   return newState;
 };
 
-const _addFilterValue = (state, action) => {
+const onAddFilterValue = (state, action) => {
   const { namespace, name, value } = action.payload;
 
   return setFilterState(state, namespace, name, (filterState) => {
@@ -168,7 +168,7 @@ const _addFilterValue = (state, action) => {
   });
 };
 
-const _setFilterValue = (state, action) => {
+const onSetFilterValue = (state, action) => {
   const { namespace, name, value, index } = action.payload;
   return setFilterState(state, namespace, name, (filterState) => {
     if (typeof index === 'undefined') {
@@ -183,10 +183,10 @@ const _setFilterValue = (state, action) => {
   });
 };
 
-const _removeFilterValue = (state, action) => {
+const onRemoveFilterValue = (state, action) => {
   const { namespace, name, value } = action.payload;
 
-  return setFilterState(state, namespace, name, filterState => {
+  return setFilterState(state, namespace, name, (filterState) => {
     const values = filterState.values || [];
     const idx    = values.indexOf(value);
 
@@ -201,7 +201,7 @@ const _removeFilterValue = (state, action) => {
   });
 };
 
-const _setHydratedFilterValues = (state, action) => {
+const onSetHydratedFilterValues = (state, action) => {
   const { namespace, filters } = action.payload;
   const oldNamespace           = state[namespace] || {};
 
@@ -221,7 +221,7 @@ const _setHydratedFilterValues = (state, action) => {
   };
 };
 
-const _hydrateFilters = (state, action) => ({
+const onHydrateFilters = (state, action) => ({
   ...state,
   isHydrated: {
     ...state.isHydrated,
@@ -229,7 +229,7 @@ const _hydrateFilters = (state, action) => ({
   }
 });
 
-const _filtersHydrated = (state, action) => ({
+const onFiltersHydrated = (state, action) => ({
   ...state,
   isHydrated: {
     ...state.isHydrated,
@@ -238,17 +238,17 @@ const _filtersHydrated = (state, action) => ({
 });
 
 export const reducer = handleActions({
-  [STOP_EDITING_FILTER]: _stopEditing,
-  [CLOSE_ACTIVE_FILTER]: _closeActiveFilter,
-  [EDIT_NEW_FILTER]: _editNewFilter,
-  [EDIT_EXISTING_FILTER]: _editExistingFilter,
+  [STOP_EDITING_FILTER]: onStopEditing,
+  [CLOSE_ACTIVE_FILTER]: onCloseActiveFilter,
+  [EDIT_NEW_FILTER]: onEditNewFilter,
+  [EDIT_EXISTING_FILTER]: onEditExistingFilter,
 
-  [ADD_FILTER_VALUE]: _addFilterValue,
-  [SET_FILTER_VALUE]: _setFilterValue,
-  [REMOVE_FILTER_VALUE]: _removeFilterValue,
-  [SET_HYDRATED_FILTER_VALUES]: _setHydratedFilterValues,
-  [HYDRATE_FILTERS]: _hydrateFilters,
-  [FILTERS_HYDRATED]: _filtersHydrated
+  [ADD_FILTER_VALUE]: onAddFilterValue,
+  [SET_FILTER_VALUE]: onSetFilterValue,
+  [REMOVE_FILTER_VALUE]: onRemoveFilterValue,
+  [SET_HYDRATED_FILTER_VALUES]: onSetHydratedFilterValues,
+  [HYDRATE_FILTERS]: onHydrateFilters,
+  [FILTERS_HYDRATED]: onFiltersHydrated
 }, initialState);
 
 /* Selectors */
@@ -266,9 +266,9 @@ const getFilters = (state, namespace) => {
 };
 
 const getFilterAllValues = (state, namespace, name) =>
-  state[namespace] &&
-  state[namespace][name] &&
-  state[namespace][name].values;
+  state[namespace]
+  && state[namespace][name]
+  && state[namespace][name].values;
 
 const getFilterValue = (state, namespace, name, index = 0) =>
   getFilterAllValues(state, namespace, name, index) &&
@@ -276,12 +276,12 @@ const getFilterValue = (state, namespace, name, index = 0) =>
 
 const getLastFilterValue = (state, namespace, name) => {
   if (
-    state[namespace] &&
-    state[namespace][name] &&
-    state[namespace][name].values &&
-    state[namespace][name].values.length > 0
+    state[namespace]
+    && state[namespace][name]
+    && state[namespace][name].values
+    && state[namespace][name].values.length > 0
   ) {
-    const values = state[namespace][name].values;
+    const { values } = state[namespace][name];
     return values[values.length - 1];
   }
 
@@ -289,20 +289,21 @@ const getLastFilterValue = (state, namespace, name) => {
 };
 
 const getActiveValueIndex = (state, namespace, name) =>
-  state[namespace] &&
-  state[namespace][name] &&
-  state[namespace][name].activeValueIndex;
+  state[namespace]
+  && state[namespace][name]
+  && state[namespace][name].activeValueIndex;
 
 const getActiveValue = (state, namespace, name) =>
-  getFilterValue(state, namespace, name, getActiveValueIndex(state, namespace, name)) ||
-  getLastFilterValue(state, namespace, name);
+  getFilterValue(state, namespace, name, getActiveValueIndex(state, namespace, name))
+  || getLastFilterValue(state, namespace, name);
 
 const getIsEditingExistingFilter = (state, namespace, name) =>
-  !!state[namespace] &&
-  !!state[namespace][name] &&
-  !!state[namespace][name].editingExistingValue;
+  !!state[namespace]
+  && !!state[namespace][name]
+  && !!state[namespace][name].editingExistingValue;
 
-const getIsHydrated = (state, namespace) => !!state.isHydrated && !!state.isHydrated[namespace];
+const getIsHydrated = (state, namespace) =>
+  !!state.isHydrated && !!state.isHydrated[namespace];
 
 const getActiveFilter = (state, namespace) => (
   (state[namespace] && state[namespace].activeFilter)
@@ -312,13 +313,13 @@ const getActiveFilter = (state, namespace) => (
 
 const tabsWithFilterNames = {
   'date-range-filter': 'Date Range',
-  'query': 'Free Text',
+  query: 'Free Text',
   'sources-filter': 'Sources',
   'topics-filter': 'Topics',
-  'operation_type': 'Others',
-  'content_type': 'Others',
-  'secure': 'Others',
-  'published': 'Others'
+  operation_type: 'Others',
+  content_type: 'Others',
+  secure: 'Others',
+  published: 'Others'
 };
 
 const getTabNameByFilterName = fName => tabsWithFilterNames[fName];

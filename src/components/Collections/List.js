@@ -16,7 +16,6 @@ import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 class CollectionsList extends PureComponent {
-
   static propTypes = {
     items: PropTypes.arrayOf(shapes.Collection),
     getTagByUID: PropTypes.func.isRequired,
@@ -79,9 +78,9 @@ class CollectionsList extends PureComponent {
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           {
-            item.published ?
-              <Icon name="checkmark" color="green" /> :
-              <Icon name="ban" color="red" />
+            item.published
+              ? <Icon name="checkmark" color="green" />
+              : <Icon name="ban" color="red" />
           }
         </Table.Cell>
       </Table.Row>

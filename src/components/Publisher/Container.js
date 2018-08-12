@@ -8,7 +8,6 @@ import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class Container extends Component {
-
   static propTypes = {
     match: shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
@@ -16,13 +15,13 @@ class Container extends Component {
   };
 
   componentDidMount() {
-    const id = this.props.match.params.id;
+    const { match: { params: { id } } } = this.props;
     this.askForData(id);
   }
 
   componentWillReceiveProps(nextProps) {
-    const id  = this.props.match.params.id;
-    const nId = nextProps.match.params.id;
+    const { match: { params: { id } } } = this.props;
+    const nId                           = nextProps.match.params.id;
     if (id !== nId) {
       this.askForData(nId);
     }

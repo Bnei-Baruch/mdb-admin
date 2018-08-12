@@ -1,26 +1,30 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import {
+  Button, Grid, Header, Icon, List, Modal, Segment
+} from 'semantic-ui-react';
 
 import { formatError } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/persons';
 import * as shapes from '../../../shapes';
 
 class DangerZoneTab extends Component {
-
   static propTypes = {
     person: shapes.Person,
+    wip: PropTypes.bool,
     err: shapes.Error,
+    deletePerson: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     person: null,
+    wip: false,
     err: null,
   };
 
   state = {
-    deletePerson: null,
     confirmDelete: false,
   };
 
@@ -44,9 +48,7 @@ class DangerZoneTab extends Component {
                 <List.Item>
                   <List.Content floated="right">
                     {
-                      wip ?
-                        <Icon name="spinner" loading /> :
-                        null
+                      wip ? <Icon name="spinner" loading /> : null
                     }
                     <Button
                       color="red"
@@ -60,14 +62,16 @@ class DangerZoneTab extends Component {
                     </List.Header>
                     BE CAREFUL, there is no going back !
                     {
-                      err ?
-                        <Header
-                          content={formatError(err)}
-                          icon={{ name: 'warning sign' }}
-                          color="red"
-                          size="tiny"
-                        /> :
-                        null
+                      err
+                        ? (
+                          <Header
+                            content={formatError(err)}
+                            icon={{ name: 'warning sign' }}
+                            color="red"
+                            size="tiny"
+                          />
+                        )
+                        : null
                     }
                   </List.Content>
                 </List.Item>

@@ -86,8 +86,8 @@ const onRemoveItem  = (state, action) => {
     return state;
   }
 
-  const items = status.items;
-  const idx   = items.indexOf(id);
+  const { items } = status;
+  const idx       = items.indexOf(id);
   if (idx === -1) {
     return state;
   }
@@ -119,7 +119,7 @@ const onRemoveItems = (state, action) => {
     byNS: update(state.byNS, namespace,
       x => ({
         ...x,
-        items: items,
+        items,
       })),
   };
 };

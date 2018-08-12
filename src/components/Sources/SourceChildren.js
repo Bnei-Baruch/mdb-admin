@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Header, Icon, Label, List, Menu, Modal, Segment } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import {
+  Header, Icon, Label, List, Menu, Modal, Segment
+} from 'semantic-ui-react';
 
 import { EMPTY_OBJECT } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
@@ -9,7 +11,6 @@ import * as shapes from '../shapes';
 import NewSourceForm from './NewSourceForm';
 
 class SourceChildren extends Component {
-
   static propTypes = {
     getSourceById: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
@@ -42,14 +43,15 @@ class SourceChildren extends Component {
   }
 
   showModal = () => this.setState({ modalOpen: true });
+
   hideModal = () => this.setState({ modalOpen: false });
 
   render() {
     const { source, hierarchy, getSourceById, currentLanguage } = this.props;
 
-    const children    = hierarchy.childMap.get(source.id);
-    const hasChildren = Array.isArray(children) && children.length > 0;
-    const modalOpen   = this.state.modalOpen;
+    const children      = hierarchy.childMap.get(source.id);
+    const hasChildren   = Array.isArray(children) && children.length > 0;
+    const { modalOpen } = this.state;
 
     return (
       <div>
@@ -70,24 +72,26 @@ class SourceChildren extends Component {
 
         <Segment attached>
           {
-            hasChildren ?
-              <List relaxed divided className="rtl-dir">
-                {children.map((x, i) => {
-                  const node  = getSourceById(x);
-                  const label = extractI18n(node.i18n, ['name'], currentLanguage)[0];
+            hasChildren
+              ? (
+                <List relaxed divided className="rtl-dir">
+                  {children.map((x, i) => {
+                    const node  = getSourceById(x);
+                    const label = extractI18n(node.i18n, ['name'], currentLanguage)[0];
 
-                  return (
-                    <List.Item key={node.id}>
-                      <List.Content>
-                        <List.Header>
-                          <Link to={`/sources/${node.id}`}>{i + 1}. {label}</Link>
-                        </List.Header>
-                      </List.Content>
-                    </List.Item>
-                  );
-                })}
-              </List> :
-              <Header sub color="grey">This source has no children</Header>
+                    return (
+                      <List.Item key={node.id}>
+                        <List.Content>
+                          <List.Header>
+                            <Link to={`/sources/${node.id}`}>{i + 1}. {label}</Link>
+                          </List.Header>
+                        </List.Content>
+                      </List.Item>
+                    );
+                  })}
+                </List>
+              )
+              : <Header sub color="grey">This source has no children</Header>
           }
         </Segment>
 

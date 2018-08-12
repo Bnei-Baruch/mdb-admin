@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Header, Icon, Menu, Message, Segment, Table, Button } from 'semantic-ui-react';
+import {
+  Header, Icon, Menu, Message, Segment, Table, Button
+} from 'semantic-ui-react';
 
+import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../../../helpers/consts';
+import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import EditedField from '../../../shared/Fields/EditedField';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../../../helpers/consts';
-
 import CUModal from './CUModal';
 
 export default class HierarchyUnitsView extends Component {
-
   static propTypes = {
+    unit: shapes.ContentUnit.isRequired,
     cuds: PropTypes.arrayOf(shapes.ContentUnitDerivation),
     wip: PropTypes.bool,
     err: shapes.Error,
+    currentLanguage: PropTypes.string.isRequired,
+    removeAssociate: PropTypes.func.isRequired,
+    updateAssociation: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -34,21 +38,19 @@ export default class HierarchyUnitsView extends Component {
   };
 
   handleUnAssociate = (id) => {
-    this.props.removeAssociate(this.props.unit.id, id);
+    const { unit, removeAssociate } = this.props;
+    removeAssociate(unit.id, id);
   };
 
   handleUpdateAssociation = (cuId, name) => {
-    this.props.updateAssociation(this.props.unit.id, cuId, { name });
+    const { unit, updateAssociation } = this.props;
+    updateAssociation(unit.id, cuId, { name });
   };
 
   renderRow = (item) => {
     const {
-            id,
-            uid,
-            i18n,
-            type_id,
-            properties,
-          } = item.content_unit;
+      id, uid, i18n, type_id, properties
+    } = item.content_unit;
 
     const { film_date: filmDate } = properties || {};
     return (
@@ -64,20 +66,35 @@ export default class HierarchyUnitsView extends Component {
           />
         </Table.Cell>
         <Table.Cell width="1">
-          <Button circular compact size="mini" icon="remove" color="red" inverted onClick={() => this.handleUnAssociate(id)} /></Table.Cell>
+          <Button
+            circular
+            compact
+            inverted
+            size="mini"
+            icon="remove"
+            color="red"
+            onClick={() => this.handleUnAssociate(id)}
+          />
+        </Table.Cell>
       </Table.Row>
     );
   };
 
   renderTable = () => {
-    const { cuds, wip, err, blockName } = this.props;
+    const {
+      cuds, wip, err, blockName
+    } = this.props;
+
     if (err) {
       return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
-    } else if (cuds.length === 0) {
-      return ( wip ?
-        <LoadingSplash text={`Loading ${blockName}`} /> :
-        <Message>{`No ${blockName} found for this unit`}</Message>);
     }
+
+    if (cuds.length === 0) {
+      return wip
+        ? <LoadingSplash text={`Loading ${blockName}`} />
+        : <Message>{`No ${blockName} found for this unit`}</Message>;
+    }
+
     return (
       <Table>
         <Table.Header>
@@ -98,7 +115,9 @@ export default class HierarchyUnitsView extends Component {
   };
 
   render() {
-    const { associate, associatedIds, currentLanguage, unit, blockName } = this.props;
+    const {
+      associate, associatedIds, currentLanguage, unit, blockName
+    } = this.props;
 
     return (
       <div>
@@ -120,7 +139,8 @@ export default class HierarchyUnitsView extends Component {
             handleToggleModal={this.handleToggleModal}
             associate={associate}
             associatedIds={associatedIds}
-            currentLanguage={currentLanguage} />
+            currentLanguage={currentLanguage}
+          />
         </Segment>
       </div>
     );

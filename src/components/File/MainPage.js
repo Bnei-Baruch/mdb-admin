@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import TabsMenu from '../shared/TabsMenu';
 import { ErrorSplash, FrownSplash, LoadingSplash } from '../shared/Splash';
-import { formatError } from '../../helpers/utils';
 import DetailsTab from './tabs/details/DetailsTab';
 import AssociationsTab from './tabs/associations/AssociationsTab';
 import DangerZoneTab from './tabs/danger/DangerZoneTab';
@@ -29,12 +29,14 @@ const MainPage = (props) => {
     return <TabsMenu items={items} file={file} />;
   }
 
-  return wip ?
-    <LoadingSplash text="Loading file details" subtext="Hold on tight..." /> :
-    <FrownSplash
-      text="Couldn't find file"
-      subtext={<span>Try the <Link to="/files">files list</Link>...</span>}
-    />;
+  return wip
+    ? <LoadingSplash text="Loading file details" subtext="Hold on tight..." />
+    : (
+      <FrownSplash
+        text="Couldn't find file"
+        subtext={<span>Try the <Link to="/files">files list</Link>...</span>}
+      />
+    );
 };
 
 MainPage.propTypes = {

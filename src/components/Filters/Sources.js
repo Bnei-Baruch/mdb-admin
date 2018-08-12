@@ -8,14 +8,16 @@ import { selectors as authors } from '../../redux/modules/authors';
 
 import DeepListFilter from './DeepListFilter';
 
-const Sources = props => {
+const Sources = (props) => {
   const { onFilterCancel, onFilterApplication } = props;
-  return (<DeepListFilter
-    name="sources-filter"
-    onApply={onFilterApplication}
-    onCancel={onFilterCancel}
-    {...props}
-  />);
+  return (
+    <DeepListFilter
+      name="sources-filter"
+      onApply={onFilterApplication}
+      onCancel={onFilterCancel}
+      {...props}
+    />
+  );
 };
 
 Sources.propTypes = {
@@ -23,10 +25,10 @@ Sources.propTypes = {
   onFilterCancel: PropTypes.func.isRequired
 };
 
-const insertAuthorsToHierarchy = (hierarchy, authors) => {
+const insertAuthorsToHierarchy = (hierarchy, items) => {
   const { childMap } = hierarchy;
-  let roots          = [];
-  authors.forEach(a => {
+  const roots        = [];
+  items.forEach((a) => {
     childMap.set(a.code, a.sources);
     roots.push(a.code);
   });
@@ -42,9 +44,8 @@ const mapState = (state) => {
   return {
     emptyLabel: 'No Sources',
     hierarchy: insertAuthorsToHierarchy(selectors.getHierarchy(state.sources), authors.getAuthorsList(state.authors)),
-    getSubItemById: id => isNaN(id) ? modifyAuthorData(getAuthors(id)) : getSources(id)
+    getSubItemById: id => (Number.isNaN(id) ? modifyAuthorData(getAuthors(id)) : getSources(id)),
   };
 };
 
 export default connect(mapState)(Sources);
-

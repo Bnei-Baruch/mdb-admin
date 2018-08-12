@@ -10,7 +10,6 @@ import { EMPTY_ARRAY } from '../../../helpers/consts';
 import FilterTag from './FilterTag';
 
 class FilterTags extends Component {
-
   static propTypes = {
     namespace: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({
@@ -31,8 +30,10 @@ class FilterTags extends Component {
   };
 
   renderTag = (tag) => {
-    const { namespace }                    = this.props;
-    const { name, value, index, isActive } = tag;
+    const { namespace } = this.props;
+    const {
+      name, value, index, isActive
+    }             = tag;
 
     const icon  = filtersTransformer.getTagIcon(name);
     const label = filtersTransformer.valueToTagLabel(name, value, this.props, this.context.store);
@@ -97,4 +98,3 @@ export default connect(
   },
   filterActions
 )(FilterTags);
-

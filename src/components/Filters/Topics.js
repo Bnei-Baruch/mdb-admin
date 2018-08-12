@@ -6,15 +6,17 @@ import { selectors } from '../../redux/modules/tags';
 
 import DeepListFilter from './DeepListFilter';
 
-const Topics = props => {
+const Topics = (props) => {
   const { onFilterCancel, onFilterApplication } = props;
 
-  return (<DeepListFilter
-    name="topics-filter"
-    onApply={onFilterApplication}
-    onCancel={onFilterCancel}
-    {...props}
-  />  );
+  return (
+    <DeepListFilter
+      name="topics-filter"
+      onApply={onFilterApplication}
+      onCancel={onFilterCancel}
+      {...props}
+    />
+  );
 };
 
 Topics.propTypes = {

@@ -8,7 +8,7 @@ import Player from './Player';
 import Storages from './Storages';
 
 const DetailsTab = (props) => {
-  const file = props.file;
+  const { file } = props;
   if (!file) {
     return null;
   }
@@ -21,7 +21,7 @@ const DetailsTab = (props) => {
           <Divider horizontal hidden />
           <Properties properties={file.properties} />
         </Grid.Column>
-        <Grid.Column width={8} >
+        <Grid.Column width={8}>
           <Player file={file} />
           <Divider horizontal hidden />
           <Storages file={file} />
@@ -40,4 +40,3 @@ DetailsTab.defaultProps = {
 };
 
 export default DetailsTab;
-

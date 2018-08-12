@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { selectors, actions } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
-
 import * as shapes from '../../../shapes';
-import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
-
 import HierarchyUnitsView from './HierarchyUnitsView';
 
 class OriginsContainer extends Component {
-
   static propTypes = {
     cuds: PropTypes.arrayOf(shapes.ContentUnitDerivation),
     wip: PropTypes.bool,

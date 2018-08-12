@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import {
+  Button, Dropdown, Grid, Header, Icon, List, Modal, Segment
+} from 'semantic-ui-react';
 
 import { EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
@@ -10,7 +12,6 @@ import { actions, selectors } from '../../../../redux/modules/collections';
 import * as shapes from '../../../shapes';
 
 class DangerZoneTab extends Component {
-
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
     deleteC: PropTypes.func.isRequired,
@@ -112,24 +113,22 @@ class DangerZoneTab extends Component {
                     </List.Header>
                     Make sure you understand what you are doing.
                     {
-                      status.changeSecurityLevel.err ?
-                        <Header
-                          content={formatError(status.changeSecurityLevel.err)}
-                          icon={{ name: 'warning sign' }}
-                          color="red"
-                          size="tiny"
-                        /> :
-                        null
+                      status.changeSecurityLevel.err
+                        ? (
+                          <Header
+                            content={formatError(status.changeSecurityLevel.err)}
+                            icon={{ name: 'warning sign' }}
+                            color="red"
+                            size="tiny"
+                          />
+                        )
+                        : null
                     }
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Content floated="right">
-                    {
-                      status.delete.wip ?
-                        <Icon name="spinner" loading /> :
-                        null
-                    }
+                    {status.delete.wip ? <Icon name="spinner" loading /> : null}
                     <Button
                       color="red"
                       content="Delete"
@@ -142,14 +141,16 @@ class DangerZoneTab extends Component {
                     </List.Header>
                     BE CAREFUL, there is no going back !
                     {
-                      status.delete.err ?
-                        <Header
-                          content={formatError(status.delete.err)}
-                          icon={{ name: 'warning sign' }}
-                          color="red"
-                          size="tiny"
-                        /> :
-                        null
+                      status.delete.err
+                        ? (
+                          <Header
+                            content={formatError(status.delete.err)}
+                            icon={{ name: 'warning sign' }}
+                            color="red"
+                            size="tiny"
+                          />
+                        )
+                        : null
                     }
                   </List.Content>
                 </List.Item>

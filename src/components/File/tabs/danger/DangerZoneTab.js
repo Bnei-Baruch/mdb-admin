@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import {
+  Button, Dropdown, Grid, Header, Icon, List, Modal, Segment
+} from 'semantic-ui-react';
 
 import { SECURITY_LEVELS } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
@@ -10,15 +12,13 @@ import { actions, selectors } from '../../../../redux/modules/files';
 import * as shapes from '../../../shapes';
 
 class DangerZoneTab extends Component {
-
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
-    file: shapes.File,
+    file: shapes.File.isRequired,
     err: shapes.Error,
   };
 
   static defaultProps = {
-    file: null,
     err: null,
   };
 
@@ -88,14 +88,16 @@ class DangerZoneTab extends Component {
                     </List.Header>
                     Make sure you understand what you are doing.
                     {
-                      err ?
-                        <Header
-                          content={formatError(err)}
-                          icon={{ name: 'warning sign' }}
-                          color="red"
-                          size="tiny"
-                        /> :
-                        null
+                      err
+                        ? (
+                          <Header
+                            content={formatError(err)}
+                            icon={{ name: 'warning sign' }}
+                            color="red"
+                            size="tiny"
+                          />
+                        )
+                        : null
                     }
                   </List.Content>
                 </List.Item>

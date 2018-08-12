@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { Button, Flag, Header, Input, Menu, Segment, Table } from 'semantic-ui-react';
+import {
+  Button, Flag, Header, Input, Menu, Segment, Table
+} from 'semantic-ui-react';
 
 import {
   ALL_LANGUAGES,
@@ -19,7 +21,6 @@ import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
 
 class I18nForm extends Component {
-
   static propTypes = {
     updateI18n: PropTypes.func.isRequired,
     collection: shapes.Collection,
@@ -41,11 +42,16 @@ class I18nForm extends Component {
     const { i18n }                           = props.collection;
     const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
 
-    this.state = { i18n: newI18n, addedKeys, submitted: false, errors: i18nErrors };
+    this.state = {
+      i18n: newI18n,
+      addedKeys,
+      submitted: false,
+      errors: i18nErrors
+    };
   }
 
   componentWillReceiveProps(nextProps) {
-    const i18n = nextProps.collection.i18n;
+    const { i18n } = nextProps.collection;
 
     if (this.props.collection.i18n !== i18n) {
       const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
@@ -53,7 +59,11 @@ class I18nForm extends Component {
     }
   }
 
-  i18nObjectFromKey = (language) => ({ language, name: '', description: '' });
+  i18nObjectFromKey = language => ({
+    language,
+    name: '',
+    description: ''
+  });
 
   onNameChange = (e, { value }) => {
     const { i18n, errors } = this.state;
@@ -67,26 +77,26 @@ class I18nForm extends Component {
   };
 
   onDescriptionChange = (e, { value }) => {
-    const i18n                      = this.state.i18n;
+    const { i18n }                  = this.state;
     i18n[e.target.name].description = value;
     this.setState({ i18n });
   };
 
   addLanguage = (e, data) => {
-    const i18n       = this.state.i18n;
+    const { i18n }   = this.state;
     i18n[data.value] = this.i18nObjectFromKey(data.value);
     this.setState({ i18n });
   };
 
   removeLanguage = (language) => {
-    const i18n = this.state.i18n;
+    const { i18n } = this.state;
     delete i18n[language];
     this.setState({ i18n });
   };
 
   handleSubmit = () => {
     const { collection, updateI18n } = this.props;
-    const i18n                       = this.state.i18n;
+    const { i18n }                   = this.state;
     const data                       = Object.keys(i18n).map(x => i18n[x]);
     updateI18n(collection.id, data);
 
@@ -129,16 +139,18 @@ class I18nForm extends Component {
               </Table.Cell>
               <Table.Cell collapsing>
                 {
-                  !REQUIRED_LANGUAGES.includes(k) ?
-                    <Button
-                      circular
-                      compact
-                      size="mini"
-                      icon="remove"
-                      color="red"
-                      inverted
-                      onClick={() => this.removeLanguage(k)}
-                    />
+                  !REQUIRED_LANGUAGES.includes(k)
+                    ? (
+                      <Button
+                        circular
+                        compact
+                        size="mini"
+                        icon="remove"
+                        color="red"
+                        inverted
+                        onClick={() => this.removeLanguage(k)}
+                      />
+                    )
                     : null
                 }
 
@@ -179,16 +191,20 @@ class I18nForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-            : null}
+          {
+            submitted && err
+              ? (
+                <Header
+                  inverted
+                  content={formatError(err)}
+                  color="red"
+                  icon="warning sign"
+                  floated="left"
+                  style={{ marginTop: '0.2rem', marginBottom: '0' }}
+                />
+              )
+              : null
+          }
           <Button
             primary
             content="Save"

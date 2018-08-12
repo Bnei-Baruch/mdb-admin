@@ -10,7 +10,6 @@ import * as shapes from '../shapes';
 import ListBase from './ListBase';
 
 class CUList extends ListBase {
-
   static propTypes = {
     ...ListBase.propTypes,
     items: PropTypes.arrayOf(shapes.ContentUnit),
@@ -18,7 +17,9 @@ class CUList extends ListBase {
   };
 
   renderItem = (item) => {
-    const { selectedIds, currentLanguage, associatedIds, withCheckBox } = this.props;
+    const {
+      selectedIds, currentLanguage, associatedIds, withCheckBox
+    } = this.props;
 
     const properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
     return (
@@ -54,9 +55,9 @@ class CUList extends ListBase {
         </Table.Cell>
         <Table.Cell>
           {
-            item.properties && item.properties.duration ?
-              moment.utc(moment.duration(item.properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
-              '??'
+            item.properties && item.properties.duration
+              ? moment.utc(moment.duration(item.properties.duration, 's').asMilliseconds()).format('HH:mm:ss')
+              : '??'
           }
         </Table.Cell>
         <Table.Cell textAlign="center">
@@ -64,9 +65,9 @@ class CUList extends ListBase {
         </Table.Cell>
         <Table.Cell textAlign="center">
           {
-            item.published ?
-              <Icon name="checkmark" color="green" /> :
-              <Icon name="ban" color="red" />
+            item.published
+              ? <Icon name="checkmark" color="green" />
+              : <Icon name="ban" color="red" />
           }
         </Table.Cell>
       </Table.Row>

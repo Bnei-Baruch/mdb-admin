@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import { Header, List, Menu, Segment } from 'semantic-ui-react';
+import {
+  Header, List, Menu, Segment
+} from 'semantic-ui-react';
 
 import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';

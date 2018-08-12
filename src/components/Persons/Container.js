@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PERSONS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';
 import { actions as personActions, selectors as persons } from '../../redux/modules/persons';
-
 import { selectors as system } from '../../redux/modules/system';
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PERSONS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class PersonsContainer extends Component {
-
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
@@ -48,7 +46,7 @@ class PersonsContainer extends Component {
       }
     }
 
-    return (isNaN(page) || page <= 0) ? 1 : page;
+    return (Number.isNaN(page) || page <= 0) ? 1 : page;
   };
 
   handlePageChange = (pageNo) => {

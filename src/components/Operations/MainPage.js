@@ -6,7 +6,6 @@ import OperationsList from './List';
 import Others from './filters/Others';
 
 class FilesMainPage extends ListWithFiltersBase {
-
   constructor(props) {
     super(props);
     this.setCustomFilter('Others', { name: 'Others', element: Others });
@@ -20,9 +19,7 @@ class FilesMainPage extends ListWithFiltersBase {
 
   getIsUpdateQuery = () => true;
 
-  renderList = () => {
-    return <OperationsList items={this.props.items} />;
-  };
+  renderList = () => <OperationsList items={this.props.items} />;
 
   render() {
     return (

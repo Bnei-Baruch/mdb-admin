@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Header, Icon, Menu, Message, Segment, Table, Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import {
+  Header, Icon, Menu, Message, Segment, Table, Button
+} from 'semantic-ui-react';
 
 import { selectors } from '../../../../redux/modules/content_units';
 import { actions as collectionActions, selectors as collections } from '../../../../redux/modules/collections';
@@ -20,12 +22,13 @@ import {
 import CollectionModal from './CollectionModal';
 
 class Collections extends Component {
-
   static propTypes = {
+    unit: shapes.ContentUnit.isRequired,
     ccus: PropTypes.arrayOf(shapes.CollectionContentUnit),
     wip: PropTypes.bool,
     err: shapes.Error,
     currentLanguage: PropTypes.string.isRequired,
+    deleteItemUnit: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -43,7 +46,8 @@ class Collections extends Component {
   };
 
   handleUnAssociate = (collection) => {
-    this.props.deleteItemUnit(collection.id, this.props.unit.id);
+    const { deleteItemUnit, unit } = this.props;
+    deleteItemUnit(collection.id, unit.id);
   };
 
   getProperties = (item) => {
@@ -97,29 +101,28 @@ class Collections extends Component {
             color="red"
             inverted
             onClick={() => this.handleUnAssociate(item)}
-          /></Table.Cell>
+          />
+        </Table.Cell>
       </Table.Row>
     );
   };
 
-  renderTable = (items) => {
-    return (
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>UID</Table.HeaderCell>
-            <Table.HeaderCell>Type</Table.HeaderCell>
-            <Table.HeaderCell>Properties</Table.HeaderCell>
-            <Table.HeaderCell>Created At</Table.HeaderCell>
-            <Table.HeaderCell />
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {items.map(c => this.renderRow(c.collection))}
-        </Table.Body>
-      </Table>
-    );
-  };
+  renderTable = items => (
+    <Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell>UID</Table.HeaderCell>
+          <Table.HeaderCell>Type</Table.HeaderCell>
+          <Table.HeaderCell>Properties</Table.HeaderCell>
+          <Table.HeaderCell>Created At</Table.HeaderCell>
+          <Table.HeaderCell />
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {items.map(c => this.renderRow(c.collection))}
+      </Table.Body>
+    </Table>
+  );
 
   render() {
     const { ccus, wip, err } = this.props;
@@ -128,9 +131,9 @@ class Collections extends Component {
     if (err) {
       content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     } else if (ccus.length === 0) {
-      content = wip ?
-        <LoadingSplash text="Loading collections" /> :
-        <Message>No collections found for this unit</Message>;
+      content = wip
+        ? <LoadingSplash text="Loading collections" />
+        : <Message>No collections found for this unit</Message>;
     } else {
       content = this.renderTable(ccus);
     }
@@ -152,7 +155,8 @@ class Collections extends Component {
           <CollectionModal
             {...this.props}
             handleShowAssociateModal={this.handleShowAssociateModal}
-            isShowAssociateModal={this.state.isShowAssociateModal} />
+            isShowAssociateModal={this.state.isShowAssociateModal}
+          />
         </Segment>
       </div>
     );

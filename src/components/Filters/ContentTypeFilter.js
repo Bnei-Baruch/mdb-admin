@@ -6,7 +6,6 @@ import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import connectFilter from './connectFilter';
 
 class ContentTypeFilter extends Component {
-
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(PropTypes.any),

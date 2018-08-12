@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Icon, Menu, Modal } from 'semantic-ui-react';
+import {
+  Grid, Header, Icon, Menu, Modal
+} from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
-
 import * as shapes from '../shapes';
 import ErrWip from '../shared/ErrWip';
 import Pagination from '../shared/Pagination';
@@ -12,7 +13,6 @@ import CreatePersonForm from '../shared/Forms/Persons/CreatePersonForm';
 import PersonsList from './List';
 
 class PersonsMainPage extends Component {
-
   static propTypes = {
     pageNo: PropTypes.number,
     total: PropTypes.number,

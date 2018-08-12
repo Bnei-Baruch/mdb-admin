@@ -5,18 +5,13 @@ import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
 import FileList from '../BaseClasses/FileList';
 
 class FilesMainPage extends ListWithFiltersBase {
-
   usedFiltersNames = ['FreeText', 'DateRange', 'Others'];
 
   getNamespace = () => NS_FILES;
 
   getContentType = () => null;
 
-  renderList = () => {
-    return <FileList
-      items={this.props.items}
-      withCheckBox={false} />;
-  };
+  renderList = () => <FileList items={this.props.items} withCheckBox={false} />;
 
   getIsUpdateQuery = () => true;
 

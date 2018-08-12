@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Breadcrumb } from 'semantic-ui-react';
 
+import { extractI18n } from '../../helpers/utils';
 import { selectors } from '../../redux/modules/tags';
 import { selectors as system } from '../../redux/modules/system';
 import * as shapes from '../shapes';
-import { extractI18n } from '../../helpers/utils';
 
 const TagBreadcrumbs = (props) => {
   const { path, lastIsLink, currentLanguage } = props;
@@ -49,7 +49,6 @@ TagBreadcrumbs.propTypes = {
 
 TagBreadcrumbs.defaultProps = {
   path: [],
-  author: null,
   lastIsLink: false
 };
 

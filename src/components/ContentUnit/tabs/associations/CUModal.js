@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Icon, Menu, Button, Modal } from 'semantic-ui-react';
+import {
+  Icon, Menu, Button, Modal
+} from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_CU, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
-import * as shapes from '../../../shapes';
+import {
+  EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_CU, CONTENT_UNIT_TYPES
+} from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/lists';
 import { selectors as units } from '../../../../redux/modules/collections';
-
+import * as shapes from '../../../shapes';
 import CUList from '../../../BaseClasses/CUList';
 import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
 class CUModal extends ListWithCheckboxBase {
-
   static propTypes = {
     ...ListWithCheckboxBase.propTypes,
     unit: shapes.ContentUnit,
@@ -36,20 +38,23 @@ class CUModal extends ListWithCheckboxBase {
 
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
-    return (<CUList
-      {...this.getSelectListProps()}
-      items={items}
-      associatedIds={associatedIds}
-      currentLanguage={currentLanguage} />);
+    return (
+      <CUList
+        {...this.getSelectListProps()}
+        items={items}
+        associatedIds={associatedIds}
+        currentLanguage={currentLanguage}
+      />
+    );
   };
 
-  askForData = (pageNo) => this.props.fetchList(NS_UNIT_ASSOCIATION_CU, pageNo);
+  askForData = pageNo =>
+    this.props.fetchList(NS_UNIT_ASSOCIATION_CU, pageNo);
 
   handleAssociate = () => {
     const { associate, unit } = this.props;
     this.state.selectedIds.forEach(cId => associate(unit.id, cId));
     this.handleClose();
-
   };
 
   handleClose = () => {
@@ -70,7 +75,8 @@ class CUModal extends ListWithCheckboxBase {
         centered={false}
         size="fullscreen"
         open={isShowAssociateModal}
-        onClose={this.handleClose}>
+        onClose={this.handleClose}
+      >
         <Modal.Header content="Associate Content Units" />
         <Modal.Content scrolling>
           <Menu borderless size="large">
@@ -93,9 +99,10 @@ class CUModal extends ListWithCheckboxBase {
         <Modal.Actions>
           <Button content="Cancel" onClick={this.handleClose} />
           <Button
-            onClick={this.handleAssociate}
+            color="blue"
             content="Associate content unit to collections"
-            color="blue" />
+            onClick={this.handleAssociate}
+          />
         </Modal.Actions>
       </Modal>
     );

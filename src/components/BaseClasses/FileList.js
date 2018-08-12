@@ -6,11 +6,10 @@ import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import filesize from 'filesize';
 
 import { SECURITY_LEVELS } from '../../helpers/consts';
-import ListBase from './ListBase';
 import * as shapes from '../shapes';
+import ListBase from './ListBase';
 
 class FilesList extends ListBase {
-
   static propTypes = {
     ...ListBase.propTypes,
     items: PropTypes.arrayOf(shapes.File),
@@ -18,7 +17,6 @@ class FilesList extends ListBase {
 
   renderItem = (item) => {
     const { selectedIds, associatedIds, withCheckBox } = this.props;
-    console.log('FilesList', withCheckBox);
     return (
       <Table.Row key={item.id} disabled={!item || associatedIds.includes(item.id)}>
         {withCheckBox ? (
@@ -52,9 +50,9 @@ class FilesList extends ListBase {
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           {
-            item.published ?
-              <Icon name="checkmark" color="green" /> :
-              <Icon name="ban" color="red" />
+            item.published
+              ? <Icon name="checkmark" color="green" />
+              : <Icon name="ban" color="red" />
           }
         </Table.Cell>
       </Table.Row>

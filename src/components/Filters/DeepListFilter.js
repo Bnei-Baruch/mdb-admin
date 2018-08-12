@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Button, Menu, Segment, Container } from 'semantic-ui-react';
-
-import connectFilter from './connectFilter';
+import {
+  Button, Menu, Segment, Container
+} from 'semantic-ui-react';
 
 import { hierarchyToTree, hierarchyNodeToTreeNode, extractI18n } from '../../helpers/utils';
+import connectFilter from './connectFilter';
 
 class DeepListFilter extends React.Component {
-
   static propTypes = {
     roots: PropTypes.arrayOf(PropTypes.string).isRequired,
     getSubItemById: PropTypes.func.isRequired,
@@ -18,6 +18,7 @@ class DeepListFilter extends React.Component {
     updateValue: PropTypes.func.isRequired,
     value: PropTypes.any,
     allValues: PropTypes.any,
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -71,7 +72,7 @@ class DeepListFilter extends React.Component {
 
   apply = () => {
     const { updateValue, onApply, isUpdateQuery } = this.props;
-    const selection                               = this.state.selection;
+    const { selection }                           = this.state;
     if (Array.isArray(selection) && selection.length === 0) {
       return;
     }
@@ -109,7 +110,10 @@ class DeepListFilter extends React.Component {
     const current  = this.createList(depth, items, selection[0], otherSelected.map(s => s[0]));
     let next       = [];
     if (selected && selected.children) {
-      next = this.createLists(depth + 1, selected.children, selection.slice(1), otherSelected.filter(s => s.length > 0).map(s => s.slice(1)));
+      next = this.createLists(depth + 1,
+        selected.children,
+        selection.slice(1),
+        otherSelected.filter(s => s.length > 0).map(s => s.slice(1)));
     }
 
     return [current].concat(next);
@@ -125,9 +129,9 @@ class DeepListFilter extends React.Component {
             {
               items.map(({ id }) => {
                 const node  = hierarchyNodeToTreeNode(hierarchy, getSubItemById(id));
-                const style = otherSelectedIds.includes(id) && selectedId !== id ?
-                  { backgroundColor: 'lightgoldenrodyellow' } :
-                  {};
+                const style = otherSelectedIds.includes(id) && selectedId !== id
+                  ? { backgroundColor: 'lightgoldenrodyellow' }
+                  : {};
 
                 return (
                   <Menu.Item
@@ -149,8 +153,9 @@ class DeepListFilter extends React.Component {
     );
   };
 
+  // eslint-disable-next-line class-methods-use-this
   listToNumbersIfCan(list) {
-    return list.map(x => isNaN(parseFloat(x)) ? x : parseFloat(x));
+    return list.map(x => (Number.isNaN(parseFloat(x)) ? x : parseFloat(x)));
   }
 
   render() {
@@ -169,15 +174,15 @@ class DeepListFilter extends React.Component {
             ref={el => this.listContainer = el}
           >
             {
-              roots.length > 0 ?
-                this.createLists(0, roots, this.state.selection, this.listToNumbersIfCan(allValues)) :
-                emptyLabel
+              roots.length > 0
+                ? this.createLists(0, roots, this.state.selection, this.listToNumbersIfCan(allValues))
+                : emptyLabel
             }
           </div>
         </Segment>
         <Segment vertical clearing>
-          <Button primary content={'Apply'} floated="left" disabled={!this.canApply()} onClick={this.apply} />
-          <Button content={'Close'} floated="left" onClick={this.onCancel} />
+          <Button primary content="Apply" floated="left" disabled={!this.canApply()} onClick={this.apply} />
+          <Button content="Close" floated="left" onClick={this.onCancel} />
         </Segment>
       </Container>
     );

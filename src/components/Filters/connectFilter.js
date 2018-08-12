@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {  selectors as filterSelectors,  actions as filterActions} from '../../redux/modules/filters';
-import {  selectors as system} from '../../redux/modules/system';
+import { selectors as filterSelectors, actions as filterActions } from '../../redux/modules/filters';
+import { selectors as system } from '../../redux/modules/system';
 
 const connectFilter = (options = {}) => (WrappedComponent) => {
-  const isMultiple = options.isMultiple;
+  const { isMultiple } = options;
 
   class ConnectFilterHOC extends Component {
-
     static propTypes = {
       namespace: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
@@ -30,7 +29,10 @@ const connectFilter = (options = {}) => (WrappedComponent) => {
     }
 
     updateValue = (value, isUpdateQuery) => {
-      const { isEditing, activeValueIndex, namespace, name } = this.props;
+      const {
+        isEditing, activeValueIndex, namespace, name
+      } = this.props;
+
       if (isEditing) {
         this.props.setFilterValue(namespace, name, value, isUpdateQuery, activeValueIndex);
       } else if (isMultiple) {
@@ -41,12 +43,15 @@ const connectFilter = (options = {}) => (WrappedComponent) => {
     };
 
     removeValue = () => {
-      const { namespace, name, activeValueIndex, isUpdateQuery } = this.props;
-      this.props.removeFilterValue(namespace, name, activeValueIndex, isUpdateQuery);
+      const { namespace, name, activeValueIndex, isUpdateQuery, removeFilterValue } = this.props;
+      removeFilterValue(namespace, name, activeValueIndex, isUpdateQuery);
     };
 
     render() {
-      const { addFilterValue, setFilterValue, removeFilterValue, ...rest } = this.props;
+      const {
+        addFilterValue, setFilterValue, removeFilterValue, ...rest
+      } = this.props;
+
       return (
         <WrappedComponent
           updateValue={this.updateValue}

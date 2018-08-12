@@ -2,21 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { delay, orderBy } from 'lodash';
+import delay from 'lodash/delay';
+import orderBy from 'lodash/orderBy';
 import { Icon, Button, Segment } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
+import {
+  EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS, CONTENT_UNIT_TYPES
+} from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/lists';
 import { actions as collectionActions } from '../../../../redux/modules/collections';
 import { selectors as unitsSelectors } from '../../../../redux/modules/content_units';
 import { selectors as system } from '../../../../redux/modules/system';
 import * as shapes from '../../../shapes';
-
 import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 import CUList from '../../../BaseClasses/CUList';
 
 class NewAssociations extends ListWithCheckboxBase {
-
   static propTypes = {
     ...ListWithCheckboxBase.propTypes,
     collection: shapes.Collection,
@@ -33,11 +34,14 @@ class NewAssociations extends ListWithCheckboxBase {
 
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
-    return (<CUList
-      {...this.getSelectListProps()}
-      items={items}
-      associatedIds={associatedIds}
-      currentLanguage={currentLanguage} />);
+    return (
+      <CUList
+        {...this.getSelectListProps()}
+        items={items}
+        associatedIds={associatedIds}
+        currentLanguage={currentLanguage}
+      />
+    );
   };
 
   handleViewMode = () => this.props.setEditMode(false);
@@ -63,7 +67,11 @@ class NewAssociations extends ListWithCheckboxBase {
 
   getNextPosition = () => {
     const { associatedIds, denormIDs } = this.props;
-    const lastPosition                 = associatedIds.length > 0 ? denormIDs(associatedIds)[associatedIds.length - 1].position : 0;
+
+    const lastPosition = associatedIds.length > 0
+      ? denormIDs(associatedIds)[associatedIds.length - 1].position
+      : 0;
+
     return lastPosition + 1;
   };
 
@@ -72,34 +80,35 @@ class NewAssociations extends ListWithCheckboxBase {
     return (
       <div>
         <Segment clearing secondary size="large">
-            Associate content units to this collection
+          Associate content units to this collection
         </Segment>
 
         <Segment clearing vertical>
           <Button
-            onClick={this.toggleFilters}
+            inverted
             color="blue"
-            inverted>
+            onClick={this.toggleFilters}
+          >
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
 
           <Button
-            onClick={this.associate}
+            color="blue"
             disabled={selectedIds.length === 0}
             content="Associate content units to this collection"
-            color="blue" />
+            onClick={this.associate}
+          />
           <Button
-            onClick={this.handleViewMode}
             icon="close"
-            content="Cancel" />
+            content="Cancel"
+            onClick={this.handleViewMode}
+          />
         </Segment>
 
         {this.renderFiltersHydrator()}
         {this.renderContent()}
       </div>
-
-
     );
   }
 }
