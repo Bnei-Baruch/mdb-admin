@@ -62,10 +62,12 @@
     "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-app-rewired build'",
     "build:external": "REACT_APP_ENV=external yarn build",
     "build:production": "REACT_APP_ENV=production yarn build",
+    "build:suitcase": "REACT_APP_ENV=suitcase yarn build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "yarn build:production && scp -r build/* archive@app.mdb.bbdomain.org:/sites/admin",
     "deploy:external": "yarn build:external && scp -r build/* archive@app.archive.bbdomain.org:/sites/admin",
+    "deploy:suitcase": "yarn build:suitcase && scp -r build/* root@suitcase.bbdomain.org:/sites/admin",
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
   }
