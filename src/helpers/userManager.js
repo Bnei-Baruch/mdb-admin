@@ -2,6 +2,7 @@ import { Log as oidclog, WebStorageStateStore } from 'oidc-client';
 import { createUserManager } from 'redux-oidc';
 
 import { AUTH_URL, BASE_URL } from './env';
+import { UserManager as FakeUserManager } from './fakeUserManager';
 
 oidclog.logger = console;
 oidclog.level  = 4;
@@ -19,7 +20,8 @@ const userManagerConfig = {
   userStore: new WebStorageStateStore({ store: localStorage }),
 };
 
-const userManager = createUserManager(userManagerConfig);
+// const userManager = createUserManager(userManagerConfig);
+const userManager = AUTH_URL ? createUserManager(userManagerConfig) : new FakeUserManager();
 
 export default userManager;
 
