@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
-import JWPlayer from '../../../shared/JWPlayer';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
 import {
@@ -261,7 +260,7 @@ class FilesHierarchy extends Component {
               {
                 currentFile ?
                   <div>
-                    <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false} />
+                    <video controls src={physicalFile(currentFile, true)} />
                     <br />
                     <Button
                       content="Download"

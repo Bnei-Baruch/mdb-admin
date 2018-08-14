@@ -44,7 +44,6 @@
     "react": "^15.6.1",
     "react-day-picker": "^6.0.5",
     "react-dom": "^15.6.1",
-    "react-jw-player": "^1.13.0",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
     "react-router-redux": "^5.0.0-alpha.6",

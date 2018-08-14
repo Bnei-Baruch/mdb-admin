@@ -17,7 +17,6 @@ import {
 } from '../../../../helpers/consts';
 import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
-import JWPlayer from '../../../shared/JWPlayer';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 
 import './files.css';
@@ -306,7 +305,7 @@ class FilesHierarchy extends Component {
                 {
                   currentFile ?
                     <div>
-                      <JWPlayer playerId="unit-files" file={physicalFile(currentFile, true)} isAutoPlay={false} />
+                      <video controls src={physicalFile(currentFile, true)} />
                       <br />
                       <Button
                         content="Download"
