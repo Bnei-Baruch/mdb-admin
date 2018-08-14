@@ -24,7 +24,6 @@ module.exports = {
     'react',
     'react-day-picker',
     'react-dom',
-    'react-jw-player',
     'react-redux',
     'react-router-dom',
     'react-router-redux',
