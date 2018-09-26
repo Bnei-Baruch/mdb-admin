@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 import * as shapes from '../../../shapes';
-import JWPlayer from '../../../shared/JWPlayer';
 import { fileTypes, physicalFile } from '../../../../helpers/utils';
 
 const Player = (props) => {
@@ -16,9 +15,9 @@ const Player = (props) => {
   return (
     <div>
       {
-        ['audio', 'video'].includes(types.type)
-          ? <JWPlayer playerId="file-details" file={physicalFile(file, true)} isAutoPlay={false} />
-          : null
+        ['audio', 'video'].includes(types.type) ?
+          <video controls src={physicalFile(file, true)} /> :
+          null
       }
       <br />
       <Button

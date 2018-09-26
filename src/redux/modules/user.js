@@ -13,6 +13,10 @@ const initialState = {
 const onUser = (state, action) => {
   const user = action.payload;
 
+  if (user.fake) {
+    return { user };
+  }
+
   // Keycloak special handling
   // We decode the access token for the user's roles
   const { payloadObj: { realm_access, resource_access } } = jws.JWS.parse(user.access_token);

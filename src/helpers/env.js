@@ -1,5 +1,6 @@
 export const isProduction = process.env.NODE_ENV === 'production' ||
-  process.env.NODE_ENV === 'external';
+  process.env.NODE_ENV === 'external' ||
+  process.env.NODE_ENV === 'suitcase';
 
 // Base url of this application
 export const BASE_URL = process.env.REACT_APP_BASE_URL ||
