@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Button, Grid, Header, Image, Segment } from 'semantic-ui-react';
+import {
+  Button, Grid, Header, Image, Segment
+} from 'semantic-ui-react';
 
 import * as shapes from '../shapes';
 import userManager from '../../helpers/userManager';
 import logo from './KL_Tree_128.png';
 
 class LoginPage extends PureComponent {
-
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
   };
@@ -67,7 +68,8 @@ class LoginPage extends PureComponent {
       body > div > div > div.login-form {
         height: 100%;
       }
-    `}</style>
+    `}
+        </style>
 
         <Grid
           textAlign="center"

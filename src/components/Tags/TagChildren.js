@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Header, Icon, Label, List, Menu, Modal, Segment } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import {
+  Header, Icon, Label, List, Menu, Modal, Segment
+} from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
 import { EMPTY_OBJECT } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
+import * as shapes from '../shapes';
 import NewTagForm from './NewTagForm';
 
 class TagChildren extends Component {
-
   static propTypes = {
     getTagById: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
@@ -42,13 +43,14 @@ class TagChildren extends Component {
   }
 
   showModal = () => this.setState({ modalOpen: true });
+
   hideModal = () => this.setState({ modalOpen: false });
 
   renderNode(node) {
     const { getTagById, hierarchy, currentLanguage } = this.props;
-    const children                  = hierarchy.childMap.get(node.id);
-    const hasChildren               = Array.isArray(children) && children.length > 0;
-    const label                     = extractI18n(node.i18n, ['label'], currentLanguage)[0];
+    const children                                   = hierarchy.childMap.get(node.id);
+    const hasChildren                                = Array.isArray(children) && children.length > 0;
+    const label                                      = extractI18n(node.i18n, ['label'], currentLanguage)[0];
 
     return (
       <List.Item key={node.id}>
@@ -61,10 +63,12 @@ class TagChildren extends Component {
           <List.Description>{node.description}</List.Description>
 
           {
-            hasChildren ?
-              <List.List className="rtl-dir">
-                {children.map(x => this.renderNode(getTagById(x)))}
-              </List.List>
+            hasChildren
+              ? (
+                <List.List className="rtl-dir">
+                  {children.map(x => this.renderNode(getTagById(x)))}
+                </List.List>
+              )
               : null
           }
         </List.Content>
@@ -76,7 +80,7 @@ class TagChildren extends Component {
     const { tag, hierarchy, getTagById } = this.props;
     const children                       = hierarchy.childMap.get(tag.id);
     const hasChildren                    = Array.isArray(children) && children.length > 0;
-    const modalOpen                      = this.state.modalOpen;
+    const { modalOpen }                  = this.state;
 
     return (
       <div>
@@ -97,16 +101,19 @@ class TagChildren extends Component {
 
         <Segment attached>
           {
-            hasChildren ?
-              <List relaxed divided className="rtl-dir">
-                {children.map(x => this.renderNode(getTagById(x)))}
-              </List> :
-              <Header sub color="grey">This tag has no children</Header>
+            hasChildren
+              ? (
+                <List relaxed divided className="rtl-dir">
+                  {children.map(x => this.renderNode(getTagById(x)))}
+                </List>
+              )
+              : <Header sub color="grey">This tag has no children</Header>
           }
         </Segment>
 
         <Modal
           closeIcon
+          centered={false}
           size="small"
           open={modalOpen}
           onClose={this.hideModal}

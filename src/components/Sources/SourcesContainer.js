@@ -9,7 +9,6 @@ import { selectors as system } from '../../redux/modules/system';
 import SourcesHierarchy from './SourcesHierarchy';
 
 class SourcesContainer extends Component {
-
   static propTypes = {
     fetchAll: PropTypes.func.isRequired
   };

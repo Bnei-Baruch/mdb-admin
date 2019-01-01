@@ -3,19 +3,26 @@ import PropTypes from 'prop-types';
 
 import { DateRangeFilter } from './filterComponents';
 
-const DateRange = props => (
-  <DateRangeFilter
-    namespace={props.namespace}
-    name="date-range-filter"
-    onApply={props.onFilterApplication}
-    onCancel={props.onFilterCancel}
-  />
-);
+const DateRange = (props) => {
+  const {
+    namespace, onFilterApplication, isUpdateQuery, onFilterCancel
+  } = props;
+
+  return (
+    <DateRangeFilter
+      namespace={namespace}
+      name="date-range-filter"
+      onApply={onFilterApplication}
+      onCancel={onFilterCancel}
+      isUpdateQuery={isUpdateQuery}
+    />
+  );
+};
 
 DateRange.propTypes = {
+  namespace: PropTypes.string.isRequired,
   onFilterApplication: PropTypes.func.isRequired,
   onFilterCancel: PropTypes.func.isRequired
 };
 
 export default DateRange;
-

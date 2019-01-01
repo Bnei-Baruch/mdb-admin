@@ -22,7 +22,11 @@ export const types = {
 
 /* Actions */
 
-const setPage          = createAction(SET_PAGE, (namespace, pageNo) => ({ namespace, pageNo }));
+const setPage          = createAction(SET_PAGE, (namespace, pageNo, isUpdateQuery) => ({
+  namespace,
+  pageNo,
+  isUpdateQuery
+}));
 const fetchList        = createAction(FETCH_LIST, (namespace, pageNo, parent) => ({ namespace, pageNo, parent }));
 const fetchListSuccess = createAction(FETCH_LIST_SUCCESS, (namespace, total, data) => ({ namespace, total, data }));
 const fetchListFailure = createAction(FETCH_LIST_FAILURE, (namespace, err) => ({ namespace, err }));
@@ -82,8 +86,8 @@ const onRemoveItem  = (state, action) => {
     return state;
   }
 
-  const items = status.items;
-  const idx   = items.indexOf(id);
+  const { items } = status;
+  const idx       = items.indexOf(id);
   if (idx === -1) {
     return state;
   }
@@ -115,7 +119,7 @@ const onRemoveItems = (state, action) => {
     byNS: update(state.byNS, namespace,
       x => ({
         ...x,
-        items: items,
+        items,
       })),
   };
 };

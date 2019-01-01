@@ -5,7 +5,6 @@ import { Input } from 'semantic-ui-react';
 import connectFilter from './connectFilter';
 
 class TextFilter extends Component {
-
   static propTypes = {
     value: PropTypes.string,
     onApply: PropTypes.func.isRequired,

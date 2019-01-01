@@ -31,7 +31,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
       i18n,
       pattern: '',
       type_id: CONTENT_UNIT_TYPES[CT_LESSON_PART].value,
-      film_date: moment(),
+      film_date: moment.utc(),
       original_language: '',
     };
   }

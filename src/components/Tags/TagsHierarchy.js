@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Grid, Header, Icon, Label, List, Menu, Modal, Segment } from 'semantic-ui-react';
+import {
+  Grid, Header, Icon, Label, List, Menu, Modal, Segment
+} from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
-import NewTagForm from './NewTagForm';
-import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import { extractI18n } from '../../helpers/utils';
+import * as shapes from '../shapes';
+import { FrownSplash, LoadingSplash } from '../shared/Splash';
+import NewTagForm from './NewTagForm';
 
 class TagsHierarchy extends Component {
-
   static propTypes = {
     getTagById: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
@@ -28,8 +29,8 @@ class TagsHierarchy extends Component {
   constructor(props) {
     super(props);
 
-    const roots = props.hierarchy.roots;
-    this.state  = {
+    const { roots } = props.hierarchy;
+    this.state      = {
       modalOpen: false,
       shownRoot: roots.length > 0 ? roots[0] : null,
     };
@@ -52,6 +53,7 @@ class TagsHierarchy extends Component {
   }
 
   showModal = () => this.setState({ modalOpen: true });
+
   hideModal = () => this.setState({ modalOpen: false });
 
   renderNode(node) {
@@ -71,10 +73,12 @@ class TagsHierarchy extends Component {
           </List.Header>
           <List.Description>{node.description}</List.Description>
           {
-            hasChildren ?
-              <List.List className="rtl-dir">
-                {children.map(x => this.renderNode(getTagById(x)))}
-              </List.List>
+            hasChildren
+              ? (
+                <List.List className="rtl-dir">
+                  {children.map(x => this.renderNode(getTagById(x)))}
+                </List.List>
+              )
               : null
           }
         </List.Content>
@@ -83,15 +87,17 @@ class TagsHierarchy extends Component {
   }
 
   renderHierarchy() {
-    const { getTagById, hierarchy, getWIP, currentLanguage } = this.props;
+    const {
+      getTagById, hierarchy, getWIP, currentLanguage
+    } = this.props;
 
     const wip     = getWIP('fetchAll');
     const isEmpty = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
 
     if (isEmpty) {
-      return wip ?
-        <LoadingSplash text="Loading tags hierarchy" subtext="With you in a second..." /> :
-        <FrownSplash text="No tags found in DB" subtext="Come on, go ahead and add some !" />;
+      return wip
+        ? <LoadingSplash text="Loading tags hierarchy" subtext="With you in a second..." />
+        : <FrownSplash text="No tags found in DB" subtext="Come on, go ahead and add some !" />;
     }
 
     const root       = getTagById(this.state.shownRoot);
@@ -104,9 +110,9 @@ class TagsHierarchy extends Component {
           <Grid.Column stretched width={12}>
             <List relaxed divided className="rtl-dir">
               {
-                Array.isArray(rootChilds) && rootChilds.length > 0 ?
-                  rootChilds.map(x => this.renderNode(getTagById(x))) :
-                  <Header sub color="grey">This tag has no children</Header>
+                Array.isArray(rootChilds) && rootChilds.length > 0
+                  ? rootChilds.map(x => this.renderNode(getTagById(x)))
+                  : <Header sub color="grey">This tag has no children</Header>
               }
             </List>
           </Grid.Column>
@@ -153,7 +159,7 @@ class TagsHierarchy extends Component {
   }
 
   render() {
-    const modalOpen = this.state.modalOpen;
+    const { modalOpen } = this.state;
 
     return (
       <div>
@@ -175,6 +181,7 @@ class TagsHierarchy extends Component {
 
         <Modal
           closeIcon
+          centered={false}
           size="small"
           open={modalOpen}
           onClose={this.hideModal}

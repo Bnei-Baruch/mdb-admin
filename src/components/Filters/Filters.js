@@ -7,7 +7,7 @@ import { EMPTY_ARRAY } from '../../helpers/consts';
 import { filterConfigShape } from '../shapes';
 
 const Filters = (props) => {
-  const { filters, namespace, onFilterApplication, onFilterCancel } = props;
+  const { filters, onFilterApplication, onFilterCancel } = props;
 
   const filterChunks = chunk(filters, 4);
   return (
@@ -21,7 +21,6 @@ const Filters = (props) => {
                   <Form.Field key={idx2} width={4}>
                     <label>{filter.label}:</label>
                     <filter.component
-                      namespace={namespace}
                       name={filter.name}
                       onApply={onFilterApplication}
                       onCancel={onFilterCancel}

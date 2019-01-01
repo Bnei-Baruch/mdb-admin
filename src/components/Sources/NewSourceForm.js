@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Divider, Flag, Form, Header, Input, Message, Segment } from 'semantic-ui-react';
+import {
+  Button, Divider, Flag, Form, Header, Input, Message, Segment
+} from 'semantic-ui-react';
 
 import {
   EMPTY_ARRAY,
@@ -15,7 +17,6 @@ import { extractI18n, formatError, isValidPattern } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 class NewSourceForm extends Component {
-
   static propTypes = {
     create: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
@@ -65,7 +66,7 @@ class NewSourceForm extends Component {
   };
 
   onPatternChange = (e, { value }) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     if (isValidPattern(value)) {
       delete errors.pattern;
     } else {
@@ -92,7 +93,9 @@ class NewSourceForm extends Component {
     }
 
     const parent                             = this.props.source;
-    const { pattern, i18n, author, type_id } = this.state;
+    const {
+      pattern, i18n, author, type_id
+    } = this.state;
     const description                        = this.state.description.trim();
     const nI18n                              = {};
 
@@ -128,12 +131,16 @@ class NewSourceForm extends Component {
   }
 
   render() {
-    const { getWIP, getError, source, authors, currentLanguage } = this.props;
+    const {
+      getWIP, getError, source, authors, currentLanguage
+    } = this.props;
 
     const wip = getWIP('create');
     const err = getError('create');
 
-    const { author, type_id: typeID, description, pattern, i18n, submitted, errors } = this.state;
+    const {
+      author, type_id: typeID, description, pattern, i18n, submitted, errors
+    } = this.state;
 
     const authorsOptions = source ? null : authors.map(x => ({
       text: extractI18n(x.i18n, ['name'], currentLanguage)[0],
@@ -145,18 +152,20 @@ class NewSourceForm extends Component {
         <Segment basic>
           <Form onSubmit={this.handleSubmit}>
             {
-              source ?
-                null :
-                <Form.Field>
-                  <label htmlFor="author">Author</label>
-                  <Form.Select
-                    id="author"
-                    placeholder="Author"
-                    value={author || ''}
-                    options={authorsOptions}
-                    onChange={this.onAuthorChange}
-                  />
-                </Form.Field>
+              source
+                ? null
+                : (
+                  <Form.Field>
+                    <label htmlFor="author">Author</label>
+                    <Form.Select
+                      id="author"
+                      placeholder="Author"
+                      value={author || ''}
+                      options={authorsOptions}
+                      onChange={this.onAuthorChange}
+                    />
+                  </Form.Field>
+                )
             }
 
             <Form.Field>
@@ -239,25 +248,28 @@ class NewSourceForm extends Component {
             </Form.Group>
 
             {
-              errors.labels ?
-                <Message negative content="At least one translation is required" /> :
-                null
+              errors.labels
+                ? <Message negative content="At least one translation is required" />
+                : null
             }
           </Form>
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              size="tiny"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-            : null}
+          {submitted && err
+            ? (
+              <Header
+                inverted
+                content={formatError(err)}
+                color="red"
+                icon="warning sign"
+                floated="left"
+                size="tiny"
+                style={{ marginTop: '0.2rem', marginBottom: '0' }}
+              />
+            )
+            : null
+          }
           <Button
             primary
             content="Save"

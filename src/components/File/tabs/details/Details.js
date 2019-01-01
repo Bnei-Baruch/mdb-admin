@@ -2,17 +2,20 @@ import React from 'react';
 import moment from 'moment';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
-import { Flag, Header, Icon, List, Menu, Segment } from 'semantic-ui-react';
+import {
+  Flag, Header, Icon, List, Menu, Segment
+} from 'semantic-ui-react';
 
-import * as shapes from '../../../shapes';
-import { fileIcon } from '../../../../helpers/utils';
 import { LANGUAGES, SECURITY_LEVELS } from '../../../../helpers/consts';
+import { fileIcon } from '../../../../helpers/utils';
+import * as shapes from '../../../shapes';
 
 const Details = (props) => {
   const { file } = props;
   if (!file) {
     return null;
   }
+
   const language = LANGUAGES[file.language] || { text: 'none' };
   const icon     = fileIcon(file);
 
@@ -53,16 +56,16 @@ const Details = (props) => {
           <List.Item>
             <strong>DB created_at</strong>
             <List.Content floated="right">
-              {moment.utc(file.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+              {moment.utc(file.created_at).format('YYYY-MM-DD HH:mm:ss')}
             </List.Content>
           </List.Item>
           <List.Item>
             <strong>OS created_at</strong>
             <List.Content floated="right">
               {
-                file.file_created_at ?
-                  moment.utc(file.file_created_at).local().format('YYYY-MM-DD HH:mm:ss') :
-                  null
+                file.file_created_at
+                  ? moment.utc(file.file_created_at).format('YYYY-MM-DD HH:mm:ss')
+                  : null
               }
             </List.Content>
           </List.Item>
@@ -87,7 +90,7 @@ const Details = (props) => {
           <List.Item>
             <strong>Language</strong>
             <List.Content floated="right">
-              {language.flag ? <Flag name={language.flag} /> : null }
+              {language.flag ? <Flag name={language.flag} /> : null}
               {language.text}
             </List.Content>
           </List.Item>
@@ -95,11 +98,13 @@ const Details = (props) => {
             <strong>Content Unit</strong>
             <List.Content floated="right">
               {
-                file.content_unit_id ?
-                  <Link to={`/content_units/${file.content_unit_id}`}>
-                    {file.content_unit_id}
-                  </Link> :
-                  'none'
+                file.content_unit_id
+                  ? (
+                    <Link to={`/content_units/${file.content_unit_id}`}>
+                      {file.content_unit_id}
+                    </Link>
+                  )
+                  : 'none'
               }
             </List.Content>
           </List.Item>
@@ -107,11 +112,13 @@ const Details = (props) => {
             <strong>Parent</strong>
             <List.Content floated="right">
               {
-                file.parent_id ?
-                  <Link to={`/files/${file.parent_id}`}>
-                    {file.parent_id}
-                  </Link> :
-                  'none'
+                file.parent_id
+                  ? (
+                    <Link to={`/files/${file.parent_id}`}>
+                      {file.parent_id}
+                    </Link>
+                  )
+                  : 'none'
               }
             </List.Content>
           </List.Item>
@@ -129,9 +136,9 @@ const Details = (props) => {
             <strong>Published</strong>
             <List.Content floated="right">
               {
-                file.published ?
-                  <Icon name="checkmark" color="green" /> :
-                  <Icon name="ban" color="red" />
+                file.published
+                  ? <Icon name="checkmark" color="green" />
+                  : <Icon name="ban" color="red" />
               }
             </List.Content>
           </List.Item>
@@ -139,9 +146,9 @@ const Details = (props) => {
             <strong>Removed</strong>
             <List.Content floated="right">
               {
-                file.removed_at ?
-                  moment.utc(file.removed_at).local().format('YYYY-MM-DD HH:mm:ss') :
-                  null
+                file.removed_at
+                  ? moment.utc(file.removed_at).format('YYYY-MM-DD HH:mm:ss')
+                  : null
               }
             </List.Content>
           </List.Item>

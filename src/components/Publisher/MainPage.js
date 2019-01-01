@@ -25,12 +25,14 @@ const MainPage = (props) => {
     return <TabsMenu items={tabs} {...props} />;
   }
 
-  return wip ?
-    <LoadingSplash text="Loading publisher details" subtext="Hold on tight..." /> :
-    <FrownSplash
-      text="Couldn't find publisher"
-      subtext={<span>Try the <Link to="/publishers">publishers list</Link>...</span>}
-    />;
+  return wip
+    ? <LoadingSplash text="Loading publisher details" subtext="Hold on tight..." />
+    : (
+      <FrownSplash
+        text="Couldn't find publisher"
+        subtext={<span>Try the <Link to="/publishers">publishers list</Link>...</span>}
+      />
+    );
 };
 
 MainPage.propTypes = {

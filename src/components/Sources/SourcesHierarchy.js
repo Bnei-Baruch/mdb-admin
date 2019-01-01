@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Grid, Header, Icon, List, Menu, Modal, Segment } from 'semantic-ui-react';
+import {
+  Grid, Header, Icon, List, Menu, Modal, Segment
+} from 'semantic-ui-react';
 
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import { extractI18n } from '../../helpers/utils';
@@ -9,7 +11,6 @@ import * as shapes from '../shapes';
 import NewSourceForm from './NewSourceForm';
 
 class SourcesHierarchy extends Component {
-
   static propTypes = {
     getSourceById: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
@@ -62,6 +63,7 @@ class SourcesHierarchy extends Component {
   }
 
   showModal = () => this.setState({ modalOpen: true });
+
   hideModal = () => this.setState({ modalOpen: false });
 
   renderSources() {
@@ -100,17 +102,20 @@ class SourcesHierarchy extends Component {
   }
 
   renderHierarchy() {
-    const { authors, hierarchy, getWIP, currentLanguage } = this.props;
-    const wip                                             = getWIP('fetchAll');
-    const isEmpty                                         = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
+    const {
+      authors, hierarchy, getWIP, currentLanguage
+    } = this.props;
+
+    const wip     = getWIP('fetchAll');
+    const isEmpty = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
 
     if (isEmpty) {
-      return wip ?
-        <LoadingSplash text="Loading sources hierarchy" subtext="With you in a second..." /> :
-        <FrownSplash text="No sources found in DB" subtext="Come on, go ahead and add some !" />;
+      return wip
+        ? <LoadingSplash text="Loading sources hierarchy" subtext="With you in a second..." />
+        : <FrownSplash text="No sources found in DB" subtext="Come on, go ahead and add some !" />;
     }
 
-    const author = this.state.author;
+    const { author } = this.state;
 
     return (
       <Grid>
@@ -147,7 +152,7 @@ class SourcesHierarchy extends Component {
   }
 
   render() {
-    const modalOpen = this.state.modalOpen;
+    const { modalOpen } = this.state;
 
     return (
       <div>
@@ -169,6 +174,7 @@ class SourcesHierarchy extends Component {
 
         <Modal
           closeIcon
+          centered={false}
           size="small"
           open={modalOpen}
           onClose={this.hideModal}

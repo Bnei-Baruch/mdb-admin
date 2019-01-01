@@ -5,7 +5,6 @@ import { reducer as oidc } from 'redux-oidc';
 import { reducer as user } from './modules/user';
 import { reducer as filters } from './modules/filters';
 import { reducer as lists } from './modules/lists';
-import { reducer as search } from './modules/search';
 import { reducer as system } from './modules/system';
 import { reducer as collections } from './modules/collections';
 import { reducer as content_units } from './modules/content_units';
@@ -25,7 +24,6 @@ export default combineReducers({
   user,
   filters,
   lists,
-  search,
   collections,
   content_units,
   files,

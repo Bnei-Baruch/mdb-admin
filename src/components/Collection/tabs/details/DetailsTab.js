@@ -23,7 +23,7 @@ const editableProperties = [
 ];
 
 const DetailsTab = (props) => {
-  const collection = props.collection;
+  const { collection } = props;
   if (!collection) {
     return null;
   }
@@ -58,4 +58,3 @@ DetailsTab.defaultProps = {
 };
 
 export default DetailsTab;
-

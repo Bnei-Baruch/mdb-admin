@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Divider, Flag, Form, Header, Input, Message, Segment } from 'semantic-ui-react';
+import {
+  Button, Divider, Flag, Form, Header, Input, Message, Segment
+} from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
+import {
+  LANG_ENGLISH, LANG_HEBREW, LANG_RUSSIAN, LANG_SPANISH, MAJOR_LANGUAGES
+} from '../../helpers/consts';
 import { formatError, isValidPattern } from '../../helpers/utils';
-import { LANG_ENGLISH, LANG_HEBREW, LANG_RUSSIAN, LANG_SPANISH, MAJOR_LANGUAGES } from '../../helpers/consts';
+import * as shapes from '../shapes';
 
 class NewTagForm extends Component {
   static propTypes = {
@@ -43,7 +47,7 @@ class NewTagForm extends Component {
   };
 
   onPatternChange = (e, { value }) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     if (isValidPattern(value)) {
       delete errors.pattern;
     } else {
@@ -54,7 +58,7 @@ class NewTagForm extends Component {
   };
 
   onLabelChange = (e, { value }, language) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     if (errors.labels && value.trim() !== '') {
       delete errors.labels;
     }
@@ -76,7 +80,9 @@ class NewTagForm extends Component {
     Object.keys(labels)
       .map(x => ({ language: x, label: labels[x].trim() }))
       .filter(x => x.label !== '')
-      .forEach(x => (i18n[x.language] = x));
+      .forEach((x) => {
+        i18n[x.language] = x;
+      });
 
     this.props.create(parent ? parent.id : null, pattern, description, i18n);
 
@@ -101,10 +107,13 @@ class NewTagForm extends Component {
   }
 
   render() {
-    const { getWIP, getError }                                = this.props;
-    const wip                                                 = getWIP('create');
-    const err                                                 = getError('create');
-    const { description, pattern, labels, submitted, errors } = this.state;
+    const { getWIP, getError } = this.props;
+    const wip                  = getWIP('create');
+    const err                  = getError('create');
+
+    const {
+      description, pattern, labels, submitted, errors
+    } = this.state;
 
     return (
       <Segment.Group>
@@ -124,7 +133,7 @@ class NewTagForm extends Component {
               </small>
             </Form.Field>
 
-            <Form.Field >
+            <Form.Field>
               <label htmlFor="description">Description</label>
               <Input
                 id="description"
@@ -179,25 +188,29 @@ class NewTagForm extends Component {
             </Form.Group>
 
             {
-              errors.labels ?
-                <Message negative content="At least one translation is required" /> :
-                null
+              errors.labels
+                ? <Message negative content="At least one translation is required" />
+                : null
             }
           </Form>
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              size="tiny"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-            : null}
+          {
+            submitted && err
+              ? (
+                <Header
+                  inverted
+                  content={formatError(err)}
+                  color="red"
+                  icon="warning sign"
+                  floated="left"
+                  size="tiny"
+                  style={{ marginTop: '0.2rem', marginBottom: '0' }}
+                />
+              )
+              : null
+          }
           <Button
             primary
             content="Save"

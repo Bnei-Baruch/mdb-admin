@@ -1,87 +1,53 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { Button, Grid, Header, Icon, Label, Segment } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 
-import { EMPTY_ARRAY, NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
-import { formatError } from '../../../../helpers/utils';
+import { NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
-import TabsMenu from '../../../shared/TabsMenu';
-import Pagination from '../../../shared/Pagination';
-import ResultsPageHeader from '../../../shared/ResultsPageHeader';
-import ContentUnitList from './NewAssociationsList';
+import CUList from '../../../BaseClasses/CUList';
+import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
 
-import FiltersHydrator from '../../../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../../../Filters/FilterTags/FilterTags';
-import FreeText from '../../../Filters/FreeText';
-import DateRange from '../../../Filters/DateRange';
-import Others from '../../../Filters/Others';
-
-const filterTabs = [
-  { name: 'Free Text', element: FreeText },
-  { name: 'Date Range', element: DateRange },
-  { name: 'Others', element: Others, namespace: NS_FILE_UNITS, contentTypes: CONTENT_UNIT_TYPES },
-];
-
-class FileContentUnit extends PureComponent {
-
+class FileContentUnit extends ListWithCheckboxBase {
   static propTypes = {
-    total: PropTypes.number,
-    item: shapes.ContentUnit,
-    wip: PropTypes.bool,
-    err: shapes.Error,
-    file: shapes.File,
+    ...ListWithCheckboxBase.propTypes,
+    file: shapes.File.isRequired,
   };
 
-  static defaultProps = {
-    items: EMPTY_ARRAY,
-    pageNo: 1,
-    total: 0,
-    wip: false,
-    err: null,
+  isSingleSelect = true;
+
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
+
+  getNamespace = () => NS_FILE_UNITS;
+
+  getContentType = () => CONTENT_UNIT_TYPES;
+
+  renderList = () => {
+    const { currentLanguage, items, file } = this.props;
+    return (
+      <CUList
+        {...this.getSelectListProps()}
+        items={items}
+        associatedIds={[file.content_unit_id]}
+        hasSelectAll={false}
+        currentLanguage={currentLanguage}
+      />
+    );
   };
 
-  state = {
-    showFilters: false,
+  toggleFilters = (isShow) => {
+    const showFilters = (typeof isShow === 'boolean') ? isShow : !this.state.showFilters;
+    this.setState({ showFilters });
   };
-
-  handlePageChange = (pageNo) => {
-    const { setPage, fetchList } = this.props;
-    setPage(NS_FILE_UNITS, pageNo);
-    fetchList(NS_FILE_UNITS, pageNo);
-  };
-
-  handleFiltersChange = () => {
-    this.handlePageChange(1);
-  };
-
-  handleFiltersCancel = () => {
-    this.handlePageChange(1);
-    this.toggleFilters();
-  };
-
-  handleFiltersHydrated = () => {
-    this.handlePageChange(1);
-  };
-
-  handleSelectCU = (cu) => this.setState({ selectedCUId: cu.id });
-
-  toggleFilters = () =>
-    this.setState({ showFilters: !this.state.showFilters });
 
   associate = () => {
-    const { selectedCUId }           = this.state;
     const { file, updateProperties } = this.props;
-    if (!selectedCUId) {
-      return;
-    }
-    updateProperties(file.id, { content_unit_id: selectedCUId });
-    this.handleSelectCU({});
+    updateProperties(file.id, { content_unit_id: this.state.selectedIds[0] });
+    this.selectItem({});
   };
 
   render() {
-    const { showFilters, selectedCUId }            = this.state;
-    const { pageNo, total, wip, err, file, items } = this.props;
+    const { file }                     = this.props;
+    const { showFilters, selectedIds } = this.state;
 
     return (
       <div>
@@ -95,65 +61,23 @@ class FileContentUnit extends PureComponent {
 
         <Segment clearing vertical>
           <Button
-            onClick={this.associate}
-            disabled={!selectedCUId}
-            floated="right"
             content="Associate content unit to this file"
             color="blue"
+            disabled={selectedIds.length === 0}
+            onClick={this.associate}
           />
           <Button
-            onClick={this.toggleFilters}
-            color="blue"
-            floated="right"
             inverted
+            color="blue"
+            onClick={this.toggleFilters}
           >
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
         </Segment>
 
-        <FiltersHydrator namespace={NS_FILE_UNITS} onHydrated={this.handleFiltersHydrated} />
-
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              {
-                showFilters ?
-                  <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange} onFilterCancel={this.handleFiltersCancel} />
-                    <br />
-                  </div> :
-                  null
-              }
-              <FilterTags namespace={NS_FILE_UNITS} onClose={this.handleFiltersChange} />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
-                {
-                  wip ?
-                    <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
-                    null
-                }
-                {
-                  err ?
-                    <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
-                    null
-                }
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
-                <Pagination pageNo={pageNo} total={total} onChange={this.handlePageChange} />
-              </div>
-              <ContentUnitList
-                associatedCUId={file.content_unit_id}
-                items={items}
-                handleSelectCU={this.handleSelectCU}
-                selectedCUId={selectedCUId}
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        {this.renderFiltersHydrator()}
+        {this.renderContent()}
       </div>
     );
   }

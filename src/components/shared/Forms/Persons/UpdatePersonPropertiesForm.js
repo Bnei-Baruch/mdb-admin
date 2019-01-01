@@ -23,7 +23,7 @@ class UpdatePersonPropertiesForm extends BasePersonForm {
       ...state,
       ...properties,
       type_id: typeID,
-      film_date: film ? moment(film) : null,
+      film_date: film ? moment.utc(film) : null,
     };
   }
 

@@ -8,7 +8,6 @@ import { Divider, Grid } from 'semantic-ui-react';
 import { actions, selectors } from '../../redux/modules/sources';
 import { selectors as authors } from '../../redux/modules/authors';
 import { selectors as system } from '../../redux/modules/system';
-
 import * as shapes from '../shapes';
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import SourceMenu from './SourceMenu';
@@ -17,7 +16,6 @@ import SourceI18nForm from './SourceI18nForm';
 import SourceChildren from './SourceChildren';
 
 class SourceContainer extends Component {
-
   static propTypes = {
     match: shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
@@ -35,8 +33,8 @@ class SourceContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const id  = this.props.match.params.id;
-    const nId = nextProps.match.params.id;
+    const { match: { params: { id } } } = this.props;
+    const nId                           = nextProps.match.params.id;
     if (id !== nId) {
       nextProps.fetchItem(id);
     }
@@ -68,12 +66,14 @@ class SourceContainer extends Component {
       );
     }
 
-    return wip ?
-      <LoadingSplash text="Loading source details" subtext="Hold on tight..." /> :
-      <FrownSplash
-        text="Couldn't find source"
-        subtext={<span>Try the <Link to="/sources">sources hierarchy</Link>...</span>}
-      />;
+    return wip
+      ? <LoadingSplash text="Loading source details" subtext="Hold on tight..." />
+      : (
+        <FrownSplash
+          text="Couldn't find source"
+          subtext={<span>Try the <Link to="/sources">sources hierarchy</Link>...</span>}
+        />
+      );
   }
 }
 

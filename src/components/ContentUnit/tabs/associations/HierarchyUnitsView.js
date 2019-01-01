@@ -1,33 +1,26 @@
-/**
- * @TODO
- * use base class common with ./Origins.js
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Header, Icon, Menu, Message, Segment, Table, Button } from 'semantic-ui-react';
+import {
+  Header, Icon, Menu, Message, Segment, Table, Button
+} from 'semantic-ui-react';
 
-import { selectors, actions } from '../../../../redux/modules/content_units';
-import { selectors as system } from '../../../../redux/modules/system';
-
+import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../../../helpers/consts';
+import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import EditedField from '../../../shared/Fields/EditedField';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { extractI18n, formatError, titleize } from '../../../../helpers/utils';
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY, EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
+import CUModal from './CUModal';
 
-import NewUnits from './CUModal/Container';
-
-class Derivatives extends Component {
-
+export default class HierarchyUnitsView extends Component {
   static propTypes = {
+    unit: shapes.ContentUnit.isRequired,
     cuds: PropTypes.arrayOf(shapes.ContentUnitDerivation),
     wip: PropTypes.bool,
     err: shapes.Error,
+    currentLanguage: PropTypes.string.isRequired,
+    removeAssociate: PropTypes.func.isRequired,
+    updateAssociation: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -45,21 +38,19 @@ class Derivatives extends Component {
   };
 
   handleUnAssociate = (id) => {
-    this.props.removeAssociate(this.props.unit.id, id);
+    const { unit, removeAssociate } = this.props;
+    removeAssociate(unit.id, id);
   };
 
   handleUpdateAssociation = (cuId, name) => {
-    this.props.updateAssociation(this.props.unit.id, cuId, { name });
+    const { unit, updateAssociation } = this.props;
+    updateAssociation(unit.id, cuId, { name });
   };
 
   renderRow = (item) => {
     const {
-            id,
-            uid,
-            i18n,
-            type_id,
-            properties,
-          } = item.content_unit;
+      id, uid, i18n, type_id, properties
+    } = item.content_unit;
 
     const { film_date: filmDate } = properties || {};
     return (
@@ -75,20 +66,35 @@ class Derivatives extends Component {
           />
         </Table.Cell>
         <Table.Cell width="1">
-          <Button circular compact size="mini" icon="remove" color="red" inverted onClick={() => this.handleUnAssociate(id)} /></Table.Cell>
+          <Button
+            circular
+            compact
+            inverted
+            size="mini"
+            icon="remove"
+            color="red"
+            onClick={() => this.handleUnAssociate(id)}
+          />
+        </Table.Cell>
       </Table.Row>
     );
   };
 
   renderTable = () => {
-    const { cuds, wip, err } = this.props;
+    const {
+      cuds, wip, err, blockName
+    } = this.props;
+
     if (err) {
       return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
-    } else if (cuds.length === 0) {
-      return ( wip ?
-        <LoadingSplash text="Loading origins" /> :
-        <Message>No origins found for this unit</Message>);
     }
+
+    if (cuds.length === 0) {
+      return wip
+        ? <LoadingSplash text={`Loading ${blockName}`} />
+        : <Message>{`No ${blockName} found for this unit`}</Message>;
+    }
+
     return (
       <Table>
         <Table.Header>
@@ -109,58 +115,34 @@ class Derivatives extends Component {
   };
 
   render() {
-    const { associate, associatedIds, currentLanguage, unit } = this.props;
+    const {
+      associate, associatedIds, currentLanguage, unit, blockName
+    } = this.props;
 
     return (
       <div>
         <Menu attached borderless size="large">
           <Menu.Item header>
-            <Header content="Derivatives" size="medium" color="blue" />
+            <Header content={blockName} size="medium" color="blue" />
           </Menu.Item>
           <Menu.Menu position="right">
             <Menu.Item onClick={this.handleToggleModal}>
-              <Icon name="plus" /> Add Derivatives
+              <Icon name="plus" />{`Add ${blockName}`}
             </Menu.Item>
           </Menu.Menu>
         </Menu>
         <Segment attached>
           {this.renderTable()}
-          <NewUnits
+          <CUModal
             unit={unit}
             isShowAssociateModal={this.state.isShowAssociateModal}
             handleToggleModal={this.handleToggleModal}
             associate={associate}
             associatedIds={associatedIds}
-            currentLanguage={currentLanguage}>
-          </NewUnits>
+            currentLanguage={currentLanguage}
+          />
         </Segment>
       </div>
     );
   }
 }
-
-const mapState = (state, ownProps) => {
-  const { unit = EMPTY_OBJECT }            = ownProps;
-  const { origins = [], derivatives = [] } = unit;
-  const denormCUDs                         = selectors.denormCUDs(state.content_units);
-
-  return {
-    cuds: derivatives.length > 0 ? denormCUDs(derivatives) : EMPTY_ARRAY,
-    wip: selectors.getWIP(state.content_units, 'fetchItemDerivatives'),
-    err: selectors.getError(state.content_units, 'fetchItemDerivatives'),
-    currentLanguage: system.getCurrentLanguage(state.system),
-    associatedIds: [...origins, ...derivatives].map(cu => cu.content_unit_id),
-    wipAssociate: selectors.getWIP(state.content_units, 'addItemDerivatives'),
-    errAssociate: selectors.getError(state.content_units, 'addItemDerivatives'),
-  };
-};
-
-function mapDispatch(dispatch) {
-  return bindActionCreators({
-    associate: actions.addItemDerivatives,
-    removeAssociate: actions.removeItemDerivatives,
-    updateAssociation: actions.updateItemDerivatives,
-  }, dispatch);
-}
-
-export default connect(mapState, mapDispatch)(Derivatives);

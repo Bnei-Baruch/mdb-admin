@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'semantic-ui-react';
 
-import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../helpers/consts';
+import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import connectFilter from './connectFilter';
 
 class ContentTypeFilter extends Component {
-
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(PropTypes.any),

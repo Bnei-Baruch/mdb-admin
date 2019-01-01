@@ -34,9 +34,13 @@
     "max-len": "off",
     "import/prefer-default-export": "off",
     "react/jsx-filename-extension": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/destructuring-assignment": "off",
+    "react/prefer-stateless-function": "off",
     "no-multi-spaces": "off",
     "no-plusplus": "off",
     "import/no-named-as-default-member": "off",
+    "implicit-arrow-linebreak": "off",
     "no-unused-vars": [
       1,
       {

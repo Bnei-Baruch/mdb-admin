@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import noop from 'lodash/noop';
 import DayPicker, { DateUtils } from 'react-day-picker';
-import { Button, Divider, Dropdown, Grid, Header, Input, Segment } from 'semantic-ui-react';
+import {
+  Button, Divider, Dropdown, Grid, Header, Input, Segment
+} from 'semantic-ui-react';
 
 import 'react-day-picker/lib/style.css';
 import connectFilter from './connectFilter';
 
 // TODO (yaniv -> oleg): need indication for user when clicking on a bad date (after today) or when typing bad dates
 
-const format = 'DD-MM-YYYY';
+const format = 'YYYY-MM-DD';
 
 const now = () =>
   moment(new Date())
@@ -74,7 +76,8 @@ const rangeToPreset = (from, to) => {
   if (moment(from, 'day').isSame(to, 'day')) {
     if (moment(to).isSame(now(), 'day')) {
       return TODAY;
-    } else if (moment(to).isSame(moment().subtract(1, 'days'), 'days')) {
+    }
+    if (moment(to).isSame(moment().subtract(1, 'days'), 'days')) {
       return YESTERDAY;
     }
   } else if (moment(to).subtract(6, 'days').isSame(from, 'day')) {
@@ -97,14 +100,13 @@ const isValidDateRange = (fromValue, toValue) => {
   const fromMoment = moment(fromValue, format, true);
   const toMoment   = moment(toValue, format, true);
 
-  return fromMoment.isValid() &&
-    toMoment.isValid() &&
-    fromMoment.isSameOrBefore(toMoment) &&
-    toMoment.isSameOrBefore(now());
+  return fromMoment.isValid()
+    && toMoment.isValid()
+    && fromMoment.isSameOrBefore(toMoment)
+    && toMoment.isSameOrBefore(now());
 };
 
 class DateFilter extends Component {
-
   static propTypes = {
     value: PropTypes.shape({
       from: PropTypes.objectOf(Date),
@@ -142,8 +144,8 @@ class DateFilter extends Component {
     from: props.value.from,
     to: props.value.to,
     datePreset: props.value.datePreset || rangeToPreset(props.value.from, props.value.to),
-    fromInputValue: moment(props.value.from, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-    toInputValue: moment(props.value.to, 'DD-MM-YYYY').format('DD-MM-YYYY')
+    fromInputValue: moment(props.value.from, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+    toInputValue: moment(props.value.to, 'YYYY-MM-DD').format('YYYY-MM-DD')
   });
 
   setRange(datePreset, from, to, fromInputValue = '', toInputValue = '') {
@@ -194,7 +196,7 @@ class DateFilter extends Component {
   handleDatePresetsChange = (event, data) => this.setRange(data.value);
 
   handleFromInputChange = (event) => {
-    const value       = event.target.value;
+    const { value }   = event.target;
     const momentValue = moment(value, format, true);
 
     const isValid = momentValue.isValid();
@@ -214,7 +216,7 @@ class DateFilter extends Component {
   };
 
   handleToInputChange = (event) => {
-    const value       = event.target.value;
+    const { value }   = event.target;
     const momentValue = moment(value, format, true);
 
     const isValid = momentValue.isValid();
@@ -236,14 +238,17 @@ class DateFilter extends Component {
   canApply = () => isValidDateRange(this.state.fromInputValue, this.state.toInputValue);
 
   render() {
-    const { fromInputValue, toInputValue, from, to, datePreset } = this.state;
-    const { onCancel }                                           = this.props;
+    const { onCancel } = this.props;
+
+    const {
+      fromInputValue, toInputValue, from, to, datePreset
+    } = this.state;
 
     return (
-      <Segment basic attached="bottom" className="tab active">
+      <Segment basic compact attached="bottom" floated="left" className="tab active">
         <Grid divided>
-          <Grid.Row columns={16}>
-            <Grid.Column width={11}>
+          <Grid.Row>
+            <div>
               <DayPicker
                 numberOfMonths={2}
                 selectedDays={{ from, to }}
@@ -252,8 +257,8 @@ class DateFilter extends Component {
                 // eslint-disable-next-line no-return-assign
                 ref={el => this.datePicker = el}
               />
-            </Grid.Column>
-            <Grid.Column width={5}>
+            </div>
+            <div>
               <Header textAlign="center">Select a start index</Header>
               <Grid>
                 <Grid.Row>
@@ -275,7 +280,7 @@ class DateFilter extends Component {
                       value={fromInputValue}
                       onChange={this.handleFromInputChange}
                       fluid
-                      placeholder="DD-MM-YYYY"
+                      placeholder="YYYY-MM-DD"
                     />
                   </Grid.Column>
                   <Grid.Column width={8}>
@@ -283,7 +288,7 @@ class DateFilter extends Component {
                       value={toInputValue}
                       onChange={this.handleToInputChange}
                       fluid
-                      placeholder="DD-MM-YYYY"
+                      placeholder="YYYY-MM-DD"
                     />
                   </Grid.Column>
                 </Grid.Row>
@@ -294,7 +299,7 @@ class DateFilter extends Component {
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
-            </Grid.Column>
+            </div>
           </Grid.Row>
         </Grid>
       </Segment>

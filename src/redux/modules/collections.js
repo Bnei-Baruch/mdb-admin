@@ -2,7 +2,9 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { bulkMerge, del, merge, setMap, update } from '../utils';
+import {
+  bulkMerge, del, merge, setMap, update
+} from '../utils';
 
 /* Types */
 

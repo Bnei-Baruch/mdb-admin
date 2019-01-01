@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { Button, Flag, Header, Input, Menu, Segment, Table } from 'semantic-ui-react';
+import {
+  Button, Flag, Header, Input, Menu, Segment, Table
+} from 'semantic-ui-react';
 
 import {
   ALL_LANGUAGES,
@@ -19,7 +21,6 @@ import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
 
 class I18nForm extends Component {
-
   static propTypes = {
     updateI18n: PropTypes.func.isRequired,
     unit: shapes.ContentUnit,
@@ -41,7 +42,12 @@ class I18nForm extends Component {
     const { i18n }                           = props.unit;
     const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
 
-    this.state = { i18n: newI18n, submitted: false, errors: i18nErrors, addedKeys };
+    this.state = {
+      i18n: newI18n,
+      submitted: false,
+      errors: i18nErrors,
+      addedKeys
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,7 +60,11 @@ class I18nForm extends Component {
     }
   }
 
-  i18nObjectFromKey = (language) => ({ language, name: '', description: '' });
+  i18nObjectFromKey = language => ({
+    language,
+    name: '',
+    description: ''
+  });
 
   onNameChange = (e, { value }) => {
     const { i18n, errors } = this.state;
@@ -68,19 +78,19 @@ class I18nForm extends Component {
   };
 
   onDescriptionChange = (e, { value }) => {
-    const i18n                      = this.state.i18n;
+    const { i18n }                  = this.state;
     i18n[e.target.name].description = value;
     this.setState({ i18n });
   };
 
   addLanguage = (e, data) => {
-    const i18n     = this.state.i18n;
+    const { i18n }   = this.state;
     i18n[data.value] = this.i18nObjectFromKey(data.value);
     this.setState({ i18n });
   };
 
   removeLanguage = (language) => {
-    const i18n = this.state.i18n;
+    const { i18n } = this.state;
     delete i18n[language];
     this.setState({ i18n });
   };
@@ -99,6 +109,7 @@ class I18nForm extends Component {
     const { i18n, errors } = this.state;
     const keys             = Object.keys(i18n)
       .sort((a, b) => ALL_LANGUAGES.indexOf(a) - ALL_LANGUAGES.indexOf(b));
+
     return (
       <Table basic compact>
         <Table.Body>
@@ -130,16 +141,18 @@ class I18nForm extends Component {
               </Table.Cell>
               <Table.Cell collapsing>
                 {
-                  !REQUIRED_LANGUAGES.includes(k) ?
-                    <Button
-                      circular
-                      compact
-                      size="mini"
-                      icon="remove"
-                      color="red"
-                      inverted
-                      onClick={() => this.removeLanguage(k)}
-                    />
+                  !REQUIRED_LANGUAGES.includes(k)
+                    ? (
+                      <Button
+                        circular
+                        compact
+                        inverted
+                        size="mini"
+                        icon="remove"
+                        color="red"
+                        onClick={() => this.removeLanguage(k)}
+                      />
+                    )
                     : null
                 }
               </Table.Cell>
@@ -179,16 +192,20 @@ class I18nForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-            : null}
+          {
+            submitted && err
+              ? (
+                <Header
+                  inverted
+                  content={formatError(err)}
+                  color="red"
+                  icon="warning sign"
+                  floated="left"
+                  style={{ marginTop: '0.2rem', marginBottom: '0' }}
+                />
+              )
+              : null
+          }
           <Button
             primary
             content="Save"

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Header, Input, List, Menu, Segment } from 'semantic-ui-react';
+import {
+  Button, Form, Header, Input, List, Menu, Segment
+} from 'semantic-ui-react';
 
 import { EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, isValidPattern } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 
 class PersonInfoForm extends Component {
-
   static propTypes = {
     updateInfo: PropTypes.func.isRequired,
     wipDetail: PropTypes.bool,
@@ -17,6 +18,8 @@ class PersonInfoForm extends Component {
 
   static defaultProps = {
     person: EMPTY_OBJECT,
+    wipDetail: false,
+    errDetail: null,
   };
 
   constructor(props) {
@@ -38,7 +41,7 @@ class PersonInfoForm extends Component {
   }
 
   onPatternChange = (e, { value }) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     if (isValidPattern(value)) {
       delete errors.pattern;
     } else {
@@ -94,16 +97,20 @@ class PersonInfoForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && errDetail ?
-            <Header
-              inverted
-              content={formatError(errDetail)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-            : null}
+          {
+            submitted && errDetail
+              ? (
+                <Header
+                  inverted
+                  content={formatError(errDetail)}
+                  color="red"
+                  icon="warning sign"
+                  floated="left"
+                  style={{ marginTop: '0.2rem', marginBottom: '0' }}
+                />
+              )
+              : null
+          }
           <Button
             primary
             content="Save"

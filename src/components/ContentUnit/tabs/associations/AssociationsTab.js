@@ -7,14 +7,13 @@ import { Divider, Grid } from 'semantic-ui-react';
 import { actions } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';
 import Collections from './Collections';
-import Derivatives from './Derivatives';
-import Origins from './Origins';
+import DerivativesContainer from './DerivativesContainer';
+import OriginsContainer from './OriginsContainer';
 import Sources from './Sources';
 import Tags from './Tags';
 import Persons from './Persons';
 
 class AssociationsTab extends Component {
-
   static propTypes = {
     fetchItemCollections: PropTypes.func.isRequired,
     fetchItemDerivatives: PropTypes.func.isRequired,
@@ -37,8 +36,8 @@ class AssociationsTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (((nextProps.unit && !this.props.unit) ||
-        (nextProps.unit && this.props.unit && nextProps.unit.id !== this.props.unit.id))) {
+    if (((nextProps.unit && !this.props.unit)
+      || (nextProps.unit && this.props.unit && nextProps.unit.id !== this.props.unit.id))) {
       this.askForData(nextProps.unit.id);
     }
   }
@@ -59,9 +58,9 @@ class AssociationsTab extends Component {
           <Grid.Column width={8}>
             <Collections {...this.props} />
             <Divider horizontal hidden />
-            <Derivatives {...this.props} />
+            <DerivativesContainer {...this.props} />
             <Divider horizontal hidden />
-            <Origins {...this.props} />
+            <OriginsContainer {...this.props} />
           </Grid.Column>
           <Grid.Column width={8}>
             <Sources {...this.props} />

@@ -5,17 +5,20 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
-import { Flag, Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
+import {
+  Flag, Header, Icon, List, Menu, Message, Segment
+} from 'semantic-ui-react';
 
+import {
+  EMPTY_ARRAY, EMPTY_OBJECT, LANG_UNKNOWN, LANGUAGES, SECURITY_LEVELS
+} from '../../helpers/consts';
+import { fileIcon, formatError } from '../../helpers/utils';
 import { actions, selectors } from '../../redux/modules/operations';
 import { selectors as filesSelectors } from '../../redux/modules/files';
-import { EMPTY_ARRAY, EMPTY_OBJECT, LANG_UNKNOWN, LANGUAGES, SECURITY_LEVELS } from '../../helpers/consts';
-import { fileIcon, formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import { ErrorSplash, LoadingSplash } from '../shared/Splash';
 
 class Files extends Component {
-
   static propTypes = {
     operation: shapes.Operation,
     files: PropTypes.arrayOf(shapes.File),
@@ -150,7 +153,7 @@ class Files extends Component {
     } else {
       content = (
         <List divided relaxed>
-          { files.map(file => this.renderFile(file)) }
+          {files.map(file => this.renderFile(file))}
         </List>
       );
     }

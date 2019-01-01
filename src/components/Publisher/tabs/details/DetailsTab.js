@@ -7,7 +7,7 @@ import PublisherInfoForm from './PublisherInfoForm';
 import I18nForm from './I18nForm';
 
 const DetailsTab = (props) => {
-  const publisher = props.publisher;
+  const { publisher } = props;
   if (!publisher) {
     return null;
   }

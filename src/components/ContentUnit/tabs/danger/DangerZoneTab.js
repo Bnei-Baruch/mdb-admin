@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import {
+  Button, Dropdown, Grid, Header, Icon, List, Modal, Segment
+} from 'semantic-ui-react';
 
 import { SECURITY_LEVELS } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
@@ -10,7 +12,6 @@ import { actions, selectors } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';
 
 class DangerZoneTab extends Component {
-
   static propTypes = {
     changeSecurityLevel: PropTypes.func.isRequired,
     unit: shapes.ContentUnit,
@@ -89,14 +90,16 @@ class DangerZoneTab extends Component {
                     </List.Header>
                     Make sure you understand what you are doing.
                     {
-                      err ?
-                        <Header
-                          content={formatError(err)}
-                          icon={{ name: 'warning sign' }}
-                          color="red"
-                          size="tiny"
-                        /> :
-                        null
+                      err
+                        ? (
+                          <Header
+                            content={formatError(err)}
+                            icon={{ name: 'warning sign' }}
+                            color="red"
+                            size="tiny"
+                          />
+                        )
+                        : null
                     }
                   </List.Content>
                 </List.Item>
@@ -104,6 +107,7 @@ class DangerZoneTab extends Component {
             </Segment>
             <Modal
               basic
+              centered={false}
               size="small"
               open={this.state.modals.confirmChangeSecurityLevel}
             >

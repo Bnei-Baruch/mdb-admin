@@ -7,8 +7,7 @@ import { Table } from 'semantic-ui-react';
 import { EMPTY_ARRAY, OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';
 
-class FilesList extends PureComponent {
-
+class OperationsList extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(shapes.Operation),
   };
@@ -57,7 +56,7 @@ class FilesList extends PureComponent {
           {item.station}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(item.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
       </Table.Row>
     );
@@ -78,13 +77,11 @@ class FilesList extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {
-            items.map(this.renderItem)
-          }
+          {items.filter(x => x).map(this.renderItem)}
         </Table.Body>
       </Table>
     );
   }
 }
 
-export default FilesList;
+export default OperationsList;

@@ -8,7 +8,6 @@ import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 class PublishersList extends PureComponent {
-
   static propTypes = {
     items: PropTypes.arrayOf(shapes.Publisher),
     currentLanguage: PropTypes.string.isRequired,
@@ -18,27 +17,24 @@ class PublishersList extends PureComponent {
     items: EMPTY_ARRAY,
   };
 
-  renderItem = item => {
-    const { currentLanguage } = this.props;
-    return (
-      <Table.Row key={item.id}>
-        <Table.Cell collapsing>
-          <Link to={`/publishers/${item.id}`}>
-            {item.id}
-          </Link>
-        </Table.Cell>
-        <Table.Cell collapsing>
-          {item.uid}
-        </Table.Cell>
-        <Table.Cell collapsing>
-          {item.pattern}
-        </Table.Cell>
-        <Table.Cell>
-          {extractI18n(item.i18n, ['name'], currentLanguage)[0]}
-        </Table.Cell>
-      </Table.Row>
-    );
-  };
+  renderItem = item => (
+    <Table.Row key={item.id}>
+      <Table.Cell collapsing>
+        <Link to={`/publishers/${item.id}`}>
+          {item.id}
+        </Link>
+      </Table.Cell>
+      <Table.Cell collapsing>
+        {item.uid}
+      </Table.Cell>
+      <Table.Cell collapsing>
+        {item.pattern}
+      </Table.Cell>
+      <Table.Cell>
+        {extractI18n(item.i18n, ['name'], this.props.currentLanguage)[0]}
+      </Table.Cell>
+    </Table.Row>
+  );
 
   render() {
     const { items } = this.props;
@@ -54,7 +50,7 @@ class PublishersList extends PureComponent {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {items.map(this.renderItem)}
+          {items.filter(x => x).map(this.renderItem)}
         </Table.Body>
       </Table>
     );

@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Header, List, Menu, Message, Segment } from 'semantic-ui-react';
+import {
+  Button, Header, List, Menu, Message, Segment
+} from 'semantic-ui-react';
 
-import { actions, selectors } from '../../../../redux/modules/content_units';
-import { selectors as sourcesSelectors } from '../../../../redux/modules/sources';
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
+import { actions, selectors } from '../../../../redux/modules/content_units';
+import { selectors as sourcesSelectors } from '../../../../redux/modules/sources';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import SourcesSearch from '../../../Autocomplete/SourcesSearch';
 import SourceBreadcrumbs from '../../../Sources/SourceBreadcrumbs';
 
 class Sources extends Component {
-
   static propTypes = {
     unit: shapes.ContentUnit.isRequired,
     addSource: PropTypes.func.isRequired,
@@ -44,14 +45,35 @@ class Sources extends Component {
     const { status } = this.props;
 
     if (status.addSource.wip) {
-      return <Header content="Adding Source..." icon={{ name: 'spinner', loading: true }} size="tiny" />;
-    } else if (status.removeSource.wip) {
-      return <Header content="Removing Source..." icon={{ name: 'spinner', loading: true }} size="tiny" />;
+      return (
+        <Header
+          content="Adding Source..."
+          icon={{ name: 'spinner', loading: true }}
+          size="tiny"
+        />
+      );
+    }
+
+    if (status.removeSource.wip) {
+      return (
+        <Header
+          content="Removing Source..."
+          icon={{ name: 'spinner', loading: true }}
+          size="tiny"
+        />
+      );
     }
 
     const err = status.addSource.err || status.removeSource.err;
     if (err) {
-      return <Header content={formatError(err)} icon={{ name: 'warning sign' }} color="red" size="tiny" />;
+      return (
+        <Header
+          content={formatError(err)}
+          icon={{ name: 'warning sign' }}
+          color="red"
+          size="tiny"
+        />
+      );
     }
 
     return null;
@@ -65,33 +87,31 @@ class Sources extends Component {
     if (err) {
       content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     } else if (sources.length === 0) {
-      content = wip ?
-        <LoadingSplash text="Loading sources" /> :
-        <Message>No sources found for this unit</Message>;
+      content = wip
+        ? <LoadingSplash text="Loading sources" />
+        : <Message>No sources found for this unit</Message>;
     } else {
       content = (
         <List relaxed divided className="rtl-dir">
           {
-            sources.map(x =>
-              (
-                <List.Item key={x.id}>
-                  <List.Content floated="left">
-                    <Button
-                      circular
-                      compact
-                      size="mini"
-                      icon="remove"
-                      color="red"
-                      inverted
-                      onClick={() => this.removeSource(x)}
-                    />
-                  </List.Content>
-                  <List.Content>
-                    <SourceBreadcrumbs source={x} lastIsLink />
-                  </List.Content>
-                </List.Item>
-              )
-            )
+            sources.map(x => (
+              <List.Item key={x.id}>
+                <List.Content floated="left">
+                  <Button
+                    circular
+                    compact
+                    size="mini"
+                    icon="remove"
+                    color="red"
+                    inverted
+                    onClick={() => this.removeSource(x)}
+                  />
+                </List.Content>
+                <List.Content>
+                  <SourceBreadcrumbs source={x} lastIsLink />
+                </List.Content>
+              </List.Item>
+            ))
           }
         </List>
       );

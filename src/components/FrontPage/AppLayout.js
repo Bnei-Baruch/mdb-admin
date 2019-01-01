@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import { Dropdown, Grid, Image, Menu, Flag } from 'semantic-ui-react';
-import { browserHistory } from 'react-router';
+import {
+  Dropdown, Grid, Image, Menu, Flag
+} from 'semantic-ui-react';
 
 import { AUTH_URL, } from '../../helpers/env';
 import { LANGUAGE_OPTIONS, SITE_LANGUAGES } from '../../helpers/consts';
@@ -11,7 +12,6 @@ import userManager from '../../helpers/userManager';
 import logo from './KL_Tree_32.png';
 
 class AppLayout extends PureComponent {
-
   static propTypes = {
     children: PropTypes.element,
     user: PropTypes.object.isRequired,
@@ -24,7 +24,8 @@ class AppLayout extends PureComponent {
   };
 
   changeLanguage = (e, { value }) => {
-    this.props.updateCurrentLanguage(value);
+    const { updateCurrentLanguage } = this.props;
+    updateCurrentLanguage(value);
   };
 
   handleSignout = (e) => {
@@ -33,7 +34,7 @@ class AppLayout extends PureComponent {
   };
 
   render() {
-    const { user, currentLanguage } = this.props;
+    const { user, currentLanguage, children } = this.props;
 
     const options  = LANGUAGE_OPTIONS.filter(x => SITE_LANGUAGES.includes(x.value) && currentLanguage !== x.value);
     const selected = LANGUAGE_OPTIONS.find(x => currentLanguage === x.value);
@@ -63,7 +64,8 @@ class AppLayout extends PureComponent {
                     icon={<Flag name={selected.flag} style={{ margin: '3px 10px 0 0', float: 'left' }} />}
                     onChange={this.changeLanguage}
                     options={options}
-                    selectOnBlur={false} />
+                    selectOnBlur={false}
+                  />
                 </Menu.Item>
                 <Menu.Item>
                   <Dropdown item text={user.profile.name}>
@@ -78,7 +80,7 @@ class AppLayout extends PureComponent {
                 </Menu.Item>
               </Menu.Menu>
             </Menu>
-            {this.props.children}
+            {children}
           </Grid.Column>
         </Grid.Row>
       </Grid>
