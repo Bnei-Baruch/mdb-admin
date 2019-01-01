@@ -22,7 +22,6 @@ import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import './files.css';
 
 class FilesHierarchy extends Component {
-
   static propTypes = {
     files: PropTypes.arrayOf(shapes.File),
     operations: PropTypes.arrayOf(shapes.Operation),
