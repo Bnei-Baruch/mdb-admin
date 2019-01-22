@@ -15,7 +15,6 @@ class HolidayField extends PureComponent {
     value: PropTypes.string,
     err: PropTypes.bool,
     onChange: PropTypes.func,
-    currentLanguage: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(PropTypes.shape({
       value: PropTypes.string,
       title: PropTypes.string,
@@ -50,7 +49,7 @@ class HolidayField extends PureComponent {
 }
 
 const mapState = (state) => {
-  const holidaysRoot    = selectors.getTagByUID(state.tags)('1nyptSIo');
+  const holidaysRoot    = selectors.getTagByUID(state.tags)('1nyptSIo') || {};
   const hierarchy       = selectors.getHierarchy(state.tags);
   const childs          = hierarchy.childMap.get(holidaysRoot.id) || EMPTY_ARRAY;
   const holidayTags     = selectors.denormIDs(state.tags)(childs);

@@ -50,8 +50,7 @@ class Units extends PureComponent {
   };
 
   handleSelectionChange = (unit, data) => {
-    const { checked } = data.checked;
-    this.props.onSelectionChange(unit, checked);
+    this.props.onSelectionChange(unit, data.checked);
   };
 
   handleSelectionAllChange = ({ checked }) => {
