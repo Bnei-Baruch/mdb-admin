@@ -6,7 +6,6 @@ import { OPERATION_TYPE_BY_ID, EMPTY_ARRAY } from '../../helpers/consts';
 import connectFilter from './connectFilter';
 
 class OperationTypeFilter extends Component {
-
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
     allValues: PropTypes.arrayOf(PropTypes.any),

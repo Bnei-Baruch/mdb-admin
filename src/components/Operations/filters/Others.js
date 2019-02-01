@@ -12,10 +12,10 @@ const Others = props => (
         <Grid.Column width={4}>
           <Header content="Operation Type" size="small" />
           <OperationTypeFilter
+            isUpdateQuery
             namespace={NS_OPERATIONS}
             name="operation_type"
             onApply={props.onFilterApplication}
-            isUpdateQuery={true}
           />
         </Grid.Column>
       </Grid.Row>
@@ -25,8 +25,6 @@ const Others = props => (
 
 Others.propTypes = {
   onFilterApplication: PropTypes.func.isRequired,
-  onFilterCancel: PropTypes.func.isRequired
 };
 
 export default Others;
-

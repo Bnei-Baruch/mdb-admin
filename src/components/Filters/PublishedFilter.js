@@ -5,7 +5,6 @@ import { Button } from 'semantic-ui-react';
 import connectFilter from './connectFilter';
 
 class PublishedFilter extends Component {
-
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
     value: PropTypes.oneOf([null, true, false]),
@@ -16,7 +15,8 @@ class PublishedFilter extends Component {
     value: null,
   };
 
-  handleTrue  = () => this.handleChange(true);
+  handleTrue = () => this.handleChange(true);
+
   handleFalse = () => this.handleChange(false);
 
   handleChange = (value) => {

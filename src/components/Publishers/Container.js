@@ -11,7 +11,6 @@ import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class Container extends Component {
-
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
@@ -47,7 +46,7 @@ class Container extends Component {
       }
     }
 
-    return (isNaN(page) || page <= 0) ? 1 : page;
+    return (Number.isNaN(page) || page <= 0) ? 1 : page;
   };
 
   handlePageChange = (pageNo) => {

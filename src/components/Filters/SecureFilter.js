@@ -6,7 +6,6 @@ import { SECURITY_LEVELS, EMPTY_ARRAY } from '../../helpers/consts';
 import connectFilter from './connectFilter';
 
 class SecureFilter extends Component {
-
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
     allValues: PropTypes.arrayOf(PropTypes.any),

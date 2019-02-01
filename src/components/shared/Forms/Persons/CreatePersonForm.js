@@ -24,7 +24,7 @@ class CreatePersonForm extends BasePersonForm {
       ...state,
       pattern: null,
       i18n,
-      film_date: moment(),
+      film_date: moment.utc(),
       updateInfo: PropTypes.func.isRequired,
       original_language: '',
     };

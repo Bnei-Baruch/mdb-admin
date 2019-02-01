@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Header, Input, List, Menu, Segment } from 'semantic-ui-react';
+import {
+  Button, Form, Header, Input, List, Menu, Segment
+} from 'semantic-ui-react';
 
 import { formatError, isValidPattern } from '../../helpers/utils';
 import { EMPTY_OBJECT, SOURCE_TYPES_OPTIONS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 
 class SourceInfoForm extends Component {
-
   static propTypes = {
     updateInfo: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
@@ -52,7 +53,7 @@ class SourceInfoForm extends Component {
   };
 
   onPatternChange = (e, { value }) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     if (isValidPattern(value)) {
       delete errors.pattern;
     } else {
@@ -71,10 +72,13 @@ class SourceInfoForm extends Component {
   };
 
   render() {
-    const { source, getWIP, getError }                                 = this.props;
-    const wip                                                          = getWIP('updateInfo');
-    const err                                                          = getError('updateInfo');
-    const { pattern, description, type_id: typeID, submitted, errors } = this.state;
+    const { source, getWIP, getError } = this.props;
+    const wip                          = getWIP('updateInfo');
+    const err                          = getError('updateInfo');
+
+    const {
+      pattern, description, type_id: typeID, submitted, errors
+    } = this.state;
 
     return (
       <div>
@@ -116,7 +120,7 @@ class SourceInfoForm extends Component {
               </small>
             </Form.Field>
 
-            <Form.Field >
+            <Form.Field>
               <label htmlFor="description">Description</label>
               <Input
                 id="description"
@@ -130,16 +134,19 @@ class SourceInfoForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-            : null}
+          {submitted && err
+            ? (
+              <Header
+                inverted
+                content={formatError(err)}
+                color="red"
+                icon="warning sign"
+                floated="left"
+                style={{ marginTop: '0.2rem', marginBottom: '0' }}
+              />
+            )
+            : null
+          }
           <Button
             primary
             content="Save"

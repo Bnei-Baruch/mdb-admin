@@ -24,4 +24,3 @@ const userManagerConfig = {
 const userManager = AUTH_URL === 'suitcase' ? new FakeUserManager() : createUserManager(userManagerConfig);
 
 export default userManager;
-

@@ -5,21 +5,19 @@ import { PAGE_SIZE } from '../../helpers/consts';
 
 const ResultsPageHeader = (props) => {
   const { pageNo, pageSize, total } = props;
-
+  let content                       = '';
   if (total === 0) {
-    return <span>No results</span>;
-  }
-
-  if (total <= pageSize) {
-    return <span><strong>1 - {total}</strong>&nbsp; of <strong>{total}</strong>&nbsp;</span>;
-  }
-
-  return (
-    <span>
+    content = <span>No results</span>;
+  } else if (total <= pageSize) {
+    content = <span><strong>1 - {total}</strong>&nbsp; of <strong>{total}</strong>&nbsp;</span>;
+  } else {
+    content = (
+      <span>
       <strong>{((pageNo - 1) * pageSize) + 1} - {Math.min(total, pageNo * pageSize)}</strong>&nbsp;
-      of <strong>{total}</strong>&nbsp;
-    </span>
-  );
+        of <strong>{total}</strong>&nbsp;
+    </span>);
+  }
+  return <span style={{ padding: '0 10px' }}>{content}</span>;
 };
 
 ResultsPageHeader.propTypes = {

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Flag, Header, Menu, Message, Segment, Table } from 'semantic-ui-react';
+import {
+  Flag, Header, Menu, Message, Segment, Table
+} from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { selectors as storagesSelectors } from '../../../../redux/modules/storages';
@@ -30,7 +32,10 @@ const Storages = (props) => {
   });
 
   const rows = items.map((x) => {
-    const { country, location, access, status, name, id } = x;
+    const {
+      country, location, access, status, name, id
+    } = x;
+
     return (
       <Table.Row key={id}>
         <Table.Cell><Flag name={country} /></Table.Cell>
@@ -42,8 +47,8 @@ const Storages = (props) => {
     );
   });
 
-  const content = rows.length > 0 ?
-    (
+  const content = rows.length > 0
+    ? (
       <Table>
         <Table.Header>
           <Table.Row>
@@ -58,8 +63,8 @@ const Storages = (props) => {
           {rows}
         </Table.Body>
       </Table>
-    ) : <Message>Does not exist physically</Message>;
-
+    )
+    : <Message>Does not exist physically</Message>;
   return (
     <div>
       <Menu attached borderless size="large">

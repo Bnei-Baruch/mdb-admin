@@ -1,121 +1,26 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Header, Icon, Label, Menu } from 'semantic-ui-react';
+import React from 'react';
 
-import { EMPTY_ARRAY, NS_FILES } from '../../helpers/consts';
-import { formatError } from '../../helpers/utils';
-import * as shapes from '../shapes';
-import TabsMenu from '../shared/TabsMenu';
-import Pagination from '../shared/Pagination';
-import ResultsPageHeader from '../shared/ResultsPageHeader';
-import FilesList from './List';
+import { NS_FILES } from '../../helpers/consts';
+import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
+import FileList from '../BaseClasses/FileList';
 
-import FiltersHydrator from '../Filters/FiltersHydrator/FiltersHydrator';
-import FilterTags from '../Filters/FilterTags/FilterTags';
-import DateRange from '../Filters/DateRange';
-import FreeText from '../Filters/FreeText';
-import Others from '../Filters/Others';
+class FilesMainPage extends ListWithFiltersBase {
+  usedFiltersNames = ['FreeText', 'DateRange', 'Others'];
 
-const filterTabs = [
-  { name: 'Free Text', element: FreeText, namespace: NS_FILES },
-  { name: 'Date Range', element: DateRange, namespace: NS_FILES },
-  { name: 'Others', element: Others, namespace: NS_FILES },
-];
+  getNamespace = () => NS_FILES;
 
-class FilesMainPage extends Component {
+  getContentType = () => null;
 
-  static propTypes = {
-    pageNo: PropTypes.number,
-    total: PropTypes.number,
-    items: PropTypes.arrayOf(shapes.File),
-    wip: PropTypes.bool,
-    err: shapes.Error,
-    onPageChange: PropTypes.func.isRequired,
-    onFiltersChange: PropTypes.func.isRequired,
-    onFiltersHydrated: PropTypes.func.isRequired
-  };
+  renderList = () => <FileList items={this.props.items} withCheckBox={false} />;
 
-  static defaultProps = {
-    items: EMPTY_ARRAY,
-    pageNo: 1,
-    total: 0,
-    wip: false,
-    err: null,
-  };
-
-  state = {
-    showFilters: false
-  };
-
-
-  handleFiltersCancel = () => this.toggleFilters();
-
-  handleFiltersChange = (isToggle = true) => {
-    if (isToggle) {
-      this.toggleFilters();
-    }
-    this.props.onFiltersChange();
-  };
-
-
-  toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });
+  getIsUpdateQuery = () => true;
 
   render() {
-    const { showFilters } = this.state;
-
-    const { pageNo, total, items, wip, err, onPageChange, onFiltersChange, onFiltersHydrated } = this.props;
-
     return (
       <div>
-        <Menu borderless size="large">
-          <Menu.Item header>
-            <Header content="Files" size="medium" color="blue" />
-          </Menu.Item>
-          <Menu.Menu position="right">
-            <Menu.Item onClick={this.toggleFilters}>
-              <Icon name="filter" />
-              {showFilters ? 'Hide' : 'Show'} Filters
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
-
-        <FiltersHydrator namespace={NS_FILES} onHydrated={onFiltersHydrated} />
-
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              {
-                showFilters ?
-                  <div>
-                    <TabsMenu items={filterTabs} onFilterApplication={this.handleFiltersChange}  onFilterCancel={this.handleFiltersCancel} withoutType={true} />
-                    <br />
-                  </div> :
-                  null
-              }
-              <FilterTags namespace={NS_FILES} onClose={onFiltersChange} />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
-                {
-                  wip ?
-                    <Label color="yellow" icon={{ name: 'spinner', loading: true }} content="Loading" /> :
-                    null
-                }
-                {
-                  err ?
-                    <Header inverted content={formatError(err)} color="red" icon="warning sign" floated="left" /> :
-                    null
-                }
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                &nbsp;&nbsp;
-                <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
-              </div>
-              <FilesList items={items} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        {this.renderHeader('Files')}
+        {this.renderFiltersHydrator()}
+        {this.renderContent()}
       </div>
     );
   }

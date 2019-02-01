@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Button, Header, Segment } from 'semantic-ui-react';
 
 import {
@@ -269,7 +270,7 @@ class BaseCollectionForm extends Component {
 
   renderFilmDateField = () => (
     <FilmDateField
-      value={this.state.film_date}
+      value={moment(this.state.film_date)}
       err={this.state.errors.film_date}
       onChange={this.handleFilmDateChange}
       required

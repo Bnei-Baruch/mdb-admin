@@ -2,7 +2,9 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { bulkMerge, merge, setMap, update, delList, updateList } from '../utils';
+import {
+  bulkMerge, merge, setMap, update, delList, updateList
+} from '../utils';
 
 /* Types */
 
@@ -449,7 +451,7 @@ const onSuccess = (state, action) => {
       derivatives: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.derived.id })),
     });
     break;
-  case ADD_ITEM_DERIVATIVES_SUCCESS:
+  case ADD_ITEM_DERIVATIVES_SUCCESS: {
     const { id: aId, duID: aDuID } = action.payload;
 
     byID = update(state.byID, aId,
@@ -457,7 +459,8 @@ const onSuccess = (state, action) => {
     byID = update(byID, aDuID,
       x => ({ ...x, origins: [...x.origins || [], { name: '', content_unit_id: aId }] }));
     break;
-  case UPDATE_ITEM_DERIVATIVES_SUCCESS:
+  }
+  case UPDATE_ITEM_DERIVATIVES_SUCCESS: {
     const { id: uId, duID: uDuID, params } = action.payload;
 
     byID = update(state.byID, uId,
@@ -475,7 +478,8 @@ const onSuccess = (state, action) => {
         ] : []
       }));
     break;
-  case REMOVE_ITEM_DERIVATIVES_SUCCESS:
+  }
+  case REMOVE_ITEM_DERIVATIVES_SUCCESS: {
     const { id: dId, duID: dDuID } = action.payload;
 
     byID = update(state.byID, dId,
@@ -483,6 +487,7 @@ const onSuccess = (state, action) => {
     byID = update(byID, dDuID,
       x => ({ ...x, origins: x.origins ? x.origins.filter(d => d.content_unit_id !== dId) : [] }));
     break;
+  }
   case FETCH_ITEM_ORIGINS_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
@@ -552,7 +557,7 @@ const onSuccess = (state, action) => {
 
 const onReceiveItemsCollections = (state, action) => {
   const byID = updateList(state.byID, action.payload.ids,
-    (x, id) => ({ ...x, collections: [...x.collections, action.payload.collections.get(id)] }));
+    (x, id) => ({ ...x, collections: [...x.collections || {}, action.payload.collections.get(id)] }));
   return { ...state, byID };
 };
 

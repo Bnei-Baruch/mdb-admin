@@ -27,12 +27,14 @@ const MainPage = (props) => {
     return <TabsMenu items={items} collection={collection} />;
   }
 
-  return wip ?
-    <LoadingSplash text="Loading collection details" subtext="Hold on tight..." /> :
-    <FrownSplash
-      text="Couldn't find collection"
-      subtext={<span>Try the <Link to="/collections">collections list</Link>...</span>}
-    />;
+  return wip
+    ? <LoadingSplash text="Loading collection details" subtext="Hold on tight..." />
+    : (
+      <FrownSplash
+        text="Couldn't find collection"
+        subtext={<span>Try the <Link to="/collections">collections list</Link>...</span>}
+      />
+    );
 };
 
 MainPage.propTypes = {

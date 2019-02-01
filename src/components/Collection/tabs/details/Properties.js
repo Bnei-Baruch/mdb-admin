@@ -9,7 +9,10 @@ import * as shapes from '../../../shapes';
 import UpdateCollectionPropertiesForm from '../../../shared/Forms/Collection/UpdateCollectionPropertiesForm';
 
 const Properties = (props) => {
-  const { collection, wip, err, updateProperties } = props;
+  const {
+    collection, wip, err, updateProperties
+  } = props;
+
   return (
     <div>
       <Menu attached borderless size="large">

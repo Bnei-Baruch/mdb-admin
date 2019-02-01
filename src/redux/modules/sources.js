@@ -53,7 +53,12 @@ const fetchAllSuccess  = createAction(FETCH_ALL_SUCCESS);
 const fetchAllFailure  = createAction(FETCH_ALL_FAILURE);
 
 const updateInfo        = createAction(UPDATE_INFO,
-  (id, pattern, description, typeID) => ({ id, pattern, description, type_id: typeID }));
+  (id, pattern, description, typeID) => ({
+    id,
+    pattern,
+    description,
+    type_id: typeID
+  }));
 const updateInfoSuccess = createAction(UPDATE_INFO_SUCCESS);
 const updateInfoFailure = createAction(UPDATE_INFO_FAILURE);
 const updateI18n        = createAction(UPDATE_I18N,
@@ -144,7 +149,7 @@ const onSuccess = (state, action) => {
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ALL_SUCCESS:
-    byID  = new Map(action.payload.map(x => [x.id, x]));
+    byID = new Map(action.payload.map(x => [x.id, x]));
     break;
   default:
     byID = state.byID;

@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Divider, Grid } from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/tags';
 import { selectors as system } from '../../redux/modules/system';
+import * as shapes from '../shapes';
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import TagMenu from './TagMenu';
 import TagInfoForm from './TagInfoForm';
@@ -15,7 +15,6 @@ import TagI18nForm from './TagI18nForm';
 import TagChildren from './TagChildren';
 
 class TagContainer extends Component {
-
   static propTypes = {
     match: shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
@@ -29,13 +28,13 @@ class TagContainer extends Component {
   };
 
   componentDidMount() {
-    const id = this.props.match.params.id;
+    const { match: { params: { id } } } = this.props;
     this.askForData(id);
   }
 
   componentWillReceiveProps(nextProps) {
-    const id  = this.props.match.params.id;
-    const nId = nextProps.match.params.id;
+    const { match: { params: { id } } } = this.props;
+    const nId                           = nextProps.match.params.id;
     if (id !== nId) {
       this.askForData(nId);
     }
@@ -74,12 +73,14 @@ class TagContainer extends Component {
       );
     }
 
-    return wip ?
-      <LoadingSplash text="Loading tag details" subtext="Hold on tight..." /> :
-      <FrownSplash
-        text="Couldn't find tag"
-        subtext={<span>Try the <Link to="/tags">tags hierarchy</Link>...</span>}
-      />;
+    return wip
+      ? <LoadingSplash text="Loading tag details" subtext="Hold on tight..." />
+      : (
+        <FrownSplash
+          text="Couldn't find tag"
+          subtext={<span>Try the <Link to="/tags">tags hierarchy</Link>...</span>}
+        />
+      );
   }
 }
 

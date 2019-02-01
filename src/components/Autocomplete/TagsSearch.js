@@ -12,13 +12,12 @@ import { selectors as system } from '../../redux/modules/system';
 import { extractI18n } from '../../helpers/utils';
 
 class TagsSearch extends Component {
-
   static propTypes = {
     onSelect: PropTypes.func.isRequired,
     tagsById: PropTypes.instanceOf(Map),
     hierarchy: shapes.Hierarchy,
     placeholder: PropTypes.string,
-
+    currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -34,7 +33,7 @@ class TagsSearch extends Component {
   resetComponent = () => this.setState({ suggestions: [], query: '' });
 
   doFilter = debounce(() => {
-    const query        = this.state.query;
+    const { query }    = this.state;
     const escapedValue = escapeRegExp(query.trim());
     if (escapedValue === '') {
       this.resetComponent();
@@ -85,7 +84,8 @@ class TagsSearch extends Component {
   }, 150);
 
   handleResultSelect = (e, data) => {
-    this.props.onSelect(data.result);
+    const { onSelect } = this.props;
+    onSelect(data.result);
     this.resetComponent();
   };
 

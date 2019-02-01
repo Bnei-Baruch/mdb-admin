@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import { Header, List, Menu, Segment } from 'semantic-ui-react';
+import {
+  Header, List, Menu, Segment
+} from 'semantic-ui-react';
 
 import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';
@@ -36,7 +38,7 @@ const Details = (props) => {
           <List.Item>
             <strong>DB created_at</strong>
             <List.Content floated="right">
-              {moment.utc(operation.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+              {moment.utc(operation.created_at).format('YYYY-MM-DD HH:mm:ss')}
             </List.Content>
           </List.Item>
           <List.Item>

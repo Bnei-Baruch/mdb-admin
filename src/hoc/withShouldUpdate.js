@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import isEqualWith from 'lodash/isEqualWith';
 
 const shouldUpdate = (WrappedComponent) => {
-  return class DataLoader extends PureComponent {
+  return class DataLoader extends Component {
     shouldComponentUpdate(nextProps) {
       if (!nextProps.children) {
         return true;

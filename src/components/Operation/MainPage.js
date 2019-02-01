@@ -34,12 +34,14 @@ const MainPage = (props) => {
     );
   }
 
-  return wip ?
-    <LoadingSplash text="Loading operation details" subtext="Hold on tight..." /> :
-    <FrownSplash
-      text="Couldn't find operation"
-      subtext={<span>Try the <Link to="/operations">operations list</Link>...</span>}
-    />;
+  return wip
+    ? <LoadingSplash text="Loading operation details" subtext="Hold on tight..." />
+    : (
+      <FrownSplash
+        text="Couldn't find operation"
+        subtext={<span>Try the <Link to="/operations">operations list</Link>...</span>}
+      />
+    );
 };
 
 MainPage.propTypes = {

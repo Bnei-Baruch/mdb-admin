@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/content_units';
 import { selectors as files } from '../../../../redux/modules/files';
-import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
 import FilesHierarchy from './FilesHierarchy';
-import AddFiles from '../files/selectNew/Container';
+import AddNewFiles from './AddNewFiles';
 
 class FilesTab extends Component {
-
   static propTypes = {
     fetchItemFiles: PropTypes.func.isRequired,
     unit: shapes.ContentUnit,
@@ -33,23 +32,33 @@ class FilesTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (((nextProps.unit && !this.props.unit) ||
-        (nextProps.unit && this.props.unit && nextProps.unit.id !== this.props.unit.id))) {
+    if (((nextProps.unit && !this.props.unit)
+      || (nextProps.unit && this.props.unit && nextProps.unit.id !== this.props.unit.id))) {
       this.askForData(nextProps.unit.id);
     }
   }
 
-  askForData = (id) => this.props.fetchItemFiles(id);
+  askForData = id => this.props.fetchItemFiles(id);
 
   setEditMode = editMode => this.setState({ editMode });
 
   render() {
     if (this.state.editMode) {
-      return (<AddFiles {...this.props} setEditMode={this.setEditMode} />);
+      return (
+        <AddNewFiles
+          unit={this.props.unit}
+          setEditMode={this.setEditMode}
+        />
+      );
     }
-    return (<FilesHierarchy {...this.props} setEditMode={this.setEditMode} />);
-  }
 
+    return (
+      <FilesHierarchy
+        {...this.props}
+        setEditMode={this.setEditMode}
+      />
+    );
+  }
 }
 
 const mapState = (state, ownProps) => {
@@ -68,4 +77,3 @@ function mapDispatch(dispatch) {
 }
 
 export default connect(mapState, mapDispatch)(FilesTab);
-

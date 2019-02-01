@@ -29,9 +29,9 @@ class UpdateCollectionPropertiesForm extends BaseCollectionForm {
       ...state,
       ...properties,
       type_id: typeID,
-      start_date: start ? moment(start) : null,
-      end_date: end ? moment(end) : null,
-      film_date: film ? moment(film) : null,
+      start_date: start ? moment.utc(start) : null,
+      end_date: end ? moment.utc(end) : null,
+      film_date: film ? moment.utc(film) : null,
       country
     };
   }

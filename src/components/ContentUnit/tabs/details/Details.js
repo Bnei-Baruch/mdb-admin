@@ -1,9 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import { Header, Icon, List, Menu, Segment } from 'semantic-ui-react';
+import {
+  Header, Icon, List, Menu, Segment
+} from 'semantic-ui-react';
 
-import * as shapes from '../../../shapes';
 import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../../../helpers/consts';
+import * as shapes from '../../../shapes';
 
 const Details = (props) => {
   const { unit } = props;
@@ -36,7 +38,7 @@ const Details = (props) => {
           <List.Item>
             <strong>DB created_at</strong>
             <List.Content floated="right">
-              {moment.utc(unit.created_at).local().format('YYYY-MM-DD HH:mm:ss')}
+              {moment.utc(unit.created_at).format('YYYY-MM-DD HH:mm:ss')}
             </List.Content>
           </List.Item>
           <List.Item>
@@ -59,9 +61,9 @@ const Details = (props) => {
             <strong>Published</strong>
             <List.Content floated="right">
               {
-                unit.published ?
-                  <Icon name="checkmark" color="green" /> :
-                  <Icon name="ban" color="red" />
+                unit.published
+                  ? <Icon name="checkmark" color="green" />
+                  : <Icon name="ban" color="red" />
               }
             </List.Content>
           </List.Item>

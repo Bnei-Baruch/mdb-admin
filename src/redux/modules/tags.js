@@ -61,7 +61,12 @@ const updateI18n        = createAction(UPDATE_I18N,
 const updateI18nSuccess = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure = createAction(UPDATE_I18N_FAILURE);
 const create            = createAction(CREATE,
-  (parentID, pattern, description, i18n) => ({ parent_id: parentID, pattern, description, i18n }));
+  (parentID, pattern, description, i18n) => ({
+    parent_id: parentID,
+    pattern,
+    description,
+    i18n
+  }));
 const createSuccess     = createAction(CREATE_SUCCESS);
 const createFailure     = createAction(CREATE_FAILURE);
 

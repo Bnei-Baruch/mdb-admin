@@ -5,7 +5,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import { Link } from 'react-router-dom';
-import { Button, Header, List, Menu, Message, Segment, Search } from 'semantic-ui-react';
+import {
+  Button, Header, List, Menu, Message, Segment, Search
+} from 'semantic-ui-react';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, extractI18n } from '../../../../helpers/utils';
@@ -16,14 +18,15 @@ import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 
 class Persons extends Component {
-
   static propTypes = {
     unit: shapes.ContentUnit.isRequired,
     addPerson: PropTypes.func.isRequired,
     removePerson: PropTypes.func.isRequired,
     persons: PropTypes.arrayOf(shapes.Person),
+    allPersons: PropTypes.arrayOf(shapes.Person).isRequired,
     status: shapes.AsyncStatusMap,
     currentLanguage: PropTypes.string.isRequired,
+    fetchAll: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -59,15 +62,37 @@ class Persons extends Component {
     const { status } = this.props;
 
     if (status.addPerson.wip) {
-      return <Header content="Adding Person..." icon={{ name: 'spinner', loading: true }} size="tiny" />;
-    } else if (status.removePerson.wip) {
-      return <Header content="Removing Person..." icon={{ name: 'spinner', loading: true }} size="tiny" />;
+      return (
+        <Header
+          content="Adding Person..."
+          icon={{ name: 'spinner', loading: true }}
+          size="tiny"
+        />
+      );
+    }
+
+    if (status.removePerson.wip) {
+      return (
+        <Header
+          content="Removing Person..."
+          icon={{ name: 'spinner', loading: true }}
+          size="tiny"
+        />
+      );
     }
 
     const err = status.addPerson.err || status.removePerson.err;
     if (err) {
-      return <Header content={formatError(err)} icon={{ name: 'warning sign' }} color="red" size="tiny" />;
+      return (
+        <Header
+          content={formatError(err)}
+          icon={{ name: 'warning sign' }}
+          color="red"
+          size="tiny"
+        />
+      );
     }
+
     return null;
   };
 
@@ -89,14 +114,14 @@ class Persons extends Component {
   doFilter = debounce(() => {
     const regExp = new RegExp(escapeRegExp(this.state.query), 'i');
 
-    const searched = this.props.allPersons
-      .reduce((acc, p) => {
-        const langHaveResult = Object.keys(p.i18n).find(k => regExp.test(p.i18n[k].name));
-        if (langHaveResult) {
-          acc.push({ id: p.id, title: p.i18n[langHaveResult].name, });
-        }
-        return acc;
-      }, []);
+    const searched = this.props.allPersons.reduce((acc, p) => {
+      const langHaveResult = Object.keys(p.i18n).find(k => regExp.test(p.i18n[k].name));
+      if (langHaveResult) {
+        acc.push({ id: p.id, title: p.i18n[langHaveResult].name, });
+      }
+      return acc;
+    }, []);
+
     this.setState({ searched });
   }, 150);
 
@@ -117,35 +142,33 @@ class Persons extends Component {
     if (err) {
       content = <ErrorSplash text="Server Error" subtext={formatError(err)} />;
     } else if (persons.length === 0) {
-      content = wip ?
-        <LoadingSplash text="Loading persons" /> :
-        <Message>No persons found for this unit</Message>;
+      content = wip
+        ? <LoadingSplash text="Loading persons" />
+        : <Message>No persons found for this unit</Message>;
     } else {
       content = (
         <List relaxed divided className="rtl-dir">
           {
-            persons.map(x =>
-              (
-                <List.Item key={x.id}>
-                  <List.Content floated="left">
-                    <Button
-                      circular
-                      compact
-                      size="mini"
-                      icon="remove"
-                      color="red"
-                      inverted
-                      onClick={() => this.removePerson(x)}
-                    />
-                  </List.Content>
-                  <List.Content>
-                    <Link to={`/persons/${x.id}`}>
-                      {extractI18n(x.i18n, ['name'], currentLanguage)}
-                    </Link>
-                  </List.Content>
-                </List.Item>
-              )
-            )
+            persons.map(x => (
+              <List.Item key={x.id}>
+                <List.Content floated="left">
+                  <Button
+                    circular
+                    compact
+                    size="mini"
+                    icon="remove"
+                    color="red"
+                    inverted
+                    onClick={() => this.removePerson(x)}
+                  />
+                </List.Content>
+                <List.Content>
+                  <Link to={`/persons/${x.id}`}>
+                    {extractI18n(x.i18n, ['name'], currentLanguage)}
+                  </Link>
+                </List.Content>
+              </List.Item>
+            ))
           }
         </List>
       );

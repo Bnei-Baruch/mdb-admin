@@ -11,9 +11,10 @@ import AppRoutes from './AppRoutes';
 import LoginRoutes from './LoginRoutes';
 
 class MainPage extends PureComponent {
-
   static propTypes = {
     user: PropTypes.object,
+    currentLanguage: PropTypes.string.isRequired,
+    updateCurrentLanguage: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -52,4 +53,3 @@ function mapDispatch(dispatch) {
 }
 
 export default withRouter(connect(mapState, mapDispatch)(MainPage));
-

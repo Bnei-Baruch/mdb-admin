@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Header, Input, List, Menu, Segment } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import {
+  Button, Form, Header, Input, List, Menu, Segment
+} from 'semantic-ui-react';
 
-import * as shapes from '../shapes';
 import { EMPTY_OBJECT } from '../../helpers/consts';
 import { formatError, isValidPattern } from '../../helpers/utils';
+import * as shapes from '../shapes';
 
 class TagInfoForm extends Component {
-
   static propTypes = {
     updateInfo: PropTypes.func.isRequired,
     getWIP: PropTypes.func.isRequired,
@@ -45,7 +46,7 @@ class TagInfoForm extends Component {
   };
 
   onPatternChange = (e, { value }) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     if (isValidPattern(value)) {
       delete errors.pattern;
     } else {
@@ -64,10 +65,13 @@ class TagInfoForm extends Component {
   };
 
   render() {
-    const { tag, getWIP, getError }                   = this.props;
-    const wip                                         = getWIP('updateInfo');
-    const err                                         = getError('updateInfo');
-    const { pattern, description, submitted, errors } = this.state;
+    const { tag, getWIP, getError } = this.props;
+    const wip                       = getWIP('updateInfo');
+    const err                       = getError('updateInfo');
+
+    const {
+      pattern, description, submitted, errors
+    } = this.state;
 
     return (
       <div>
@@ -85,9 +89,9 @@ class TagInfoForm extends Component {
               <List.Item>
                 <strong>Parent ID:</strong>&nbsp;
                 {
-                  tag.parent_id ?
-                    <Link to={`/tags/${tag.parent_id}`}>{tag.parent_id}</Link> :
-                    'none'
+                  tag.parent_id
+                    ? <Link to={`/tags/${tag.parent_id}`}>{tag.parent_id}</Link>
+                    : 'none'
                 }
               </List.Item>
             </List>
@@ -106,7 +110,7 @@ class TagInfoForm extends Component {
               </small>
             </Form.Field>
 
-            <Form.Field >
+            <Form.Field>
               <label htmlFor="description">Description</label>
               <Input
                 id="description"
@@ -120,16 +124,20 @@ class TagInfoForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-            : null}
+          {
+            submitted && err
+              ? (
+                <Header
+                  inverted
+                  content={formatError(err)}
+                  color="red"
+                  icon="warning sign"
+                  floated="left"
+                  style={{ marginTop: '0.2rem', marginBottom: '0' }}
+                />
+              )
+              : null
+          }
           <Button
             primary
             content="Save"

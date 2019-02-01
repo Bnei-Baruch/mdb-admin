@@ -7,7 +7,7 @@ import PersonInfoForm from './PersonInfoForm';
 import I18nForm from './I18nForm';
 
 const DetailsTab = (props) => {
-  const person = props.person;
+  const { person } = props;
   if (!person) {
     return null;
   }

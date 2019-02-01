@@ -1,7 +1,9 @@
 import capitalize from 'lodash/capitalize';
 import words from 'lodash/words';
 
-import { I18N_ORDER, LANG_ENGLISH, MEDIA_TYPES, REQUIRED_LANGUAGES } from './consts';
+import {
+  I18N_ORDER, LANG_ENGLISH, MEDIA_TYPES, REQUIRED_LANGUAGES
+} from './consts';
 import * as env from './env';
 
 export const isEmpty = (obj) => {
@@ -46,7 +48,6 @@ export const isValidPattern = pattern => (
  * @returns {Object} roots and childMap
  */
 export const buildHierarchy = (nodeMap) => {
-  console.log('COMPUTE: buildHierarchy ', nodeMap.size);
   const roots    = [];
   const childMap = new Map();
 
@@ -71,18 +72,21 @@ export const buildHierarchy = (nodeMap) => {
  *
  * @param {Object} i18ns I18ns object of an entity
  * @param {Array.<String>} fields Fields to extract from a single i18n
+ * @param {String} defaultLanguage default language to use
  * @param {Array.<String>} [languages] Language fallback order, defaults to ['he', 'en', 'ru']
  * @returns {Array.<String>} Translated fields
  */
 export const extractI18n = (i18ns, fields, defaultLanguage = LANG_ENGLISH, languages = I18N_ORDER) => {
-
+  if (!i18ns) {
+    return null;
+  }
   // Order i18ns by language
   const orderedI18ns = [];
   let defaultI18n;
   for (let i = 0; i < languages.length; i++) {
     if (languages[i] === defaultLanguage) {
       defaultI18n = i18ns[languages[i]];
-      continue;
+      continue;  // eslint-disable-line no-continue
     }
 
     const i18n = i18ns[languages[i]];
@@ -125,15 +129,18 @@ export const formatError = (error) => {
     // that falls out of the range of 2xx
     const msg = error.response.data.error;
     return error.response.statusText + (msg ? `: ${msg}` : '');
-  } else if (error.request) {
+  }
+  if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
     return 'No response from server';
-  } else if (error.message) {
+  }
+  if (error.message) {
     // Something happened in setting up the request that triggered an Error
     return error.message;
-  } else if (typeof error.toString === 'function') {
+  }
+  if (typeof error.toString === 'function') {
     return error.toString();
   }
   return error;
@@ -185,9 +192,9 @@ export const fileIcon = (file) => {
   case 'video':
     return 'file video outline';
   case 'image':
-    return mime && mime.startsWith('application') ?
-      'file archive outline' :
-      'file image outline';
+    return mime && mime.startsWith('application')
+      ? 'file archive outline'
+      : 'file image outline';
   case 'text':
     switch (mime) {
     case 'application/msword':
@@ -245,7 +252,7 @@ export const hierarchyToTree = hierarchy =>
 /**
  * Convert hierarchyNodeToTreeNode insert to node his children
  * @param hierarchy
- * @node - current node
+ * @node - node current node
  */
 export const hierarchyNodeToTreeNode = (hierarchy, node) => {
   const children = node && node.id ? hierarchy.childMap.get(node.id) : [];
@@ -255,6 +262,7 @@ export const hierarchyNodeToTreeNode = (hierarchy, node) => {
 /**
  * compare i18n object with languages that must to be
  * @param i18n
+ * @param addLang
  * @returns {{i18nErrors: Map of errors, addedKeys: (Array.<LangsKeys>), i18nUnique: new i18n}}
  */
 export const compareI18nWithMust = (i18n, addLang) => {
