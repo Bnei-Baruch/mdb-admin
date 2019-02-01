@@ -44,7 +44,7 @@ const mapState = (state) => {
   return {
     emptyLabel: 'No Sources',
     hierarchy: insertAuthorsToHierarchy(selectors.getHierarchy(state.sources), authors.getAuthorsList(state.authors)),
-    getSubItemById: id => (Number.isNaN(id) ? modifyAuthorData(getAuthors(id)) : getSources(id)),
+    getSubItemById: id => (Number.isNaN(parseInt(id)) ? modifyAuthorData(getAuthors(id)) : getSources(parseInt(id))),
   };
 };
 

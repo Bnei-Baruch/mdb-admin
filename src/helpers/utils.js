@@ -77,6 +77,9 @@ export const buildHierarchy = (nodeMap) => {
  * @returns {Array.<String>} Translated fields
  */
 export const extractI18n = (i18ns, fields, defaultLanguage = LANG_ENGLISH, languages = I18N_ORDER) => {
+  if (!i18ns) {
+    return null;
+  }
   // Order i18ns by language
   const orderedI18ns = [];
   let defaultI18n;
@@ -126,15 +129,18 @@ export const formatError = (error) => {
     // that falls out of the range of 2xx
     const msg = error.response.data.error;
     return error.response.statusText + (msg ? `: ${msg}` : '');
-  } if (error.request) {
+  }
+  if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
     return 'No response from server';
-  } if (error.message) {
+  }
+  if (error.message) {
     // Something happened in setting up the request that triggered an Error
     return error.message;
-  } if (typeof error.toString === 'function') {
+  }
+  if (typeof error.toString === 'function') {
     return error.toString();
   }
   return error;
