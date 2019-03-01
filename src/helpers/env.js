@@ -17,3 +17,6 @@ export const API_BACKEND = process.env.REACT_APP_MDB_URL;
 
 // Physical files links service url
 export const LINKER_URL = process.env.REACT_APP_LINKER_URL;
+
+// Use mocks
+export const USE_MOCKS = !!process.env.REACT_APP_USE_MOCKS
