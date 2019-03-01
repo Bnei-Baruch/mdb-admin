@@ -16,6 +16,7 @@ import {
   CT_LESSON_PART,
   CT_MEAL,
   CT_PUBLICATION,
+  CT_RESEARCH_MATERIAL,
   CT_TRAINING,
   CT_UNKNOWN,
   CT_VIDEO_PROGRAM_CHAPTER,
@@ -73,6 +74,7 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_TRAINING].value:
     case CONTENT_UNIT_TYPES[CT_KITEI_MAKOR].value:
     case CONTENT_UNIT_TYPES[CT_PUBLICATION].value:
+    case CONTENT_UNIT_TYPES[CT_RESEARCH_MATERIAL].value:
       data.film_date         = state.film_date;
       data.original_language = state.original_language;
       break;
@@ -189,6 +191,7 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_TRAINING].value:
     case CONTENT_UNIT_TYPES[CT_KITEI_MAKOR].value:
     case CONTENT_UNIT_TYPES[CT_PUBLICATION].value:
+    case CONTENT_UNIT_TYPES[CT_RESEARCH_MATERIAL].value:
       return this.renderLessonPart();
     default:
       return null;
