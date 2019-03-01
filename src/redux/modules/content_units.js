@@ -1,4 +1,4 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
@@ -81,6 +81,19 @@ const RECEIVE_ITEMS             = 'ContentUnits/RECEIVE_ITEMS';
 const RECEIVE_ITEMS_COLLECTIONS = 'ContentUnits/RECEIVE_ITEMS_COLLECTIONS';
 const REMOVE_ITEM_COLLECTIONS   = 'ContentUnits/REMOVE_ITEM_COLLECTIONS';
 
+const FETCH_THUMBNAIL         = 'ContentUnits/FETCH_THUMBNAIL';
+const FETCH_THUMBNAIL_SUCCESS = 'ContentUnits/FETCH_THUMBNAIL_SUCCESS';
+const FETCH_THUMBNAIL_FAILURE = 'ContentUnits/FETCH_THUMBNAIL_FAILURE';
+
+const FETCH_THUMBNAIL_CANDIDATES         = 'ContentUnits/FETCH_THUMBNAIL_CANDIDATES';
+const FETCH_THUMBNAIL_CANDIDATES_SUCCESS = 'ContentUnits/FETCH_THUMBNAIL_CANDIDATES_SUCCESS';
+const FETCH_THUMBNAIL_CANDIDATES_FAILURE = 'ContentUnits/FETCH_THUMBNAIL_CANDIDATES_FAILURE';
+
+const SET_THUMBNAIL         = 'ContentUnits/SET_THUMBNAIL';
+const SET_THUMBNAIL_SUCCESS = 'ContentUnits/SET_THUMBNAIL_SUCCESS';
+const SET_THUMBNAIL_FAILURE = 'ContentUnits/SET_THUMBNAIL_FAILURE';
+
+
 export const types = {
   FETCH_ITEM,
   FETCH_ITEM_SUCCESS,
@@ -156,6 +169,18 @@ export const types = {
   RECEIVE_ITEMS,
   RECEIVE_ITEMS_COLLECTIONS,
   REMOVE_ITEM_COLLECTIONS,
+
+  FETCH_THUMBNAIL,
+  FETCH_THUMBNAIL_SUCCESS,
+  FETCH_THUMBNAIL_FAILURE,
+
+  FETCH_THUMBNAIL_CANDIDATES,
+  FETCH_THUMBNAIL_CANDIDATES_SUCCESS,
+  FETCH_THUMBNAIL_CANDIDATES_FAILURE,
+
+  SET_THUMBNAIL,
+  SET_THUMBNAIL_SUCCESS,
+  SET_THUMBNAIL_FAILURE
 };
 
 /* Actions */
@@ -245,6 +270,18 @@ const receiveItems            = createAction(RECEIVE_ITEMS);
 const receiveItemsCollections = createAction(RECEIVE_ITEMS_COLLECTIONS);
 const removeItemCollections   = createAction(REMOVE_ITEM_COLLECTIONS);
 
+const fetchThumbnail        = createAction(FETCH_THUMBNAIL);
+const fetchThumbnailSuccess = createAction(FETCH_THUMBNAIL_SUCCESS);
+const fetchThumbnailFailure = createAction(FETCH_THUMBNAIL_FAILURE);
+
+const fetchThumbnailCandidates        = createAction(FETCH_THUMBNAIL_CANDIDATES);
+const fetchThumbnailCandidatesSuccess = createAction(FETCH_THUMBNAIL_CANDIDATES_SUCCESS);
+const fetchThumbnailCandidatesFailure = createAction(FETCH_THUMBNAIL_CANDIDATES_FAILURE);
+
+const setThumbnail        = createAction(SET_THUMBNAIL);
+const setThumbnailSuccess = createAction(SET_THUMBNAIL_SUCCESS);
+const setThumbnailFailure = createAction(SET_THUMBNAIL_FAILURE);
+
 export const actions = {
   fetchItem,
   fetchItemSuccess,
@@ -319,7 +356,20 @@ export const actions = {
 
   receiveItems,
   receiveItemsCollections,
-  removeItemCollections
+  removeItemCollections,
+
+  fetchThumbnail,
+  fetchThumbnailSuccess,
+  fetchThumbnailFailure,
+
+  fetchThumbnailCandidates,
+  fetchThumbnailCandidatesSuccess,
+  fetchThumbnailCandidatesFailure,
+
+  setThumbnail,
+  setThumbnailSuccess,
+  setThumbnailFailure,
+
 };
 
 /* Reducer */
@@ -397,6 +447,17 @@ const keys = new Map([
   [MERGE_UNITS, 'mergeUnits'],
   [MERGE_UNITS_SUCCESS, 'mergeUnits'],
   [MERGE_UNITS_FAILURE, 'mergeUnits'],
+
+  [FETCH_THUMBNAIL, 'fetchThumbnail'],
+  [FETCH_THUMBNAIL_SUCCESS, 'fetchThumbnailSuccess'],
+  [FETCH_THUMBNAIL_FAILURE, 'fetchThumbnailFailure']
+  [FETCH_THUMBNAIL_CANDIDATES, 'fetchThumbnailCandidates'],
+  [FETCH_THUMBNAIL_CANDIDATES_SUCCESS, 'fetchThumbnailCandidatesSuccess'],
+  [FETCH_THUMBNAIL_CANDIDATES_FAILURE, 'fetchThumbnailCandidatesFailure']
+  [SET_THUMBNAIL, 'setThumbnail'],
+  [SET_THUMBNAIL_SUCCESS, 'setThumbnailSuccess'],
+  [SET_THUMBNAIL_FAILURE, 'setThumbnailFailure']
+
 ]);
 
 const initialState = {
@@ -538,6 +599,15 @@ const onSuccess = (state, action) => {
   case MERGE_UNITS_SUCCESS:
     byID = delList(state.byID, action.payload.cuIds);
     break;
+  case FETCH_THUMBNAIL_SUCCESS:
+    byID = merge(state.byID, action.payload);
+    break;
+  case FETCH_THUMBNAIL_CANDIDATES_SUCCESS:
+    byID = merge(state.byID, action.payload);
+    break;
+  case SET_THUMBNAIL_SUCCESS:
+    byID = merge(state.byID, action.payload);
+    break;
   default:
     byID = state.byID;
   }
@@ -645,6 +715,26 @@ export const reducer = handleActions({
   [RECEIVE_ITEMS]: onReceiveItems,
   [RECEIVE_ITEMS_COLLECTIONS]: onReceiveItemsCollections,
   [REMOVE_ITEM_COLLECTIONS]: onRemoveItemCollections,
+
+  [combineActions(
+    FETCH_THUMBNAIL,
+    FETCH_THUMBNAIL_CANDIDATES,
+    SET_THUMBNAIL
+  )]: onRequest,
+
+  [combineActions(
+    FETCH_THUMBNAIL_SUCCESS,
+    FETCH_THUMBNAIL_CANDIDATES_SUCCESS,
+    SET_THUMBNAIL_SUCCESS
+  )]: onSuccess,
+
+  [combineActions(
+    FETCH_THUMBNAIL_FAILURE,
+    FETCH_THUMBNAIL_CANDIDATES_FAILURE,
+    SET_THUMBNAIL_FAILURE
+  )]: onFailure,
+
+
 }, initialState);
 
 /* Selectors */
