@@ -270,6 +270,7 @@ export const LANG_SLOVENIAN  = 'sl';
 export const LANG_LATVIAN    = 'lv';
 export const LANG_SLOVAK     = 'sk';
 export const LANG_CZECH      = 'cs';
+export const LANG_AMHARIC    = 'am';
 export const LANG_MULTI      = 'zz';
 export const LANG_UNKNOWN    = 'xx';
 
@@ -305,6 +306,7 @@ export const LANGUAGES = {
   [LANG_LATVIAN]: { text: 'Latvian', value: LANG_LATVIAN, flag: 'lv' },
   [LANG_SLOVAK]: { text: 'Slovak', value: LANG_SLOVAK, flag: 'sk' },
   [LANG_CZECH]: { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
+  [LANG_AMHARIC]: { text: 'Amharic', value: LANG_AMHARIC, flag: 'et' },
   [LANG_MULTI]: { text: 'Multi', value: LANG_MULTI },
   [LANG_UNKNOWN]: { text: 'Unknown', value: LANG_UNKNOWN },
 };
@@ -341,6 +343,7 @@ export const ALL_LANGUAGES = [
   LANG_LATVIAN,
   LANG_SLOVAK,
   LANG_CZECH,
+  LANG_AMHARIC,
   LANG_MULTI,
   LANG_UNKNOWN,
 ];
