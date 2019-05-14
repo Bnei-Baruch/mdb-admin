@@ -6,6 +6,7 @@ import { Button, Header, Segment } from 'semantic-ui-react';
 import {
   CONTENT_UNIT_TYPES,
   CT_ARTICLE,
+  CT_BLOG_POST,
   CT_CHILDREN_LESSON,
   CT_CLIP,
   CT_EVENT_PART,
@@ -75,6 +76,7 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_KITEI_MAKOR].value:
     case CONTENT_UNIT_TYPES[CT_PUBLICATION].value:
     case CONTENT_UNIT_TYPES[CT_RESEARCH_MATERIAL].value:
+    case CONTENT_UNIT_TYPES[CT_BLOG_POST].value:
       data.film_date         = state.film_date;
       data.original_language = state.original_language;
       break;
@@ -192,6 +194,7 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_KITEI_MAKOR].value:
     case CONTENT_UNIT_TYPES[CT_PUBLICATION].value:
     case CONTENT_UNIT_TYPES[CT_RESEARCH_MATERIAL].value:
+    case CONTENT_UNIT_TYPES[CT_BLOG_POST].value:
       return this.renderLessonPart();
     default:
       return null;
