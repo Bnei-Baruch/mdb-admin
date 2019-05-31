@@ -6,7 +6,7 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware, { delay } from 'redux-saga';
 import { put } from 'redux-saga/effects';
 import { routerMiddleware as createRouterMiddleware } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory as createHistory } from 'history';
 import { loadUser } from 'redux-oidc';
 
 import * as env from './helpers/env';
@@ -26,8 +26,10 @@ import App from './components/App/App';
 //   whyDidYouUpdate(React, { exclude: /Menu*|Dropdown*|List*|Button*|Message*|Link|ReactJWPlayer*/ });
 // }
 
-const devToolsArePresent    = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
-const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? window.devToolsExtension() : f => f;
+/* eslint-disable no-underscore-dangle */
+const devToolsArePresent    = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined';
+const devToolsStoreEnhancer = () => (!env.isProduction && devToolsArePresent ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f);
+/* eslint-enable */
 
 const sagaMiddlewareOptions = env.isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
