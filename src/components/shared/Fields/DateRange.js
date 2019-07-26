@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import noop from 'lodash/noop';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
+import { formatDate, parseDate, } from 'react-day-picker/moment';
 import { Form } from 'semantic-ui-react';
 
 import { DATE_FORMAT } from '../../../helpers/consts';
@@ -47,6 +48,8 @@ class DateRangeField extends PureComponent {
           <DayPickerInput
             id="start_date"
             placeholder={DATE_FORMAT}
+            formatDate={formatDate}
+            parseDate={parseDate}
             format={DATE_FORMAT}
             value={start.format(DATE_FORMAT)}
             onDayChange={this.handleStartChange}
@@ -59,6 +62,8 @@ class DateRangeField extends PureComponent {
           <DayPickerInput
             id="end_date"
             placeholder={DATE_FORMAT}
+            formatDate={formatDate}
+            parseDate={parseDate}
             format={DATE_FORMAT}
             value={end.format(DATE_FORMAT)}
             onDayChange={this.handleEndChange}

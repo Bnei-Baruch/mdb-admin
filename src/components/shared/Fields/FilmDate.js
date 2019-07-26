@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import noop from 'lodash/noop';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
+import { formatDate, parseDate, } from 'react-day-picker/moment';
 import { Form } from 'semantic-ui-react';
 
 import { DATE_FORMAT } from '../../../helpers/consts';
@@ -20,6 +21,8 @@ const FilmDateField = (props) => {
       <DayPickerInput
         id="film_date"
         placeholder={DATE_FORMAT}
+        formatDate={formatDate}
+        parseDate={parseDate}
         format={DATE_FORMAT}
         value={value ? value.format(DATE_FORMAT) : ''}
         onDayChange={onChange}
