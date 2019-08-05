@@ -29,11 +29,10 @@ class SourcesSearch extends Component {
     placeholder: 'חפש מקור',
   };
 
-  componentWillMount() {
-    this.resetComponent();
-  }
-
-  resetComponent = () => this.setState({ suggestions: [], query: '' });
+  state = {
+    suggestions: [],
+    query: ''
+  };
 
   doFilter = debounce(() => {
     const { query }    = this.state;

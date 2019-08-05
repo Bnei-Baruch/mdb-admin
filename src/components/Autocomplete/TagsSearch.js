@@ -26,9 +26,10 @@ class TagsSearch extends Component {
     placeholder: 'חפש תגית',
   };
 
-  componentWillMount() {
-    this.resetComponent();
-  }
+  state = {
+    suggestions: [],
+    query: ''
+  };
 
   resetComponent = () => this.setState({ suggestions: [], query: '' });
 
