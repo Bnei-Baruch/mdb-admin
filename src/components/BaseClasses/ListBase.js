@@ -47,6 +47,8 @@ class ListBase extends PureComponent {
 
   render() {
     throw new Error('Not Implemented');
+    // eslint-disable-next-line
+    return null;
   }
 }
 
