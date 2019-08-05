@@ -48,7 +48,11 @@ loadUser(store, userManager);
 
 // Render regardless of application's state. let App decide what to render.
 const appContainer = document.getElementById('root');
-ReactDOM.render(<App store={store} history={history} />, appContainer);
+ReactDOM.render(
+  <React.StrictMode>
+    <App store={store} history={history} />
+  </React.StrictMode>
+  , appContainer);
 
 //
 // The main application

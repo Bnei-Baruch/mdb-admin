@@ -4,6 +4,7 @@ import { connect, Provider } from 'react-redux';
 import { OidcProvider } from 'redux-oidc';
 import { ConnectedRouter } from 'react-router-redux';
 import 'semantic-ui-css/semantic.min.css';
+import { BrowserRouter } from 'react-router-dom';
 
 import userManager from '../../helpers/userManager';
 import { selectors as system } from '../../redux/modules/system';
@@ -29,7 +30,9 @@ class App extends Component {
         <Provider store={store}>
           <OidcProvider store={store} userManager={userManager}>
             <ConnectedRouter history={history}>
-              <FrontPage />
+              <BrowserRouter>
+                <FrontPage />
+              </BrowserRouter>
             </ConnectedRouter>
           </OidcProvider>
         </Provider>
