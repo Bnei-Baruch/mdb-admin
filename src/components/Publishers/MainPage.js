@@ -39,15 +39,21 @@ class PublishersMainPage extends Component {
 
   state = {
     newPublisher: false,
+    wipOfCreate: false
   };
 
-  componentWillReceiveProps(nextProps) {
-    const { wipOfCreate } = this.props;
-    const nWip            = nextProps.wipOfCreate;
-    const nErr            = nextProps.errOfCreate;
-    if (wipOfCreate && !nWip && !nErr) {
-      this.toggleNewPublisher();
+  static getDerivedStateFromProps(props, state) {
+    const { wipOfCreate }                          = state;
+    const { wipOfCreate: nWip, errOfCreate: nErr } = props;
+
+    if (nWip || nErr) {
+      return { wipOfCreate: true };
     }
+
+    if (wipOfCreate)
+      return { newPublisher: !state.newPublisher, wipOfCreate: false };
+
+    return null;
   }
 
   toggleNewPublisher = () =>

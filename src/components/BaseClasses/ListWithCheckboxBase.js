@@ -12,6 +12,7 @@ class ListWithCheckboxBase extends ListWithFiltersBase {
   constructor(props) {
     super(props);
     this.state.selectedIds = [];
+    this.state.wip = false;
   }
 
   isSingleSelect = false;

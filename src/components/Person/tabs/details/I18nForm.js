@@ -39,6 +39,13 @@ class I18nForm extends Component {
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.person.i18n !== state.i18n) {
+      return { i18n: props.person.i18n };
+    }
+    return null;
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.person.i18n !== nextProps.person.i18n) {
       this.setState({ i18n: nextProps.person.i18n });
