@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect, Provider } from 'react-redux';
 import { OidcProvider } from 'redux-oidc';
-import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter } from 'connected-react-router';
 import 'semantic-ui-css/semantic.min.css';
-import { BrowserRouter } from 'react-router-dom';
 
 import userManager from '../../helpers/userManager';
 import { selectors as system } from '../../redux/modules/system';
@@ -30,9 +29,7 @@ class App extends Component {
         <Provider store={store}>
           <OidcProvider store={store} userManager={userManager}>
             <ConnectedRouter history={history}>
-              <BrowserRouter>
-                <FrontPage />
-              </BrowserRouter>
+              <FrontPage />
             </ConnectedRouter>
           </OidcProvider>
         </Provider>

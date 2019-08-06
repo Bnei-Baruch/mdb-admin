@@ -5,8 +5,8 @@ import ReactDOM from 'react-dom';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware, { delay } from 'redux-saga';
 import { put } from 'redux-saga/effects';
-import { routerMiddleware as createRouterMiddleware } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
+import { routerMiddleware as createRouterMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import { loadUser } from 'redux-oidc';
 
 import * as env from './helpers/env';
@@ -32,13 +32,13 @@ const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? wi
 const sagaMiddlewareOptions = env.isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
 
-const history = createHistory({
+const history = createBrowserHistory({
   basename: env.HISTORY_BASENAME
 });
 
 const routerMiddleware = createRouterMiddleware(history);
 
-const store = createStore(reducer, {}, compose(
+const store = createStore(reducer(history), {}, compose(
   applyMiddleware(routerMiddleware, sagaMiddleWare),
   devToolsStoreEnhancer()
 ));

@@ -1,5 +1,5 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { USER_FOUND } from 'redux-oidc';
 
 import { actions, types } from '../redux/modules/persons';

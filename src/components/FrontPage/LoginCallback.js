@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CallbackComponent } from 'redux-oidc';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 import userManager from '../../helpers/userManager';
 
