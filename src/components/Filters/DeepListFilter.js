@@ -30,19 +30,34 @@ class DeepListFilter extends React.Component {
   };
 
   state = {
-    selection: this.listToNumbersIfCan(this.props.value)
+    selection: DeepListFilter.listToNumbersIfCan(this.props.value)
   };
 
   componentDidMount() {
     this.scrollToSelections(this.state.selection);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      selection: this.listToNumbersIfCan(nextProps.value)
-    });
+  static getDerivedStateFromProps(props, state) {
+    console.log('DeepListFilter ', props, state);
+    if (!props.value) {
+      return null;
+    }
+
+    const selection = DeepListFilter.listToNumbersIfCan(props.value);
+
+    if (selection !== state.selection)
+      return { selection };
+
+    return null;
   }
 
+/*
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      selection: DeepListFilter.listToNumbersIfCan(nextProps.value)
+    });
+  }
+*/
   componentDidUpdate() {
     this.listContainer.scrollLeft = this.listContainer.scrollWidth;
     this.scrollToSelections(this.state.selection);
@@ -154,7 +169,7 @@ class DeepListFilter extends React.Component {
   };
 
   // eslint-disable-next-line class-methods-use-this
-  listToNumbersIfCan(list) {
+  static listToNumbersIfCan(list) {
     return list.map(x => (Number.isNaN(parseFloat(x)) ? x : parseFloat(x)));
   }
 
@@ -175,7 +190,7 @@ class DeepListFilter extends React.Component {
           >
             {
               roots.length > 0
-                ? this.createLists(0, roots, this.state.selection, this.listToNumbersIfCan(allValues))
+                ? this.createLists(0, roots, this.state.selection, DeepListFilter.listToNumbersIfCan(allValues))
                 : emptyLabel
             }
           </div>

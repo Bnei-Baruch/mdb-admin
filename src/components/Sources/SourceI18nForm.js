@@ -34,10 +34,11 @@ class SourceI18nForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.source.i18n !== nextProps.source.i18n) {
-      this.setState({ i18n: nextProps.source.i18n });
+  static getDerivedStateFromProps(props, state) {
+    if (props.source && props.source.i18n !== state.i18n) {
+      return { i18n: props.source.i18n };
     }
+    return null;
   }
 
   onNameChange = (e, { value }) => {
