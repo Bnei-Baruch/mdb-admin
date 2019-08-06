@@ -23,11 +23,11 @@ class ContentUnitsContainer extends Component {
     errOfCreate: null
   };
 
-  componentWillReceiveProps(nextProps) {
-    const { wipOfCreate } = this.props;
-    const nWip            = nextProps.wipOfCreate;
-    const nErr            = nextProps.errOfCreate;
-    if (wipOfCreate && !nWip && !nErr) {
+  componentDidUpdate(prevProps) {
+    const { wipOfCreate: pWip, errOfCreate: pErr } = prevProps;
+    const { wipOfCreate: nWip, errOfCreate: nErr } = this.props;
+
+    if ((pWip || pErr) && !nWip && !nErr) {
       this.askForData(this.getPageNo());
     }
   }

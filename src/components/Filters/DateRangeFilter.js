@@ -129,24 +129,39 @@ class DateFilter extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = this.getUpdatedStateFromProps(this.props);
+    this.state = DateFilter.getUpdatedStateFromValue(this.props.value, {});
   }
 
   componentDidMount() {
     this.datePicker.showMonth(this.state.from);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState(this.getUpdatedStateFromProps(nextProps));
+  static getDerivedStateFromProps(props, state) {
+    console.log('getDerivedStateFromProps', props.value, state);
+    return DateFilter.getUpdatedStateFromValue(state, props.value);
   }
 
-  getUpdatedStateFromProps = props => ({
-    from: props.value.from,
-    to: props.value.to,
-    datePreset: props.value.datePreset || rangeToPreset(props.value.from, props.value.to),
-    fromInputValue: moment(props.value.from, 'YYYY-MM-DD').format('YYYY-MM-DD'),
-    toInputValue: moment(props.value.to, 'YYYY-MM-DD').format('YYYY-MM-DD')
-  });
+  static getUpdatedStateFromValue = (newVal, prevVal) => {
+    let result                     = {};
+    const { from: nFrom, to: nTo } = newVal;
+    const { from, to }             = prevVal;
+
+    if (nFrom !== from) {
+      result.from           = nFrom;
+      result.fromInputValue = moment(nFrom, 'YYYY-MM-DD').format('YYYY-MM-DD');
+    }
+
+    if (nTo !== to) {
+      result.to           = nTo;
+      result.toInputValue = moment(nTo, 'YYYY-MM-DD').format('YYYY-MM-DD');
+    }
+
+    if (nFrom !== from || nTo !== to) {
+      result.datePreset = rangeToPreset(nFrom, nTo);
+    }
+
+    return (Object.keys(result).length !== 0) ? result : null;
+  };
 
   setRange(datePreset, from, to, fromInputValue = '', toInputValue = '') {
     let range = {};
@@ -241,8 +256,8 @@ class DateFilter extends Component {
     const { onCancel } = this.props;
 
     const {
-      fromInputValue, toInputValue, from, to, datePreset
-    } = this.state;
+            fromInputValue, toInputValue, from, to, datePreset
+          } = this.state;
 
     return (
       <Segment basic compact attached="bottom" floated="left" className="tab active">

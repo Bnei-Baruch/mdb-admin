@@ -40,14 +40,14 @@ class AssociationsContainer extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.units.length > 0 && nextProps.units.length > this.props.units.length) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.units.length > 0 && this.props.units.length > prevProps.units.length) {
       ReactDom.findDOMNode(this).scrollIntoView(false);
     }
-    if (nextProps.collection
-      && !this.props.collection
-      && nextProps.collection.id !== this.props.collection.id) {
-      this.askForData(nextProps.collection.id);
+    if (this.props.collection
+      && !prevProps.collection
+      && this.props.collection.id !== prevProps.collection.id) {
+      this.askForData(this.props.collection.id);
     }
   }
 

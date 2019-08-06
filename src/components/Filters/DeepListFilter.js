@@ -38,7 +38,6 @@ class DeepListFilter extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log('DeepListFilter ', props, state);
     if (!props.value) {
       return null;
     }
@@ -51,13 +50,6 @@ class DeepListFilter extends React.Component {
     return null;
   }
 
-/*
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      selection: DeepListFilter.listToNumbersIfCan(nextProps.value)
-    });
-  }
-*/
   componentDidUpdate() {
     this.listContainer.scrollLeft = this.listContainer.scrollWidth;
     this.scrollToSelections(this.state.selection);
