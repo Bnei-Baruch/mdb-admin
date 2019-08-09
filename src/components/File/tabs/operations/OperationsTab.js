@@ -27,10 +27,10 @@ class OperationsTab extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (((nextProps.file && !nextProps.file)
-      || (nextProps.file && this.props.file && nextProps.file.id !== this.props.file.id))) {
-      this.props.fetchTreeWithOperations(nextProps.file.id);
+  componentDidUpdate(prevProps) {
+    if (((this.props.file && !this.props.file)
+        || (this.props.file && prevProps.file && this.props.file.id !== prevProps.file.id))) {
+      prevProps.fetchTreeWithOperations(this.props.file.id);
     }
   }
 
