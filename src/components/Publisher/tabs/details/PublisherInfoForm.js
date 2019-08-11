@@ -32,12 +32,16 @@ class PublisherInfoForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.publisher !== nextProps.publisher) {
-      this.setState({
-        pattern: nextProps.publisher.pattern || ''
-      });
+  static getDerivedStateFromProps(props, state) {
+    if (!props.publisher) {
+      return null;
     }
+    const { pattern } = props.publisher;
+    if (pattern !== state.pattern) {
+      return { pattern: pattern || '' };
+    }
+
+    return null;
   }
 
   onPatternChange = (e, { value }) => {

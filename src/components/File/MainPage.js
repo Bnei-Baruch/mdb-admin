@@ -25,18 +25,19 @@ const MainPage = (props) => {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
   }
 
-  if (file) {
+  if (wip) {
+    return <LoadingSplash text="Loading file details" subtext="Hold on tight..." />;
+  }
+
+  if (!!file) {
     return <TabsMenu items={items} file={file} />;
   }
 
-  return wip
-    ? <LoadingSplash text="Loading file details" subtext="Hold on tight..." />
-    : (
-      <FrownSplash
-        text="Couldn't find file"
-        subtext={<span>Try the <Link to="/files">files list</Link>...</span>}
-      />
-    );
+  return ( <FrownSplash
+    text="Couldn't find file"
+    subtext={<span>Try the <Link to="/files">files list</Link>...</span>}
+  /> );
+
 };
 
 MainPage.propTypes = {

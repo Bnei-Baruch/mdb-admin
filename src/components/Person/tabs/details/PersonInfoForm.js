@@ -32,12 +32,14 @@ class PersonInfoForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.person !== nextProps.person) {
-      this.setState({
-        pattern: nextProps.person.pattern || ''
-      });
+  static getDerivedStateFromProps(props, state) {
+    if (!props.person) return null;
+
+    const { pattern = '' } = props.person;
+    if (pattern !== state.pattern) {
+      return { pattern };
     }
+    return null;
   }
 
   onPatternChange = (e, { value }) => {

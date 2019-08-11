@@ -28,18 +28,25 @@ class TagChildren extends Component {
   };
 
   state = {
-    modalOpen: false
+    modalOpen: false,
+    wip: false
   };
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
     // Hide modal if we're finished.
     // We're finished if wip is true in current props and false in next props without an error
-    const wip  = this.props.getWIP('create');
-    const nWip = nextProps.getWIP('create');
-    const nErr = nextProps.getError('create');
-    if (wip && !nWip && !nErr) {
-      this.hideModal();
+
+    const nWip = props.getWIP('create');
+    const nErr = props.getError('create');
+    if (nErr || nWip) {
+      return { wip: true };
     }
+
+    if (state.wip && !nWip && !nErr) {
+      return { modalOpen: false, wip: false };
+    }
+
+    return null;
   }
 
   showModal = () => this.setState({ modalOpen: true });

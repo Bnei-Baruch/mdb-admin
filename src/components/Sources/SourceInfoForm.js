@@ -23,25 +23,28 @@ class SourceInfoForm extends Component {
   constructor(props) {
     super(props);
 
-    const { source } = props;
+    const { source: { pattern, description, type_id } } = props;
 
     this.state = {
-      pattern: source.pattern || '',
-      description: source.description || '',
-      type_id: source.type_id,
+      pattern: pattern || '',
+      description: description || '',
+      type_id: type_id || '',
       submitted: false,
       errors: {}
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.source !== nextProps.source) {
-      this.setState({
-        pattern: nextProps.source.pattern || '',
-        description: nextProps.source.description || '',
-        type_id: nextProps.source.type_id,
-      });
+  static getDerivedStateFromProps(props, state) {
+    const { pattern: pPattern, description: pDescription, type_id: pType_id } = state;
+
+    if (!props.source)
+      return null;
+
+    const { source: { pattern, description, type_id } } = props;
+    if (pattern !== pPattern || description !== pDescription || type_id !== pType_id) {
+      return { pattern: pattern || '', description: description || '', type_id: type_id || '', };
     }
+    return null;
   }
 
   onTypeChange = (e, { value }) => {
@@ -76,9 +79,7 @@ class SourceInfoForm extends Component {
     const wip                          = getWIP('updateInfo');
     const err                          = getError('updateInfo');
 
-    const {
-      pattern, description, type_id: typeID, submitted, errors
-    } = this.state;
+    const { pattern, description, type_id: typeID, submitted, errors } = this.state;
 
     return (
       <div>

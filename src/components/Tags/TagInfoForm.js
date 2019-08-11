@@ -32,13 +32,17 @@ class TagInfoForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.tag !== nextProps.tag) {
-      this.setState({
-        pattern: nextProps.tag.pattern || '',
-        description: nextProps.tag.description || '',
-      });
+  static getDerivedStateFromProps(props, state) {
+    if (!props.tag)
+      return null;
+
+    const { pattern: nPattern, description: nDescription } = props.tag;
+    const { pattern, description }                         = state;
+    if (pattern !== nPattern || description !== nDescription) {
+      return { pattern: nPattern, description: nDescription };
     }
+
+    return null;
   }
 
   onDescriptionChange = (e, { value }) => {
@@ -70,8 +74,8 @@ class TagInfoForm extends Component {
     const err                       = getError('updateInfo');
 
     const {
-      pattern, description, submitted, errors
-    } = this.state;
+            pattern, description, submitted, errors
+          } = this.state;
 
     return (
       <div>

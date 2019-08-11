@@ -34,10 +34,16 @@ class TagI18nForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.tag.i18n !== nextProps.tag.i18n) {
-      this.setState({ i18n: nextProps.tag.i18n });
+  static getDerivedStateFromProps(props, state) {
+    if (!props.tag) {
+      return null;
     }
+    const { i18n = {} } = props.tag;
+    if (i18n !== state.i18n) {
+      return { i18n };
+    }
+
+    return null;
   }
 
   onLabelChange = (e, { value }) => {

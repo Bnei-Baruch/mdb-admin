@@ -42,6 +42,7 @@ class CollectionModal extends ListWithCheckboxBase {
       handleShowAssociateModal();
       return { selectedIds: [], showFilters: false, wip: false };
     }
+    return null;
   }
 
   getNamespace = () => NS_UNIT_ASSOCIATION_COLLECTION;

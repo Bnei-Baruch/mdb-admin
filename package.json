@@ -50,7 +50,8 @@
     "redux-saga": "^0.16.0",
     "reselect": "^4.0.0",
     "semantic-ui-css": "^2.2.10",
-    "semantic-ui-react": "^0.87.3"
+    "semantic-ui-react": "^0.87.3",
+    "react-fast-compare": "^2.0.4"
   },
   "scripts": {
     "start": "npm-run-all -p watch-css start-js",

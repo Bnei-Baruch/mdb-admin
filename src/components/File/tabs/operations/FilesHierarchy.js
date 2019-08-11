@@ -5,6 +5,7 @@ import moment from 'moment';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
 import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
+import isEqual from 'react-fast-compare';
 
 import {
   ALL_FILE_TYPES,
@@ -39,26 +40,25 @@ class FilesHierarchy extends Component {
   constructor(props) {
     super(props);
     const { files } = props;
-    this.state      = this.getStateFromFiles(files);
+    this.state      = FilesHierarchy.getStateFromFiles(files);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { files } = nextProps;
-    const props     = this.props;
-
-    // no change ?
-    if (files === props.files) {
-      return;
+  static getDerivedStateFromProps(props, state) {
+    if (!props.files) {
+      return null;
     }
 
-    const nextState = this.getStateFromFiles(files);
-    if (this.state.currentFile) {
+    const nextState = FilesHierarchy.getStateFromFiles(props.files);
+    if (isEqual(state, nextState)) {
+      return null;
+    }
+    if (state.currentFile) {
       delete nextState.currentFile;
     }
-    this.setState(nextState);
+    return nextState;
   }
 
-  getStateFromFiles = (files) => {
+  static getStateFromFiles = (files) => {
     const total   = files.length;
     const cuFiles = new Set(files.map(x => x.id));
 
@@ -78,17 +78,17 @@ class FilesHierarchy extends Component {
     // build and sort hierarchy
     const hierarchy = buildHierarchy(fileMap);
     hierarchy.byID  = fileMap;
-    hierarchy.roots.sort((a, b) => this.cmpFiles(fileMap.get(a), fileMap.get(b)));
-    hierarchy.childMap.forEach(v => v.sort((a, b) => this.cmpFiles(fileMap.get(a), fileMap.get(b))));
+    hierarchy.roots.sort((a, b) => FilesHierarchy.cmpFiles(fileMap.get(a), fileMap.get(b)));
+    hierarchy.childMap.forEach(v => v.sort((a, b) => FilesHierarchy.cmpFiles(fileMap.get(a), fileMap.get(b))));
 
     // get first playable file
-    const currentFile = this.bestPlayableFile(hierarchy);
+    const currentFile = FilesHierarchy.bestPlayableFile(hierarchy);
 
     return { total, hierarchy, currentFile };
   };
 
   // compare files by "relevance"
-  cmpFiles = (a, b) => {
+  static cmpFiles = (a, b) => {
     // sort by published status
     if (a.published && !b.published) {
       return -1;
@@ -132,7 +132,7 @@ class FilesHierarchy extends Component {
     return 0;
   };
 
-  bestPlayableFile = (hierarchy) => {
+  static bestPlayableFile = (hierarchy) => {
     // We DFS the hierarchy tree for the best playable leaf node.
     let best = null;
     let s    = [...hierarchy.roots];
@@ -145,7 +145,7 @@ class FilesHierarchy extends Component {
         const file = hierarchy.byID.get(id);
         if (['audio', 'video'].includes(file.type)) {
           if (best) {
-            if (this.cmpFiles(file, best) < 0) {
+            if (FilesHierarchy.cmpFiles(file, best) < 0) {
               best = file;
             }
           } else {

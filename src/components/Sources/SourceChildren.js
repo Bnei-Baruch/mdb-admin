@@ -28,18 +28,24 @@ class SourceChildren extends Component {
   };
 
   state = {
-    modalOpen: false
+    modalOpen: false,
+    wip: false
   };
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
     // Hide modal if we're finished.
     // We're finished if wip is true in current props and false in next props without an error
-    const wip  = this.props.getWIP('create');
-    const nWip = nextProps.getWIP('create');
-    const nErr = nextProps.getError('create');
+
+    const nWip = props.getWIP('create');
+    const nErr = props.getError('create');
+    if (nWip || nErr)
+      return { wip: true };
+
+    const { wip } = state;
     if (wip && !nWip && !nErr) {
-      this.hideModal();
+      return { modalOpen: true, wip: false };
     }
+    return null;
   }
 
   showModal = () => this.setState({ modalOpen: true });

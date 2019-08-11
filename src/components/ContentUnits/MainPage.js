@@ -27,14 +27,15 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     this.state.showNewCU = false;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { wipOfCreate } = this.props;
-
-    const nWip = nextProps.wipOfCreate;
-    const nErr = nextProps.errOfCreate;
-    if (wipOfCreate && !nWip && !nErr) {
-      this.toggleNewCU();
+  static getDerivedStateFromProps(props, state) {
+    const { wipOfCreate, errOfCreate } = props;
+    if (errOfCreate || wipOfCreate) {
+      return { wip: true };
     }
+    if (state.wip && !wipOfCreate && !errOfCreate) {
+      return { showNewCU: !state.showNewCU, wip: false };
+    }
+    return null;
   }
 
   toggleNewCU = () => this.setState({ showNewCU: !this.state.showNewCU });

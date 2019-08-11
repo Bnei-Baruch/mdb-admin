@@ -40,7 +40,7 @@ class I18nForm extends Component {
     super(props);
 
     const { i18n }                           = props.unit;
-    const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
+    const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, I18nForm.i18nObjectFromKey);
 
     this.state = {
       i18n: newI18n,
@@ -50,17 +50,20 @@ class I18nForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { i18n } = nextProps.unit;
+  static getDerivedStateFromProps(props, state) {
+    if (!props.unit)
+      return null;
 
-    if (this.props.unit.i18n !== i18n) {
-      const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
+    const { unit: { i18n } } = props;
 
-      this.setState({ i18n: newI18n, errors: i18nErrors, addedKeys });
+    if (i18n !== state.i18n) {
+      const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, I18nForm.i18nObjectFromKey);
+      return { i18n: newI18n, errors: i18nErrors, addedKeys };
     }
+    return null;
   }
 
-  i18nObjectFromKey = language => ({
+  static  i18nObjectFromKey = language => ({
     language,
     name: '',
     description: ''

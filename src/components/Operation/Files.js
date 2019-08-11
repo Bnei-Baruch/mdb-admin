@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import {
   Flag, Header, Icon, List, Menu, Message, Segment
 } from 'semantic-ui-react';
+import isEqual from 'react-fast-compare';
 
 import {
   EMPTY_ARRAY, EMPTY_OBJECT, LANG_UNKNOWN, LANGUAGES, SECURITY_LEVELS
@@ -36,34 +37,33 @@ class Files extends Component {
   constructor(props) {
     super(props);
     const { files } = props;
-    this.state      = this.getStateFromFiles(files);
+    this.state      = Files.getStateFromFiles(files);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { files } = nextProps;
-    const props     = this.props;
-
-    // no change ?
-    if (files === props.files) {
-      return;
+  static getDerivedStateFromProps(props, state) {
+    if (!props.files) {
+      return null;
     }
 
-    const nextState = this.getStateFromFiles(files);
-    if (this.state.currentFile) {
+    const nextState = Files.getStateFromFiles(props.files);
+    if (isEqual(state, nextState)) {
+      return null;
+    }
+    if (state.currentFile) {
       delete nextState.currentFile;
     }
-    this.setState(nextState);
+    return nextState;
   }
 
-  getStateFromFiles = files => (
+  static getStateFromFiles = files => (
     {
       total: files.length,
-      files: [...files].sort(this.cmpFiles),
+      files: [...files].sort(Files.cmpFiles),
     }
   );
 
   // compare files by "relevance"
-  cmpFiles = (a, b) => {
+  static cmpFiles = (a, b) => {
     // sort by created_at
     if (a.created_at < b.created_at) {
       return -1;

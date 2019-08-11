@@ -11,7 +11,7 @@ class TabsMenu extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
-      element: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+      element: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.object]).isRequired,
       namespace: PropTypes.string,
     })),
     active: PropTypes.string,
@@ -24,23 +24,28 @@ class TabsMenu extends Component {
 
   constructor(props) {
     super(props);
-
-    let { active } = props;
-    if (!active) {
-      const { items } = props;
-      if (items.length > 0) {
-        active = items[0].name;
-      }
-    }
-
-    this.state = { active };
+    const active = TabsMenu.activeFromProps(props);
+    this.state   = { active };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { active } = nextProps;
-    if (active !== this.props.active) {
-      this.setState({ active });
+  static getDerivedStateFromProps(props, state) {
+    const active = TabsMenu.activeFromProps(props);
+    if (active !== state.active) {
+      return { active: state.active ? state.active : active };
     }
+    return null;
+  }
+
+  static activeFromProps(props) {
+
+    if (props.active)
+      return props.active;
+
+    const { items } = props;
+    if (items.length > 0) {
+      return items[0].name;
+    }
+    return '';
   }
 
   handleActiveChange = (e, { name }) => this.setState({ active: name });

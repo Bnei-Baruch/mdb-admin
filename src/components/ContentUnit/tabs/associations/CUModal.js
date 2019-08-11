@@ -24,12 +24,23 @@ class CUModal extends ListWithCheckboxBase {
     this.askForData(1);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { wipAssociate } = this.props;
-    if (nextProps.unit && wipAssociate && !nextProps.wipAssociate) {
-      this.askForData(1);
-      this.handleClose();
+  static getDerivedStateFromProps(props, state) {
+    if (!props.unit) {
+      return null;
     }
+
+    const { wipAssociate, fetchList, handleToggleModal } = props;
+    if (wipAssociate) {
+      return { wip: true };
+    }
+
+    if (state.wip && !wipAssociate) {
+      fetchList(NS_UNIT_ASSOCIATION_CU, 1);
+      handleToggleModal();
+      return { selectedIds: [], showFilters: false, wip: false };
+    }
+
+    return null;
   }
 
   getNamespace = () => NS_UNIT_ASSOCIATION_CU;

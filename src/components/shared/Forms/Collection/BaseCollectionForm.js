@@ -181,7 +181,6 @@ class BaseCollectionForm extends Component {
   };
 
   handleSourceChange = (source) => {
-    console.log('handleSourceChange', source);
     const errors = this.state.errors;
     delete errors.source;
     this.setState({ source: source.uid, errors });

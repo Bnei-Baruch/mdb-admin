@@ -39,10 +39,11 @@ class I18nForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.publisher.i18n !== nextProps.publisher.i18n) {
-      this.setState({ i18n: nextProps.publisher.i18n });
+  static getDerivedStateFromProps(props, state) {
+    if (props.publisher.i18n !== state.i18n) {
+      return { i18n: props.publisher.i18n };
     }
+    return null;
   }
 
   onNameChange = (e, { value }) => {
