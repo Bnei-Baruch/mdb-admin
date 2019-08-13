@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, ReactReduxContext } from 'react-redux';
 import reduce from 'lodash/reduce';
 import { Label } from 'semantic-ui-react';
 
@@ -25,15 +25,13 @@ class FilterTags extends Component {
     tags: EMPTY_ARRAY,
   };
 
-  static contextTypes = {
-    store: PropTypes.object.isRequired
-  };
+  static contextType = ReactReduxContext;
 
   renderTag = (tag) => {
     const { namespace } = this.props;
     const {
-      name, value, index, isActive
-    }             = tag;
+            name, value, index, isActive
+          }             = tag;
 
     const icon  = filtersTransformer.getTagIcon(name);
     const label = filtersTransformer.valueToTagLabel(name, value, this.props, this.context.store);

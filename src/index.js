@@ -26,8 +26,8 @@ import App from './components/App/App';
 //   whyDidYouUpdate(React, { exclude: /Menu*|Dropdown*|List*|Button*|Message*|Link|ReactJWPlayer*/ });
 // }
 
-const devToolsArePresent    = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
-const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? window.devToolsExtension() : f => f;
+const devToolsArePresent    = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined';
+const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
 
 const sagaMiddlewareOptions = env.isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
