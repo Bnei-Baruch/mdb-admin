@@ -12,7 +12,8 @@ import connectFilter from './connectFilter';
 
 // TODO (yaniv -> oleg): need indication for user when clicking on a bad date (after today) or when typing bad dates
 
-const format = 'YYYY-MM-DD';
+const format     = 'YYYY-MM-DD';
+const UTC_OFFSET = moment().utcOffset();
 
 const now = () =>
   moment(new Date())
@@ -188,11 +189,10 @@ class DateFilter extends Component {
   }
 
   apply = () => {
-    this.props.updateValue({
-      from: this.state.from,
-      to: this.state.to,
-      datePreset: this.state.datePreset
-    }, this.props.isUpdateQuery);
+    const from = moment(this.state.from).add(UTC_OFFSET, 'm').toDate();
+    const to   = moment(this.state.to).add(UTC_OFFSET, 'm').toDate();
+
+    this.props.updateValue({ from, to, datePreset: this.state.datePreset }, this.props.isUpdateQuery);
     this.props.onApply();
   };
 
