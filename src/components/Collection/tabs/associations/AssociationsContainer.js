@@ -30,7 +30,8 @@ class AssociationsContainer extends Component {
   };
 
   state = {
-    selectedCCU: []
+    selectedCCU: [],
+    allTableRef: null
   };
 
   componentDidMount() {
@@ -42,7 +43,7 @@ class AssociationsContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.units.length > 0 && this.props.units.length > prevProps.units.length) {
-      ReactDom.findDOMNode(this).scrollIntoView(false);
+      this.state.allTableRef.scrollIntoView(false);
     }
     if (this.props.collection
       && !prevProps.collection
@@ -122,7 +123,9 @@ class AssociationsContainer extends Component {
   handlePositionDown = () =>
     this.updatePosition(false);
 
-  handleContextRef = contextRef => this.setState({ contextRef });
+  handleContextRef = ref => this.setState({ contextRef: ref });
+
+  handleAllTableRef = ref => this.setState({ allTableRef: ref });
 
   render() {
     const { selectedCCU, contextRef } = this.state;
@@ -137,7 +140,7 @@ class AssociationsContainer extends Component {
       || selectedCCU[0].content_unit_id === units[0].content_unit_id;
 
     return (
-      <div>
+      <div  ref={this.handleAllTableRef}>
         <Menu borderless size="large">
           <Menu.Item header>
             <Header content="Associated Content Units" size="medium" color="blue" />

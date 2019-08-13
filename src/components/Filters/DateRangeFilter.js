@@ -137,7 +137,6 @@ class DateFilter extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log('getDerivedStateFromProps', props.value, state);
     return DateFilter.getUpdatedStateFromValue(state, props.value);
   }
 
