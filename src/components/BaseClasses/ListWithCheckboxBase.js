@@ -12,7 +12,7 @@ class ListWithCheckboxBase extends ListWithFiltersBase {
   constructor(props) {
     super(props);
     this.state.selectedIds = [];
-    this.state.wip = false;
+    this.state.wip         = false;
   }
 
   isSingleSelect = false;
@@ -59,8 +59,7 @@ class ListWithCheckboxBase extends ListWithFiltersBase {
   };
 
   render() {
-    throw new Error('Not Implemented');
-    // eslint-disable-next-line no-unreachable
+    throw new Error('Not Implemented');  // eslint-disable-next-line no-unreachable
     return null;
   }
 }
