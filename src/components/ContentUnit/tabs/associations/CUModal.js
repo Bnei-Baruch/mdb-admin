@@ -24,23 +24,10 @@ class CUModal extends ListWithCheckboxBase {
     this.askForData(1);
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (!props.unit) {
-      return null;
+  componentDidUpdate(prevProps) {
+    if (this.props.wipAssociate && !prevProps.wipAssociate) {
+      this.props.handleToggleModal();
     }
-
-    const { wipAssociate, fetchList, handleToggleModal } = props;
-    if (wipAssociate) {
-      return { wip: true };
-    }
-
-    if (state.wip && !wipAssociate) {
-      fetchList(NS_UNIT_ASSOCIATION_CU, 1);
-      handleToggleModal();
-      return { selectedIds: [], showFilters: false, wip: false };
-    }
-
-    return null;
   }
 
   getNamespace = () => NS_UNIT_ASSOCIATION_CU;
@@ -49,6 +36,7 @@ class CUModal extends ListWithCheckboxBase {
 
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
+    console.log('renderList associatedIds ', associatedIds);
     return (
       <CUList
         {...this.getSelectListProps()}

@@ -17,20 +17,13 @@ class AddNewFiles extends ListWithCheckboxBase {
     ...ListWithCheckboxBase.propTypes,
     unit: shapes.ContentUnit,
     items: PropTypes.arrayOf(shapes.File),
-    setEditMode: PropTypes.func,
-    wip: false
+    setEditMode: PropTypes.func
   };
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.wipAddFile) {
-      return { wip: true };
+  componentDidUpdate(prevProps) {
+    if (prevProps.wipAddFile && !this.props.wipAddFile) {
+      this.switchToViewMode();
     }
-
-    if (!props.wipAddFile && state.wip) {
-      props.setEditMode(false);
-      return { selectedIds: [], wip: false };
-    }
-    return null;
   }
 
   toggleFilters = () => this.setState({ showFilters: !this.state.showFilters });

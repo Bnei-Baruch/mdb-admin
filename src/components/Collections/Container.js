@@ -22,26 +22,13 @@ class CollectionsContainer extends Component {
     errOfCreate: null
   };
 
-  state = {
-    wip: false
-  };
-
-  static getDerivedStateFromProps(props, state) {
-    const { wipOfCreate, errOfCreate, fetchList } = props;
-    if (wipOfCreate || errOfCreate) {
-      return { wip: true };
+  componentDidUpdate(prevProps) {
+    if (prevProps.wipOfCreate && !this.props.wipOfCreate) {
+      this.askForData(1);
     }
-
-    if (state.wip && !wipOfCreate) {
-      fetchList(NS_COLLECTIONS, 1);
-      return { wip: false };
-    }
-    return null;
   }
 
-  askForData = (pageNo) => {
-    this.props.fetchList(NS_COLLECTIONS, pageNo);
-  };
+  askForData = pageNo => this.props.fetchList(NS_COLLECTIONS, pageNo);
 
   getPageNo = (notUseLocation) => {
     let page = 0;

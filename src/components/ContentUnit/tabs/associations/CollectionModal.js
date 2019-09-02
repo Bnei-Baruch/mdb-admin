@@ -31,18 +31,11 @@ class CollectionModal extends ListWithCheckboxBase {
     this.askForData(1);
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { wipAssociate, unit, handleShowAssociateModal } = props;
-    if (wipAssociate) {
-      return { wip: true };
+  componentDidUpdate(prevProps) {
+    if (this.props.wipAssociate && !prevProps.wipAssociate) {
+      this.askForData(1);
+      this.handleClose();
     }
-
-    if (unit && state.wip && !wipAssociate) {
-      props.fetchList(NS_UNIT_ASSOCIATION_COLLECTION, 1);
-      handleShowAssociateModal();
-      return { selectedIds: [], showFilters: false, wip: false };
-    }
-    return null;
   }
 
   getNamespace = () => NS_UNIT_ASSOCIATION_COLLECTION;
