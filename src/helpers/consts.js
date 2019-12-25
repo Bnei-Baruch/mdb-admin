@@ -67,6 +67,7 @@ export const CT_SONG                  = 'SONG';
 export const CT_BOOK                  = 'BOOK';
 export const CT_BLOG_POST             = 'BLOG_POST';
 export const CT_RESEARCH_MATERIAL     = 'RESEARCH_MATERIAL';
+export const CT_KTAIM_NIVCHARIM       = 'KTAIM_NIVCHARIM';
 
 export const CONTENT_TYPE_BY_ID = {
   1: CT_DAILY_LESSON,
@@ -108,6 +109,7 @@ export const CONTENT_TYPE_BY_ID = {
   43: CT_BOOKS,
   44: CT_BLOG_POST,
   45: CT_RESEARCH_MATERIAL,
+  46: CT_KTAIM_NIVCHARIM,
 };
 
 // Collection types
@@ -156,6 +158,7 @@ export const CONTENT_UNIT_TYPES = {
   [CT_BOOK]: { text: CT_BOOK, value: 43 },
   [CT_BLOG_POST]: { text: CT_BLOG_POST, value: 44 },
   [CT_RESEARCH_MATERIAL]: { text: CT_RESEARCH_MATERIAL, value: 45 },
+  [CT_KTAIM_NIVCHARIM]: { text: CT_KTAIM_NIVCHARIM, value: 46 },
 };
 
 export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
