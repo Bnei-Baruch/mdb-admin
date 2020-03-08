@@ -4,7 +4,7 @@ LABEL maintainer="edoshor@gmail.com"
 
 WORKDIR /app
 
-ENV DEPLOY_ENV=external \
+ENV REACT_APP_ENV=external \
     REACT_APP_BASE_URL=https://kabbalahmedia.info/admin \
     REACT_APP_HISTORY_BASENAME=/admin/ \
     REACT_APP_AUTH_URL=https://accounts.kbb1.com/auth/realms/main \
@@ -14,7 +14,8 @@ ENV DEPLOY_ENV=external \
 COPY . .
 
 RUN yarn install --frozen-lockfile && \
-    yarn build:$DEPLOY_ENV && \
+    yarn build-css && \ 
+    react-app-rewired build && \
     rm -rf node_modules
 
 FROM alpine
