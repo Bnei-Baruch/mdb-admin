@@ -15,7 +15,7 @@ COPY . .
 
 RUN yarn install --frozen-lockfile && \
     yarn build-css && \ 
-    react-app-rewired build && \
+    node_modules/.bin/react-app-rewired build && \
     rm -rf node_modules
 
 FROM alpine
