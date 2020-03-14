@@ -20,3 +20,5 @@ RUN yarn install --frozen-lockfile && \
 
 FROM alpine
 COPY --from=build /app/build /app
+COPY misc/docker-entrypoint.sh .
+ENTRYPOINT ["/docker-entrypoint.sh"]
