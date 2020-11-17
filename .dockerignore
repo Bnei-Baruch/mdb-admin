@@ -1,0 +1,31 @@
+# Common
+README.md
+CHANGELOG.md
+LICENSE
+*.log
+
+# git
+.git
+.gitattributes
+.gitignore
+
+# JetBrains
+.idea
+projectFilesBackup
+
+# Docker
+docker-compose.yml
+Dockerfile
+
+# Others
+.codeclimate.json
+.editorconfig
+.eslintignore
+.eslintrc
+.circleci
+circle.yml
+.env
+
+# App
+build
+node_modules
