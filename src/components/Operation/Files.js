@@ -78,18 +78,18 @@ class Files extends Component {
   // eslint-disable-next-line class-methods-use-this
   renderFile(file) {
     const {
-            id,
-            name,
-            size,
-            language,
-            secure,
-            published,
-            properties,
-          }               = file;
+      id,
+      name,
+      size,
+      language,
+      secure,
+      published,
+      properties,
+    }               = file;
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
     const lang            = LANGUAGES[language || LANG_UNKNOWN];
-    const duration        = (properties || {}).duration;
+    const { duration } = properties || {};
     const durationDisplay = duration ?
       moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
       null;

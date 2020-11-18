@@ -30,8 +30,8 @@ class FilterTags extends Component {
   renderTag = (tag) => {
     const { namespace } = this.props;
     const {
-            name, value, index, isActive
-          }             = tag;
+      name, value, index, isActive
+    }             = tag;
 
     const icon  = filtersTransformer.getTagIcon(name);
     const label = filtersTransformer.valueToTagLabel(name, value, this.props, this.context.store);

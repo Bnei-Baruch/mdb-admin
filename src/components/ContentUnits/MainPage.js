@@ -62,11 +62,14 @@ class ContentUnitMainPage extends ListWithFiltersBase {
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
 
-    return (<CUList
-      items={items}
-      associatedIds={associatedIds}
-      currentLanguage={currentLanguage}
-      withCheckBox={false} />);
+    return (
+      <CUList
+        items={items}
+        associatedIds={associatedIds}
+        currentLanguage={currentLanguage}
+        withCheckBox={false}
+      />
+    );
   };
 
   render() {
@@ -83,7 +86,8 @@ class ContentUnitMainPage extends ListWithFiltersBase {
           centered={false}
           size="small"
           open={this.state.showNewCU}
-          onClose={this.toggleNewCU}>
+          onClose={this.toggleNewCU}
+        >
           <Modal.Header>Create New Content Unit</Modal.Header>
           <Modal.Content>
             <CreateContentUnitForm wip={wipOfCreate} err={errOfCreate} create={create} />

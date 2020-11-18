@@ -7,21 +7,6 @@ import { EMPTY_ARRAY } from '../../helpers/consts';
 import { selectors as filterSelectors } from '../../redux/modules/filters';
 
 class TabsMenu extends Component {
-
-  static propTypes = {
-    items: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      element: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.object]).isRequired,
-      namespace: PropTypes.string,
-    })),
-    active: PropTypes.string,
-  };
-
-  static defaultProps = {
-    items: EMPTY_ARRAY,
-    active: '',
-  };
-
   constructor(props) {
     super(props);
     const active = TabsMenu.activeFromProps(props);
@@ -37,9 +22,7 @@ class TabsMenu extends Component {
   }
 
   static activeFromProps(props) {
-
-    if (props.active)
-      return props.active;
+    if (props.active) return props.active;
 
     const { items } = props;
     if (items.length > 0) {
@@ -76,12 +59,25 @@ class TabsMenu extends Component {
             })
           }
         </Menu>
-        {(
-          <ElementType {...this.props} namespace={activeItem.namespace} contentTypes={activeItem.contentTypes} isUpdateQuery={activeItem.isUpdateQuery} />)}
+        <ElementType {...this.props} namespace={activeItem.namespace} contentTypes={activeItem.contentTypes} isUpdateQuery={activeItem.isUpdateQuery} />
       </div>
     );
   }
 }
+
+TabsMenu.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    element: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.object]).isRequired,
+    namespace: PropTypes.string,
+  })),
+  active: PropTypes.string,
+};
+
+TabsMenu.defaultProps = {
+  items: EMPTY_ARRAY,
+  active: '',
+};
 
 export default connect((state, ownProps) => {
   const filterName = filterSelectors.getActiveFilter(state.filters, ownProps.items[0].namespace);
@@ -89,4 +85,3 @@ export default connect((state, ownProps) => {
     active: filterSelectors.getTabNameByFilterName(filterName)
   };
 })(TabsMenu);
-

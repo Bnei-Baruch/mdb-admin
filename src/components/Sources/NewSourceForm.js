@@ -268,8 +268,7 @@ class NewSourceForm extends Component {
                 style={{ marginTop: '0.2rem', marginBottom: '0' }}
               />
             )
-            : null
-          }
+            : null}
           <Button
             primary
             content="Save"

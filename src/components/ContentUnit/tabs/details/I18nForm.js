@@ -51,8 +51,7 @@ class I18nForm extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!props.unit)
-      return null;
+    if (!props.unit) return null;
 
     const { unit: { i18n } } = props;
 
@@ -159,8 +158,8 @@ class I18nForm extends Component {
                     : null
                 }
               </Table.Cell>
-            </Table.Row>))
-          }
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     );

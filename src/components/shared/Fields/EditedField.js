@@ -4,7 +4,6 @@ import noop from 'lodash/noop';
 import { Button, Form, Input } from 'semantic-ui-react';
 
 class EditedField extends PureComponent {
-
   static propTypes = {
     onSave: PropTypes.func,
     value: PropTypes.string

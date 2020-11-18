@@ -41,6 +41,7 @@ class DeepListFilter extends React.Component {
   componentDidMount() {
     this.scrollToSelections(this.state.selection);
   }
+
   componentDidUpdate() {
     this.listContainer.scrollLeft = this.listContainer.scrollWidth;
     this.scrollToSelections(this.state.selection);

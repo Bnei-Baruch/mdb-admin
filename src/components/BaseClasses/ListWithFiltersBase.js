@@ -131,8 +131,8 @@ class ListWithFiltersBase extends PureComponent {
 
   renderPagination = () => {
     const {
-            pageNo, total, wip, err
-          } = this.props;
+      pageNo, total, wip, err
+    } = this.props;
 
     return (
       <div style={{ textAlign: 'right' }}>
@@ -189,7 +189,8 @@ class ListWithFiltersBase extends PureComponent {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </div>);
+      </div>
+    );
   };
 
   renderList = () => {

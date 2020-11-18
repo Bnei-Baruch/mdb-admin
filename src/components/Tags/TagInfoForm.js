@@ -33,8 +33,7 @@ class TagInfoForm extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!props.tag)
-      return null;
+    if (!props.tag) return null;
 
     const { pattern: nPattern, description: nDescription } = props.tag;
     const { pattern, description }                         = state;
@@ -74,8 +73,8 @@ class TagInfoForm extends Component {
     const err                       = getError('updateInfo');
 
     const {
-            pattern, description, submitted, errors
-          } = this.state;
+      pattern, description, submitted, errors
+    } = this.state;
 
     return (
       <div>

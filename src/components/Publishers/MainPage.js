@@ -50,8 +50,7 @@ class PublishersMainPage extends Component {
       return { wipOfCreate: true };
     }
 
-    if (wipOfCreate)
-      return { newPublisher: !state.newPublisher, wipOfCreate: false };
+    if (wipOfCreate) return { newPublisher: !state.newPublisher, wipOfCreate: false };
 
     return null;
   }

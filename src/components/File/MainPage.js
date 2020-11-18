@@ -29,15 +29,16 @@ const MainPage = (props) => {
     return <LoadingSplash text="Loading file details" subtext="Hold on tight..." />;
   }
 
-  if (!!file) {
+  if (file) {
     return <TabsMenu items={items} file={file} />;
   }
 
-  return ( <FrownSplash
-    text="Couldn't find file"
-    subtext={<span>Try the <Link to="/files">files list</Link>...</span>}
-  /> );
-
+  return (
+    <FrownSplash
+      text="Couldn't find file"
+      subtext={<span>Try the <Link to="/files">files list</Link>...</span>}
+    />
+  );
 };
 
 MainPage.propTypes = {

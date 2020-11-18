@@ -90,7 +90,6 @@ class CUModal extends ListWithCheckboxBase {
             </Menu.Menu>
           </Menu>
 
-
           {this.renderFiltersHydrator()}
           {this.renderContent({ usePagination: false })}
         </Modal.Content>

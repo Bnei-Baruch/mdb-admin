@@ -23,7 +23,6 @@ import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import './files.css';
 
 class FilesHierarchy extends Component {
-
   static propTypes = {
     files: PropTypes.arrayOf(shapes.File),
     operations: PropTypes.arrayOf(shapes.Operation),
@@ -174,20 +173,20 @@ class FilesHierarchy extends Component {
     const { childMap }               = hierarchy;
 
     const {
-            id,
-            name,
-            size,
-            language,
-            secure,
-            published,
-            properties,
-            removed_at: removedAt,
-          }               = file;
+      id,
+      name,
+      size,
+      language,
+      secure,
+      published,
+      properties,
+      removed_at: removedAt,
+    }               = file;
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
     const lang            = LANGUAGES[language || LANG_UNKNOWN];
     const children        = childMap.get(id) || [];
-    const duration        = (properties || {}).duration;
+    const { duration } = properties || {};
     const durationDisplay = duration ?
       moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
       null;
@@ -201,7 +200,7 @@ class FilesHierarchy extends Component {
     operations.sort((a, b) => {
       if (a.created_at < b.created_at) {
         return -1;
-      } else if (a.created_at > b.created_at) {
+      } if (a.created_at > b.created_at) {
         return 1;
       }
       return 0;
@@ -250,15 +249,15 @@ class FilesHierarchy extends Component {
                 </List.Item>
                 <List.Item>
                   Operations: {
-                  operations.map((o, i) => (
-                    <span key={o.id}>
-                      {i === 0 ? '' : ', '}
-                      <Link to={`/operations/${o.id}`} title={o.uid}>
-                        {OPERATION_TYPE_BY_ID[o.type_id]}
-                      </Link>
-                    </span>
-                  ))
-                }
+                    operations.map((o, i) => (
+                      <span key={o.id}>
+                        {i === 0 ? '' : ', '}
+                        <Link to={`/operations/${o.id}`} title={o.uid}>
+                          {OPERATION_TYPE_BY_ID[o.type_id]}
+                        </Link>
+                      </span>
+                    ))
+                  }
                 </List.Item>
               </List>
             </Header.Subheader>
@@ -303,7 +302,7 @@ class FilesHierarchy extends Component {
               </Grid.Column>
               <Grid.Column width={6} textAlign="center">
                 {
-                  currentFile ?
+                  currentFile ? (
                     <div>
                       <video controls src={physicalFile(currentFile, true)} />
                       <br />
@@ -313,7 +312,8 @@ class FilesHierarchy extends Component {
                         color="orange"
                         onClick={e => this.handleDownload(e, currentFile)}
                       />
-                    </div> :
+                    </div>
+                  ) :
                     null
                 }
               </Grid.Column>

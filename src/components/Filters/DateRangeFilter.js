@@ -142,7 +142,7 @@ class DateFilter extends Component {
   }
 
   static getUpdatedStateFromValue = (newVal, prevVal) => {
-    let result                     = {};
+    const result                     = {};
     const { from: nFrom, to: nTo } = newVal;
     const { from, to }             = prevVal;
 
@@ -255,8 +255,8 @@ class DateFilter extends Component {
     const { onCancel } = this.props;
 
     const {
-            fromInputValue, toInputValue, from, to, datePreset
-          } = this.state;
+      fromInputValue, toInputValue, from, to, datePreset
+    } = this.state;
 
     return (
       <Segment basic compact attached="bottom" floated="left" className="tab active">

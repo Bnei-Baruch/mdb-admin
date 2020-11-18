@@ -43,7 +43,7 @@ class TagsHierarchy extends Component {
     const { wip } = state;
     const nWip    = props.getWIP('create');
     const nErr    = props.getError('create');
-    let response  = {};
+    const response  = {};
 
     if (!wip && nWip) {
       response.wip = nWip;

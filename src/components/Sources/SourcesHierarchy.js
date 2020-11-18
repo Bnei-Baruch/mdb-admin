@@ -53,10 +53,9 @@ class SourcesHierarchy extends Component {
     const nWip = props.getWIP('create');
     const nErr = props.getError('create');
 
-    if (nErr || nWip)
-      return { wip: true };
+    if (nErr || nWip) return { wip: true };
 
-    let response = {};
+    const response = {};
     if (state.wip && !nWip && !nErr) {
       response.modalOpen = false;
       response.wip = false;
@@ -112,8 +111,8 @@ class SourcesHierarchy extends Component {
 
   renderHierarchy() {
     const {
-            authors, hierarchy, getWIP, currentLanguage
-          } = this.props;
+      authors, hierarchy, getWIP, currentLanguage
+    } = this.props;
 
     const wip     = getWIP('fetchAll');
     const isEmpty = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;

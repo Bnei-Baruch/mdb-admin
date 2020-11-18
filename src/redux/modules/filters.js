@@ -253,7 +253,7 @@ export const reducer = handleActions({
 
 /* Selectors */
 const getFilters = (state, namespace) => {
-  const filters = !!state[namespace] ? state[namespace] : null;
+  const filters = state[namespace] ? state[namespace] : null;
 
   if (!filters) {
     return [];

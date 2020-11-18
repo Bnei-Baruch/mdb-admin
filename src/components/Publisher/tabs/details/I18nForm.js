@@ -128,8 +128,8 @@ class I18nForm extends Component {
                   onClick={() => this.removeLanguage(k)}
                 />
               </Table.Cell>
-            </Table.Row>))
-          }
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     );

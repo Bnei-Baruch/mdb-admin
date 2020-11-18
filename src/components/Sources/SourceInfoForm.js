@@ -37,8 +37,7 @@ class SourceInfoForm extends Component {
   static getDerivedStateFromProps(props, state) {
     const { pattern: pPattern, description: pDescription, type_id: pType_id } = state;
 
-    if (!props.source)
-      return null;
+    if (!props.source) return null;
 
     const { source: { pattern, description, type_id } } = props;
     if (pattern !== pPattern || description !== pDescription || type_id !== pType_id) {
@@ -146,8 +145,7 @@ class SourceInfoForm extends Component {
                 style={{ marginTop: '0.2rem', marginBottom: '0' }}
               />
             )
-            : null
-          }
+            : null}
           <Button
             primary
             content="Save"

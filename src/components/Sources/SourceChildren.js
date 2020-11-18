@@ -38,8 +38,7 @@ class SourceChildren extends Component {
 
     const nWip = props.getWIP('create');
     const nErr = props.getError('create');
-    if (nWip || nErr)
-      return { wip: true };
+    if (nWip || nErr) return { wip: true };
 
     const { wip } = state;
     if (wip && !nWip && !nErr) {

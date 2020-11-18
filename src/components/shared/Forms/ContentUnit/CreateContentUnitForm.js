@@ -48,7 +48,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
   };
 
   cleanI18n() {
-    const i18n = this.state.i18n;
+    const { i18n } = this.state;
     return MAJOR_LANGUAGES.reduce((acc, val) => {
       if (i18n[val].name.trim() !== '') {
         acc[val] = { ...i18n[val], language: val };
@@ -60,7 +60,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
   getI18nErrors() {
     const errors = {};
     // validate at least one valid translation
-    const i18n   = this.state.i18n;
+    const { i18n } = this.state;
     if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }
@@ -105,7 +105,6 @@ class CreateContentUnitForm extends BaseContentUnitForm {
       </Form>
     );
   }
-
 }
 
 export default CreateContentUnitForm;

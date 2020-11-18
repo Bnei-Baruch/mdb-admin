@@ -22,7 +22,6 @@ import {
 import './files.css';
 
 class FilesHierarchy extends Component {
-
   static propTypes = {
     files: PropTypes.arrayOf(shapes.File),
     wip: PropTypes.bool,
@@ -174,20 +173,20 @@ class FilesHierarchy extends Component {
     const { childMap }               = hierarchy;
 
     const {
-            id,
-            name,
-            size,
-            language,
-            secure,
-            published,
-            properties,
-            removed_at: removedAt
-          }               = file;
+      id,
+      name,
+      size,
+      language,
+      secure,
+      published,
+      properties,
+      removed_at: removedAt
+    }               = file;
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
     const lang            = LANGUAGES[language || LANG_UNKNOWN];
     const children        = childMap.get(id) || [];
-    const duration        = (properties || {}).duration;
+    const { duration } = properties || {};
     const durationDisplay = duration ?
       moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
       null;
@@ -245,7 +244,6 @@ class FilesHierarchy extends Component {
   }
 
   renderFiles = () => {
-
     const { hierarchy, currentFile } = this.state;
     return (
       <Segment attached>
@@ -258,7 +256,7 @@ class FilesHierarchy extends Component {
             </Grid.Column>
             <Grid.Column width={6} textAlign="center">
               {
-                currentFile ?
+                currentFile ? (
                   <div>
                     <video controls src={physicalFile(currentFile, true)} />
                     <br />
@@ -268,13 +266,15 @@ class FilesHierarchy extends Component {
                       color="orange"
                       onClick={e => this.handleDownload(e, currentFile)}
                     />
-                  </div> :
+                  </div>
+                ) :
                   null
               }
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </Segment>);
+      </Segment>
+    );
   };
 
   render() {

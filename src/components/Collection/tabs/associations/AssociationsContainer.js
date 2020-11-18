@@ -139,7 +139,7 @@ class AssociationsContainer extends Component {
       || selectedCCU[0].content_unit_id === units[0].content_unit_id;
 
     return (
-      <div  ref={this.handleAllTableRef}>
+      <div ref={this.handleAllTableRef}>
         <Menu borderless size="large">
           <Menu.Item header>
             <Header content="Associated Content Units" size="medium" color="blue" />

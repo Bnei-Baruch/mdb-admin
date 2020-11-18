@@ -6,7 +6,6 @@ import { Form, Input } from 'semantic-ui-react';
 import { countries } from '../../../helpers/countries';
 
 class LocationField extends PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {

@@ -9,7 +9,6 @@ import { Form } from 'semantic-ui-react';
 import { DATE_FORMAT } from '../../../helpers/consts';
 
 class DateRangeField extends PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {

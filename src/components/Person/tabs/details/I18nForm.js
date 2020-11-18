@@ -40,8 +40,7 @@ class I18nForm extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!props.person)
-      return null;
+    if (!props.person) return null;
 
     if (props.person.i18n !== state.i18n) {
       return { i18n: props.person.i18n };
@@ -131,8 +130,8 @@ class I18nForm extends Component {
                   onClick={() => this.removeLanguage(k)}
                 />
               </Table.Cell>
-            </Table.Row>))
-          }
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     );

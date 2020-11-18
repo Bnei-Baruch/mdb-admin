@@ -6,7 +6,6 @@ import { Icon, Menu } from 'semantic-ui-react';
 import { PAGE_SIZE } from '../../helpers/consts';
 
 class Pagination extends PureComponent {
-
   static propTypes = {
     total: PropTypes.number,
     pageNo: PropTypes.number,
