@@ -8,6 +8,10 @@ import {
 import { hierarchyToTree, hierarchyNodeToTreeNode, extractI18n } from '../../helpers/utils';
 import connectFilter from './connectFilter';
 
+const listToNumbersIfCan = (list) => {
+  return list.map(x => (Number.isNaN(parseFloat(x)) ? x : parseFloat(x)));
+};
+
 class DeepListFilter extends React.Component {
   static propTypes = {
     roots: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -29,27 +33,14 @@ class DeepListFilter extends React.Component {
     allValues: [],
   };
 
-  state = {
-    selection: DeepListFilter.listToNumbersIfCan(this.props.value)
-  };
+  constructor(props) {
+    super(props);
+    this.state = { selection: listToNumbersIfCan(props.value) };
+  }
 
   componentDidMount() {
     this.scrollToSelections(this.state.selection);
   }
-
-  static getDerivedStateFromProps(props, state) {
-    if (!props.value) {
-      return null;
-    }
-
-    const selection = DeepListFilter.listToNumbersIfCan(props.value);
-
-    if (selection !== state.selection)
-      return { selection };
-
-    return null;
-  }
-
   componentDidUpdate() {
     this.listContainer.scrollLeft = this.listContainer.scrollWidth;
     this.scrollToSelections(this.state.selection);
@@ -160,11 +151,6 @@ class DeepListFilter extends React.Component {
     );
   };
 
-  // eslint-disable-next-line class-methods-use-this
-  static listToNumbersIfCan(list) {
-    return list.map(x => (Number.isNaN(parseFloat(x)) ? x : parseFloat(x)));
-  }
-
   render() {
     const { hierarchy, emptyLabel, allValues } = this.props;
 
@@ -182,7 +168,7 @@ class DeepListFilter extends React.Component {
           >
             {
               roots.length > 0
-                ? this.createLists(0, roots, this.state.selection, DeepListFilter.listToNumbersIfCan(allValues))
+                ? this.createLists(0, roots, this.state.selection, listToNumbersIfCan(allValues))
                 : emptyLabel
             }
           </div>
