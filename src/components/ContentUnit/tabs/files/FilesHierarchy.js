@@ -21,7 +21,6 @@ import {
 import './files.css';
 
 class FilesHierarchy extends Component {
-
   static propTypes = {
     files: PropTypes.arrayOf(shapes.File),
     wip: PropTypes.bool,
@@ -245,7 +244,6 @@ class FilesHierarchy extends Component {
   }
 
   renderFiles = () => {
-
     const { hierarchy, currentFile } = this.state;
     return (
       <Segment attached>
@@ -274,7 +272,8 @@ class FilesHierarchy extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </Segment>);
+      </Segment>
+    );
   };
 
   render() {
