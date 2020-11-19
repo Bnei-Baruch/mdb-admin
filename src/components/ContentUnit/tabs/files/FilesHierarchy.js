@@ -22,18 +22,6 @@ import {
 import './files.css';
 
 class FilesHierarchy extends Component {
-  static propTypes = {
-    files: PropTypes.arrayOf(shapes.File),
-    wip: PropTypes.bool,
-    err: shapes.Error,
-  };
-
-  static defaultProps = {
-    files: EMPTY_ARRAY,
-    wip: false,
-    err: null,
-  };
-
   constructor(props) {
     super(props);
     const { files } = props;
@@ -172,22 +160,13 @@ class FilesHierarchy extends Component {
     const { currentFile, hierarchy } = this.state;
     const { childMap }               = hierarchy;
 
-    const {
-      id,
-      name,
-      size,
-      language,
-      secure,
-      published,
-      properties,
-      removed_at: removedAt
-    }               = file;
-    const sizeDisplay     = filesize(size);
-    const icon            = fileIcon(file);
-    const lang            = LANGUAGES[language || LANG_UNKNOWN];
-    const children        = childMap.get(id) || [];
-    const { duration } = properties || {};
-    const durationDisplay = duration ?
+    const { id, name, size, language, secure, published, properties, removed_at: removedAt } = file;
+    const sizeDisplay                                                                        = filesize(size);
+    const icon                                                                               = fileIcon(file);
+    const lang                                                                               = LANGUAGES[language || LANG_UNKNOWN];
+    const children                                                                           = childMap.get(id) || [];
+    const { duration }                                                                       = properties || {};
+    const durationDisplay                                                                    = duration ?
       moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
       null;
 
@@ -257,17 +236,17 @@ class FilesHierarchy extends Component {
             <Grid.Column width={6} textAlign="center">
               {
                 currentFile ? (
-                  <div>
-                    <video controls src={physicalFile(currentFile, true)} />
-                    <br />
-                    <Button
-                      content="Download"
-                      icon="download"
-                      color="orange"
-                      onClick={e => this.handleDownload(e, currentFile)}
-                    />
-                  </div>
-                ) :
+                    <div>
+                      <video controls src={physicalFile(currentFile, true)} />
+                      <br />
+                      <Button
+                        content="Download"
+                        icon="download"
+                        color="orange"
+                        onClick={e => this.handleDownload(e, currentFile)}
+                      />
+                    </div>
+                  ) :
                   null
               }
             </Grid.Column>
@@ -307,5 +286,17 @@ class FilesHierarchy extends Component {
     );
   }
 }
+
+FilesHierarchy.propTypes = {
+  files: PropTypes.arrayOf(shapes.File),
+  wip: PropTypes.bool,
+  err: shapes.Error,
+};
+
+FilesHierarchy.defaultProps = {
+  files: EMPTY_ARRAY,
+  wip: false,
+  err: null,
+};
 
 export default FilesHierarchy;

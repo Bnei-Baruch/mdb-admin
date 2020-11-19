@@ -27,10 +27,13 @@ class TagChildren extends Component {
     }
   };
 
-  state = {
-    modalOpen: false,
-    wip: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalOpen: false,
+      wip: false
+    };
+  }
 
   static getDerivedStateFromProps(props, state) {
     // Hide modal if we're finished.
@@ -135,4 +138,19 @@ class TagChildren extends Component {
   }
 }
 
+TagChildren.propTypes = {
+  getTagById: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  tag: shapes.Tag,
+  hierarchy: shapes.Hierarchy,
+  currentLanguage: PropTypes.string.isRequired,
+};
+
+TagChildren.defaultProps = {
+  tag: EMPTY_OBJECT,
+  hierarchy: {
+    childMap: new Map()
+  }
+};
 export default TagChildren;

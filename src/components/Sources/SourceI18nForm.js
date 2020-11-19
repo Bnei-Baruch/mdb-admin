@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { cloneDeep } from 'lodash';
 import {
   Button, Flag, Header, Input, Menu, Message, Segment, Table
 } from 'semantic-ui-react';
@@ -13,32 +14,12 @@ import * as shapes from '../shapes';
 import LanguageSelector from '../shared/LanguageSelector';
 
 class SourceI18nForm extends Component {
-  static propTypes = {
-    updateI18n: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    source: shapes.Source,
-  };
-
-  static defaultProps = {
-    source: {
-      i18n: {}
-    }
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      i18n: { ...props.source.i18n },
+      i18n: cloneDeep(props.source.i18n),
       submitted: false,
     };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (props.source && props.source.i18n !== state.i18n) {
-      return { i18n: props.source.i18n };
-    }
-    return null;
   }
 
   onNameChange = (e, { value }) => {
@@ -185,4 +166,18 @@ class SourceI18nForm extends Component {
   }
 }
 
+SourceI18nForm.propTypes = {
+  updateI18n: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  source: shapes.Source,
+};
+
+SourceI18nForm.defaultProps = {
+  source: {
+    i18n: {}
+  },
+  wip: false,
+  err: null,
+};
 export default SourceI18nForm;

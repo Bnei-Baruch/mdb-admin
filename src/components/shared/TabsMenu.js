@@ -9,19 +9,11 @@ import { selectors as filterSelectors } from '../../redux/modules/filters';
 class TabsMenu extends Component {
   constructor(props) {
     super(props);
-    const active = TabsMenu.activeFromProps(props);
+    const active = this.activeFromProps(props);
     this.state   = { active };
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const active = TabsMenu.activeFromProps(props);
-    if (active !== state.active) {
-      return { active: state.active ? state.active : active };
-    }
-    return null;
-  }
-
-  static activeFromProps(props) {
+  activeFromProps(props) {
     if (props.active) return props.active;
 
     const { items } = props;

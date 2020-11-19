@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { cloneDeep } from 'lodash';
 import {
   Button, Flag, Header, Input, Menu, Message, Segment, Table
 } from 'semantic-ui-react';
@@ -16,34 +17,12 @@ import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
 
 class I18nForm extends Component {
-  static propTypes = {
-    updateI18n: PropTypes.func.isRequired,
-    publisher: shapes.Publisher,
-    wip: PropTypes.bool,
-    err: shapes.Error,
-  };
-
-  static defaultProps = {
-    publisher: {
-      i18n: {},
-    },
-    wip: false,
-    err: null,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      i18n: { ...props.publisher.i18n },
+      i18n: cloneDeep(props.publisher.i18n),
       submitted: false,
     };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (props.publisher.i18n !== state.i18n) {
-      return { i18n: props.publisher.i18n };
-    }
-    return null;
   }
 
   onNameChange = (e, { value }) => {
@@ -190,6 +169,21 @@ class I18nForm extends Component {
     );
   }
 }
+
+I18nForm.propTypes = {
+  updateI18n: PropTypes.func.isRequired,
+  publisher: shapes.Publisher,
+  wip: PropTypes.bool,
+  err: shapes.Error,
+};
+
+I18nForm.defaultProps = {
+  publisher: {
+    i18n: {},
+  },
+  wip: false,
+  err: null,
+};
 
 const mapState = state => ({
   wip: selectors.getWIP(state.publishers, 'updateI18n'),

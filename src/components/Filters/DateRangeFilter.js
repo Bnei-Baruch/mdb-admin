@@ -130,19 +130,15 @@ class DateFilter extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = DateFilter.getUpdatedStateFromValue(this.props.value, {});
+    this.state = this.getUpdatedStateFromValue(this.props.value, {});
   }
 
   componentDidMount() {
     this.datePicker.showMonth(this.state.from);
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return DateFilter.getUpdatedStateFromValue(state, props.value);
-  }
-
-  static getUpdatedStateFromValue = (newVal, prevVal) => {
-    const result                     = {};
+  getUpdatedStateFromValue = (newVal, prevVal) => {
+    const result                   = {};
     const { from: nFrom, to: nTo } = newVal;
     const { from, to }             = prevVal;
 
@@ -255,8 +251,8 @@ class DateFilter extends Component {
     const { onCancel } = this.props;
 
     const {
-      fromInputValue, toInputValue, from, to, datePreset
-    } = this.state;
+            fromInputValue, toInputValue, from, to, datePreset
+          } = this.state;
 
     return (
       <Segment basic compact attached="bottom" floated="left" className="tab active">

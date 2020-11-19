@@ -9,19 +9,6 @@ import { formatError, isValidPattern } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 
 class PersonInfoForm extends Component {
-  static propTypes = {
-    updateInfo: PropTypes.func.isRequired,
-    wipDetail: PropTypes.bool,
-    errDetail: PropTypes.object,
-    person: shapes.Person,
-  };
-
-  static defaultProps = {
-    person: EMPTY_OBJECT,
-    wipDetail: false,
-    errDetail: null,
-  };
-
   constructor(props) {
     super(props);
 
@@ -30,16 +17,6 @@ class PersonInfoForm extends Component {
       submitted: false,
       errors: {}
     };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (!props.person) return null;
-
-    const { pattern = '' } = props.person;
-    if (pattern !== state.pattern) {
-      return { pattern };
-    }
-    return null;
   }
 
   onPatternChange = (e, { value }) => {
@@ -127,5 +104,18 @@ class PersonInfoForm extends Component {
     );
   }
 }
+
+PersonInfoForm.propTypes = {
+  updateInfo: PropTypes.func.isRequired,
+  wipDetail: PropTypes.bool,
+  errDetail: PropTypes.object,
+  person: shapes.Person,
+};
+
+PersonInfoForm.defaultProps = {
+  person: EMPTY_OBJECT,
+  wipDetail: false,
+  errDetail: null,
+};
 
 export default PersonInfoForm;

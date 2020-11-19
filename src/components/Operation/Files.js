@@ -20,20 +20,6 @@ import * as shapes from '../shapes';
 import { ErrorSplash, LoadingSplash } from '../shared/Splash';
 
 class Files extends Component {
-  static propTypes = {
-    operation: shapes.Operation,
-    files: PropTypes.arrayOf(shapes.File),
-    wip: PropTypes.bool,
-    err: shapes.Error,
-  };
-
-  static defaultProps = {
-    operation: undefined,
-    files: EMPTY_ARRAY,
-    wip: false,
-    err: null,
-  };
-
   constructor(props) {
     super(props);
     const { files } = props;
@@ -78,18 +64,18 @@ class Files extends Component {
   // eslint-disable-next-line class-methods-use-this
   renderFile(file) {
     const {
-      id,
-      name,
-      size,
-      language,
-      secure,
-      published,
-      properties,
-    }               = file;
+            id,
+            name,
+            size,
+            language,
+            secure,
+            published,
+            properties,
+          }               = file;
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
     const lang            = LANGUAGES[language || LANG_UNKNOWN];
-    const { duration } = properties || {};
+    const { duration }    = properties || {};
     const durationDisplay = duration ?
       moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
       null;
@@ -173,6 +159,20 @@ class Files extends Component {
     );
   }
 }
+
+Files.propTypes = {
+  operation: shapes.Operation,
+  files: PropTypes.arrayOf(shapes.File),
+  wip: PropTypes.bool,
+  err: shapes.Error,
+};
+
+Files.defaultProps = {
+  operation: undefined,
+  files: EMPTY_ARRAY,
+  wip: false,
+  err: null,
+};
 
 const mapState = (state, ownProps) => {
   const { operation = EMPTY_OBJECT } = ownProps;

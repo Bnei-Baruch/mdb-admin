@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { cloneDeep } from 'lodash';
 import {
   Button, Flag, Header, Input, Menu, Message, Segment, Table
 } from 'semantic-ui-react';
@@ -13,37 +14,12 @@ import * as shapes from '../shapes';
 import LanguageSelector from '../shared/LanguageSelector';
 
 class TagI18nForm extends Component {
-  static propTypes = {
-    updateI18n: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    tag: shapes.Tag,
-  };
-
-  static defaultProps = {
-    tag: {
-      i18n: {}
-    }
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      i18n: { ...props.tag.i18n },
+      i18n: cloneDeep(props.tag.i18n),
       submitted: false,
     };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (!props.tag) {
-      return null;
-    }
-    const { i18n = {} } = props.tag;
-    if (i18n !== state.i18n) {
-      return { i18n };
-    }
-
-    return null;
   }
 
   onLabelChange = (e, { value }) => {
@@ -180,5 +156,18 @@ class TagI18nForm extends Component {
     );
   }
 }
+
+TagI18nForm.propTypes = {
+  updateI18n: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  tag: shapes.Tag,
+};
+
+TagI18nForm.defaultProps = {
+  tag: {
+    i18n: {}
+  }
+};
 
 export default TagI18nForm;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { cloneDeep } from 'lodash';
 import {
   Button, Flag, Header, Input, Menu, Message, Segment, Table
 } from 'semantic-ui-react';
@@ -34,18 +35,9 @@ class I18nForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      i18n: { ...props.person.i18n },
+      i18n: cloneDeep(props.person.i18n),
       submitted: false,
     };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (!props.person) return null;
-
-    if (props.person.i18n !== state.i18n) {
-      return { i18n: props.person.i18n };
-    }
-    return null;
   }
 
   onNameChange = (e, { value }) => {
