@@ -9,39 +9,18 @@ import { EMPTY_OBJECT, SOURCE_TYPES_OPTIONS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 
 class SourceInfoForm extends Component {
-  static propTypes = {
-    updateInfo: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    source: shapes.Source,
-  };
-
-  static defaultProps = {
-    source: EMPTY_OBJECT,
-  };
-
   constructor(props) {
     super(props);
 
     const { source: { pattern, description, type_id } } = props;
 
-    this.state = {
-      pattern: pattern || '',
-      description: description || '',
-      type_id: type_id || '',
-      submitted: false,
-      errors: {}
-    };
+    this.state = { pattern, description, type_id, submitted: false, errors: {} };
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { pattern: pPattern, description: pDescription, type_id: pType_id } = state;
-
-    if (!props.source) return null;
-
     const { source: { pattern, description, type_id } } = props;
-    if (pattern !== pPattern || description !== pDescription || type_id !== pType_id) {
-      return { pattern: pattern || '', description: description || '', type_id: type_id || '', };
+    if (type_id !== state.type_id) {
+      return { pattern, description, type_id };
     }
     return null;
   }
@@ -160,5 +139,20 @@ class SourceInfoForm extends Component {
     );
   }
 }
+
+SourceInfoForm.propTypes = {
+  updateInfo: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  source: shapes.Source,
+};
+
+SourceInfoForm.defaultProps = {
+  source: {
+    pattern: '',
+    description: '',
+    type_id: ''
+  },
+};
 
 export default SourceInfoForm;
