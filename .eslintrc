@@ -24,10 +24,7 @@
     }
   },
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
+    "indent": "off",
     "no-console": "warn",
     "comma-dangle": "off",
     "key-spacing": "off",
@@ -53,10 +50,44 @@
       {
         "allow": [
           "_browserHistory",
-          "__data"
+          "__data",
+          "__REDUX_DEVTOOLS_EXTENSION__"
         ]
       }
-    ]
+    ],
+    //add after upgrade
+    "object-curly-newline": "off",
+    "arrow-body-style": "off",
+    "arrow-parens": "off",
+    "operator-linebreak": "off",
+    "spaced-comment": "off",
+    "no-confusing-arrow": "off",
+    "comma-style": "off",
+    "import/no-extraneous-dependencies": "off",
+    "camelcase": "off",
+    "no-use-before-define": "off",
+    "brace-style": "off",
+    "one-var-declaration-per-line": "off",
+    "function-paren-newline": "off",
+    "curly": "off",
+    "radix": "off",
+    "no-restricted-syntax": "off",
+    "no-return-assign": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/media-has-caption": "off",
+    "class-methods-use-this": "off",
+    "prefer-destructuring": "off",
+    "react/prop-types": "off",
+    "react/static-property-placement": "off",
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/default-props-match-prop-types": "off",
+    "react/sort-comp": "off",
+    "react/forbid-prop-types": "off",
+    "react/no-unused-prop-types": "off",
+    "react/no-access-state-in-setstate": "off",
+    "react/state-in-constructor": "off",
+    "react/jsx-indent": "off"
   },
   "globals": {
     "socket": true
