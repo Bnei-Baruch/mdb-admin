@@ -71,6 +71,7 @@
     "function-paren-newline": "off",
     "curly": "off",
     "radix": "off",
+    "nonblock-statement-body-position": "off",
     "no-restricted-syntax": "off",
     "no-return-assign": "off",
     "jsx-a11y/label-has-associated-control": "off",
