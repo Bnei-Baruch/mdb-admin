@@ -1,4 +1,4 @@
-const { compose }           = require('customize-cra');
+const { compose }           = require('react-app-rewired');
 const rewireVendorSplitting = require('react-app-rewire-vendor-splitting');
 const rewireSilentRenew     = require('./OidcSilentRenew');
 
