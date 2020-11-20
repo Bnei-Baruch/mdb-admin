@@ -21,129 +21,123 @@ import {
 
 import './files.css';
 
+const getStateFromFiles = (files) => {
+  const total   = files.length;
+  const cuFiles = new Set(files.map(x => x.id));
+
+  const fileMap = new Map(files.map((x) => {
+    // complement types if they're missing
+    const f = { ...x, ...fileTypes(x) };
+
+    // Note that if a file's parent doesn't belong to this content unit
+    // we want it to be shown as root
+    if (f.parent_id && !cuFiles.has(f.parent_id)) {
+      f.parent_id = null;
+    }
+
+    return [f.id, f];
+  }));
+
+  // build and sort hierarchy
+  const hierarchy = buildHierarchy(fileMap);
+  hierarchy.byID  = fileMap;
+  hierarchy.roots.sort((a, b) => cmpFiles(fileMap.get(a), fileMap.get(b)));
+  hierarchy.childMap.forEach(v => v.sort((a, b) => cmpFiles(fileMap.get(a), fileMap.get(b))));
+
+  // get first playable file
+  const currentFile = bestPlayableFile(hierarchy);
+
+  return { total, hierarchy, currentFile };
+};
+const bestPlayableFile  = (hierarchy) => {
+  // We DFS the hierarchy tree for the best playable leaf node.
+  let best = null;
+  let s    = [...hierarchy.roots];
+  while (s.length > 0) {
+    const id       = s.shift();
+    const children = hierarchy.childMap.get(id);
+    if (Array.isArray(children)) {
+      s = children.concat(s);
+    } else {
+      const file = hierarchy.byID.get(id);
+      if (['audio', 'video'].includes(file.type)) {
+        if (best) {
+          if (cmpFiles(file, best) < 0) {
+            best = file;
+          }
+        } else {
+          best = file;
+        }
+      }
+    }
+  }
+
+  return best;
+};
+
+// compare files by "relevance"
+const cmpFiles = (a, b) => {
+  // sort by published status
+  if (a.published && !b.published) {
+    return -1;
+  }
+  if (!a.published && b.published) {
+    return 1;
+  }
+
+  // sort by lang
+  const aLang    = a.language || LANG_UNKNOWN;
+  const bLang    = b.language || LANG_UNKNOWN;
+  const aLangIdx = ALL_LANGUAGES.findIndex(x => x === aLang);
+  const bLangIdx = ALL_LANGUAGES.findIndex(x => x === bLang);
+  if (aLangIdx < bLangIdx) {
+    return -1;
+  }
+  if (aLangIdx > bLangIdx) {
+    return 1;
+  }
+
+  // sort by type
+  const aType    = a.type || ALL_FILE_TYPES[ALL_FILE_TYPES.length - 1];
+  const bType    = b.type || ALL_FILE_TYPES[ALL_FILE_TYPES.length - 1];
+  const aTypeIdx = ALL_FILE_TYPES.findIndex(x => x === aType);
+  const bTypeIdx = ALL_FILE_TYPES.findIndex(x => x === bType);
+  if (aTypeIdx < bTypeIdx) {
+    return -1;
+  }
+  if (aTypeIdx > bTypeIdx) {
+    return 1;
+  }
+
+  // sort by created_at
+  if (a.created_at < b.created_at) {
+    return -1;
+  }
+  if (a.created_at > b.created_at) {
+    return 1;
+  }
+
+  return 0;
+};
+
 class FilesHierarchy extends Component {
   constructor(props) {
     super(props);
-    const { files } = props;
-    this.state      = FilesHierarchy.getStateFromFiles(files);
+    const { files, unit: { id } } = props;
+    this.state                    = { id, ...getStateFromFiles(files) };
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!props.files) {
+    const { unit: { id }, files } = props;
+    if (id === state.id && state.total > 0)
       return null;
-    }
 
-    const nextState = FilesHierarchy.getStateFromFiles(props.files);
-    if (isEqual(state, nextState)) {
-      return null;
-    }
-    if (state.currentFile) {
-      delete nextState.currentFile;
-    }
-    return nextState;
+    return { id, ...getStateFromFiles(files) };
   }
 
   handleSwitchToAddFiles = () => this.props.setEditMode(true);
 
-  static getStateFromFiles = (files) => {
-    const total   = files.length;
-    const cuFiles = new Set(files.map(x => x.id));
-
-    const fileMap = new Map(files.map((x) => {
-      // complement types if they're missing
-      const f = { ...x, ...fileTypes(x) };
-
-      // Note that if a file's parent doesn't belong to this content unit
-      // we want it to be shown as root
-      if (f.parent_id && !cuFiles.has(f.parent_id)) {
-        f.parent_id = null;
-      }
-
-      return [f.id, f];
-    }));
-
-    // build and sort hierarchy
-    const hierarchy = buildHierarchy(fileMap);
-    hierarchy.byID  = fileMap;
-    hierarchy.roots.sort((a, b) => FilesHierarchy.cmpFiles(fileMap.get(a), fileMap.get(b)));
-    hierarchy.childMap.forEach(v => v.sort((a, b) => FilesHierarchy.cmpFiles(fileMap.get(a), fileMap.get(b))));
-
-    // get first playable file
-    const currentFile = FilesHierarchy.bestPlayableFile(hierarchy);
-
-    return { total, hierarchy, currentFile };
-  };
-
-  // compare files by "relevance"
-  static cmpFiles = (a, b) => {
-    // sort by published status
-    if (a.published && !b.published) {
-      return -1;
-    }
-    if (!a.published && b.published) {
-      return 1;
-    }
-
-    // sort by lang
-    const aLang    = a.language || LANG_UNKNOWN;
-    const bLang    = b.language || LANG_UNKNOWN;
-    const aLangIdx = ALL_LANGUAGES.findIndex(x => x === aLang);
-    const bLangIdx = ALL_LANGUAGES.findIndex(x => x === bLang);
-    if (aLangIdx < bLangIdx) {
-      return -1;
-    }
-    if (aLangIdx > bLangIdx) {
-      return 1;
-    }
-
-    // sort by type
-    const aType    = a.type || ALL_FILE_TYPES[ALL_FILE_TYPES.length - 1];
-    const bType    = b.type || ALL_FILE_TYPES[ALL_FILE_TYPES.length - 1];
-    const aTypeIdx = ALL_FILE_TYPES.findIndex(x => x === aType);
-    const bTypeIdx = ALL_FILE_TYPES.findIndex(x => x === bType);
-    if (aTypeIdx < bTypeIdx) {
-      return -1;
-    }
-    if (aTypeIdx > bTypeIdx) {
-      return 1;
-    }
-
-    // sort by created_at
-    if (a.created_at < b.created_at) {
-      return -1;
-    }
-    if (a.created_at > b.created_at) {
-      return 1;
-    }
-
-    return 0;
-  };
-
-  static bestPlayableFile = (hierarchy) => {
-    // We DFS the hierarchy tree for the best playable leaf node.
-    let best = null;
-    let s    = [...hierarchy.roots];
-    while (s.length > 0) {
-      const id       = s.shift();
-      const children = hierarchy.childMap.get(id);
-      if (Array.isArray(children)) {
-        s = children.concat(s);
-      } else {
-        const file = hierarchy.byID.get(id);
-        if (['audio', 'video'].includes(file.type)) {
-          if (best) {
-            if (FilesHierarchy.cmpFiles(file, best) < 0) {
-              best = file;
-            }
-          } else {
-            best = file;
-          }
-        }
-      }
-    }
-
-    return best;
-  };
+  static;
 
   handlePlay = (e, file) => {
     e.stopPropagation();
