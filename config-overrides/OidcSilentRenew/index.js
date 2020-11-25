@@ -2,15 +2,10 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function rewireSilentRenew(config, env) {
-
-  // react-app-rewire-vendor-splitting is not modifying the config in development
-  if (env !== 'production') {
+  if (typeof config.entry === 'string') {
     config.entry = {
       main: config.entry,
     };
-
-    // emit to different filename
-    config.output.filename = 'static/js/bundle-[name].js';
   }
 
   config.entry.silentRenew = ['./src/silent_renew.js'];

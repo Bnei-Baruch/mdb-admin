@@ -26,3 +26,4 @@ yarn-error.log*
 *.swp
 .vcode/
 /src/stylesheets/Kmedia.css
+/yarn.lock
