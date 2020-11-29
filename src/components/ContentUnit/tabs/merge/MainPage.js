@@ -30,12 +30,13 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
   getContentType = () => CONTENT_UNIT_TYPES;
 
   renderList = () => {
-    const { items, currentLanguage } = this.props;
+    const { items, currentLanguage, unit: { id } } = this.props;
     return (
       <CUList
         {...this.getSelectListProps()}
         items={items}
         currentLanguage={currentLanguage}
+        ownerId={id}
       />
     );
   };

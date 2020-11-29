@@ -13,17 +13,18 @@ class CUList extends ListBase {
   static propTypes = {
     ...ListBase.propTypes,
     items: PropTypes.arrayOf(shapes.ContentUnit),
-    currentLanguage: PropTypes.string.isRequired
+    currentLanguage: PropTypes.string.isRequired,
+    ownerId: PropTypes.number
   };
 
   renderItem = (item) => {
     const {
-      selectedIds, currentLanguage, associatedIds, withCheckBox
+      selectedIds, currentLanguage, associatedIds, withCheckBox, ownerId
     } = this.props;
 
     const properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
     return (
-      <Table.Row key={item.id} disabled={!item || associatedIds.includes(item.id)}>
+      <Table.Row key={item.id} disabled={!item || associatedIds.includes(item.id) || ownerId === item.id}>
         {withCheckBox ? (
           <Table.Cell>
             <Checkbox
