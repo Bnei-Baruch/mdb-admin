@@ -20,17 +20,17 @@ class DangerZoneTab extends Component {
   };
 
   static defaultProps = {
-    collection: null,
+    collection: EMPTY_OBJECT,
     status: EMPTY_OBJECT,
   };
 
   state = {
-    changedSecure: null,
-    modals: {
-      confirmChangeSecurityLevel: false,
-      confirmDelete: false,
+      changedSecure: null,
+      modals: {
+        confirmChangeSecurityLevel: false,
+        confirmDelete: false,
     },
-  };
+    };
 
   handleChangeSecure = (e, data) => {
     this.setState({
@@ -82,10 +82,8 @@ class DangerZoneTab extends Component {
   };
 
   render() {
-    const { collection, status } = this.props;
-    const options                = Object.keys(SECURITY_LEVELS)
-      .map(k => SECURITY_LEVELS[k])
-      .filter(x => x.value !== collection.secure);
+    const { status, collection: { secure } } = this.props;
+    const options                            = Object.keys(SECURITY_LEVELS).map(k => SECURITY_LEVELS[k]);
 
     return (
       <Grid>
@@ -101,7 +99,7 @@ class DangerZoneTab extends Component {
                         button
                         upward
                         options={options}
-                        value={options[0].value}
+                        value={secure}
                         onChange={this.handleChangeSecure}
                         selectOnBlur={false}
                       />

@@ -6,7 +6,7 @@ import {
   Button, Dropdown, Grid, Header, Icon, List, Modal, Segment
 } from 'semantic-ui-react';
 
-import { SECURITY_LEVELS } from '../../../../helpers/consts';
+import { EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';
@@ -21,6 +21,7 @@ class DangerZoneTab extends Component {
   static defaultProps = {
     unit: null,
     err: null,
+    user: EMPTY_OBJECT
   };
 
   state = {
@@ -58,11 +59,9 @@ class DangerZoneTab extends Component {
   };
 
   render() {
-    const { unit, err } = this.props;
+    const { unit: { secure }, err } = this.props;
 
-    const options = Object.keys(SECURITY_LEVELS)
-      .map(k => SECURITY_LEVELS[k])
-      .filter(x => x.value !== unit.secure);
+    const options = Object.keys(SECURITY_LEVELS).map(k => SECURITY_LEVELS[k]);
 
     return (
       <Grid>
@@ -78,7 +77,7 @@ class DangerZoneTab extends Component {
                         button
                         upward
                         options={options}
-                        value={options[0].value}
+                        value={secure}
                         onChange={this.handleChangeSecure}
                         selectOnBlur={false}
                       />
