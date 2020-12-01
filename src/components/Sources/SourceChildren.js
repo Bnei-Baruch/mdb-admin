@@ -11,26 +11,13 @@ import * as shapes from '../shapes';
 import NewSourceForm from './NewSourceForm';
 
 class SourceChildren extends Component {
-  static propTypes = {
-    getSourceById: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    source: shapes.Source,
-    hierarchy: shapes.Hierarchy,
-    currentLanguage: PropTypes.string.isRequired,
-  };
-
-  static defaultProps = {
-    source: EMPTY_OBJECT,
-    hierarchy: {
-      childMap: new Map()
-    },
-  };
-
-  state = {
-    modalOpen: false,
-    wip: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalOpen: false,
+      wip: false
+    };
+  }
 
   static getDerivedStateFromProps(props, state) {
     // Hide modal if we're finished.
@@ -42,7 +29,7 @@ class SourceChildren extends Component {
 
     const { wip } = state;
     if (wip && !nWip && !nErr) {
-      return { modalOpen: true, wip: false };
+      return { modalOpen: false, wip: false };
     }
     return null;
   }
@@ -116,5 +103,21 @@ class SourceChildren extends Component {
     );
   }
 }
+
+SourceChildren.propTypes = {
+  getSourceById: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  source: shapes.Source,
+  hierarchy: shapes.Hierarchy,
+  currentLanguage: PropTypes.string.isRequired,
+};
+
+SourceChildren.defaultProps = {
+  source: EMPTY_OBJECT,
+  hierarchy: {
+    childMap: new Map()
+  },
+};
 
 export default SourceChildren;
