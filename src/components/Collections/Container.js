@@ -23,7 +23,7 @@ class CollectionsContainer extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.wipOfCreate && !this.props.wipOfCreate) {
+    if (prevProps.wipOfCreate && !this.props.wipOfCreate && !this.props.errOfCreate) {
       this.askForData(1);
     }
   }
