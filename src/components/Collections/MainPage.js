@@ -28,13 +28,17 @@ class CollectionsMainPage extends ListWithFiltersBase {
     this.state.newCollection = false;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { wipOfCreate } = this.props;
-    const nWip            = nextProps.wipOfCreate;
-    const nErr            = nextProps.errOfCreate;
-    if (wipOfCreate && !nWip && !nErr) {
-      this.toggleNewCollection();
+  static getDerivedStateFromProps(props, state) {
+    const { wipOfCreate, errOfCreate } = props;
+    if (wipOfCreate || errOfCreate) {
+      return { wip: true };
     }
+
+    if (state.wip && !wipOfCreate && !errOfCreate) {
+      return { newCollection: !state.newCollection, wip: false };
+    }
+
+    return null;
   }
 
   toggleNewCollection = () => this.setState({ newCollection: !this.state.newCollection });

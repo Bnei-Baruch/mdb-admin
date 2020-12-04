@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect, Provider } from 'react-redux';
 import { OidcProvider } from 'redux-oidc';
-import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter } from 'connected-react-router';
 import 'semantic-ui-css/semantic.min.css';
 
 import userManager from '../../helpers/userManager';

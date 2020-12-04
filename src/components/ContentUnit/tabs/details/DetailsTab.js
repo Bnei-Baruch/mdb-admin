@@ -15,7 +15,7 @@ const DetailsTab = (props) => {
     return null;
   }
 
-  const readonlyProperties = Object.assign({}, unit.properties);
+  const readonlyProperties = { ...unit.properties };
   editableProperties.forEach(x => (delete readonlyProperties[x]));
 
   return (

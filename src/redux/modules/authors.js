@@ -10,23 +10,27 @@ import { types as sources } from './sources';
 const FETCH_ALL         = 'Authors/FETCH_ALL';
 const FETCH_ALL_SUCCESS = 'Authors/FETCH_ALL_SUCCESS';
 const FETCH_ALL_FAILURE = 'Authors/FETCH_ALL_FAILURE';
+const ON_NEW_SOURCE     = 'Authors/ON_NEW_SOURCE';
 
 export const types = {
   FETCH_ALL,
   FETCH_ALL_SUCCESS,
   FETCH_ALL_FAILURE,
+  ON_NEW_SOURCE
 };
 
 /* Actions */
 
-const fetchAll        = createAction(FETCH_ALL);
-const fetchAllSuccess = createAction(FETCH_ALL_SUCCESS);
-const fetchAllFailure = createAction(FETCH_ALL_FAILURE);
+const fetchAll           = createAction(FETCH_ALL);
+const fetchAllSuccess    = createAction(FETCH_ALL_SUCCESS);
+const fetchAllFailure    = createAction(FETCH_ALL_FAILURE);
+const onNewSourceSuccess = createAction(ON_NEW_SOURCE, (source, author) => ({ source, author }));
 
 export const actions = {
   fetchAll,
   fetchAllSuccess,
   fetchAllFailure,
+  onNewSourceSuccess
 };
 
 /* Reducer */
@@ -34,7 +38,7 @@ export const actions = {
 const keys = new Map([
   [FETCH_ALL, 'fetchAuthors'],
   [FETCH_ALL_SUCCESS, 'fetchAuthors'],
-  [FETCH_ALL_FAILURE, 'fetchAuthors'],
+  [FETCH_ALL_FAILURE, 'fetchAuthors']
 ]);
 
 const initialState = {
@@ -103,8 +107,7 @@ export const reducer = handleActions({
   [FETCH_ALL]: onRequest,
   [FETCH_ALL_SUCCESS]: onSuccess,
   [FETCH_ALL_FAILURE]: onFailure,
-
-  [sources.CREATE_SUCCESS]: onNewSource,
+  [ON_NEW_SOURCE]: onNewSource,
 }, initialState);
 
 /* Selectors */

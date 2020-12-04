@@ -21,43 +21,17 @@ import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
 
 class I18nForm extends Component {
-  static propTypes = {
-    updateI18n: PropTypes.func.isRequired,
-    unit: shapes.ContentUnit,
-    wip: PropTypes.bool,
-    err: shapes.Error,
-  };
-
-  static defaultProps = {
-    unit: {
-      i18n: {},
-    },
-    wip: false,
-    err: null,
-  };
-
   constructor(props) {
     super(props);
 
-    const { i18n }                           = props.unit;
-    const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
+    const { i18n }                = props.unit;
+    const { i18nErrors, newI18n } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
 
     this.state = {
       i18n: newI18n,
       submitted: false,
-      errors: i18nErrors,
-      addedKeys
+      errors: i18nErrors
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { i18n } = nextProps.unit;
-
-    if (this.props.unit.i18n !== i18n) {
-      const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
-
-      this.setState({ i18n: newI18n, errors: i18nErrors, addedKeys });
-    }
   }
 
   i18nObjectFromKey = language => ({
@@ -156,8 +130,8 @@ class I18nForm extends Component {
                     : null
                 }
               </Table.Cell>
-            </Table.Row>))
-          }
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     );
@@ -220,6 +194,21 @@ class I18nForm extends Component {
     );
   }
 }
+
+I18nForm.propTypes = {
+  updateI18n: PropTypes.func.isRequired,
+  unit: shapes.ContentUnit,
+  wip: PropTypes.bool,
+  err: shapes.Error,
+};
+
+I18nForm.defaultProps = {
+  unit: {
+    i18n: {},
+  },
+  wip: false,
+  err: null,
+};
 
 const mapState = state => ({
   wip: selectors.getWIP(state.content_units, 'updateI18n'),

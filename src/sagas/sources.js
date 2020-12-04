@@ -2,12 +2,13 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { USER_FOUND } from 'redux-oidc';
 
 import { actions, types } from '../redux/modules/sources';
+import { actions as actionsAuthor } from '../redux/modules/authors';
 import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
 
 function* fetchItem(action) {
   try {
-    const id = action.payload;
+    const id   = action.payload;
     const resp = yield call(api.get, `/sources/${id}/`);
     yield put(actions.fetchItemSuccess(resp.data));
   } catch (err) {
@@ -15,7 +16,7 @@ function* fetchItem(action) {
   }
 }
 
-function* fetchAll(action) {
+function* fetchAll() {
   try {
     const data = yield loadAllPages('/sources/');
     yield put(actions.fetchAllSuccess(data));
@@ -51,7 +52,10 @@ function* updateI18n(action) {
 function* create(action) {
   try {
     const resp = yield call(api.post, '/sources/', action.payload);
-    yield put(actions.createSuccess(resp.data, action.payload));
+    yield put(actions.createSuccess(resp.data));
+    if (action.payload.author) {
+      yield put(actionsAuthor.onNewSourceSuccess(resp.data, action.payload.author));
+    }
   } catch (err) {
     yield put(actions.createFailure(err));
   }

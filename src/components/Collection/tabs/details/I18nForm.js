@@ -39,24 +39,14 @@ class I18nForm extends Component {
   constructor(props) {
     super(props);
 
-    const { i18n }                           = props.collection;
-    const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
+    const { i18n }                = props.collection;
+    const { i18nErrors, newI18n } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
 
     this.state = {
       i18n: newI18n,
-      addedKeys,
       submitted: false,
       errors: i18nErrors
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { i18n } = nextProps.collection;
-
-    if (this.props.collection.i18n !== i18n) {
-      const { i18nErrors, newI18n, addedKeys } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
-      this.setState({ i18n: newI18n, errors: i18nErrors, addedKeys });
-    }
   }
 
   i18nObjectFromKey = language => ({
@@ -155,8 +145,8 @@ class I18nForm extends Component {
                 }
 
               </Table.Cell>
-            </Table.Row>))
-          }
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     );

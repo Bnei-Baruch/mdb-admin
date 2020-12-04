@@ -24,11 +24,9 @@ class CUModal extends ListWithCheckboxBase {
     this.askForData(1);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { wipAssociate } = this.props;
-    if (nextProps.unit && wipAssociate && !nextProps.wipAssociate) {
-      this.askForData(1);
-      this.handleClose();
+  componentDidUpdate(prevProps) {
+    if (this.props.wipAssociate && !prevProps.wipAssociate) {
+      this.props.handleToggleModal();
     }
   }
 
@@ -38,6 +36,7 @@ class CUModal extends ListWithCheckboxBase {
 
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
+    console.log('renderList associatedIds ', associatedIds);
     return (
       <CUList
         {...this.getSelectListProps()}
@@ -90,7 +89,6 @@ class CUModal extends ListWithCheckboxBase {
               </Menu.Item>
             </Menu.Menu>
           </Menu>
-
 
           {this.renderFiltersHydrator()}
           {this.renderContent({ usePagination: false })}

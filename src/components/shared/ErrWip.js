@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { formatError } from '../../helpers/utils';
 import { Header, Label } from 'semantic-ui-react';
+import { formatError } from '../../helpers/utils';
 
 const ErrWip = (props) => {
   const { err, wip } = props;

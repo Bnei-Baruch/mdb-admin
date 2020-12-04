@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 import { NS_COLLECTIONS } from '../helpers/consts';
 import api from '../helpers/apiClient';

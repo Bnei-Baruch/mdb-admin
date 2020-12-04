@@ -31,9 +31,8 @@ class CollectionModal extends ListWithCheckboxBase {
     this.askForData(1);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { wipAssociate } = this.props;
-    if (nextProps.unit && wipAssociate && !nextProps.wipAssociate) {
+  componentDidUpdate(prevProps) {
+    if (this.props.wipAssociate && !prevProps.wipAssociate) {
       this.askForData(1);
       this.handleClose();
     }

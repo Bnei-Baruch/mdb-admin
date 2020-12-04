@@ -38,15 +38,20 @@ class PersonsMainPage extends Component {
 
   state = {
     newPerson: false,
+    wip: false
   };
 
-  componentWillReceiveProps(nextProps) {
-    const { wipOfCreate } = this.props;
-    const nWip            = nextProps.wipOfCreate;
-    const nErr            = nextProps.errOfCreate;
-    if (wipOfCreate && !nWip && !nErr) {
-      this.toggleNewPerson();
+  static getDerivedStateFromProps(props, state) {
+    const { wipOfCreate, errOfCreate } = props;
+    if (wipOfCreate || errOfCreate) {
+      return { wip: true };
     }
+
+    if (state.wip && !wipOfCreate && !errOfCreate) {
+      return { newPerson: !state.newPerson, wip: false };
+    }
+
+    return null;
   }
 
   toggleNewPerson = () =>

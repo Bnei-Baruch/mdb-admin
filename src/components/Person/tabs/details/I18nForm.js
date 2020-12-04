@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import cloneDeep from 'lodash/cloneDeep';
 import {
   Button, Flag, Header, Input, Menu, Message, Segment, Table
 } from 'semantic-ui-react';
@@ -34,15 +35,9 @@ class I18nForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      i18n: { ...props.person.i18n },
+      i18n: cloneDeep(props.person.i18n),
       submitted: false,
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.person.i18n !== nextProps.person.i18n) {
-      this.setState({ i18n: nextProps.person.i18n });
-    }
   }
 
   onNameChange = (e, { value }) => {
@@ -127,8 +122,8 @@ class I18nForm extends Component {
                   onClick={() => this.removeLanguage(k)}
                 />
               </Table.Cell>
-            </Table.Row>))
-          }
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     );

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import {
   Flag, Header, Icon, List, Menu, Message, Segment
 } from 'semantic-ui-react';
+import isEqual from 'react-fast-compare';
 
 import {
   EMPTY_ARRAY, EMPTY_OBJECT, LANG_UNKNOWN, LANGUAGES, SECURITY_LEVELS
@@ -19,51 +20,36 @@ import * as shapes from '../shapes';
 import { ErrorSplash, LoadingSplash } from '../shared/Splash';
 
 class Files extends Component {
-  static propTypes = {
-    operation: shapes.Operation,
-    files: PropTypes.arrayOf(shapes.File),
-    wip: PropTypes.bool,
-    err: shapes.Error,
-  };
-
-  static defaultProps = {
-    operation: undefined,
-    files: EMPTY_ARRAY,
-    wip: false,
-    err: null,
-  };
-
   constructor(props) {
     super(props);
     const { files } = props;
-    this.state      = this.getStateFromFiles(files);
+    this.state      = Files.getStateFromFiles(files);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { files } = nextProps;
-    const props     = this.props;
-
-    // no change ?
-    if (files === props.files) {
-      return;
+  static getDerivedStateFromProps(props, state) {
+    if (!props.files) {
+      return null;
     }
 
-    const nextState = this.getStateFromFiles(files);
-    if (this.state.currentFile) {
+    const nextState = Files.getStateFromFiles(props.files);
+    if (isEqual(state, nextState)) {
+      return null;
+    }
+    if (state.currentFile) {
       delete nextState.currentFile;
     }
-    this.setState(nextState);
+    return nextState;
   }
 
-  getStateFromFiles = files => (
+  static getStateFromFiles = files => (
     {
       total: files.length,
-      files: [...files].sort(this.cmpFiles),
+      files: [...files].sort(Files.cmpFiles),
     }
   );
 
   // compare files by "relevance"
-  cmpFiles = (a, b) => {
+  static cmpFiles = (a, b) => {
     // sort by created_at
     if (a.created_at < b.created_at) {
       return -1;
@@ -89,7 +75,7 @@ class Files extends Component {
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
     const lang            = LANGUAGES[language || LANG_UNKNOWN];
-    const duration        = (properties || {}).duration;
+    const { duration }    = properties || {};
     const durationDisplay = duration ?
       moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
       null;
@@ -173,6 +159,20 @@ class Files extends Component {
     );
   }
 }
+
+Files.propTypes = {
+  operation: shapes.Operation,
+  files: PropTypes.arrayOf(shapes.File),
+  wip: PropTypes.bool,
+  err: shapes.Error,
+};
+
+Files.defaultProps = {
+  operation: undefined,
+  files: EMPTY_ARRAY,
+  wip: false,
+  err: null,
+};
 
 const mapState = (state, ownProps) => {
   const { operation = EMPTY_OBJECT } = ownProps;

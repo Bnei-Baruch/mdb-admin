@@ -39,7 +39,7 @@ class CreatePersonForm extends BasePersonForm {
   };
 
   cleanI18n() {
-    const i18n = this.state.i18n;
+    const { i18n } = this.state;
     return MAJOR_LANGUAGES.reduce((acc, val) => {
       if (i18n[val].name.trim() !== '') {
         acc[val] = { ...i18n[val], language: val };
@@ -56,7 +56,7 @@ class CreatePersonForm extends BasePersonForm {
     const errors = super.validate();
 
     // validate at least one valid translation
-    const i18n = this.state.i18n;
+    const { i18n } = this.state;
     if (MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }
@@ -87,7 +87,6 @@ class CreatePersonForm extends BasePersonForm {
       </Form>
     );
   }
-
 }
 
 export default CreatePersonForm;

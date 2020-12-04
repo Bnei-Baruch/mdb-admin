@@ -27,19 +27,29 @@ class TagChildren extends Component {
     }
   };
 
-  state = {
-    modalOpen: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalOpen: false,
+      wip: false
+    };
+  }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
     // Hide modal if we're finished.
     // We're finished if wip is true in current props and false in next props without an error
-    const wip  = this.props.getWIP('create');
-    const nWip = nextProps.getWIP('create');
-    const nErr = nextProps.getError('create');
-    if (wip && !nWip && !nErr) {
-      this.hideModal();
+
+    const nWip = props.getWIP('create');
+    const nErr = props.getError('create');
+    if (nErr || nWip) {
+      return { wip: true };
     }
+
+    if (state.wip && !nWip && !nErr) {
+      return { modalOpen: false, wip: false };
+    }
+
+    return null;
   }
 
   showModal = () => this.setState({ modalOpen: true });
@@ -128,4 +138,19 @@ class TagChildren extends Component {
   }
 }
 
+TagChildren.propTypes = {
+  getTagById: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  tag: shapes.Tag,
+  hierarchy: shapes.Hierarchy,
+  currentLanguage: PropTypes.string.isRequired,
+};
+
+TagChildren.defaultProps = {
+  tag: EMPTY_OBJECT,
+  hierarchy: {
+    childMap: new Map()
+  }
+};
 export default TagChildren;

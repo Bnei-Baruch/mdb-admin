@@ -74,7 +74,7 @@ const create            = createAction(CREATE,
     author,
     type_id: typeID
   }));
-const createSuccess     = createAction(CREATE_SUCCESS, (source, author) => ({ source, author }));
+const createSuccess     = createAction(CREATE_SUCCESS);
 const createFailure     = createAction(CREATE_FAILURE);
 
 export const actions = {

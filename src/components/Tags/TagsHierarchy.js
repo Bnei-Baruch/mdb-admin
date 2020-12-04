@@ -31,25 +31,35 @@ class TagsHierarchy extends Component {
 
     const { roots } = props.hierarchy;
     this.state      = {
+      wip: false,
       modalOpen: false,
       shownRoot: roots.length > 0 ? roots[0] : null,
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
     // Hide modal if we're finished.
     // We're finished if wip is true in current props and false in next props without an error
-    const wip  = this.props.getWIP('create');
-    const nWip = nextProps.getWIP('create');
-    const nErr = nextProps.getError('create');
+    const { wip } = state;
+    const nWip    = props.getWIP('create');
+    const nErr    = props.getError('create');
+    const response  = {};
+
+    if (!wip && nWip) {
+      response.wip = nWip;
+    }
+
     if (wip && !nWip && !nErr) {
-      this.hideModal();
+      response.modalOpen = false;
+      response.wip       = false;
     }
 
     // Set shown root once we have the hierarchy available
-    if (this.state.shownRoot === null && nextProps.hierarchy.roots.length > 0) {
-      this.setState({ shownRoot: nextProps.hierarchy.roots[0] });
+    if (state.shownRoot === null && props.hierarchy.roots.length > 0) {
+      response.shownRoot = props.hierarchy.roots[0];
     }
+
+    return Object.entries(response).length > 0 ? response : null;
   }
 
   showModal = () => this.setState({ modalOpen: true });
@@ -87,9 +97,7 @@ class TagsHierarchy extends Component {
   }
 
   renderHierarchy() {
-    const {
-      getTagById, hierarchy, getWIP, currentLanguage
-    } = this.props;
+    const { getTagById, hierarchy, getWIP, currentLanguage } = this.props;
 
     const wip     = getWIP('fetchAll');
     const isEmpty = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;

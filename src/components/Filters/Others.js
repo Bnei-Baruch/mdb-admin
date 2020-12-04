@@ -26,8 +26,7 @@ const Others = (props) => {
                   options={Array.from(Object.keys(contentTypes)).map(x => ({ key: x, value: x, text: x }))}
                 />
               </Grid.Column>
-            )
-          }
+            )}
           <Grid.Column width={4}>
             <Header content="Security Level" size="small" />
             <SecureFilter

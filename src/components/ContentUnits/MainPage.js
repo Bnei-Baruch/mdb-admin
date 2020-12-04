@@ -27,14 +27,15 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     this.state.showNewCU = false;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { wipOfCreate } = this.props;
-
-    const nWip = nextProps.wipOfCreate;
-    const nErr = nextProps.errOfCreate;
-    if (wipOfCreate && !nWip && !nErr) {
-      this.toggleNewCU();
+  static getDerivedStateFromProps(props, state) {
+    const { wipOfCreate, errOfCreate } = props;
+    if (errOfCreate || wipOfCreate) {
+      return { wip: true };
     }
+    if (state.wip && !wipOfCreate && !errOfCreate) {
+      return { showNewCU: !state.showNewCU, wip: false };
+    }
+    return null;
   }
 
   toggleNewCU = () => this.setState({ showNewCU: !this.state.showNewCU });
@@ -61,11 +62,14 @@ class ContentUnitMainPage extends ListWithFiltersBase {
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
 
-    return (<CUList
-      items={items}
-      associatedIds={associatedIds}
-      currentLanguage={currentLanguage}
-      withCheckBox={false} />);
+    return (
+      <CUList
+        items={items}
+        associatedIds={associatedIds}
+        currentLanguage={currentLanguage}
+        withCheckBox={false}
+      />
+    );
   };
 
   render() {
@@ -82,7 +86,8 @@ class ContentUnitMainPage extends ListWithFiltersBase {
           centered={false}
           size="small"
           open={this.state.showNewCU}
-          onClose={this.toggleNewCU}>
+          onClose={this.toggleNewCU}
+        >
           <Modal.Header>Create New Content Unit</Modal.Header>
           <Modal.Content>
             <CreateContentUnitForm wip={wipOfCreate} err={errOfCreate} create={create} />

@@ -12,7 +12,8 @@ import connectFilter from './connectFilter';
 
 // TODO (yaniv -> oleg): need indication for user when clicking on a bad date (after today) or when typing bad dates
 
-const format = 'YYYY-MM-DD';
+const format     = 'YYYY-MM-DD';
+const UTC_OFFSET = moment().utcOffset();
 
 const now = () =>
   moment(new Date())
@@ -129,24 +130,34 @@ class DateFilter extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = this.getUpdatedStateFromProps(this.props);
+    this.state = this.getUpdatedStateFromValue(this.props.value, {});
   }
 
   componentDidMount() {
     this.datePicker.showMonth(this.state.from);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState(this.getUpdatedStateFromProps(nextProps));
-  }
+  getUpdatedStateFromValue = (newVal, prevVal) => {
+    const result                   = {};
+    const { from: nFrom, to: nTo } = newVal;
+    const { from, to }             = prevVal;
 
-  getUpdatedStateFromProps = props => ({
-    from: props.value.from,
-    to: props.value.to,
-    datePreset: props.value.datePreset || rangeToPreset(props.value.from, props.value.to),
-    fromInputValue: moment(props.value.from, 'YYYY-MM-DD').format('YYYY-MM-DD'),
-    toInputValue: moment(props.value.to, 'YYYY-MM-DD').format('YYYY-MM-DD')
-  });
+    if (nFrom !== from) {
+      result.from           = nFrom;
+      result.fromInputValue = moment(nFrom, 'YYYY-MM-DD').format('YYYY-MM-DD');
+    }
+
+    if (nTo !== to) {
+      result.to           = nTo;
+      result.toInputValue = moment(nTo, 'YYYY-MM-DD').format('YYYY-MM-DD');
+    }
+
+    if (nFrom !== from || nTo !== to) {
+      result.datePreset = rangeToPreset(nFrom, nTo);
+    }
+
+    return (Object.keys(result).length !== 0) ? result : null;
+  };
 
   setRange(datePreset, from, to, fromInputValue = '', toInputValue = '') {
     let range = {};
@@ -174,11 +185,10 @@ class DateFilter extends Component {
   }
 
   apply = () => {
-    this.props.updateValue({
-      from: this.state.from,
-      to: this.state.to,
-      datePreset: this.state.datePreset
-    }, this.props.isUpdateQuery);
+    const from = moment(this.state.from).add(UTC_OFFSET, 'm').toDate();
+    const to   = moment(this.state.to).add(UTC_OFFSET, 'm').toDate();
+
+    this.props.updateValue({ from, to, datePreset: this.state.datePreset }, this.props.isUpdateQuery);
     this.props.onApply();
   };
 
@@ -241,8 +251,8 @@ class DateFilter extends Component {
     const { onCancel } = this.props;
 
     const {
-      fromInputValue, toInputValue, from, to, datePreset
-    } = this.state;
+            fromInputValue, toInputValue, from, to, datePreset
+          } = this.state;
 
     return (
       <Segment basic compact attached="bottom" floated="left" className="tab active">

@@ -22,18 +22,13 @@ class CollectionsContainer extends Component {
     errOfCreate: null
   };
 
-  componentWillReceiveProps(nextProps) {
-    const { wipOfCreate } = this.props;
-    const nWip            = nextProps.wipOfCreate;
-    const nErr            = nextProps.errOfCreate;
-    if (wipOfCreate && !nWip && !nErr) {
-      this.askForData(this.getPageNo(true));
+  componentDidUpdate(prevProps) {
+    if (prevProps.wipOfCreate && !this.props.wipOfCreate && !this.props.errOfCreate) {
+      this.askForData(1);
     }
   }
 
-  askForData = (pageNo) => {
-    this.props.fetchList(NS_COLLECTIONS, pageNo);
-  };
+  askForData = pageNo => this.props.fetchList(NS_COLLECTIONS, pageNo);
 
   getPageNo = (notUseLocation) => {
     let page = 0;
@@ -48,6 +43,7 @@ class CollectionsContainer extends Component {
   };
 
   render() {
+    // eslint-disable-next-line no-unused-vars
     const { location, ...rest } = this.props;
 
     return (

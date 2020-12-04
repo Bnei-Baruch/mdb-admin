@@ -7,40 +7,20 @@ import { EMPTY_ARRAY } from '../../helpers/consts';
 import { selectors as filterSelectors } from '../../redux/modules/filters';
 
 class TabsMenu extends Component {
-
-  static propTypes = {
-    items: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      element: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-      namespace: PropTypes.string,
-    })),
-    active: PropTypes.string,
-  };
-
-  static defaultProps = {
-    items: EMPTY_ARRAY,
-    active: '',
-  };
-
   constructor(props) {
     super(props);
-
-    let { active } = props;
-    if (!active) {
-      const { items } = props;
-      if (items.length > 0) {
-        active = items[0].name;
-      }
-    }
-
-    this.state = { active };
+    const active = this.activeFromProps(props);
+    this.state   = { active };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { active } = nextProps;
-    if (active !== this.props.active) {
-      this.setState({ active });
+  activeFromProps(props) {
+    if (props.active) return props.active;
+
+    const { items } = props;
+    if (items.length > 0) {
+      return items[0].name;
     }
+    return '';
   }
 
   handleActiveChange = (e, { name }) => this.setState({ active: name });
@@ -71,12 +51,25 @@ class TabsMenu extends Component {
             })
           }
         </Menu>
-        {(
-          <ElementType {...this.props} namespace={activeItem.namespace} contentTypes={activeItem.contentTypes} isUpdateQuery={activeItem.isUpdateQuery} />)}
+        <ElementType {...this.props} namespace={activeItem.namespace} contentTypes={activeItem.contentTypes} isUpdateQuery={activeItem.isUpdateQuery} />
       </div>
     );
   }
 }
+
+TabsMenu.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    element: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.object]).isRequired,
+    namespace: PropTypes.string,
+  })),
+  active: PropTypes.string,
+};
+
+TabsMenu.defaultProps = {
+  items: EMPTY_ARRAY,
+  active: '',
+};
 
 export default connect((state, ownProps) => {
   const filterName = filterSelectors.getActiveFilter(state.filters, ownProps.items[0].namespace);
@@ -84,4 +77,3 @@ export default connect((state, ownProps) => {
     active: filterSelectors.getTabNameByFilterName(filterName)
   };
 })(TabsMenu);
-

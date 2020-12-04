@@ -60,7 +60,7 @@ class BaseCollectionForm extends Component {
   }
 
   getPropertiesFromState = () => {
-    const state = this.state;
+    const { state } = this;
 
     // common properties to all types
     const data = {};
@@ -125,7 +125,7 @@ class BaseCollectionForm extends Component {
   handlePatternChange = (e, data) => {
     const pattern = data.value;
 
-    const errors = this.state.errors;
+    const { errors } = this.state;
     if (isValidPattern(pattern)) {
       delete errors.pattern;
     } else {
@@ -143,7 +143,7 @@ class BaseCollectionForm extends Component {
 
   handleDateRangeChange = (range) => {
     const { start, end } = range;
-    const errors         = this.state.errors;
+    const { errors } = this.state;
     if (start) {
       delete errors.start_date;
     }
@@ -154,14 +154,14 @@ class BaseCollectionForm extends Component {
   };
 
   handleFilmDateChange = (date) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     delete errors.film_date;
     this.setState({ film_date: date, errors });
   };
 
   handleLocationChange = (location) => {
     const { country, city, fullAddress } = location;
-    const errors                         = this.state.errors;
+    const { errors } = this.state;
     if (country) {
       delete errors.country;
     }
@@ -175,14 +175,13 @@ class BaseCollectionForm extends Component {
   };
 
   handleHolidayChange = (e, data) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     delete errors.holiday_tag;
     this.setState({ holiday_tag: data.value, errors });
   };
 
   handleSourceChange = (source) => {
-    console.log('handleSourceChange', source);
-    const errors = this.state.errors;
+    const { errors } = this.state;
     delete errors.source;
     this.setState({ source: source.uid, errors });
   };
@@ -445,7 +444,7 @@ class BaseCollectionForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
+          {submitted && err ? (
             <Header
               inverted
               content={formatError(err)}
@@ -455,6 +454,7 @@ class BaseCollectionForm extends Component {
               size="tiny"
               style={{ marginTop: '0.2rem', marginBottom: '0' }}
             />
+          )
             : null}
           <Button
             primary

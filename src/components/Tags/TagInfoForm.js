@@ -10,35 +10,19 @@ import { formatError, isValidPattern } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 class TagInfoForm extends Component {
-  static propTypes = {
-    updateInfo: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    tag: shapes.Tag,
-  };
-
-  static defaultProps = {
-    tag: EMPTY_OBJECT,
-  };
-
   constructor(props) {
     super(props);
-
-    this.state = {
-      pattern: props.tag.pattern || '',
-      description: props.tag.description || '',
-      submitted: false,
-      errors: {}
-    };
+    const { tag: { pattern, description, id } } = props;
+    if (id)
+      this.state = { pattern, description, id, submitted: false, errors: {} };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.tag !== nextProps.tag) {
-      this.setState({
-        pattern: nextProps.tag.pattern || '',
-        description: nextProps.tag.description || '',
-      });
-    }
+  static getDerivedStateFromProps(props, state) {
+    const { tag: { pattern, description, id } } = props;
+    if (id && id !== state.id)
+      return { pattern, description, id, submitted: false, errors: {} };
+
+    return null;
   }
 
   onDescriptionChange = (e, { value }) => {
@@ -69,9 +53,7 @@ class TagInfoForm extends Component {
     const wip                       = getWIP('updateInfo');
     const err                       = getError('updateInfo');
 
-    const {
-      pattern, description, submitted, errors
-    } = this.state;
+    const { pattern, description, submitted, errors } = this.state;
 
     return (
       <div>
@@ -152,5 +134,20 @@ class TagInfoForm extends Component {
     );
   }
 }
+
+TagInfoForm.propTypes = {
+  updateInfo: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  tag: shapes.Tag,
+};
+
+TagInfoForm.defaultProps = {
+  tag: {
+    pattern: '',
+    description: '',
+    id: ''
+  },
+};
 
 export default TagInfoForm;

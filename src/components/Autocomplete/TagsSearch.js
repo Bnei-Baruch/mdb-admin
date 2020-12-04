@@ -12,22 +12,9 @@ import { selectors as system } from '../../redux/modules/system';
 import { extractI18n } from '../../helpers/utils';
 
 class TagsSearch extends Component {
-  static propTypes = {
-    onSelect: PropTypes.func.isRequired,
-    tagsById: PropTypes.instanceOf(Map),
-    hierarchy: shapes.Hierarchy,
-    placeholder: PropTypes.string,
-    currentLanguage: PropTypes.string.isRequired,
-  };
-
-  static defaultProps = {
-    tagsById: EMPTY_MAP,
-    hierarchy: EMPTY_HIERARCHY,
-    placeholder: 'חפש תגית',
-  };
-
-  componentWillMount() {
-    this.resetComponent();
+  constructor(props) {
+    super(props);
+    this.state = { suggestions: [], query: '' };
   }
 
   resetComponent = () => this.setState({ suggestions: [], query: '' });
@@ -134,5 +121,19 @@ const mapState = state => ({
   hierarchy: selectors.getHierarchy(state.tags),
   currentLanguage: system.getCurrentLanguage(state.system),
 });
+
+TagsSearch.propTypes = {
+  onSelect: PropTypes.func.isRequired,
+  tagsById: PropTypes.instanceOf(Map),
+  hierarchy: shapes.Hierarchy,
+  placeholder: PropTypes.string,
+  currentLanguage: PropTypes.string.isRequired,
+};
+
+TagsSearch.defaultProps = {
+  tagsById: EMPTY_MAP,
+  hierarchy: EMPTY_HIERARCHY,
+  placeholder: 'חפש תגית',
+};
 
 export default connect(mapState)(TagsSearch);

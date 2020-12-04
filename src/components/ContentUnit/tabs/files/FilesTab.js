@@ -31,10 +31,10 @@ class FilesTab extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (((nextProps.unit && !this.props.unit)
-      || (nextProps.unit && this.props.unit && nextProps.unit.id !== this.props.unit.id))) {
-      this.askForData(nextProps.unit.id);
+  componentDidUpdate(prevProps) {
+    if (((!prevProps.unit && this.props.unit)
+      || (prevProps.unit && this.props.unit && prevProps.unit.id !== this.props.unit.id))) {
+      this.askForData(this.props.unit.id);
     }
   }
 

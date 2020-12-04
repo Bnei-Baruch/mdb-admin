@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -30,7 +29,8 @@ class AssociationsContainer extends Component {
   };
 
   state = {
-    selectedCCU: []
+    selectedCCU: [],
+    allTableRef: null
   };
 
   componentDidMount() {
@@ -40,14 +40,14 @@ class AssociationsContainer extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.units.length > 0 && nextProps.units.length > this.props.units.length) {
-      ReactDom.findDOMNode(this).scrollIntoView(false);
+  componentDidUpdate(prevProps) {
+    if (prevProps.units.length > 0 && this.props.units.length > prevProps.units.length) {
+      this.state.allTableRef.scrollIntoView(false);
     }
-    if (nextProps.collection
-      && !this.props.collection
-      && nextProps.collection.id !== this.props.collection.id) {
-      this.askForData(nextProps.collection.id);
+    if (this.props.collection
+      && !prevProps.collection
+      && this.props.collection.id !== prevProps.collection.id) {
+      this.askForData(this.props.collection.id);
     }
   }
 
@@ -122,7 +122,9 @@ class AssociationsContainer extends Component {
   handlePositionDown = () =>
     this.updatePosition(false);
 
-  handleContextRef = contextRef => this.setState({ contextRef });
+  handleContextRef = ref => this.setState({ contextRef: ref });
+
+  handleAllTableRef = ref => this.setState({ allTableRef: ref });
 
   render() {
     const { selectedCCU, contextRef } = this.state;
@@ -137,7 +139,7 @@ class AssociationsContainer extends Component {
       || selectedCCU[0].content_unit_id === units[0].content_unit_id;
 
     return (
-      <div>
+      <div ref={this.handleAllTableRef}>
         <Menu borderless size="large">
           <Menu.Item header>
             <Header content="Associated Content Units" size="medium" color="blue" />
