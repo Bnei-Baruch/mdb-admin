@@ -88,7 +88,8 @@
     "react/no-unused-prop-types": "off",
     "react/no-access-state-in-setstate": "off",
     "react/state-in-constructor": "off",
-    "react/jsx-indent": "off"
+    "react/jsx-indent": "off",
+    "react/no-danger": "off"
   },
   "globals": {
     "socket": true

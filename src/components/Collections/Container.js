@@ -43,6 +43,7 @@ class CollectionsContainer extends Component {
   };
 
   render() {
+    // eslint-disable-next-line no-unused-vars
     const { location, ...rest } = this.props;
 
     return (

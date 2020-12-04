@@ -4,7 +4,7 @@ import { USER_FOUND } from 'redux-oidc';
 import { actions, types } from '../redux/modules/authors';
 import api from '../helpers/apiClient';
 
-function* fetchAll(action) {
+function* fetchAll() {
   try {
     const resp = yield call(api.get, '/authors/');
     yield put(actions.fetchAllSuccess(resp.data));

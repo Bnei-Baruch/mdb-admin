@@ -18,7 +18,7 @@ function* fetchItem(action) {
   }
 }
 
-function* fetchAll(action) {
+function* fetchAll() {
   try {
     const data = yield loadAllPages('/persons/');
     yield put(actions.fetchAllSuccess(data));
