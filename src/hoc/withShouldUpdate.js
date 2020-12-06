@@ -13,7 +13,7 @@ const shouldUpdate = (WrappedComponent) => {
         return !isEqualWith(nProps[nextProps.propForUpdate], props[nextProps.propForUpdate]);
       }
       return !isEqualWith(nProps, props);
-    };
+    }
 
     render() {
       const { propForUpdate, ...props } = this.props;

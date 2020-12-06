@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Divider, Form, Message } from 'semantic-ui-react';
 
 import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES, REQUIRED_LANGUAGES } from '../../../../helpers/consts';
-import { MajorLangsI18nField } from '../../../shared/Fields';
+import { MajorLangsI18nField } from '../../Fields';
 import BaseCollectionForm from './BaseCollectionForm';
 
 class CreateCollectionForm extends BaseCollectionForm {
@@ -50,7 +50,7 @@ class CreateCollectionForm extends BaseCollectionForm {
   };
 
   cleanI18n() {
-    const i18n = this.state.i18n;
+    const { i18n } = this.state;
     return MAJOR_LANGUAGES.reduce((acc, val) => {
       if (i18n[val].name.trim() !== '') {
         acc[val] = { ...i18n[val], language: val };
@@ -62,7 +62,7 @@ class CreateCollectionForm extends BaseCollectionForm {
   getI18nErrors() {
     const errors = {};
     // validate at least one valid translation
-    const i18n   = this.state.i18n;
+    const { i18n } = this.state;
     if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
       errors.i18n = true;
     }

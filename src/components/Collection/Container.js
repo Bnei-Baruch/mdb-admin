@@ -8,20 +8,14 @@ import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class Container extends Component {
-  static propTypes = {
-    location: shapes.HistoryLocation.isRequired,
-    match: shapes.RouterMatch.isRequired,
-    fetchItem: PropTypes.func.isRequired,
-  };
-
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
     this.askForData(id);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { match: { params: { id } } } = this.props;
-    const nId                           = nextProps.match.params.id;
+  componentDidUpdate(prevProps) {
+    const { match: { params: { id } } } = prevProps;
+    const nId                           = this.props.match.params.id;
     if (id !== nId) {
       this.askForData(nId);
     }
@@ -40,6 +34,12 @@ class Container extends Component {
     return <MainPage {...this.props} />;
   }
 }
+
+Container.propTypes = {
+  location: shapes.HistoryLocation.isRequired,
+  match: shapes.RouterMatch.isRequired,
+  fetchItem: PropTypes.func.isRequired,
+};
 
 const mapState = (state, props) => ({
   collection: selectors.getCollectionById(state.collections, parseInt(props.match.params.id, 10)),

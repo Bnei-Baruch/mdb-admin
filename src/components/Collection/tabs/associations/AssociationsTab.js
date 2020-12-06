@@ -32,9 +32,9 @@ class AssociationsTab extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.collection && !this.props.collection && nextProps.collection.id !== this.props.collection.id) {
-      this.askForData(nextProps.collection.id);
+  componentDidUpdate(prevProps) {
+    if (this.props.collection && !prevProps.collection && this.props.collection.id !== prevProps.collection.id) {
+      this.askForData(this.props.collection.id);
     }
   }
 

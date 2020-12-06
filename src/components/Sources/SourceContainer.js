@@ -32,11 +32,11 @@ class SourceContainer extends Component {
     fetchItem(match.params.id);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { match: { params: { id } } } = this.props;
-    const nId                           = nextProps.match.params.id;
+  componentDidUpdate(prevProps) {
+    const { match: { params: { id } } } = prevProps;
+    const nId                           = this.props.match.params.id;
     if (id !== nId) {
-      nextProps.fetchItem(id);
+      this.props.fetchItem(id);
     }
   }
 

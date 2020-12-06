@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import cloneDeep from 'lodash/cloneDeep';
 import {
   Button, Flag, Header, Input, Menu, Message, Segment, Table
 } from 'semantic-ui-react';
@@ -13,31 +14,19 @@ import * as shapes from '../shapes';
 import LanguageSelector from '../shared/LanguageSelector';
 
 class SourceI18nForm extends Component {
-  static propTypes = {
-    updateI18n: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    source: shapes.Source,
-  };
-
-  static defaultProps = {
-    source: {
-      i18n: {}
-    }
-  };
-
   constructor(props) {
     super(props);
-    this.state = {
-      i18n: { ...props.source.i18n },
-      submitted: false,
-    };
+    const { source: { i18n, type_id } } = props;
+    if (type_id)
+      this.state = { i18n: cloneDeep(i18n), type_id, submitted: false };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.source.i18n !== nextProps.source.i18n) {
-      this.setState({ i18n: nextProps.source.i18n });
+  static getDerivedStateFromProps(props, state) {
+    const { source: { i18n, type_id } } = props;
+    if (type_id && type_id !== state.type_id) {
+      return { i18n: cloneDeep(i18n), type_id, submitted: false };
     }
+    return null;
   }
 
   onNameChange = (e, { value }) => {
@@ -168,8 +157,7 @@ class SourceI18nForm extends Component {
                 style={{ marginTop: '0.2rem', marginBottom: '0' }}
               />
             )
-            : null
-          }
+            : null}
           <Button
             primary
             content="Save"
@@ -185,4 +173,18 @@ class SourceI18nForm extends Component {
   }
 }
 
+SourceI18nForm.propTypes = {
+  updateI18n: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  source: shapes.Source,
+};
+
+SourceI18nForm.defaultProps = {
+  source: {
+    i18n: {}
+  },
+  wip: false,
+  err: null,
+};
 export default SourceI18nForm;

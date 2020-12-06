@@ -13,24 +13,9 @@ import { EMPTY_ARRAY, EMPTY_HIERARCHY, EMPTY_MAP } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
 
 class SourcesSearch extends Component {
-  static propTypes = {
-    onSelect: PropTypes.func.isRequired,
-    authors: PropTypes.arrayOf(shapes.Author),
-    sourcesById: PropTypes.instanceOf(Map),
-    hierarchy: shapes.Hierarchy,
-    placeholder: PropTypes.string,
-    currentLanguage: PropTypes.string.isRequired,
-  };
-
-  static defaultProps = {
-    authors: EMPTY_ARRAY,
-    sourcesById: EMPTY_MAP,
-    hierarchy: EMPTY_HIERARCHY,
-    placeholder: 'חפש מקור',
-  };
-
-  componentWillMount() {
-    this.resetComponent();
+  constructor(props) {
+    super(props);
+    this.state = { suggestions: [], query: '' };
   }
 
   resetComponent = () => this.setState({ suggestions: [], query: '' });
@@ -165,5 +150,21 @@ const mapState = state => ({
   hierarchy: selectors.getHierarchy(state.sources),
   currentLanguage: system.getCurrentLanguage(state.system),
 });
+
+SourcesSearch.propTypes = {
+  onSelect: PropTypes.func.isRequired,
+  authors: PropTypes.arrayOf(shapes.Author),
+  sourcesById: PropTypes.instanceOf(Map),
+  hierarchy: shapes.Hierarchy,
+  placeholder: PropTypes.string,
+  currentLanguage: PropTypes.string.isRequired,
+};
+
+SourcesSearch.defaultProps = {
+  authors: EMPTY_ARRAY,
+  sourcesById: EMPTY_MAP,
+  hierarchy: EMPTY_HIERARCHY,
+  placeholder: 'חפש מקור',
+};
 
 export default connect(mapState)(SourcesSearch);

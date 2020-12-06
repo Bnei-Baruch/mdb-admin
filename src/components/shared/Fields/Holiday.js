@@ -10,7 +10,6 @@ import { selectors } from '../../../redux/modules/tags';
 import { selectors as system } from '../../../redux/modules/system';
 
 class HolidayField extends PureComponent {
-
   static propTypes = {
     value: PropTypes.string,
     err: PropTypes.bool,

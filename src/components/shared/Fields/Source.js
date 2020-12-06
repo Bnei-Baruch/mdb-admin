@@ -10,7 +10,6 @@ import SourcesSearch from '../../Autocomplete/SourcesSearch';
 import SourceBreadcrumbs from '../../Sources/SourceBreadcrumbs';
 
 class SourceField extends PureComponent {
-
   static propTypes = {
     value: PropTypes.string,
     err: PropTypes.bool,

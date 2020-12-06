@@ -42,24 +42,32 @@ class SourcesHierarchy extends Component {
     this.state = {
       modalOpen: false,
       author,
+      wip: false
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
     // Hide modal if we're finished.
     // We're finished if wip is true in current props and false in next props without an error
-    const wip  = this.props.getWIP('create');
-    const nWip = nextProps.getWIP('create');
-    const nErr = nextProps.getError('create');
 
-    if (wip && !nWip && !nErr) {
-      this.hideModal();
+    const nWip = props.getWIP('create');
+    const nErr = props.getError('create');
+
+    if (nErr || nWip) return { wip: true };
+
+    const response = {};
+    if (state.wip && !nWip && !nErr) {
+      response.modalOpen = false;
+      response.wip = false;
     }
 
     // set default author once we have authors if we need one
-    if (!this.state.author && nextProps.authors.length > 0) {
-      this.setState({ author: nextProps.authors[0] });
+    if (!state.author && props.authors.length > 0) {
+      response.author = props.authors[0];
+      response.wip = false;
     }
+
+    return Object.entries(response).length > 0 ? response : null;
   }
 
   showModal = () => this.setState({ modalOpen: true });

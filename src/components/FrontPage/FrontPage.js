@@ -32,7 +32,8 @@ class MainPage extends PureComponent {
       <AppLayout
         user={user}
         currentLanguage={currentLanguage}
-        updateCurrentLanguage={updateCurrentLanguage}>
+        updateCurrentLanguage={updateCurrentLanguage}
+      >
         <AppRoutes />
       </AppLayout>
     );

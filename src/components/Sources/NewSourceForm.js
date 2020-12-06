@@ -17,53 +17,27 @@ import { extractI18n, formatError, isValidPattern } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 class NewSourceForm extends Component {
-  static propTypes = {
-    create: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    source: shapes.Source,
-    authors: PropTypes.arrayOf(shapes.Author),
-    currentLanguage: PropTypes.string.isRequired,
-  };
-
-  static defaultProps = {
-    source: null,
-    authors: EMPTY_ARRAY,
-  };
-
   constructor(props) {
     super(props);
-    this.state = this.getInitialState();
-  }
 
-  getInitialState() {
     const i18n = {};
-    MAJOR_LANGUAGES.forEach((l) => {
-      i18n[l] = { name: '' };
-    });
+    MAJOR_LANGUAGES.forEach(l => i18n[l] = { name: '' });
 
-    return {
+    this.state = {
       description: '',
       pattern: '',
       i18n,
-      author: null,
       type_id: 1,
       submitted: false,
       errors: {},
     };
   }
 
-  onAuthorChange = (e, { value }) => {
-    this.setState({ author: value });
-  };
+  onAuthorChange = (e, { value }) => this.setState({ author: value });
 
-  onTypeChange = (e, { value }) => {
-    this.setState({ type_id: value });
-  };
+  onTypeChange = (e, { value }) => this.setState({ type_id: value });
 
-  onDescriptionChange = (e, { value }) => {
-    this.setState({ description: value });
-  };
+  onDescriptionChange = (e, { value }) => this.setState({ description: value });
 
   onPatternChange = (e, { value }) => {
     const { errors } = this.state;
@@ -93,9 +67,7 @@ class NewSourceForm extends Component {
     }
 
     const parent                             = this.props.source;
-    const {
-      pattern, i18n, author, type_id
-    } = this.state;
+    const { pattern, i18n, author, type_id } = this.state;
     const description                        = this.state.description.trim();
     const nI18n                              = {};
 
@@ -132,15 +104,15 @@ class NewSourceForm extends Component {
 
   render() {
     const {
-      getWIP, getError, source, authors, currentLanguage
-    } = this.props;
+            getWIP, getError, source, authors, currentLanguage
+          } = this.props;
 
     const wip = getWIP('create');
     const err = getError('create');
 
     const {
-      author, type_id: typeID, description, pattern, i18n, submitted, errors
-    } = this.state;
+            author, type_id: typeID, description, pattern, i18n, submitted, errors
+          } = this.state;
 
     const authorsOptions = source ? null : authors.map(x => ({
       text: extractI18n(x.i18n, ['name'], currentLanguage)[0],
@@ -268,8 +240,7 @@ class NewSourceForm extends Component {
                 style={{ marginTop: '0.2rem', marginBottom: '0' }}
               />
             )
-            : null
-          }
+            : null}
           <Button
             primary
             content="Save"
@@ -284,5 +255,20 @@ class NewSourceForm extends Component {
     );
   }
 }
+
+NewSourceForm.propTypes = {
+  create: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  source: shapes.Source,
+  authors: PropTypes.arrayOf(shapes.Author),
+  currentLanguage: PropTypes.string.isRequired,
+};
+
+NewSourceForm.defaultProps = {
+  source: null,
+  authors: EMPTY_ARRAY,
+  author: null
+};
 
 export default NewSourceForm;

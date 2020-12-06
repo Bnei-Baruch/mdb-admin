@@ -19,9 +19,9 @@ class FileContainer extends Component {
     this.askForData(id);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { match: { params: { id } } } = this.props;
-    const nId = nextProps.match.params.id;
+  componentDidUpdate(prevProps) {
+    const { match: { params: { id } } } = prevProps;
+    const nId = this.props.match.params.id;
     if (id !== nId) {
       this.askForData(nId);
     }

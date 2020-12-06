@@ -7,7 +7,6 @@ import { LANG_ENGLISH, LANG_HEBREW, LANG_RUSSIAN, LANG_SPANISH, MAJOR_LANGUAGES 
 import NameField from './Name';
 
 class MajorLangsI18n extends PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {

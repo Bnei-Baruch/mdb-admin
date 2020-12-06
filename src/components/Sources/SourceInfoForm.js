@@ -9,39 +9,20 @@ import { EMPTY_OBJECT, SOURCE_TYPES_OPTIONS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 
 class SourceInfoForm extends Component {
-  static propTypes = {
-    updateInfo: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    source: shapes.Source,
-  };
-
-  static defaultProps = {
-    source: EMPTY_OBJECT,
-  };
-
   constructor(props) {
     super(props);
 
-    const { source } = props;
+    const { source: { pattern, description, type_id } } = props;
 
-    this.state = {
-      pattern: source.pattern || '',
-      description: source.description || '',
-      type_id: source.type_id,
-      submitted: false,
-      errors: {}
-    };
+    this.state = { pattern, description, type_id, submitted: false, errors: {} };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.source !== nextProps.source) {
-      this.setState({
-        pattern: nextProps.source.pattern || '',
-        description: nextProps.source.description || '',
-        type_id: nextProps.source.type_id,
-      });
+  static getDerivedStateFromProps(props, state) {
+    const { source: { pattern, description, type_id } } = props;
+    if (type_id !== state.type_id) {
+      return { pattern, description, type_id };
     }
+    return null;
   }
 
   onTypeChange = (e, { value }) => {
@@ -76,9 +57,7 @@ class SourceInfoForm extends Component {
     const wip                          = getWIP('updateInfo');
     const err                          = getError('updateInfo');
 
-    const {
-      pattern, description, type_id: typeID, submitted, errors
-    } = this.state;
+    const { pattern, description, type_id: typeID, submitted, errors } = this.state;
 
     return (
       <div>
@@ -145,8 +124,7 @@ class SourceInfoForm extends Component {
                 style={{ marginTop: '0.2rem', marginBottom: '0' }}
               />
             )
-            : null
-          }
+            : null}
           <Button
             primary
             content="Save"
@@ -161,5 +139,20 @@ class SourceInfoForm extends Component {
     );
   }
 }
+
+SourceInfoForm.propTypes = {
+  updateInfo: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  source: shapes.Source,
+};
+
+SourceInfoForm.defaultProps = {
+  source: {
+    pattern: '',
+    description: '',
+    type_id: ''
+  },
+};
 
 export default SourceInfoForm;

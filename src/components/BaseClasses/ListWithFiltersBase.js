@@ -189,7 +189,8 @@ class ListWithFiltersBase extends PureComponent {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </div>);
+      </div>
+    );
   };
 
   renderList = () => {
@@ -197,7 +198,8 @@ class ListWithFiltersBase extends PureComponent {
   };
 
   render() {
-    throw new Error('Not Implemented');
+    throw new Error('Not Implemented'); // eslint-disable-next-line
+    return null;
   }
 }
 

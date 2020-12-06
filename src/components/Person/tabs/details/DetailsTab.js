@@ -12,7 +12,7 @@ const DetailsTab = (props) => {
     return null;
   }
 
-  const readonlyProperties = Object.assign({}, person.properties);
+  const readonlyProperties = { ...person.properties };
 
   return (
     <Grid stackable>

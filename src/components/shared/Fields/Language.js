@@ -5,7 +5,7 @@ import { Form } from 'semantic-ui-react';
 
 import { LANG_MULTI, LANG_UNKNOWN } from '../../../helpers/consts';
 import { titleize } from '../../../helpers/utils';
-import LanguageSelector from '../../shared/LanguageSelector';
+import LanguageSelector from '../LanguageSelector';
 
 const LanguageField = (props) => {
   const { name, value, err, onChange, ...rest } = props;

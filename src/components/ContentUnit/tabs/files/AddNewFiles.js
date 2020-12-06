@@ -17,11 +17,11 @@ class AddNewFiles extends ListWithCheckboxBase {
     ...ListWithCheckboxBase.propTypes,
     unit: shapes.ContentUnit,
     items: PropTypes.arrayOf(shapes.File),
-    setEditMode: PropTypes.func,
+    setEditMode: PropTypes.func
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.wipAddFile && !nextProps.wipAddFile) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.wipAddFile && !this.props.wipAddFile) {
       this.switchToViewMode();
     }
   }

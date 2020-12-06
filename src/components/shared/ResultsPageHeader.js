@@ -13,9 +13,10 @@ const ResultsPageHeader = (props) => {
   } else {
     content = (
       <span>
-      <strong>{((pageNo - 1) * pageSize) + 1} - {Math.min(total, pageNo * pageSize)}</strong>&nbsp;
+        <strong>{((pageNo - 1) * pageSize) + 1} - {Math.min(total, pageNo * pageSize)}</strong>&nbsp;
         of <strong>{total}</strong>&nbsp;
-    </span>);
+      </span>
+    );
   }
   return <span style={{ padding: '0 10px' }}>{content}</span>;
 };

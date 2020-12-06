@@ -1,25 +1,7 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line react/require-render-return
 class ListBase extends PureComponent {
-  static propTypes = {
-    select: PropTypes.func,
-    selectAll: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.number),
-    associatedIds: PropTypes.arrayOf(PropTypes.number),
-    withCheckBox: PropTypes.bool,
-    hasSelectAll: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    items: [],
-    selectedIds: [],
-    associatedIds: [],
-    withCheckBox: true,
-    hasSelectAll: true
-  };
-
   selectHandler = (x, checked) => {
     this.props.select(x.id, checked);
   };
@@ -46,8 +28,27 @@ class ListBase extends PureComponent {
   };
 
   render() {
-    throw new Error('Not Implemented');
+    throw new Error('Not Implemented');// eslint-disable-next-line
+    return null;
   }
 }
+
+ListBase.propTypes = {
+  select: PropTypes.func,
+  selectAll: PropTypes.func,
+  selectedIds: PropTypes.arrayOf(PropTypes.number),
+  associatedIds: PropTypes.arrayOf(PropTypes.number),
+  withCheckBox: PropTypes.bool,
+  hasSelectAll: PropTypes.bool,
+  items: PropTypes.array
+};
+
+ListBase.defaultProps = {
+  items: [],
+  selectedIds: [],
+  associatedIds: [],
+  withCheckBox: true,
+  hasSelectAll: true
+};
 
 export default ListBase;

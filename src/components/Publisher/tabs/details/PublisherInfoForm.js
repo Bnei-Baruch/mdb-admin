@@ -9,19 +9,6 @@ import { formatError, isValidPattern } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 
 class PublisherInfoForm extends Component {
-  static propTypes = {
-    updateInfo: PropTypes.func.isRequired,
-    wipDetail: PropTypes.bool,
-    errDetail: PropTypes.object,
-    publisher: shapes.Publisher,
-  };
-
-  static defaultProps = {
-    publisher: EMPTY_OBJECT,
-    wipDetail: false,
-    errDetail: null,
-  };
-
   constructor(props) {
     super(props);
 
@@ -30,14 +17,6 @@ class PublisherInfoForm extends Component {
       submitted: false,
       errors: {}
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.publisher !== nextProps.publisher) {
-      this.setState({
-        pattern: nextProps.publisher.pattern || ''
-      });
-    }
   }
 
   onPatternChange = (e, { value }) => {
@@ -126,4 +105,16 @@ class PublisherInfoForm extends Component {
   }
 }
 
+PublisherInfoForm.propTypes = {
+  updateInfo: PropTypes.func.isRequired,
+  wipDetail: PropTypes.bool,
+  errDetail: PropTypes.object,
+  publisher: shapes.Publisher,
+};
+
+PublisherInfoForm.defaultProps = {
+  publisher: EMPTY_OBJECT,
+  wipDetail: false,
+  errDetail: null,
+};
 export default PublisherInfoForm;

@@ -56,7 +56,7 @@ class BasePersonForm extends Component {
   };
 
   onPatternChange = (e, { value }) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     if (isValidPattern(value)) {
       delete errors.pattern;
     } else {
@@ -112,7 +112,7 @@ class BasePersonForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
+          {submitted && err ? (
             <Header
               inverted
               content={formatError(err)}
@@ -122,6 +122,7 @@ class BasePersonForm extends Component {
               size="tiny"
               style={{ marginTop: '0.2rem', marginBottom: '0' }}
             />
+          )
             : null}
           <Button
             primary

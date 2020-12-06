@@ -53,7 +53,7 @@ class BaseContentUnitForm extends Component {
   }
 
   getPropertiesFromState = () => {
-    const state = this.state;
+    const { state } = this;
 
     // common properties to all types
     const data = {};
@@ -90,13 +90,13 @@ class BaseContentUnitForm extends Component {
   };
 
   handleFilmDateChange = (date) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     delete errors.film_date;
     this.setState({ film_date: date, errors });
   };
 
   handleOriginalLanguageChange = (e, data) => {
-    const errors = this.state.errors;
+    const { errors } = this.state;
     delete errors.original_language;
     this.setState({ original_language: data.value });
   };
@@ -220,7 +220,7 @@ class BaseContentUnitForm extends Component {
         </Segment>
 
         <Segment clearing attached="bottom" size="tiny">
-          {submitted && err ?
+          {submitted && err ? (
             <Header
               inverted
               content={formatError(err)}
@@ -230,6 +230,7 @@ class BaseContentUnitForm extends Component {
               size="tiny"
               style={{ marginTop: '0.2rem', marginBottom: '0' }}
             />
+          )
             : null}
           <Button
             primary

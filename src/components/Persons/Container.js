@@ -28,10 +28,10 @@ class PersonsContainer extends Component {
     this.handlePageChange(1);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { wipOfCreate } = this.props;
-    const nWip            = nextProps.wipOfCreate;
-    const nErr            = nextProps.errOfCreate;
+  componentDidUpdate(prevProps) {
+    const { wipOfCreate } = prevProps;
+    const nWip            = this.props.wipOfCreate;
+    const nErr            = this.props.errOfCreate;
     if (wipOfCreate && !nWip && !nErr) {
       this.askForData(this.getPageNo());
     }

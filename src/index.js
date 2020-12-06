@@ -5,8 +5,8 @@ import ReactDOM from 'react-dom';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware, { delay } from 'redux-saga';
 import { put } from 'redux-saga/effects';
-import { routerMiddleware as createRouterMiddleware } from 'react-router-redux';
-import { createBrowserHistory as createHistory } from 'history';
+import { routerMiddleware as createRouterMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import { loadUser } from 'redux-oidc';
 
 import * as env from './helpers/env';
@@ -26,21 +26,19 @@ import App from './components/App/App';
 //   whyDidYouUpdate(React, { exclude: /Menu*|Dropdown*|List*|Button*|Message*|Link|ReactJWPlayer*/ });
 // }
 
-/* eslint-disable no-underscore-dangle */
 const devToolsArePresent    = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined';
-const devToolsStoreEnhancer = () => (!env.isProduction && devToolsArePresent ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f);
-/* eslint-enable */
+const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
 
 const sagaMiddlewareOptions = env.isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
 
-const history = createHistory({
+const history = createBrowserHistory({
   basename: env.HISTORY_BASENAME
 });
 
 const routerMiddleware = createRouterMiddleware(history);
 
-const store = createStore(reducer, {}, compose(
+const store = createStore(reducer(history), {}, compose(
   applyMiddleware(routerMiddleware, sagaMiddleWare),
   devToolsStoreEnhancer()
 ));
@@ -50,7 +48,11 @@ loadUser(store, userManager);
 
 // Render regardless of application's state. let App decide what to render.
 const appContainer = document.getElementById('root');
-ReactDOM.render(<App store={store} history={history} />, appContainer);
+ReactDOM.render(
+  <React.StrictMode>
+    <App store={store} history={history} />
+  </React.StrictMode>
+  , appContainer);
 
 //
 // The main application

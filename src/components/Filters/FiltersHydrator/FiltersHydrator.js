@@ -22,9 +22,9 @@ class FiltersHydrator extends Component {
     this.props.hydrateFilters(this.props.namespace);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.isHydrated && nextProps.isHydrated) {
-      this.props.onHydrated(this.props.namespace);
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isHydrated && this.props.isHydrated) {
+      prevProps.onHydrated(prevProps.namespace);
     }
   }
 

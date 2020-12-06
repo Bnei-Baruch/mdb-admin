@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { routerReducer as router } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 import { reducer as oidc } from 'redux-oidc';
 
 import { reducer as user } from './modules/user';
@@ -17,8 +17,8 @@ import { reducer as storages } from './modules/storages';
 import { reducer as persons } from './modules/persons';
 import { reducer as publishers } from './modules/publishers';
 
-export default combineReducers({
-  router,
+export default history => combineReducers({
+  router: connectRouter(history),
   oidc,
   system,
   user,
@@ -35,4 +35,3 @@ export default combineReducers({
   persons,
   publishers,
 });
-

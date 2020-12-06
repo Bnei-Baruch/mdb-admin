@@ -112,8 +112,8 @@ class NewTagForm extends Component {
     const err                  = getError('create');
 
     const {
-      description, pattern, labels, submitted, errors
-    } = this.state;
+            description, pattern, labels, submitted, errors
+          } = this.state;
 
     return (
       <Segment.Group>

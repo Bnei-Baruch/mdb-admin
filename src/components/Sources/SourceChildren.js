@@ -11,35 +11,27 @@ import * as shapes from '../shapes';
 import NewSourceForm from './NewSourceForm';
 
 class SourceChildren extends Component {
-  static propTypes = {
-    getSourceById: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    source: shapes.Source,
-    hierarchy: shapes.Hierarchy,
-    currentLanguage: PropTypes.string.isRequired,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalOpen: false,
+      wip: false
+    };
+  }
 
-  static defaultProps = {
-    source: EMPTY_OBJECT,
-    hierarchy: {
-      childMap: new Map()
-    },
-  };
-
-  state = {
-    modalOpen: false
-  };
-
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
     // Hide modal if we're finished.
     // We're finished if wip is true in current props and false in next props without an error
-    const wip  = this.props.getWIP('create');
-    const nWip = nextProps.getWIP('create');
-    const nErr = nextProps.getError('create');
+
+    const nWip = props.getWIP('create');
+    const nErr = props.getError('create');
+    if (nWip || nErr) return { wip: true };
+
+    const { wip } = state;
     if (wip && !nWip && !nErr) {
-      this.hideModal();
+      return { modalOpen: false, wip: false };
     }
+    return null;
   }
 
   showModal = () => this.setState({ modalOpen: true });
@@ -111,5 +103,21 @@ class SourceChildren extends Component {
     );
   }
 }
+
+SourceChildren.propTypes = {
+  getSourceById: PropTypes.func.isRequired,
+  getWIP: PropTypes.func.isRequired,
+  getError: PropTypes.func.isRequired,
+  source: shapes.Source,
+  hierarchy: shapes.Hierarchy,
+  currentLanguage: PropTypes.string.isRequired,
+};
+
+SourceChildren.defaultProps = {
+  source: EMPTY_OBJECT,
+  hierarchy: {
+    childMap: new Map()
+  },
+};
 
 export default SourceChildren;
