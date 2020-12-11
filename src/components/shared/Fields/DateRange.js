@@ -12,8 +12,8 @@ class DateRangeField extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      start: props.start,
-      end: props.end,
+      start: props.start.format(DATE_FORMAT),
+      end: props.end.format(DATE_FORMAT),
     };
   }
 
@@ -24,7 +24,8 @@ class DateRangeField extends PureComponent {
     this.setState({ end }, () => this.props.onChange(this.state));
 
   render() {
-    const { start, end, err } = this.props;
+    const { err } = this.props;
+    const { start, end } = this.state;
 
     const dayPickerStartProps = {
       firstDayOfWeek: 0,
@@ -50,7 +51,7 @@ class DateRangeField extends PureComponent {
             formatDate={formatDate}
             parseDate={parseDate}
             format={DATE_FORMAT}
-            value={start.format(DATE_FORMAT)}
+            value={start}
             onDayChange={this.handleStartChange}
             dayPickerProps={dayPickerStartProps}
             style={{ width: '100%', zIndex: 1000 }}
@@ -64,7 +65,7 @@ class DateRangeField extends PureComponent {
             formatDate={formatDate}
             parseDate={parseDate}
             format={DATE_FORMAT}
-            value={end.format(DATE_FORMAT)}
+            value={end}
             onDayChange={this.handleEndChange}
             dayPickerProps={dayPickerEndProps}
             style={{ width: '100%', zIndex: 1000 }}
