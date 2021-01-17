@@ -32,6 +32,7 @@ import {
   LanguageField,
   LocationField,
   SourceField,
+  TagsField,
   ToggleField,
 } from '../../Fields';
 import './collections.css';
@@ -111,7 +112,8 @@ class BaseCollectionForm extends Component {
       data.pattern = state.pattern;
       break;
     case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
-      data.source     = state.source;
+      data.source     = state.source ? state.source : '';
+      data.tags       = state.tagsUIDs?.length === 0 ? [] : state.tagsUIDs;
       data.start_date = state.start_date;
       data.end_date   = state.end_date;
       break;
@@ -143,7 +145,7 @@ class BaseCollectionForm extends Component {
 
   handleDateRangeChange = (range) => {
     const { start, end } = range;
-    const { errors } = this.state;
+    const { errors }     = this.state;
     if (start) {
       delete errors.start_date;
     }
@@ -161,7 +163,7 @@ class BaseCollectionForm extends Component {
 
   handleLocationChange = (location) => {
     const { country, city, fullAddress } = location;
-    const { errors } = this.state;
+    const { errors }                     = this.state;
     if (country) {
       delete errors.country;
     }
@@ -182,8 +184,14 @@ class BaseCollectionForm extends Component {
 
   handleSourceChange = (source) => {
     const { errors } = this.state;
-    delete errors.source;
+    delete errors.series;
     this.setState({ source: source.uid, errors });
+  };
+
+  handleTagsChange = (tagsUIDs) => {
+    const { errors } = this.state;
+    delete errors.series;
+    this.setState({ tagsUIDs: [...tagsUIDs] });
   };
 
   handleGenresChange = (e, data) =>
@@ -200,8 +208,9 @@ class BaseCollectionForm extends Component {
       return;
     }
 
-    const properties = cleanProperties(this.getPropertiesFromState());
-    const i18n       = this.cleanI18n();
+    const properties  = cleanProperties(this.getPropertiesFromState());
+    const i18n        = this.cleanI18n();
+    properties.source = this.state.source || '';
     this.doSubmit(this.state.type_id, properties, i18n);
     this.setState({ submitted: true });
   };
@@ -215,6 +224,8 @@ class BaseCollectionForm extends Component {
     // validate required fields (most of them are...)
     const required = this.getPropertiesFromState();
     delete required.active;
+    delete required.source;
+    delete required.tags;
 
     return Object.entries(required).reduce((acc, val) => {
       const [k, v] = val;
@@ -226,7 +237,8 @@ class BaseCollectionForm extends Component {
   }
 
   getI18nErrors() {
-    return {};
+    const { tagsUIDs, source } = this.state;
+    return { series: tagsUIDs?.length === 0 && !source };
   }
 
   isValid() {
@@ -335,15 +347,29 @@ class BaseCollectionForm extends Component {
     />
   );
 
-  renderSourceField = () => (
-    <SourceField
-      value={this.state.source}
-      err={this.state.errors.source}
-      onChange={this.handleSourceChange}
-      required
-      width={16}
-    />
-  );
+  renderSourceField = () => {
+    const { source, errors: { series: err } } = this.state;
+    return (
+      <SourceField
+        value={source}
+        err={err}
+        onChange={this.handleSourceChange}
+        width={16}
+      />
+    );
+  };
+
+  renderTagsFields = () => {
+    const { tagsUIDs, errors: { series: err } } = this.state;
+    return (
+      <TagsField
+        tagsUIDs={tagsUIDs}
+        onChange={this.handleTagsChange}
+        width={16}
+        err={err}
+      />
+    );
+  };
 
   renderDailyLesson = () =>
     (this.renderFilmDateField());
@@ -395,6 +421,7 @@ class BaseCollectionForm extends Component {
   renderLessonsSeries = () => (
     <div>
       {this.renderSourceField()}
+      {this.renderTagsFields()}
       {this.renderDateRangeFields()}
     </div>
   );
@@ -445,16 +472,16 @@ class BaseCollectionForm extends Component {
 
         <Segment clearing attached="bottom" size="tiny">
           {submitted && err ? (
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              size="tiny"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-          )
+              <Header
+                inverted
+                content={formatError(err)}
+                color="red"
+                icon="warning sign"
+                floated="left"
+                size="tiny"
+                style={{ marginTop: '0.2rem', marginBottom: '0' }}
+              />
+            )
             : null}
           <Button
             primary

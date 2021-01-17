@@ -35,6 +35,7 @@ class CreateCollectionForm extends BaseCollectionForm {
       default_language: '',
       holiday_tag: '',
       source: '',
+      tagsUIDs: []
     };
   }
 
@@ -60,7 +61,7 @@ class CreateCollectionForm extends BaseCollectionForm {
   }
 
   getI18nErrors() {
-    const errors = {};
+    const errors   = {};
     // validate at least one valid translation
     const { i18n } = this.state;
     if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
