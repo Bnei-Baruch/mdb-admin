@@ -78,6 +78,7 @@ class CollectionsMainPage extends ListWithFiltersBase {
           size="small"
           open={this.state.newCollection}
           onClose={this.toggleNewCollection}
+          closeOnDimmerClick={false}
         >
           <Modal.Header>Create New Collection</Modal.Header>
           <Modal.Content>

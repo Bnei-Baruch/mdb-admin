@@ -7,5 +7,6 @@ export { default as LocationField } from './Location';
 export { default as NameField } from './Name';
 export { default as HolidayField } from './Holiday';
 export { default as SourceField } from './Source';
+export { default as TagsField } from './Tags';
 export { default as MajorLangsI18nField } from './MajorLangsI18n';
 export { default as GenresField } from './Genres';
