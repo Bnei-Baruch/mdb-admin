@@ -46,7 +46,7 @@ const TagsField = (props) => {
 
   const renderTag = (t) => {
     return (
-      <List.Item>
+      <List.Item key={t.uid}>
         <List.Content>
           <TagBreadcrumbs tag={t} lastIsLink />
           <Button
@@ -79,8 +79,7 @@ const TagsField = (props) => {
 TagsField.propTypes = {
   value: PropTypes.arrayOf(PropTypes.any),
   err: PropTypes.bool,
-  onChange: PropTypes.func,
-  getSourceById: PropTypes.func.isRequired,
+  onChange: PropTypes.func
 };
 
 TagsField.defaultProps = {
