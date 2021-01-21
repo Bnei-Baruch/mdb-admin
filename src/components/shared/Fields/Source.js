@@ -2,12 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import noop from 'lodash/noop';
-import { Form } from 'semantic-ui-react';
+import { Button, Form, List } from 'semantic-ui-react';
 
 import { selectors } from '../../../redux/modules/sources';
 import * as shapes from '../../shapes';
 import SourcesSearch from '../../Autocomplete/SourcesSearch';
 import SourceBreadcrumbs from '../../Sources/SourceBreadcrumbs';
+import TagBreadcrumbs from '../../Tags/TagBreadcrumbs';
 
 class SourceField extends PureComponent {
   static propTypes = {
@@ -25,9 +26,9 @@ class SourceField extends PureComponent {
     source: null,
   };
 
-  handleSelect = (source) => {
-    this.props.onChange(this.props.getSourceById(source.id));
-  };
+  handleSelect = (source) => this.props.onChange(this.props.getSourceById(source.id));
+
+  handleRemove = () => this.props.onChange();
 
   render() {
     const { value, dispatch, getSourceById, err, onChange, source, ...rest } = this.props;
@@ -36,7 +37,22 @@ class SourceField extends PureComponent {
       <Form.Field error={err} {...rest}>
         {
           source ?
-            <div><SourceBreadcrumbs source={source} lastIsLink /><br /><br /></div> :
+            (
+              <div>
+                <SourceBreadcrumbs source={source} lastIsLink />
+                <Button
+                  onClick={() => this.handleRemove()}
+                  circular
+                  compact
+                  size="mini"
+                  icon="remove"
+                  color="red"
+                  inverted
+                  floated="right"
+                />
+                <br /><br />
+              </div>
+            ) :
             null
         }
         <SourcesSearch placeholder="הוסף מקור" onSelect={this.handleSelect} />
