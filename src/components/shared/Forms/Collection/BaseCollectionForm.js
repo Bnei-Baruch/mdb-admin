@@ -209,7 +209,7 @@ class BaseCollectionForm extends Component {
       return;
     }
 
-    const properties = cleanProperties(this.getPropertiesFromState());
+    const properties  = cleanProperties(this.getPropertiesFromState());
     if (this.state.type_id === COLLECTION_TYPES[CT_LESSONS_SERIES].value && !properties.source) properties.source = '';
     const i18n = this.cleanI18n();
     this.doSubmit(this.state.type_id, properties, i18n);
