@@ -191,12 +191,6 @@ class BaseCollectionForm extends Component {
 
   handleTagsChange = (tagsUIDs) => {
     const { errors } = this.state;
-    delete errors.sourceOrTag;
-    this.setState({ tagsUIDs: [...tagsUIDs] });
-  };
-
-  handleTagsChange = (tagsUIDs) => {
-    const { errors } = this.state;
     delete errors.series;
     this.setState({ tagsUIDs: [...tagsUIDs] });
   };
@@ -218,7 +212,6 @@ class BaseCollectionForm extends Component {
     const properties  = cleanProperties(this.getPropertiesFromState());
     if (this.state.type_id === COLLECTION_TYPES[CT_LESSONS_SERIES].value && !properties.source) properties.source = '';
     const i18n = this.cleanI18n();
-    properties.source = this.state.source || '';
     this.doSubmit(this.state.type_id, properties, i18n);
     this.setState({ submitted: true });
   };
