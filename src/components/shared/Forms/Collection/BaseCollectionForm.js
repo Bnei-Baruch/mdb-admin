@@ -191,7 +191,7 @@ class BaseCollectionForm extends Component {
 
   handleTagsChange = (tagsUIDs) => {
     const { errors } = this.state;
-    delete errors.series;
+    delete errors.sourceOrTag;
     this.setState({ tagsUIDs: [...tagsUIDs] });
   };
 
