@@ -112,7 +112,7 @@ class BaseCollectionForm extends Component {
       data.pattern = state.pattern;
       break;
     case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
-      data.source     = state.source ? state.source : '';
+      data.source     = state.source;
       data.tags       = state.tagsUIDs?.length === 0 ? [] : state.tagsUIDs;
       data.start_date = state.start_date;
       data.end_date   = state.end_date;
@@ -182,15 +182,16 @@ class BaseCollectionForm extends Component {
     this.setState({ holiday_tag: data.value, errors });
   };
 
-  handleSourceChange = (source) => {
+  handleSourceChange = (s) => {
     const { errors } = this.state;
-    delete errors.series;
-    this.setState({ source: source.uid, errors });
+    delete errors.sourceOrTag;
+    const source = s && s.uid ? s.uid : '';
+    this.setState({ source, errors });
   };
 
   handleTagsChange = (tagsUIDs) => {
     const { errors } = this.state;
-    delete errors.series;
+    delete errors.sourceOrTag;
     this.setState({ tagsUIDs: [...tagsUIDs] });
   };
 
@@ -209,8 +210,8 @@ class BaseCollectionForm extends Component {
     }
 
     const properties  = cleanProperties(this.getPropertiesFromState());
-    const i18n        = this.cleanI18n();
-    properties.source = this.state.source || '';
+    if (this.state.type_id === COLLECTION_TYPES[CT_LESSONS_SERIES].value && !properties.source) properties.source = '';
+    const i18n = this.cleanI18n();
     this.doSubmit(this.state.type_id, properties, i18n);
     this.setState({ submitted: true });
   };
@@ -238,7 +239,7 @@ class BaseCollectionForm extends Component {
 
   getI18nErrors() {
     const { tagsUIDs, source } = this.state;
-    return { series: tagsUIDs?.length === 0 && !source };
+    return { sourceOrTag: tagsUIDs?.length === 0 && !source };
   }
 
   isValid() {
@@ -348,7 +349,7 @@ class BaseCollectionForm extends Component {
   );
 
   renderSourceField = () => {
-    const { source, errors: { series: err } } = this.state;
+    const { source, errors: { sourceOrTag: err } } = this.state;
     return (
       <SourceField
         value={source}
@@ -360,7 +361,7 @@ class BaseCollectionForm extends Component {
   };
 
   renderTagsFields = () => {
-    const { tagsUIDs, errors: { series: err } } = this.state;
+    const { tagsUIDs, errors: { sourceOrTag: err } } = this.state;
     return (
       <TagsField
         tagsUIDs={tagsUIDs}

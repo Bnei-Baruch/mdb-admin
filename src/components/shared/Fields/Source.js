@@ -28,7 +28,7 @@ class SourceField extends PureComponent {
 
   handleSelect = (source) => this.props.onChange(this.props.getSourceById(source.id));
 
-  handleRemove = () => this.props.onChange({ id: null });
+  handleRemove = () => this.props.onChange();
 
   render() {
     const { value, dispatch, getSourceById, err, onChange, source, ...rest } = this.props;
