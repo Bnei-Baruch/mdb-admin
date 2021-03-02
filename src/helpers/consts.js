@@ -68,7 +68,7 @@ export const CT_BOOK                  = 'BOOK';
 export const CT_BLOG_POST             = 'BLOG_POST';
 export const CT_RESEARCH_MATERIAL     = 'RESEARCH_MATERIAL';
 export const CT_KTAIM_NIVCHARIM       = 'KTAIM_NIVCHARIM';
-export const CT_SOURCE                = 'CT_SOURCE';
+export const CT_SOURCE                = 'SOURCE';
 
 export const CONTENT_TYPE_BY_ID = {
   1: CT_DAILY_LESSON,
