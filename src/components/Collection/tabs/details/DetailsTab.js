@@ -20,6 +20,7 @@ const editableProperties = [
   'holiday_tag',
   'genres',
   'source',
+  'tags',
 ];
 
 const DetailsTab = (props) => {
