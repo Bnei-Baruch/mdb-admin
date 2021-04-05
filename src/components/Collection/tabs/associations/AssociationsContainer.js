@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-  Button, Grid, Header, Icon, Menu, Sticky
+  Button, Grid, Header, Icon, Menu, Popup, Sticky
 } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
@@ -122,6 +122,11 @@ class AssociationsContainer extends Component {
   handlePositionDown = () =>
     this.updatePosition(false);
 
+  sortByFileDate = () => {
+    const { collection, orderPositions } = this.props;
+    if (collection) orderPositions(collection.id);
+  };
+
   handleContextRef = ref => this.setState({ contextRef: ref });
 
   handleAllTableRef = ref => this.setState({ allTableRef: ref });
@@ -137,6 +142,9 @@ class AssociationsContainer extends Component {
     const isFirst = selectedCCU.length === 0
       || units.length === 0
       || selectedCCU[0].content_unit_id === units[0].content_unit_id;
+
+    const orderButton =
+            <Button basic style={{ marginLeft: '1em' }} icon="sort numeric down" color="black" onClick={this.sortByFileDate} />;
 
     return (
       <div ref={this.handleAllTableRef}>
@@ -178,6 +186,10 @@ class AssociationsContainer extends Component {
             <span style={{ float: 'right' }}>
               <strong>{`Total: ${units.length} Selected: ${selectedCCU.length}`}</strong>
             </span>
+            <Popup
+              content="Order all units by film date"
+              trigger={orderButton}
+            />
           </Sticky>
           <Grid>
             <Grid.Row>
@@ -207,6 +219,7 @@ function mapDispatch(dispatch) {
   return bindActionCreators({
     updateItemUnitProperties: actions.updateItemUnitProperties,
     deleteItemUnit: actions.deleteItemUnit,
+    orderPositions: actions.orderPositions
   }, dispatch);
 }
 

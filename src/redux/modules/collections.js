@@ -19,6 +19,7 @@ const UPDATE_I18N                         = 'Collections/UPDATE_I18N';
 const UPDATE_I18N_SUCCESS                 = 'Collections/UPDATE_I18N_SUCCESS';
 const UPDATE_I18N_FAILURE                 = 'Collections/UPDATE_I18N_FAILURE';
 const UPDATE_PROPERTIES                   = 'Collections/UPDATE_PROPERTIES';
+const ORDER_POSITIONS                     = 'Collections/ORDER_POSITIONS';
 const UPDATE_PROPERTIES_SUCCESS           = 'Collections/UPDATE_PROPERTIES_SUCCESS';
 const UPDATE_PROPERTIES_FAILURE           = 'Collections/UPDATE_PROPERTIES_FAILURE';
 const CHANGE_SECURITY_LEVEL               = 'Collections/CHANGE_SECURITY_LEVEL';
@@ -56,6 +57,7 @@ export const types = {
   UPDATE_I18N,
   UPDATE_I18N_SUCCESS,
   UPDATE_I18N_FAILURE,
+  ORDER_POSITIONS,
   UPDATE_PROPERTIES,
   UPDATE_PROPERTIES_SUCCESS,
   UPDATE_PROPERTIES_FAILURE,
@@ -96,6 +98,7 @@ const fetchItemUnitsFailure = createAction(FETCH_ITEM_UNITS_FAILURE);
 const updateI18n                      = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess               = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure               = createAction(UPDATE_I18N_FAILURE);
+const orderPositions                  = createAction(ORDER_POSITIONS, (id) => ({ id }));
 const updateProperties                = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
 const updatePropertiesSuccess         = createAction(UPDATE_PROPERTIES_SUCCESS);
 const updatePropertiesFailure         = createAction(UPDATE_PROPERTIES_FAILURE);
@@ -142,6 +145,7 @@ export const actions = {
   updateI18n,
   updateI18nSuccess,
   updateI18nFailure,
+  orderPositions,
   updateProperties,
   updatePropertiesSuccess,
   updatePropertiesFailure,
@@ -352,5 +356,5 @@ export const selectors = {
   getWIP,
   getError,
   denormIDs,
-  denormCCUs,
+  denormCCUs
 };
