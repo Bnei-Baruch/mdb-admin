@@ -75,6 +75,17 @@ function* updateItemUnitProperties(action) {
   }
 }
 
+function* orderPositions(action) {
+  const { id } = action.payload;
+  try {
+    const resp = yield call(api.post, `/collections/${id}/order_positions`);
+    yield put(units.receiveItems(resp.data.map(x => x.content_unit)));
+    yield put(actions.fetchItemUnitsSuccess({ id, data: resp.data }));
+  } catch (err) {
+    yield put(actions.fetchItemUnitsFailure(err));
+  }
+}
+
 function* deleteItemUnit(action) {
   const { id, ccuId } = action.payload;
   try {
@@ -151,6 +162,10 @@ function* watchUpdateItemUnitProperties() {
   yield takeEvery(types.UPDATE_ITEM_UNIT_PROPERTIES, updateItemUnitProperties);
 }
 
+function* watchOrderPositions() {
+  yield takeEvery(types.ORDER_POSITIONS, orderPositions);
+}
+
 function* watchDeleteItemUnit() {
   yield takeEvery(types.DELETE_ITEM_UNIT, deleteItemUnit);
 }
@@ -178,6 +193,7 @@ export const sagas = [
   watchUpdateI18n,
   watchUpdateProperties,
   watchUpdateItemUnitProperties,
+  watchOrderPositions,
   watchDeleteItemUnit,
   watchChangeSecurityLevel,
   watchChangeActive,
