@@ -1,23 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
-import { Divider, Form, Message } from 'semantic-ui-react';
 
+import { Divider, Form, Label, Message, Search } from 'semantic-ui-react';
 import {
   CONTENT_UNIT_TYPE_OPTIONS,
   MAJOR_LANGUAGES,
   CONTENT_UNIT_TYPES,
   CT_LESSON_PART,
-  REQUIRED_LANGUAGES,
+  REQUIRED_LANGUAGES, EMPTY_ARRAY, DATE_FORMAT
 } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../Fields/index';
 import BaseContentUnitForm from './BaseContentUnitForm';
+import { actions, selectors } from '../../../../redux/modules/search';
+import { selectors as collections } from '../../../../redux/modules/collections';
+import { extractI18n } from '../../../../helpers/utils';
+import { selectors as system } from '../../../../redux/modules/system';
 
 class CreateContentUnitForm extends BaseContentUnitForm {
-  static propTypes = {
-    create: PropTypes.func.isRequired,
-  };
-
   getInitialState() {
     const state = super.getInitialState();
 
@@ -33,6 +34,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
       type_id: CONTENT_UNIT_TYPES[CT_LESSON_PART].value,
       film_date: moment.utc(),
       original_language: '',
+      collection: {}
     };
   }
 
@@ -58,7 +60,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
   }
 
   getI18nErrors() {
-    const errors = {};
+    const errors   = {};
     // validate at least one valid translation
     const { i18n } = this.state;
     if (REQUIRED_LANGUAGES.some(x => i18n[x].name.trim() === '')) {
@@ -69,14 +71,51 @@ class CreateContentUnitForm extends BaseContentUnitForm {
   }
 
   doSubmit(typeID, properties, i18n) {
-    this.props.create(typeID, properties, i18n);
+    this.props.create(typeID, properties, i18n, this.state.collection);
   }
+
+  handleSearchChange = (e, data) => {
+    this.setState({ collection: {} });
+    this.props.searchCollections(data.value);
+  };
+
+  handleSelect = (e, { result }) => {
+    this.setState({ collection: result });
+  };
+
+  resultRenderer = ({ i18n }) => {
+    const { currentLanguage } = this.props;
+    const name                = extractI18n(i18n, ['name'], currentLanguage)[0];
+    return <Label content={name} />;
+  };
+
+  renderAssociateCollection = () => {
+    const { wip, err, items, currentLanguage } = this.props;
+    const { collection: { i18n = {} } }        = this.state;
+
+    const name = extractI18n(i18n, ['name'], currentLanguage)[0];
+    return (
+      <Form.Field error={err}>
+        <label htmlFor="associate_collection">Associate Collection</label>
+        <Search
+          fluid
+          id="associate_collection"
+          loading={wip}
+          onResultSelect={this.handleSelect}
+          onSearchChange={this.handleSearchChange}
+          results={items}
+          value={name}
+          resultRenderer={this.resultRenderer}
+          className="search_association"
+        />
+      </Form.Field>
+    );
+  };
 
   renderForm() {
     const { i18n, errors, type_id } = this.state;
     return (
       <Form onSubmit={this.handleSubmit}>
-
         <Form.Dropdown
           search
           selection
@@ -107,4 +146,22 @@ class CreateContentUnitForm extends BaseContentUnitForm {
   }
 }
 
-export default CreateContentUnitForm;
+const mapState = (state) => {
+  const cols      = selectors.getCollections(state.search);
+  const denormIDs = collections.denormIDs(state.collections);
+  return {
+    wip: selectors.getWIP(state.search),
+    err: selectors.getError(state.search),
+    items: Array.isArray(cols) && cols.length > 0 ? denormIDs(cols) : EMPTY_ARRAY,
+    currentLanguage: system.getCurrentLanguage(state.system),
+
+  };
+};
+
+function mapDispatch(dispatch) {
+  return bindActionCreators({
+    searchCollections: actions.searchCollections,
+  }, dispatch);
+}
+
+export default connect(mapState, mapDispatch)(CreateContentUnitForm);

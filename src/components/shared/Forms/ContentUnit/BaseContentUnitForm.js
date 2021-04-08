@@ -172,10 +172,15 @@ class BaseContentUnitForm extends Component {
 
   renderLessonPart = () => (
     <div>
+      {this.renderAssociateCollection()}
       {this.renderFilmDateField()}
       {this.renderOriginalLanguageField()}
     </div>
   );
+
+  renderAssociateCollection = () => {
+    return null;
+  };
 
   renderProperties = () => {
     switch (this.state.type_id) {
@@ -221,16 +226,16 @@ class BaseContentUnitForm extends Component {
 
         <Segment clearing attached="bottom" size="tiny">
           {submitted && err ? (
-            <Header
-              inverted
-              content={formatError(err)}
-              color="red"
-              icon="warning sign"
-              floated="left"
-              size="tiny"
-              style={{ marginTop: '0.2rem', marginBottom: '0' }}
-            />
-          )
+              <Header
+                inverted
+                content={formatError(err)}
+                color="red"
+                icon="warning sign"
+                floated="left"
+                size="tiny"
+                style={{ marginTop: '0.2rem', marginBottom: '0' }}
+              />
+            )
             : null}
           <Button
             primary

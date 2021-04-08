@@ -122,8 +122,13 @@ function* fetchItemPersons(action) {
 }
 
 function* create(action) {
+  const { collection: { id: cId }, ...cu } = action.payload;
   try {
-    const resp = yield call(api.post, '/content_units/', action.payload);
+    const resp = yield call(api.post, '/content_units/', cu);
+    if (cId) {
+      const properties = { content_unit_id: resp.data.id, name: '', position: null };
+      yield call(api.post, `/collections/${cId}/content_units/`, [properties]);
+    }
     yield put(actions.createSuccess(resp.data));
   } catch (err) {
     yield put(actions.createFailure(err));

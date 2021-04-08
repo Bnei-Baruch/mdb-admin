@@ -202,10 +202,11 @@ const fetchItemPersons        = createAction(FETCH_ITEM_PERSONS);
 const fetchItemPersonsSuccess = createAction(FETCH_ITEM_PERSONS_SUCCESS);
 const fetchItemPersonsFailure = createAction(FETCH_ITEM_PERSONS_FAILURE);
 
-const create                     = createAction(CREATE, (typeID, properties, i18n) => ({
+const create                     = createAction(CREATE, (typeID, properties, i18n, collection) => ({
   type_id: typeID,
   properties,
-  i18n
+  i18n,
+  collection
 }));
 const createSuccess              = createAction(CREATE_SUCCESS);
 const createFailure              = createAction(CREATE_FAILURE);
