@@ -81,6 +81,7 @@ class I18nForm extends Component {
 
   renderI18ns() {
     const { i18n, errors } = this.state;
+    const { disabled }     = this.props;
     const keys             = Object.keys(i18n)
       .sort((a, b) => ALL_LANGUAGES.indexOf(a) - ALL_LANGUAGES.indexOf(b));
 
@@ -102,6 +103,7 @@ class I18nForm extends Component {
                   value={i18n[k].name}
                   className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
                   onChange={this.onNameChange}
+                  disabled={disabled}
                 />
                 <label htmlFor={`${k}.description`}>Description</label>
                 <Input
@@ -111,6 +113,7 @@ class I18nForm extends Component {
                   value={i18n[k].description || ''}
                   className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
                   onChange={this.onDescriptionChange}
+                  disabled={disabled}
                 />
               </Table.Cell>
               <Table.Cell collapsing>
@@ -125,6 +128,7 @@ class I18nForm extends Component {
                         icon="remove"
                         color="red"
                         onClick={() => this.removeLanguage(k)}
+                        disabled={disabled}
                       />
                     )
                     : null
@@ -138,7 +142,7 @@ class I18nForm extends Component {
   }
 
   render() {
-    const { wip, err }                = this.props;
+    const { wip, err, disabled }      = this.props;
     const { i18n, submitted, errors } = this.state;
 
     const hasError = Object.keys(errors).some(e => errors[e]);
@@ -157,6 +161,7 @@ class I18nForm extends Component {
               text="Add Language"
               exclude={exclude}
               onChange={this.addLanguage}
+              disabled={disabled}
             />
           </Menu.Menu>
         </Menu>
@@ -186,7 +191,7 @@ class I18nForm extends Component {
             size="tiny"
             floated="right"
             loading={wip}
-            disabled={wip || hasError}
+            disabled={wip || hasError || disabled}
             onClick={this.handleSubmit}
           />
         </Segment>
@@ -200,6 +205,7 @@ I18nForm.propTypes = {
   unit: shapes.ContentUnit,
   wip: PropTypes.bool,
   err: shapes.Error,
+  disabled: PropTypes.bool,
 };
 
 I18nForm.defaultProps = {
@@ -208,6 +214,7 @@ I18nForm.defaultProps = {
   },
   wip: false,
   err: null,
+  disabled: false
 };
 
 const mapState = state => ({

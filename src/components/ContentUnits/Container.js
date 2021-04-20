@@ -4,9 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { actions, selectors } from '../../redux/modules/lists';
+import { selectors as sourcesSelectors } from '../../redux/modules/sources';
 import { actions as unitActions, selectors as units } from '../../redux/modules/content_units';
 import { selectors as system } from '../../redux/modules/system';
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_UNITS } from '../../helpers/consts';
+import { CONTENT_TYPE_BY_ID, CT_SOURCE, EMPTY_ARRAY, EMPTY_OBJECT, NS_UNITS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
@@ -55,12 +56,26 @@ class ContentUnitsContainer extends Component {
 
 const mapState = (state) => {
   const status    = selectors.getNamespaceState(state.lists, NS_UNITS) || EMPTY_OBJECT;
+  const sById     = sourcesSelectors.getSourceById(state.sources);
   const denormIDs = units.denormIDs(state.content_units);
+
+  let items = EMPTY_ARRAY;
+  if (Array.isArray(status.items)
+    && status.items.length > 0) {
+    items = denormIDs(status.items).map(x => {
+      if (CONTENT_TYPE_BY_ID[x.type_id] !== CT_SOURCE || !x.properties) return x;
+      const { source_id } = x.properties;
+      if (!source_id) return x;
+      const { i18n } = sById(source_id);
+      return { ...x, i18n };
+    });
+  }
+
   return {
     ...status,
     wipOfCreate: units.getWIP(state.content_units, 'create'),
     errOfCreate: units.getError(state.content_units, 'create'),
-    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    items,
     currentLanguage: system.getCurrentLanguage(state.system),
   };
 };

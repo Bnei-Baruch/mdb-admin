@@ -6,6 +6,7 @@ import ReadonlyProperties from '../../../shared/Properties';
 import Details from './Details';
 import PropertiesForm from './Properties';
 import I18nForm from './I18nForm';
+import { CONTENT_TYPE_BY_ID, CT_SOURCE } from '../../../../helpers/consts';
 
 const editableProperties = ['film_date', 'original_language'];
 
@@ -29,7 +30,7 @@ const DetailsTab = (props) => {
           <ReadonlyProperties properties={readonlyProperties} />
         </Grid.Column>
         <Grid.Column width={8}>
-          <I18nForm unit={unit} />
+          <I18nForm unit={unit} disabled={CONTENT_TYPE_BY_ID[unit.type_id] === CT_SOURCE} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
