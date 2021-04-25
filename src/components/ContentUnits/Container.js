@@ -56,7 +56,7 @@ class ContentUnitsContainer extends Component {
 
 const mapState = (state) => {
   const status    = selectors.getNamespaceState(state.lists, NS_UNITS) || EMPTY_OBJECT;
-  const sById     = sourcesSelectors.getSourceById(state.sources);
+  const sByUid     = sourcesSelectors.getSourceByUID(state.sources);
   const denormIDs = units.denormIDs(state.content_units);
 
   let items = EMPTY_ARRAY;
@@ -66,8 +66,9 @@ const mapState = (state) => {
       if (CONTENT_TYPE_BY_ID[x.type_id] !== CT_SOURCE || !x.properties) return x;
       const { source_id } = x.properties;
       if (!source_id) return x;
-      const { i18n } = sById(source_id);
-      return { ...x, i18n };
+      const s = sByUid(source_id);
+      if (!s) return x;
+      return { ...x, i18n: s.i18n };
     });
   }
 
