@@ -60,6 +60,7 @@ const mapState = (state) => {
     ...status,
     wipOfCreate: units.getWIP(state.content_units, 'create'),
     errOfCreate: units.getError(state.content_units, 'create'),
+    lastCreated: units.getLastCreated(state.content_units),
     items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
     currentLanguage: system.getCurrentLanguage(state.system),
   };

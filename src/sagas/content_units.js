@@ -245,6 +245,16 @@ function* mergeUnits(action) {
   }
 }
 
+function* autoname(action) {
+  try {
+    const { collectionUid, typeId } = action.payload;
+    const resp                      = yield call(api.post, '/content_unit_autoname/', { collectionUid, typeId });
+    yield put(actions.autonameSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.autonameFailure(err));
+  }
+}
+
 function* watchFetchItem() {
   yield takeEvery(types.FETCH_ITEM, fetchItem);
 }
@@ -337,6 +347,10 @@ function* watchMergeUnits() {
   yield takeEvery(types.MERGE_UNITS, mergeUnits);
 }
 
+function* watchAutoname() {
+  yield takeEvery(types.AUTONAME, autoname);
+}
+
 export const sagas = [
   watchFetchItem,
   watchFetchItemFiles,
@@ -360,5 +374,6 @@ export const sagas = [
   watchRemoveTag,
   watchAddPerson,
   watchRemovePerson,
-  watchMergeUnits
+  watchMergeUnits,
+  watchAutoname
 ];
