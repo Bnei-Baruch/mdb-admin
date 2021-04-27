@@ -3,13 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { Divider, Form, Label, Message, Search } from 'semantic-ui-react';
+import { Divider, Form, Label, List, Message, Search, Segment } from 'semantic-ui-react';
 import {
   CONTENT_UNIT_TYPE_OPTIONS,
   MAJOR_LANGUAGES,
   CONTENT_UNIT_TYPES,
   CT_LESSON_PART,
-  REQUIRED_LANGUAGES, EMPTY_ARRAY, DATE_FORMAT
+  REQUIRED_LANGUAGES,
+  EMPTY_ARRAY,
+  CONTENT_TYPE_BY_ID
 } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../Fields/index';
 import BaseContentUnitForm from './BaseContentUnitForm';
@@ -118,10 +120,17 @@ class CreateContentUnitForm extends BaseContentUnitForm {
     this.props.autoname(result.uid, this.state.type_id);
   };
 
-  resultRenderer = ({ i18n }) => {
+  resultRenderer = ({ i18n, type_id }) => {
     const { currentLanguage } = this.props;
     const name                = extractI18n(i18n, ['name'], currentLanguage)[0];
-    return <Label content={name} />;
+    return (
+      <div>
+        {name}
+        <div style={{ float: 'right' }}>
+          <Label>{CONTENT_TYPE_BY_ID[type_id]}</Label>
+        </div>
+      </div>
+    );
   };
 
   renderAssociateCollection = () => {
