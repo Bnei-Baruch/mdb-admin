@@ -80,7 +80,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
 
       if (dataI18n[k]?.name) nI18n[k] = dataI18n[k];
       else if (i18n[k].name?.length > 1) nI18n[k] = i18n[k];
-      else nI18n[k] = '';
+      else nI18n[k] = { name: '' };
     }
     this.setState({ errors, i18n: nI18n });
   };
