@@ -248,7 +248,7 @@ function* mergeUnits(action) {
 function* autoname(action) {
   try {
     const { collectionUid, typeId } = action.payload;
-    const resp                      = yield call(api.post, '/content_unit_autoname/', { collectionUid, typeId });
+    const resp                      = yield call(api.post, '/content_unit/autoname', { collectionUid, typeId });
     yield put(actions.autonameSuccess(resp.data));
   } catch (err) {
     yield put(actions.autonameFailure(err));
