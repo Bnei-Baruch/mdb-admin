@@ -123,6 +123,7 @@ class TagI18nForm extends Component {
             <LanguageSelector
               item
               scrolling
+              value="none"
               text="Add Language"
               exclude={exclude}
               onChange={this.addLanguage}
