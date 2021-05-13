@@ -7,6 +7,7 @@ import * as shapes from '../shapes';
 import CUList from '../BaseClasses/CUList';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
 import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
+import ContentUnitFormAssociates from '../shared/Forms/ContentUnit/ContentUnitFormAssociates';
 
 class ContentUnitMainPage extends ListWithFiltersBase {
   static propTypes = {
@@ -33,12 +34,16 @@ class ContentUnitMainPage extends ListWithFiltersBase {
       return { wip: true };
     }
     if (state.wip && !wipOfCreate && !errOfCreate) {
-      return { showNewCU: !state.showNewCU, wip: false };
+      return { showNewCU: !state.showNewCU, wip: false, associateLastOpen: true };
     }
     return null;
   }
 
-  toggleNewCU = () => this.setState({ showNewCU: !this.state.showNewCU });
+  openNewCU = () => this.setState({ showNewCU: true });
+
+  closeNewCU = (e) => this.setState({ showNewCU: false });
+
+  closeAssociateLast = () => this.setState({ associateLastOpen: false });
 
   usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
@@ -52,7 +57,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
 
   renderHeaderRightSide = () => {
     return (
-      <Menu.Item onClick={this.toggleNewCU}>
+      <Menu.Item onClick={this.openNewCU}>
         <Icon name="plus" />
         New Content Unit
       </Menu.Item>
@@ -72,21 +77,31 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     );
   };
 
+  renderAssociateLastCreated = () => {
+    const { lastCreated }       = this.props;
+    const { associateLastOpen } = this.state;
+    console.log('ContentUnitFormAssociates renderAssociateLastCreated', lastCreated, associateLastOpen);
+    if (!lastCreated || !associateLastOpen) {
+      return null;
+    }
+    return <ContentUnitFormAssociates unit={lastCreated} onClose={this.closeAssociateLast} />;
+  };
+
   render() {
-    const { wipOfCreate, errOfCreate, create, } = this.props;
+    const { wipOfCreate, errOfCreate, create, lastCreated } = this.props;
 
     return (
       <div>
         {this.renderHeader('Content Units')}
         {this.renderFiltersHydrator()}
         {this.renderContent()}
-
+        {this.renderAssociateLastCreated()}
         <Modal
           closeIcon
           centered={false}
           size="small"
           open={this.state.showNewCU}
-          onClose={this.toggleNewCU}
+          onClose={this.closeNewCU}
         >
           <Modal.Header>Create New Content Unit</Modal.Header>
           <Modal.Content>

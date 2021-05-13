@@ -130,8 +130,8 @@ export const COLLECTION_TYPES = {
   [CT_CLIPS]: { text: CT_CLIPS, value: 35 },
   [CT_ARTICLES]: { text: CT_ARTICLES, value: 37 },
   [CT_LESSONS_SERIES]: { text: CT_LESSONS_SERIES, value: 39 },
-  [CT_SONGS]: { text: CT_SONGS, value: 40 },
-  [CT_BOOKS]: { text: CT_BOOKS, value: 41 },
+  [CT_SONGS]: { text: CT_SONGS, value: 41 },
+  [CT_BOOKS]: { text: CT_BOOKS, value: 43 },
   [CT_UNKNOWN]: { text: CT_UNKNOWN, value: 27 },
 };
 
@@ -154,8 +154,8 @@ export const CONTENT_UNIT_TYPES = {
   [CT_KITEI_MAKOR]: { text: CT_KITEI_MAKOR, value: 31 },
   [CT_PUBLICATION]: { text: CT_PUBLICATION, value: 36 },
   [CT_LELO_MIKUD]: { text: CT_LELO_MIKUD, value: 38 },
-  [CT_SONG]: { text: CT_SONG, value: 42 },
-  [CT_BOOK]: { text: CT_BOOK, value: 43 },
+  [CT_SONG]: { text: CT_SONG, value: 40 },
+  [CT_BOOK]: { text: CT_BOOK, value: 42 },
   [CT_BLOG_POST]: { text: CT_BLOG_POST, value: 44 },
   [CT_RESEARCH_MATERIAL]: { text: CT_RESEARCH_MATERIAL, value: 45 },
   [CT_KTAIM_NIVCHARIM]: { text: CT_KTAIM_NIVCHARIM, value: 46 },

@@ -78,6 +78,9 @@ const REMOVE_PERSON_FAILURE         = 'ContentUnits/REMOVE_PERSON_FAILURE';
 const MERGE_UNITS                   = 'ContentUnits/MERGE_UNITS';
 const MERGE_UNITS_SUCCESS           = 'ContentUnits/MERGE_UNITS_SUCCESS';
 const MERGE_UNITS_FAILURE           = 'ContentUnits/MERGE_UNITS_FAILURE';
+const AUTONAME                      = 'ContentUnits/UNIT_AUTONAME';
+const AUTONAME_SUCCESS              = 'ContentUnits/UNIT_AUTONAME_SUCCESS';
+const AUTONAME_FAILURE              = 'ContentUnits/UNIT_AUTONAME_FAILURE';
 
 const RECEIVE_ITEMS             = 'ContentUnits/RECEIVE_ITEMS';
 const RECEIVE_ITEMS_COLLECTIONS = 'ContentUnits/RECEIVE_ITEMS_COLLECTIONS';
@@ -154,6 +157,9 @@ export const types = {
   MERGE_UNITS,
   MERGE_UNITS_SUCCESS,
   MERGE_UNITS_FAILURE,
+  AUTONAME,
+  AUTONAME_SUCCESS,
+  AUTONAME_FAILURE,
 
   RECEIVE_ITEMS,
   RECEIVE_ITEMS_COLLECTIONS,
@@ -202,10 +208,11 @@ const fetchItemPersons        = createAction(FETCH_ITEM_PERSONS);
 const fetchItemPersonsSuccess = createAction(FETCH_ITEM_PERSONS_SUCCESS);
 const fetchItemPersonsFailure = createAction(FETCH_ITEM_PERSONS_FAILURE);
 
-const create                     = createAction(CREATE, (typeID, properties, i18n) => ({
+const create                     = createAction(CREATE, (typeID, properties, i18n, collection) => ({
   type_id: typeID,
   properties,
-  i18n
+  i18n,
+  collection
 }));
 const createSuccess              = createAction(CREATE_SUCCESS);
 const createFailure              = createAction(CREATE_FAILURE);
@@ -242,6 +249,9 @@ const removePersonFailure        = createAction(REMOVE_PERSON_FAILURE);
 const mergeUnits                 = createAction(MERGE_UNITS, (id, cuIds) => ({ id, cuIds }));
 const mergeUnitsSuccess          = createAction(MERGE_UNITS_SUCCESS);
 const mergeUnitsFailure          = createAction(MERGE_UNITS_FAILURE);
+const autoname                   = createAction(AUTONAME, (collectionUid, typeId) => ({ collectionUid, typeId }));
+const autonameSuccess            = createAction(AUTONAME_SUCCESS);
+const autonameFailure            = createAction(AUTONAME_FAILURE);
 
 const receiveItems            = createAction(RECEIVE_ITEMS);
 const receiveItemsCollections = createAction(RECEIVE_ITEMS_COLLECTIONS);
@@ -318,6 +328,9 @@ export const actions = {
   mergeUnits,
   mergeUnitsSuccess,
   mergeUnitsFailure,
+  autoname,
+  autonameSuccess,
+  autonameFailure,
 
   receiveItems,
   receiveItemsCollections,
@@ -399,12 +412,17 @@ const keys = new Map([
   [MERGE_UNITS, 'mergeUnits'],
   [MERGE_UNITS_SUCCESS, 'mergeUnits'],
   [MERGE_UNITS_FAILURE, 'mergeUnits'],
+  [AUTONAME, 'autoname'],
+  [AUTONAME_SUCCESS, 'autoname'],
+  [AUTONAME_FAILURE, 'autoname'],
 ]);
 
 const initialState = {
   byID: new Map(),
   wip: new Map(Array.from(keys.values(), x => [x, false])),
   errors: new Map(Array.from(keys.values(), x => [x, null])),
+  autonameI18n: [],
+  lastCreated: null
 };
 
 const onRequest = (state, action) => ({
@@ -422,9 +440,10 @@ const onFailure = (state, action) => {
 };
 
 const onSuccess = (state, action) => {
-  const key = keys.get(action.type);
-
+  const key        = keys.get(action.type);
   let byID;
+  let autonameI18n = [];
+  let lastCreated  = state.lastCreated;
   switch (action.type) {
   case FETCH_ITEM_SUCCESS:
   case CREATE:
@@ -543,13 +562,22 @@ const onSuccess = (state, action) => {
   case MERGE_UNITS_SUCCESS:
     byID = delList(state.byID, action.payload.cuIds);
     break;
+  case AUTONAME_SUCCESS:
+    byID         = state.byID;
+    autonameI18n = action.payload;
+    break;
+  case CREATE_SUCCESS:
+    byID        = state.byID;
+    lastCreated = action.payload.id;
+    break;
   default:
-    byID = state.byID;
   }
 
   return {
     ...state,
     byID,
+    autonameI18n,
+    lastCreated,
     wip: setMap(state.wip, key, false),
     errors: setMap(state.errors, key, null),
   };
@@ -646,6 +674,9 @@ export const reducer = handleActions({
   [MERGE_UNITS]: onRequest,
   [MERGE_UNITS_SUCCESS]: onSuccess,
   [MERGE_UNITS_FAILURE]: onFailure,
+  [AUTONAME]: onRequest,
+  [AUTONAME_SUCCESS]: onSuccess,
+  [AUTONAME_FAILURE]: onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
   [RECEIVE_ITEMS_COLLECTIONS]: onReceiveItemsCollections,
@@ -658,6 +689,8 @@ const getUnits           = state => state.byID;
 const getContentUnitById = (state, id) => state.byID.get(id);
 const getWIP             = (state, key) => state.wip.get(key);
 const getError           = (state, key) => state.errors.get(key);
+const getAutonameI18n    = state => state.autonameI18n;
+const getLastCreated     = state => state.lastCreated ? state.byID.get(state.lastCreated) : null;
 
 const denormIDs = createSelector(getUnits, byID =>
   memoize(ids => ids.map(id => byID.get(id))));
@@ -677,4 +710,6 @@ export const selectors = {
   denormIDs,
   denormCCUs,
   denormCUDs,
+  getAutonameI18n,
+  getLastCreated
 };
