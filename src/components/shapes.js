@@ -144,8 +144,7 @@ export const Source = PropTypes.shape({
   pattern: PropTypes.string,
   name: PropTypes.string.isRequired,
   description: PropTypes.string,
-  i18n: PropTypes.objectOf(SourceI18n),
-  cuid: PropTypes.number
+  i18n: PropTypes.objectOf(SourceI18n)
 });
 
 export const Author = PropTypes.shape({
