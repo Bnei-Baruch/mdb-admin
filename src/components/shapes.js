@@ -145,7 +145,6 @@ export const Source = PropTypes.shape({
   name: PropTypes.string.isRequired,
   description: PropTypes.string,
   i18n: PropTypes.objectOf(SourceI18n),
-  cuid: PropTypes.number
 });
 
 export const Author = PropTypes.shape({
@@ -158,7 +157,7 @@ export const Author = PropTypes.shape({
   sources: PropTypes.arrayOf(PropTypes.number),
 });
 
-export const Person    = PropTypes.shape({
+export const Person = PropTypes.shape({
   id: PropTypes.number.isRequired,
   i18n: PropTypes.objectOf(AuthorI18n),
 });
