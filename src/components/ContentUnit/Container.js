@@ -7,6 +7,8 @@ import { actions, selectors } from '../../redux/modules/content_units';
 import { selectors as system } from '../../redux/modules/system';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
+import { selectors as sourcesSelectors } from '../../redux/modules/sources';
+import { CONTENT_TYPE_BY_ID, CT_SOURCE } from '../../helpers/consts';
 
 class Container extends Component {
   static propTypes = {
@@ -41,12 +43,22 @@ class Container extends Component {
   }
 }
 
-const mapState = (state, props) => ({
-  unit: selectors.getContentUnitById(state.content_units, parseInt(props.match.params.id, 10)),
-  wip: selectors.getWIP(state.content_units, 'fetchItem'),
-  err: selectors.getError(state.content_units, 'fetchItem'),
-  currentLanguage: system.getCurrentLanguage(state.system),
-});
+const mapState = (state, props) => {
+  let unit = selectors.getContentUnitById(state.content_units, parseInt(props.match.params.id, 10));
+  if (unit && CONTENT_TYPE_BY_ID[unit.type_id] === CT_SOURCE && unit.properties && unit.properties.source_id) {
+    const source = sourcesSelectors.getSourceByUID(state.sources)(unit.properties.source_id);
+    if (source) {
+      const { i18n } = source;
+      unit           = { ...unit, i18n };
+    }
+  }
+  return {
+    unit,
+    wip: selectors.getWIP(state.content_units, 'fetchItem'),
+    err: selectors.getError(state.content_units, 'fetchItem'),
+    currentLanguage: system.getCurrentLanguage(state.system),
+  };
+};
 
 function mapDispatch(dispatch) {
   return bindActionCreators({ fetchItem: actions.fetchItem }, dispatch);
