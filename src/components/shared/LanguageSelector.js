@@ -10,7 +10,7 @@ const LanguageSelector = (props) => {
   const options = LANGUAGE_OPTIONS
     .filter(x => include.includes(x.value) && !exclude.includes(x.value));
 
-  return <Dropdown {...rest} options={options} selectOnBlur={false} d />;
+  return <Dropdown {...rest} options={options} selectOnBlur={false} />;
 };
 
 LanguageSelector.propTypes = {
