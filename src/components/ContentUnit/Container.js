@@ -46,8 +46,11 @@ class Container extends Component {
 const mapState = (state, props) => {
   let unit = selectors.getContentUnitById(state.content_units, parseInt(props.match.params.id, 10));
   if (unit && CONTENT_TYPE_BY_ID[unit.type_id] === CT_SOURCE && unit.properties && unit.properties.source_id) {
-    const { i18n } = sourcesSelectors.getSourceByUID(state.sources)(unit.properties.source_id);
-    unit           = { ...unit, i18n };
+    const source = sourcesSelectors.getSourceByUID(state.sources)(unit.properties.source_id);
+    if (source) {
+      const { i18n } = source;
+      unit           = { ...unit, i18n };
+    }
   }
   return {
     unit,
