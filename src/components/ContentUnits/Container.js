@@ -76,6 +76,7 @@ const mapState = (state) => {
     ...status,
     wipOfCreate: units.getWIP(state.content_units, 'create'),
     errOfCreate: units.getError(state.content_units, 'create'),
+    lastCreated: units.getLastCreated(state.content_units),
     items,
     currentLanguage: system.getCurrentLanguage(state.system),
   };
