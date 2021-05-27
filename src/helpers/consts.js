@@ -161,6 +161,7 @@ export const CONTENT_UNIT_TYPES = {
   [CT_BLOG_POST]: { text: CT_BLOG_POST, value: 44 },
   [CT_RESEARCH_MATERIAL]: { text: CT_RESEARCH_MATERIAL, value: 45 },
   [CT_KTAIM_NIVCHARIM]: { text: CT_KTAIM_NIVCHARIM, value: 46 },
+  [CT_SOURCE]: { text: CT_SOURCE, value: 47 },
 };
 
 export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
