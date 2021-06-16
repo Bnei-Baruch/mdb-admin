@@ -24,6 +24,7 @@ import {
   CT_VIDEO_PROGRAM_CHAPTER,
   CT_VIRTUAL_LESSON,
   CT_WOMEN_LESSON,
+  CT_LIKUTIM,
 } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import { FilmDateField, LanguageField } from '../../Fields';
@@ -203,6 +204,7 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_RESEARCH_MATERIAL].value:
     case CONTENT_UNIT_TYPES[CT_KTAIM_NIVCHARIM].value:
     case CONTENT_UNIT_TYPES[CT_BLOG_POST].value:
+    case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
       return this.renderLessonPart();
     default:
       return null;
