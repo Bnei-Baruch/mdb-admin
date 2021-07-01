@@ -143,7 +143,7 @@ class BaseContentUnitForm extends Component {
     return Object.entries(required).reduce((acc, val) => {
       const [k, v] = val;
       if (k === 'pattern') {
-        acc[k] = !(!v || patternRegexp.test(v));
+        acc[k] = !patternRegexp.test(v);
         return acc;
       }
       if (!v || (typeof v === 'string' && v.trim() === '')) {
@@ -188,7 +188,7 @@ class BaseContentUnitForm extends Component {
   );
 
   renderPatternField = () => (
-    <Form.Field error={this.state.errors.pattern}>
+    <Form.Field error={this.state.errors.pattern} required>
       <label htmlFor="pattern">Pattern</label>
       <Input
         fluid
