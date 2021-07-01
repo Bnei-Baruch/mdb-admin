@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button, Header, Segment } from 'semantic-ui-react';
+import { Button, Form, Header, Input, Segment, Table } from 'semantic-ui-react';
 
 import {
   CONTENT_UNIT_TYPES,
@@ -24,7 +24,7 @@ import {
   CT_VIDEO_PROGRAM_CHAPTER,
   CT_VIRTUAL_LESSON,
   CT_WOMEN_LESSON,
-  CT_LIKUTIM,
+  CT_LIKUTIM, RTL_LANGUAGES,
 } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import { FilmDateField, LanguageField } from '../../Fields';
@@ -83,6 +83,11 @@ class BaseContentUnitForm extends Component {
       data.film_date         = state.film_date;
       data.original_language = state.original_language;
       break;
+    case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
+      data.film_date         = state.film_date;
+      data.original_language = state.original_language;
+      data.pattern           = state.pattern;
+      break;
     default:
       break;
     }
@@ -100,6 +105,12 @@ class BaseContentUnitForm extends Component {
     const { errors } = this.state;
     delete errors.original_language;
     this.setState({ original_language: data.value });
+  };
+
+  handlePatternChange = (e, data) => {
+    const { errors } = this.state;
+    delete errors.pattern;
+    this.setState({ pattern: data.value });
   };
 
   // eslint-disable-next-line class-methods-use-this
@@ -126,10 +137,15 @@ class BaseContentUnitForm extends Component {
 
   validate() {
     // validate required fields (most of them are...)
-    const required = this.getPropertiesFromState();
+    const required      = this.getPropertiesFromState();
+    const patternRegexp = /^[a-z-]+$/;
 
     return Object.entries(required).reduce((acc, val) => {
       const [k, v] = val;
+      if (k === 'pattern') {
+        acc[k] = !(!v || patternRegexp.test(v));
+        return acc;
+      }
       if (!v || (typeof v === 'string' && v.trim() === '')) {
         acc[k] = true;
       }
@@ -171,10 +187,32 @@ class BaseContentUnitForm extends Component {
     />
   );
 
+  renderPatternField = () => (
+    <Form.Field error={this.state.errors.pattern}>
+      <label htmlFor="pattern">Pattern</label>
+      <Input
+        fluid
+        id="pattern"
+        name="pattern"
+        value={this.state.pattern}
+        onChange={this.handlePatternChange}
+      />
+    </Form.Field>
+  );
+
   renderLessonPart = () => (
     <div>
       {this.renderAssociateCollection()}
       {this.renderFilmDateField()}
+      {this.renderOriginalLanguageField()}
+    </div>
+  );
+
+  renderLikutim = () => (
+    <div>
+      {this.renderAssociateCollection()}
+      {this.renderFilmDateField()}
+      {this.renderPatternField()}
       {this.renderOriginalLanguageField()}
     </div>
   );
@@ -204,8 +242,9 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_RESEARCH_MATERIAL].value:
     case CONTENT_UNIT_TYPES[CT_KTAIM_NIVCHARIM].value:
     case CONTENT_UNIT_TYPES[CT_BLOG_POST].value:
-    case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
       return this.renderLessonPart();
+    case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
+      return this.renderLikutim();
     default:
       return null;
     }
