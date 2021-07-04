@@ -235,7 +235,6 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_ARTICLE].value:
     case CONTENT_UNIT_TYPES[CT_UNKNOWN].value:
     case CONTENT_UNIT_TYPES[CT_EVENT_PART].value:
-    case CONTENT_UNIT_TYPES[CT_CLIP].value:
     case CONTENT_UNIT_TYPES[CT_TRAINING].value:
     case CONTENT_UNIT_TYPES[CT_KITEI_MAKOR].value:
     case CONTENT_UNIT_TYPES[CT_PUBLICATION].value:
@@ -244,6 +243,7 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_BLOG_POST].value:
       return this.renderLessonPart();
     case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
+    case CONTENT_UNIT_TYPES[CT_CLIP].value:
       return this.renderLikutim();
     default:
       return null;
