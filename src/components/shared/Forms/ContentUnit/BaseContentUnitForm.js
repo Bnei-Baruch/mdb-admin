@@ -62,7 +62,6 @@ class BaseContentUnitForm extends Component {
     // per type specific properties
     switch (state.type_id) {
     case CONTENT_UNIT_TYPES[CT_LESSON_PART].value:
-    case CONTENT_UNIT_TYPES[CT_LECTURE].value:
     case CONTENT_UNIT_TYPES[CT_CHILDREN_LESSON].value:
     case CONTENT_UNIT_TYPES[CT_WOMEN_LESSON].value:
     case CONTENT_UNIT_TYPES[CT_VIRTUAL_LESSON].value:
@@ -84,6 +83,7 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
     case CONTENT_UNIT_TYPES[CT_CLIP].value:
     case CONTENT_UNIT_TYPES[CT_VIDEO_PROGRAM_CHAPTER].value:
+    case CONTENT_UNIT_TYPES[CT_LECTURE].value:
       data.film_date         = state.film_date;
       data.original_language = state.original_language;
       data.pattern           = state.pattern;
@@ -224,7 +224,6 @@ class BaseContentUnitForm extends Component {
   renderProperties = () => {
     switch (this.state.type_id) {
     case CONTENT_UNIT_TYPES[CT_LESSON_PART].value:
-    case CONTENT_UNIT_TYPES[CT_LECTURE].value:
     case CONTENT_UNIT_TYPES[CT_CHILDREN_LESSON].value:
     case CONTENT_UNIT_TYPES[CT_WOMEN_LESSON].value:
     case CONTENT_UNIT_TYPES[CT_VIRTUAL_LESSON].value:
@@ -244,6 +243,7 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
     case CONTENT_UNIT_TYPES[CT_CLIP].value:
     case CONTENT_UNIT_TYPES[CT_VIDEO_PROGRAM_CHAPTER].value:
+    case CONTENT_UNIT_TYPES[CT_LECTURE].value:
       return this.renderLikutim();
     default:
       return null;

@@ -11,7 +11,7 @@ import {
   CT_SOURCE,
   CT_LIKUTIM,
   CT_CLIP,
-  CT_VIDEO_PROGRAM_CHAPTER
+  CT_VIDEO_PROGRAM_CHAPTER, CT_LECTURE
 } from '../../../../helpers/consts';
 
 const editableProperties = ['film_date', 'original_language'];
@@ -22,7 +22,10 @@ const DetailsTab = (props) => {
     return null;
   }
 
-  if (CONTENT_TYPE_BY_ID[unit.type_id] === CT_LIKUTIM || CONTENT_TYPE_BY_ID[unit.type_id] === CT_CLIP || CONTENT_TYPE_BY_ID[unit.type_id] === CT_VIDEO_PROGRAM_CHAPTER) {
+  if (CONTENT_TYPE_BY_ID[unit.type_id] === CT_LIKUTIM ||
+    CONTENT_TYPE_BY_ID[unit.type_id] === CT_CLIP ||
+    CONTENT_TYPE_BY_ID[unit.type_id] === CT_VIDEO_PROGRAM_CHAPTER ||
+    CONTENT_TYPE_BY_ID[unit.type_id] === CT_LECTURE) {
     editableProperties.push('pattern');
   }
 
