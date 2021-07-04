@@ -68,7 +68,6 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_VIRTUAL_LESSON].value:
     case CONTENT_UNIT_TYPES[CT_FRIENDS_GATHERING].value:
     case CONTENT_UNIT_TYPES[CT_MEAL].value:
-    case CONTENT_UNIT_TYPES[CT_VIDEO_PROGRAM_CHAPTER].value:
     case CONTENT_UNIT_TYPES[CT_FULL_LESSON].value:
     case CONTENT_UNIT_TYPES[CT_ARTICLE].value:
     case CONTENT_UNIT_TYPES[CT_UNKNOWN].value:
@@ -84,6 +83,7 @@ class BaseContentUnitForm extends Component {
       break;
     case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
     case CONTENT_UNIT_TYPES[CT_CLIP].value:
+    case CONTENT_UNIT_TYPES[CT_VIDEO_PROGRAM_CHAPTER].value:
       data.film_date         = state.film_date;
       data.original_language = state.original_language;
       data.pattern           = state.pattern;
@@ -230,7 +230,6 @@ class BaseContentUnitForm extends Component {
     case CONTENT_UNIT_TYPES[CT_VIRTUAL_LESSON].value:
     case CONTENT_UNIT_TYPES[CT_FRIENDS_GATHERING].value:
     case CONTENT_UNIT_TYPES[CT_MEAL].value:
-    case CONTENT_UNIT_TYPES[CT_VIDEO_PROGRAM_CHAPTER].value:
     case CONTENT_UNIT_TYPES[CT_FULL_LESSON].value:
     case CONTENT_UNIT_TYPES[CT_ARTICLE].value:
     case CONTENT_UNIT_TYPES[CT_UNKNOWN].value:
@@ -244,6 +243,7 @@ class BaseContentUnitForm extends Component {
       return this.renderLessonPart();
     case CONTENT_UNIT_TYPES[CT_LIKUTIM].value:
     case CONTENT_UNIT_TYPES[CT_CLIP].value:
+    case CONTENT_UNIT_TYPES[CT_VIDEO_PROGRAM_CHAPTER].value:
       return this.renderLikutim();
     default:
       return null;

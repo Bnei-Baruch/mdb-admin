@@ -6,7 +6,13 @@ import ReadonlyProperties from '../../../shared/Properties';
 import Details from './Details';
 import PropertiesForm from './Properties';
 import I18nForm from './I18nForm';
-import { CONTENT_TYPE_BY_ID, CT_SOURCE, CT_LIKUTIM, CT_CLIP } from '../../../../helpers/consts';
+import {
+  CONTENT_TYPE_BY_ID,
+  CT_SOURCE,
+  CT_LIKUTIM,
+  CT_CLIP,
+  CT_VIDEO_PROGRAM_CHAPTER
+} from '../../../../helpers/consts';
 
 const editableProperties = ['film_date', 'original_language'];
 
@@ -16,7 +22,7 @@ const DetailsTab = (props) => {
     return null;
   }
 
-  if (CONTENT_TYPE_BY_ID[unit.type_id] === CT_LIKUTIM || CONTENT_TYPE_BY_ID[unit.type_id] === CT_CLIP) {
+  if (CONTENT_TYPE_BY_ID[unit.type_id] === CT_LIKUTIM || CONTENT_TYPE_BY_ID[unit.type_id] === CT_CLIP || CONTENT_TYPE_BY_ID[unit.type_id] === CT_VIDEO_PROGRAM_CHAPTER) {
     editableProperties.push('pattern');
   }
 
