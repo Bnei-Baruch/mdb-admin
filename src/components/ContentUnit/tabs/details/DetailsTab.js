@@ -6,7 +6,7 @@ import ReadonlyProperties from '../../../shared/Properties';
 import Details from './Details';
 import PropertiesForm from './Properties';
 import I18nForm from './I18nForm';
-import { CONTENT_TYPE_BY_ID, CT_SOURCE, CT_LIKUTIM } from '../../../../helpers/consts';
+import { CONTENT_TYPE_BY_ID, CT_SOURCE, CT_LIKUTIM, CT_CLIP } from '../../../../helpers/consts';
 
 const editableProperties = ['film_date', 'original_language'];
 
@@ -16,7 +16,7 @@ const DetailsTab = (props) => {
     return null;
   }
 
-  if (CONTENT_TYPE_BY_ID[unit.type_id] === CT_LIKUTIM) {
+  if (CONTENT_TYPE_BY_ID[unit.type_id] === CT_LIKUTIM || CONTENT_TYPE_BY_ID[unit.type_id] === CT_CLIP) {
     editableProperties.push('pattern');
   }
 
