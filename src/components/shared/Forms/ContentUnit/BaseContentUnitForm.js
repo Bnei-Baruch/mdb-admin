@@ -138,7 +138,7 @@ class BaseContentUnitForm extends Component {
   validate() {
     // validate required fields (most of them are...)
     const required      = this.getPropertiesFromState();
-    const patternRegexp = /^[a-z-]+$/;
+    const patternRegexp = /^[a-z0-9-]+$/;
 
     return Object.entries(required).reduce((acc, val) => {
       const [k, v] = val;
