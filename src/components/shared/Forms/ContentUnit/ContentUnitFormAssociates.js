@@ -8,7 +8,6 @@ import DerivativesContainer from '../../../ContentUnit/tabs/associations/Derivat
 import OriginsContainer from '../../../ContentUnit/tabs/associations/OriginsContainer';
 import Tags from '../../../ContentUnit/tabs/associations/Tags';
 import Persons from '../../../ContentUnit/tabs/associations/Persons';
-import { formatError } from '../../../../helpers/utils';
 
 class ContentUnitFormAssociates extends Component {
   constructor(props) {
