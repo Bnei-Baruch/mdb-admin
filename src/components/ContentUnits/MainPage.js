@@ -81,7 +81,6 @@ class ContentUnitMainPage extends ListWithFiltersBase {
   renderAssociateLastCreated = () => {
     const { lastCreated }       = this.props;
     const { associateLastOpen } = this.state;
-    console.log('ContentUnitFormAssociates renderAssociateLastCreated', lastCreated, associateLastOpen);
     if (!lastCreated || !associateLastOpen) {
       return null;
     }
