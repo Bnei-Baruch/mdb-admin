@@ -44,25 +44,29 @@ const dataReceivers = {
 function* fetchList(action) {
   const { namespace, pageNo } = action.payload;
   const filters               = yield select(state => filterSelectors.getFilters(state.filters, namespace));
-  const params                = filtersTransformer.toApiParams(filters);
+  let params                  = filtersTransformer.toApiParams(filters);
 
   let urlParam;
   switch (namespace) {
-  case  NS_UNIT_ASSOCIATION_COLLECTION:
-    urlParam = NS_COLLECTIONS;
-    break;
-  case  NS_FILE_UNITS:
-  case  NS_MERGE_UNITS:
-  case  NS_UNIT_ASSOCIATION_CU:
-  case  NS_COLLECTION_UNITS:
-    urlParam = NS_UNITS;
-    break;
-  case NS_UNIT_FILE_UNITS:
-    urlParam = NS_FILES;
-    break;
-  default:
-    urlParam = namespace;
-    break;
+    case  NS_UNIT_ASSOCIATION_COLLECTION:
+      urlParam = NS_COLLECTIONS;
+      break;
+    case  NS_FILE_UNITS:
+    case  NS_MERGE_UNITS:
+    case  NS_UNIT_ASSOCIATION_CU:
+    case  NS_COLLECTION_UNITS:
+      urlParam = NS_UNITS;
+      break;
+    case NS_UNIT_FILE_UNITS:
+      urlParam = NS_FILES;
+      break;
+    case NS_UNITS:
+      urlParam = NS_UNITS;
+      params   = { ...params, with_collections: true };
+      break;
+    default:
+      urlParam = namespace;
+      break;
   }
 
   try {

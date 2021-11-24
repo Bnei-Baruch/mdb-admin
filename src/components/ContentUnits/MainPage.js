@@ -73,6 +73,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
         associatedIds={associatedIds}
         currentLanguage={currentLanguage}
         withCheckBox={false}
+        withCollections
       />
     );
   };
