@@ -16,6 +16,7 @@ import FreeText from '../Filters/FreeText';
 import Sources from '../Filters/Sources';
 import Topics from '../Filters/Topics';
 import Others from '../Filters/Others';
+import OriginalLanguage from '../Filters/OriginalLanguage';
 
 const allFiltersByName = new Map();
 allFiltersByName.set('DateRange', { name: 'Date Range', element: DateRange });
@@ -23,6 +24,7 @@ allFiltersByName.set('FreeText', { name: 'Free Text', element: FreeText });
 allFiltersByName.set('Sources', { name: 'Sources', element: Sources });
 allFiltersByName.set('Topics', { name: 'Topics', element: Topics });
 allFiltersByName.set('Others', { name: 'Others', element: Others });
+allFiltersByName.set('OriginalLanguage', { name: 'Original Language', element: OriginalLanguage });
 
 // eslint-disable-next-line react/require-render-return
 class ListWithFiltersBase extends PureComponent {

@@ -45,7 +45,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
 
   closeAssociateLast = () => this.setState({ associateLastOpen: false });
 
-  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others', 'OriginalLanguage'];
 
   getNamespace = () => NS_UNITS;
 
