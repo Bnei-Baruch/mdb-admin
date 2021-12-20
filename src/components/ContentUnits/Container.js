@@ -10,6 +10,7 @@ import { selectors as system } from '../../redux/modules/system';
 import { CONTENT_TYPE_BY_ID, CT_SOURCE, EMPTY_ARRAY, EMPTY_OBJECT, NS_UNITS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
+import { selectors as filterSelectors } from '../../redux/modules/filters';
 
 class ContentUnitsContainer extends Component {
   static propTypes = {
@@ -23,6 +24,13 @@ class ContentUnitsContainer extends Component {
     wipOfCreate: false,
     errOfCreate: null
   };
+
+  // on main page we show additional data (collections),
+  // so need fetch units on mount even we are here before and filters was hydrated
+  componentDidMount() {
+    if (this.props.isHydrated)
+        this.askForData(this.getPageNo());
+  }
 
   componentDidUpdate(prevProps) {
     const { wipOfCreate: pWip, errOfCreate: pErr } = prevProps;
@@ -79,6 +87,7 @@ const mapState = (state) => {
     lastCreated: units.getLastCreated(state.content_units),
     items,
     currentLanguage: system.getCurrentLanguage(state.system),
+    isHydrated: filterSelectors.getIsHydrated(state.filters, NS_UNITS)
   };
 };
 
