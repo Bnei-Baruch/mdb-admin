@@ -17,6 +17,7 @@ import { reducer as storages } from './modules/storages';
 import { reducer as persons } from './modules/persons';
 import { reducer as publishers } from './modules/publishers';
 import { reducer as search } from './modules/search';
+import { reducer as labels } from './modules/labels';
 
 export default history => combineReducers({
   router: connectRouter(history),
@@ -36,4 +37,5 @@ export default history => combineReducers({
   persons,
   publishers,
   search,
+  labels,
 });

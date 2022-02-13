@@ -22,6 +22,7 @@ export const NS_FILES                       = 'files';
 export const NS_OPERATIONS                  = 'operations';
 export const NS_PERSONS                     = 'persons';
 export const NS_PUBLISHERS                  = 'publishers';
+export const NS_LABELS                      = 'labels';
 
 export const PAGE_SIZE = 50;
 
