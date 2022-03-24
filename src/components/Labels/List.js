@@ -18,8 +18,8 @@ class PublishersList extends PureComponent {
   };
 
   renderItem = item => {
-    const { id, uid, i18n, author } = item;
-    const i18nFields                = extractI18n(i18n, ['name', 'author'], this.props.currentLanguage);
+    const { id, uid, i18n } = item;
+    const i18nFields        = extractI18n(i18n, ['name', 'author'], this.props.currentLanguage);
     return (
       <Table.Row key={id}>
         <Table.Cell collapsing>
@@ -34,7 +34,7 @@ class PublishersList extends PureComponent {
           {i18nFields[0]}
         </Table.Cell>
         <Table.Cell>
-          {i18nFields[1]}
+          {i18nFields[1]?.name}
         </Table.Cell>
       </Table.Row>
     );

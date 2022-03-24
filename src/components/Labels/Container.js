@@ -58,9 +58,10 @@ class Container extends Component {
 const mapState = (state) => {
   const status    = selectors.getNamespaceState(state.lists, NS_LABELS) || EMPTY_OBJECT;
   const denormIDs = labels.denormIDs(state.labels);
+  const items     = Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY;
   return {
     ...status,
-    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    items,
     currentLanguage: system.getCurrentLanguage(state.system),
   };
 };

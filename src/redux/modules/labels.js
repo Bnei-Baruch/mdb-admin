@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import { bulkMerge, del, setMap } from '../utils';
+import { bulkMerge, del, merge, setMap } from '../utils';
 
 /* Types */
 
@@ -110,6 +110,8 @@ const onSuccess = (state, action) => {
   switch (action.type) {
   case FETCH_ITEM_SUCCESS:
   case UPDATE_I18N_SUCCESS:
+    byID = merge(state.byID, action.payload);
+    break;
   case DELETE_SUCCESS:
     byID = del(state.byID, action.payload);
     break;
