@@ -19,8 +19,7 @@
     "eslint-plugin-jest": "^24.1.3",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.0.1",
-    "node-sass": "^5.0.0",
-    "node-sass-chokidar": "^1.4.0",
+    "sass": "^1.43.5",
     "npm-run-all": "^4.0.2",
     "react-app-rewired": "^2.1.6",
     "react-scripts": "^4.0.0",
@@ -69,8 +68,8 @@
     "deploy:external": "yarn build:external && scp -r build/* archive@app.archive.bbdomain.org:/sites/admin",
     "deploy:staging": "yarn build:staging && scp -r build/* archive@dev.mdb.bbdomain.org:/sites/admin",
     "deploy:suitcase": "yarn build:suitcase && scp -r build/* root@suitcase.bbdomain.org:/sites/admin",
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
+    "build-css": "sass src/:src/",
+    "watch-css": "sass src/:src/ --watch"
   },
   "browserslist": {
     "production": [
