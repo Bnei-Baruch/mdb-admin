@@ -53,11 +53,12 @@ const fetchAllSuccess  = createAction(FETCH_ALL_SUCCESS);
 const fetchAllFailure  = createAction(FETCH_ALL_FAILURE);
 
 const updateInfo        = createAction(UPDATE_INFO,
-  (id, pattern, description, typeID) => ({
+  (id, pattern, description, typeID, position) => ({
     id,
     pattern,
     description,
-    type_id: typeID
+    type_id: typeID,
+    position
   }));
 const updateInfoSuccess = createAction(UPDATE_INFO_SUCCESS);
 const updateInfoFailure = createAction(UPDATE_INFO_FAILURE);
