@@ -27,12 +27,11 @@ function* fetchAll() {
 
 function* updateInfo(action) {
   try {
-    const { id, pattern, description, type_id } = action.payload;
-    const resp                                  = yield call(api.put, `/sources/${id}/`, {
-      pattern,
-      description,
-      type_id
-    });
+    const { id, pattern, description, type_id, position } = action.payload;
+
+    const params = { pattern, description, type_id };
+    if (position) params.position = position;
+    const resp = yield call(api.put, `/sources/${id}/`, params);
     yield put(actions.updateInfoSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateInfoFailure(err));

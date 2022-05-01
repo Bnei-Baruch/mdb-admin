@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button, Form, Header, Input, List, Menu, Segment
-} from 'semantic-ui-react';
+import { Button, Form, Header, Input, List, Menu, Segment } from 'semantic-ui-react';
 
 import { formatError, isValidPattern } from '../../helpers/utils';
-import { EMPTY_OBJECT, SOURCE_TYPES_OPTIONS } from '../../helpers/consts';
+import { SOURCE_TYPES_OPTIONS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 
 class SourceInfoForm extends Component {
   constructor(props) {
     super(props);
 
-    const { source: { pattern, description, type_id } } = props;
+    const { source: { pattern, description, type_id, position } } = props;
 
-    this.state = { pattern, description, type_id, submitted: false, errors: {} };
+    this.state = { pattern, description, type_id, submitted: false, position, errors: {} };
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { source: { pattern, description, type_id } } = props;
+    const { source: { pattern, description, type_id, position } } = props;
     if (type_id !== state.type_id) {
-      return { pattern, description, type_id };
+      return { pattern, description, type_id, position };
     }
     return null;
   }
@@ -31,6 +29,10 @@ class SourceInfoForm extends Component {
 
   onDescriptionChange = (e, { value }) => {
     this.setState({ description: value });
+  };
+
+  onPositionChange = (e, { value }) => {
+    this.setState({ position: Number(value) });
   };
 
   onPatternChange = (e, { value }) => {
@@ -45,9 +47,9 @@ class SourceInfoForm extends Component {
   };
 
   handleSubmit = () => {
-    const { source, updateInfo }            = this.props;
-    const { pattern, description, type_id } = this.state;
-    updateInfo(source.id, pattern, description, type_id);
+    const { source, updateInfo }                      = this.props;
+    const { pattern, description, type_id, position } = this.state;
+    updateInfo(source.id, pattern, description, type_id, position);
 
     this.setState({ submitted: true });
   };
@@ -57,7 +59,7 @@ class SourceInfoForm extends Component {
     const wip                          = getWIP('updateInfo');
     const err                          = getError('updateInfo');
 
-    const { pattern, description, type_id: typeID, submitted, errors } = this.state;
+    const { pattern, description, type_id: typeID, position, submitted, errors } = this.state;
 
     return (
       <div>
@@ -109,6 +111,17 @@ class SourceInfoForm extends Component {
               />
               <small className="helper">A short description about this source</small>
             </Form.Field>
+
+            <Form.Field>
+              <label htmlFor="position">Position</label>
+              <Input
+                id="position"
+                type="number"
+                placeholder="Position"
+                value={position}
+                onChange={this.onPositionChange}
+              />
+            </Form.Field>
           </Form>
         </Segment>
 
@@ -151,7 +164,8 @@ SourceInfoForm.defaultProps = {
   source: {
     pattern: '',
     description: '',
-    type_id: ''
+    type_id: '',
+    position: ''
   },
 };
 
