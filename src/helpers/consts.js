@@ -283,6 +283,8 @@ export const LANG_LATVIAN    = 'lv';
 export const LANG_SLOVAK     = 'sk';
 export const LANG_CZECH      = 'cs';
 export const LANG_AMHARIC    = 'am';
+export const LANG_INDONESIAN = 'id';
+export const LANG_ARMENIAN   = 'hy';
 export const LANG_MULTI      = 'zz';
 export const LANG_UNKNOWN    = 'xx';
 
@@ -319,6 +321,8 @@ export const LANGUAGES = {
   [LANG_SLOVAK]: { text: 'Slovak', value: LANG_SLOVAK, flag: 'sk' },
   [LANG_CZECH]: { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
   [LANG_AMHARIC]: { text: 'Amharic', value: LANG_AMHARIC, flag: 'et' },
+  [LANG_ARMENIAN]: { text: 'Armenian', value: LANG_ARMENIAN, flag: 'am' },
+  [LANG_INDONESIAN]: { text: 'Indonesian', value: LANG_INDONESIAN, flag: 'id' },
   [LANG_MULTI]: { text: 'Multi', value: LANG_MULTI },
   [LANG_UNKNOWN]: { text: 'Unknown', value: LANG_UNKNOWN },
 };
@@ -356,6 +360,8 @@ export const ALL_LANGUAGES = [
   LANG_SLOVAK,
   LANG_CZECH,
   LANG_AMHARIC,
+  LANG_ARMENIAN,
+  LANG_INDONESIAN,
   LANG_MULTI,
   LANG_UNKNOWN,
 ];
