@@ -1,9 +1,9 @@
+import memoize from 'lodash/memoize';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import memoize from 'lodash/memoize';
+import { buildHierarchy, extractI18n } from '../../helpers/utils';
 
 import { merge, setMap } from '../utils';
-import { buildHierarchy, extractI18n } from '../../helpers/utils';
 
 /* Types */
 
@@ -53,7 +53,7 @@ const fetchAllSuccess  = createAction(FETCH_ALL_SUCCESS);
 const fetchAllFailure  = createAction(FETCH_ALL_FAILURE);
 
 const updateInfo        = createAction(UPDATE_INFO,
-  (id, pattern, description) => ({ id, pattern, description }));
+  (id, pattern, description, parent_id) => ({ id, pattern, description, parent_id }));
 const updateInfoSuccess = createAction(UPDATE_INFO_SUCCESS);
 const updateInfoFailure = createAction(UPDATE_INFO_FAILURE);
 const updateI18n        = createAction(UPDATE_I18N,

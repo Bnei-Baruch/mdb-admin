@@ -1,26 +1,22 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import {
-  Button, Form, Header, Input, List, Menu, Segment
-} from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Button, Dropdown, Form, Header, Input, List, Menu, Segment } from 'semantic-ui-react';
 
-import { EMPTY_OBJECT } from '../../helpers/consts';
-import { formatError, isValidPattern } from '../../helpers/utils';
+import { extractI18n, formatError, isValidPattern } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 class TagInfoForm extends Component {
   constructor(props) {
     super(props);
-    const { tag: { pattern, description, id } } = props;
+    const { tag: { pattern, description, parent_id, id } } = props;
     if (id)
-      this.state = { pattern, description, id, submitted: false, errors: {} };
+      this.state = { pattern, description, parent_id, id, submitted: false, errors: {} };
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { tag: { pattern, description, id } } = props;
+    const { tag: { pattern, description, parent_id, id } } = props;
     if (id && id !== state.id)
-      return { pattern, description, id, submitted: false, errors: {} };
+      return { pattern, description, id, parent_id, submitted: false, errors: {} };
 
     return null;
   }
@@ -40,20 +36,28 @@ class TagInfoForm extends Component {
     this.setState({ pattern: value, errors });
   };
 
-  handleSubmit = () => {
-    const { tag, updateInfo }      = this.props;
-    const { pattern, description } = this.state;
+  onParentChange = (e, { value }) => {
+    this.setState({ parent_id: value });
+  };
 
-    updateInfo(tag.id, pattern, description);
+  handleSubmit = () => {
+    const { tag, updateInfo }                 = this.props;
+    const { pattern, description, parent_id } = this.state;
+
+    updateInfo(tag.id, pattern, description, parent_id);
     this.setState({ submitted: true });
   };
 
   render() {
-    const { tag, getWIP, getError } = this.props;
-    const wip                       = getWIP('updateInfo');
-    const err                       = getError('updateInfo');
+    const { tag, getWIP, getError, getTags, getTagById } = this.props;
+    const wip                                            = getWIP('updateInfo');
+    const err                                            = getError('updateInfo');
 
-    const { pattern, description, submitted, errors } = this.state;
+    const { pattern, description, parent_id, submitted, errors } = this.state;
+
+    const options = Array.from(getTags.values()).map(t => {
+      return { text: extractI18n(t.i18n, ['label'])[0], value: t.id };
+    });
 
     return (
       <div>
@@ -68,15 +72,18 @@ class TagInfoForm extends Component {
             <List horizontal floated="right">
               <List.Item><strong>ID:</strong>&nbsp;{tag.id}</List.Item>
               <List.Item><strong>UID:</strong>&nbsp;{tag.uid}</List.Item>
-              <List.Item>
-                <strong>Parent ID:</strong>&nbsp;
-                {
-                  tag.parent_id
-                    ? <Link to={`/tags/${tag.parent_id}`}>{tag.parent_id}</Link>
-                    : 'none'
-                }
-              </List.Item>
             </List>
+
+            <Form.Field>
+              <label htmlFor="parent">Parent</label>
+              <Dropdown
+                id="parent"
+                options={options}
+                selectOnBlur={false}
+                onChange={this.onParentChange}
+                value={parent_id}
+              />
+            </Form.Field>
 
             <Form.Field error={!!errors.pattern}>
               <label htmlFor="pattern">Pattern</label>
@@ -140,6 +147,8 @@ TagInfoForm.propTypes = {
   getWIP: PropTypes.func.isRequired,
   getError: PropTypes.func.isRequired,
   tag: shapes.Tag,
+  getTags: PropTypes.func.isRequired,
+  getTagById: PropTypes.func.isRequired,
 };
 
 TagInfoForm.defaultProps = {
