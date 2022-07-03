@@ -49,14 +49,14 @@ class TagInfoForm extends Component {
   };
 
   render() {
-    const { tag, getWIP, getError, getTags, getTagById } = this.props;
-    const wip                                            = getWIP('updateInfo');
-    const err                                            = getError('updateInfo');
+    const { tag, getWIP, getError, getTags, currentLanguage } = this.props;
+    const wip                                                 = getWIP('updateInfo');
+    const err                                                 = getError('updateInfo');
 
     const { pattern, description, parent_id, submitted, errors } = this.state;
 
     const options = Array.from(getTags.values()).map(t => {
-      return { text: extractI18n(t.i18n, ['label'])[0], value: t.id };
+      return { text: extractI18n(t.i18n, ['label'], currentLanguage)[0], value: t.id };
     });
 
     return (
@@ -148,7 +148,6 @@ TagInfoForm.propTypes = {
   getError: PropTypes.func.isRequired,
   tag: shapes.Tag,
   getTags: PropTypes.func.isRequired,
-  getTagById: PropTypes.func.isRequired,
 };
 
 TagInfoForm.defaultProps = {
