@@ -1,8 +1,8 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { USER_FOUND } from 'redux-oidc';
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import api from '../helpers/apiClient';
 
 import { actions, types } from '../redux/modules/tags';
-import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
 
 function* fetchItem(action) {
@@ -26,8 +26,9 @@ function* fetchAll() {
 
 function* updateInfo(action) {
   try {
-    const { id, pattern, description } = action.payload;
-    const resp                         = yield call(api.put, `/tags/${id}/`, { pattern, description });
+    const { id, pattern, description, parent_id } = action.payload;
+
+    const resp = yield call(api.put, `/tags/${id}/`, { pattern, description, parent_id });
     yield put(actions.updateInfoSuccess(resp.data));
   } catch (err) {
     yield put(actions.updateInfoFailure(err));
