@@ -22,8 +22,10 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     wipOfCreate: false,
     errOfCreate: null
   };
-  usedFiltersNames    = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
-  getPageNo           = this.props.getPageNo;
+
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
+
+  getPageNo = this.props.getPageNo;
 
   constructor(props) {
     super(props);

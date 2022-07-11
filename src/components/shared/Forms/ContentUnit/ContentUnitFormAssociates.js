@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Divider, Grid, Header, Modal, Segment } from 'semantic-ui-react';
+import { bindActionCreators } from 'redux';
+import { Button, Divider, Grid, Modal, Segment } from 'semantic-ui-react';
 
 import { actions } from '../../../../redux/modules/content_units';
 import DerivativesContainer from '../../../ContentUnit/tabs/associations/DerivativesContainer';
 import OriginsContainer from '../../../ContentUnit/tabs/associations/OriginsContainer';
-import Tags from '../../../ContentUnit/tabs/associations/Tags';
 import Persons from '../../../ContentUnit/tabs/associations/Persons';
+import Tags from '../../../ContentUnit/tabs/associations/Tags';
 
 class ContentUnitFormAssociates extends Component {
   constructor(props) {
