@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PERSONS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';

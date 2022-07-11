@@ -1,13 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Icon, Menu, Modal } from 'semantic-ui-react';
 
-import { NS_UNITS, CONTENT_UNIT_TYPES } from '../../helpers/consts';
-import * as shapes from '../shapes';
+import { CONTENT_UNIT_TYPES, NS_UNITS } from '../../helpers/consts';
 import CUList from '../BaseClasses/CUList';
 import ListWithFiltersBase from '../BaseClasses/ListWithFiltersBase';
-import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
+import * as shapes from '../shapes';
 import ContentUnitFormAssociates from '../shared/Forms/ContentUnit/ContentUnitFormAssociates';
+import CreateContentUnitForm from '../shared/Forms/ContentUnit/CreateContentUnitForm';
 
 class ContentUnitMainPage extends ListWithFiltersBase {
   static propTypes = {
@@ -22,6 +22,8 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     wipOfCreate: false,
     errOfCreate: null
   };
+  usedFiltersNames    = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
+  getPageNo           = this.props.getPageNo;
 
   constructor(props) {
     super(props);
@@ -41,17 +43,13 @@ class ContentUnitMainPage extends ListWithFiltersBase {
 
   openNewCU = () => this.setState({ showNewCU: true });
 
-  closeNewCU = (e) => this.setState({ showNewCU: false });
+  closeNewCU = () => this.setState({ showNewCU: false });
 
   closeAssociateLast = () => this.setState({ associateLastOpen: false });
-
-  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
 
   getNamespace = () => NS_UNITS;
 
   getContentType = () => CONTENT_UNIT_TYPES;
-
-  getPageNo = this.props.getPageNo;
 
   getIsUpdateQuery = () => true;
 
@@ -80,7 +78,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
   renderAssociateLastCreated = () => {
     const { lastCreated }       = this.props;
     const { associateLastOpen } = this.state;
-    console.log('ContentUnitFormAssociates renderAssociateLastCreated', lastCreated, associateLastOpen);
+
     if (!lastCreated || !associateLastOpen) {
       return null;
     }

@@ -33,7 +33,6 @@ class ContentUnitFormAssociates extends Component {
   }
 
   close() {
-    console.log('ContentUnitFormAssociates close');
     this.setState({ isOpen: false });
     this.props.onClose();
   }
