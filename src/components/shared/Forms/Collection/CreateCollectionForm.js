@@ -72,7 +72,6 @@ class CreateCollectionForm extends BaseCollectionForm {
   }
 
   doSubmit(typeID, properties, i18n) {
-    console.log('CCF.doSubmit');
     this.props.create(typeID, properties, i18n);
   }
 

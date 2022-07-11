@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Label, Icon } from 'semantic-ui-react';
+import React, { PureComponent } from 'react';
+import { Icon, Label } from 'semantic-ui-react';
 
 class FilterTag extends PureComponent {
   static propTypes = {
@@ -15,9 +15,7 @@ class FilterTag extends PureComponent {
     isActive: false
   };
 
-  handleClick = (event) => {
-    this.props.onClick();
-  };
+  handleClick = () => this.props.onClick();
 
   handleClose = (event) => {
     event.stopPropagation();
@@ -26,7 +24,7 @@ class FilterTag extends PureComponent {
 
   render() {
     const { icon, label, isActive } = this.props;
-    const color = isActive ? 'green' : 'blue';
+    const color                     = isActive ? 'green' : 'blue';
 
     return (
       <Label as="a" ref={el => this.label = el} onClick={this.handleClick} color={color}>

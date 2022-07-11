@@ -187,7 +187,6 @@ export const reducer = handleActions({
 /* Selectors */
 
 const sortHierarchy = (h, getById) => {
-  console.log('COMPUTE: sortHierarchy ', h.childMap.size);
   h.childMap.forEach((v) => {
     v.sort((a, b) => {
       const sA = getById(a);

@@ -1,9 +1,8 @@
+import memoize from 'lodash/memoize';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import memoize from 'lodash/memoize';
 
 import { setMap } from '../utils';
-import { types as sources } from './sources';
 
 /* Types */
 

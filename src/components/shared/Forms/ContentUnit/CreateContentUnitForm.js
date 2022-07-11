@@ -1,25 +1,25 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import moment from 'moment';
+import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import { Divider, Form, Label, List, Message, Search, Segment } from 'semantic-ui-react';
+import { Divider, Form, Label, Message, Search } from 'semantic-ui-react';
 import {
+  CONTENT_TYPE_BY_ID,
   CONTENT_UNIT_TYPE_OPTIONS,
-  MAJOR_LANGUAGES,
   CONTENT_UNIT_TYPES,
   CT_LESSON_PART,
-  REQUIRED_LANGUAGES,
   EMPTY_ARRAY,
-  CONTENT_TYPE_BY_ID
+  MAJOR_LANGUAGES,
+  REQUIRED_LANGUAGES
 } from '../../../../helpers/consts';
+import { extractI18n } from '../../../../helpers/utils';
+import { selectors as collections } from '../../../../redux/modules/collections';
+import { actions as unitActions, selectors as unitSelectors } from '../../../../redux/modules/content_units';
+import { actions, selectors } from '../../../../redux/modules/search';
+import { selectors as system } from '../../../../redux/modules/system';
 import { MajorLangsI18nField } from '../../Fields/index';
 import BaseContentUnitForm from './BaseContentUnitForm';
-import { actions, selectors } from '../../../../redux/modules/search';
-import { actions as unitActions, selectors as unitSelectors } from '../../../../redux/modules/content_units';
-import { selectors as collections } from '../../../../redux/modules/collections';
-import { extractI18n } from '../../../../helpers/utils';
-import { selectors as system } from '../../../../redux/modules/system';
 
 class CreateContentUnitForm extends BaseContentUnitForm {
   static getDerivedStateFromProps(props, state) {
