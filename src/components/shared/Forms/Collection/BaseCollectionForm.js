@@ -72,7 +72,7 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_DAILY_LESSON].value:
     case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
       data.film_date = state.film_date;
-      data.number = state.number;
+      data.number    = state.number;
       break;
     case COLLECTION_TYPES[CT_CONGRESS].value:
       data.pattern      = state.pattern;
@@ -203,7 +203,8 @@ class BaseCollectionForm extends Component {
   handleLessonNumberChange = (e, data) => {
     const { errors } = this.state;
     delete errors.number;
-    this.setState({ number: data.value, errors });
+    const number = parseInt(data.value, 10);
+    this.setState({ number, errors });
   };
 
   // eslint-disable-next-line class-methods-use-this
