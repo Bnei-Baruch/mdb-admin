@@ -18,7 +18,7 @@ class UpdateCollectionPropertiesForm extends BaseCollectionForm {
     const { type_id: typeID, properties } = this.props.collection;
 
     // convert date fields to moment
-    const { start_date: start, end_date: end, film_date: film, tags: tagsUIDs = [] } = properties;
+    const { start_date: start, end_date: end, film_date: film, tags: tagsUIDs = [], number } = properties;
 
     // convert country to country code
     const country = properties.country ?
@@ -33,7 +33,8 @@ class UpdateCollectionPropertiesForm extends BaseCollectionForm {
       end_date: end ? moment.utc(end) : null,
       film_date: film ? moment.utc(film) : null,
       country,
-      tagsUIDs: [...tagsUIDs]
+      tagsUIDs: [...tagsUIDs],
+      number
     };
   }
 

@@ -35,7 +35,7 @@ class CreateCollectionForm extends BaseCollectionForm {
       default_language: '',
       holiday_tag: '',
       source: '',
-      tagsUIDs: []
+      tagsUIDs: [],
     };
   }
 
