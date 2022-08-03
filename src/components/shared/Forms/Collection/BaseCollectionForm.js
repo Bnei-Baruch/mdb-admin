@@ -36,6 +36,7 @@ import {
   ToggleField,
 } from '../../Fields';
 import './collections.css';
+import LessonNumber from '../../Fields/LessonNumber';
 
 class BaseCollectionForm extends Component {
   static propTypes = {
@@ -71,6 +72,7 @@ class BaseCollectionForm extends Component {
     case COLLECTION_TYPES[CT_DAILY_LESSON].value:
     case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
       data.film_date = state.film_date;
+      data.number = state.number;
       break;
     case COLLECTION_TYPES[CT_CONGRESS].value:
       data.pattern      = state.pattern;
@@ -197,6 +199,12 @@ class BaseCollectionForm extends Component {
 
   handleGenresChange = (e, data) =>
     this.setState({ genres: data.value });
+
+  handleLessonNumberChange = (e, data) => {
+    const { errors } = this.state;
+    delete errors.number;
+    this.setState({ number: data.value, errors });
+  };
 
   // eslint-disable-next-line class-methods-use-this
   cleanI18n() {
@@ -373,8 +381,24 @@ class BaseCollectionForm extends Component {
     );
   };
 
-  renderDailyLesson = () =>
-    (this.renderFilmDateField());
+  renderLessonNumberFields = () => {
+    const { number, errors: { number: err } } = this.state;
+    return (
+      <LessonNumber
+        value={number}
+        width={6}
+        onChange={this.handleLessonNumberChange}
+        err={err}
+      />
+    );
+  };
+
+  renderDailyLesson = () => (
+    <div>
+      {this.renderFilmDateField()}
+      {this.renderLessonNumberFields()}
+    </div>
+  );
 
   renderVideoProgram = () => (
     <div>
