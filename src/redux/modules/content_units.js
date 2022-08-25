@@ -2,9 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import {
-  bulkMerge, merge, setMap, update, delList, updateList
-} from '../utils';
+import { bulkMerge, merge, setMap, update, delList, updateList } from '../utils';
 
 /* Types */
 
@@ -51,6 +49,9 @@ const UPDATE_PROPERTIES_FAILURE     = 'ContentUnits/UPDATE_PROPERTIES_FAILURE';
 const CHANGE_SECURITY_LEVEL         = 'ContentUnits/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'ContentUnits/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'ContentUnits/CHANGE_SECURITY_LEVEL_FAILURE';
+const CHANGE_CT                     = 'ContentUnits/CHANGE_CT';
+const CHANGE_CT_SUCCESS             = 'ContentUnits/CHANGE_CT_SUCCESS';
+const CHANGE_CT_FAILURE             = 'ContentUnits/CHANGE_CT_FAILURE';
 const UPDATE_I18N                   = 'ContentUnits/UPDATE_I18N';
 const UPDATE_I18N_SUCCESS           = 'ContentUnits/UPDATE_I18N_SUCCESS';
 const UPDATE_I18N_FAILURE           = 'ContentUnits/UPDATE_I18N_FAILURE';
@@ -127,6 +128,7 @@ export const types = {
   CHANGE_SECURITY_LEVEL,
   CHANGE_SECURITY_LEVEL_SUCCESS,
   CHANGE_SECURITY_LEVEL_FAILURE,
+  CHANGE_CT,
   UPDATE_I18N,
   UPDATE_I18N_SUCCESS,
   UPDATE_I18N_FAILURE,
@@ -225,6 +227,9 @@ const updateI18nFailure          = createAction(UPDATE_I18N_FAILURE);
 const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
+const changeCT                   = createAction(CHANGE_CT, (id, type_id) => ({ id, type_id }));
+const changeCTSuccess            = createAction(CHANGE_CT_SUCCESS);
+const changeCTFailure            = createAction(CHANGE_CT_FAILURE);
 const addSource                  = createAction(ADD_SOURCE, (id, sourceID) => ({ id, sourceID }));
 const addSourceSuccess           = createAction(ADD_SOURCE_SUCCESS);
 const addSourceFailure           = createAction(ADD_SOURCE_FAILURE);
@@ -304,6 +309,9 @@ export const actions = {
   changeSecurityLevel,
   changeSecurityLevelSuccess,
   changeSecurityLevelFailure,
+  changeCT,
+  changeCTSuccess,
+  changeCTFailure,
   addSource,
   addSourceSuccess,
   addSourceFailure,
@@ -388,6 +396,9 @@ const keys = new Map([
   [CHANGE_SECURITY_LEVEL, 'changeSecurityLevel'],
   [CHANGE_SECURITY_LEVEL_SUCCESS, 'changeSecurityLevel'],
   [CHANGE_SECURITY_LEVEL_FAILURE, 'changeSecurityLevel'],
+  [CHANGE_CT, 'changeCT'],
+  [CHANGE_CT_SUCCESS, 'changeCT'],
+  [CHANGE_CT_FAILURE, 'changeCT'],
   [ADD_SOURCE, 'addSource'],
   [ADD_SOURCE_SUCCESS, 'addSource'],
   [ADD_SOURCE_FAILURE, 'addSource'],
@@ -450,6 +461,7 @@ const onSuccess = (state, action) => {
   case UPDATE_PROPERTIES_SUCCESS:
   case UPDATE_I18N_SUCCESS:
   case CHANGE_SECURITY_LEVEL_SUCCESS:
+  case CHANGE_CT_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
   case FETCH_ITEM_FILES_SUCCESS:
@@ -650,6 +662,9 @@ export const reducer = handleActions({
   [CHANGE_SECURITY_LEVEL]: onRequest,
   [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
   [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
+  [CHANGE_CT]: onRequest,
+  [CHANGE_CT_SUCCESS]: onSuccess,
+  [CHANGE_CT_FAILURE]: onFailure,
   [ADD_SOURCE]: onRequest,
   [ADD_SOURCE_SUCCESS]: onSuccess,
   [ADD_SOURCE_FAILURE]: onFailure,
