@@ -2,16 +2,24 @@ import React from 'react';
 import moment from 'moment';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
-import {
-  Flag, Header, Icon, List, Menu, Segment
-} from 'semantic-ui-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Header, Icon, List, Menu, Segment, Flag } from 'semantic-ui-react';
 
+import { selectors, actions } from '../../../../redux/modules/files';
 import { LANGUAGES, SECURITY_LEVELS } from '../../../../helpers/consts';
 import { fileIcon } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
+import LanguageSelector from '../../../shared/LanguageSelector';
 
 const Details = (props) => {
   const { file } = props;
+  const errLang  = useSelector(state => selectors.getError(state.files, 'updateProperties'));
+
+  const dispatch             = useDispatch();
+  const handleChangeLanguage = (e, { value }) => {
+    dispatch(actions.updateProperties(file.id, { language: value, content_unit_id: file.content_unit_id }));
+  };
+
   if (!file) {
     return null;
   }
@@ -89,8 +97,21 @@ const Details = (props) => {
           </List.Item>
           <List.Item>
             <List.Content floated="right">
-              {language.flag ? <Flag name={language.flag} /> : null}
-              {language.text}
+              <LanguageSelector
+                item
+                scrolling
+                value={language.value || 'none'}
+                text={
+                  (
+                    <>
+                      {language.flag ? <Flag name={language.flag} /> : null}
+                      {language.text}
+                    </>
+                  )
+                }
+                onChange={handleChangeLanguage}
+                error={errLang}
+              />
             </List.Content>
             <List.Header>Language</List.Header>
           </List.Item>
