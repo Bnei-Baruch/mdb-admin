@@ -4,17 +4,19 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
 
-import { EMPTY_OBJECT, SECURITY_LEVELS, CONTENT_UNIT_TYPES, CT_SOURCE, CT_UNKNOWN } from '../../../../helpers/consts';
+import {
+  EMPTY_OBJECT,
+  SECURITY_LEVELS,
+  CONTENT_UNIT_TYPES,
+  CONTENT_TYPE_BY_ID,
+  UNIT_CT_CAN_CHANGE
+} from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import { actions, selectors } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';
 
-const CT_HIDE_FOR_CHANGE = [CT_SOURCE, CT_UNKNOWN];
-
 const options   = Object.keys(SECURITY_LEVELS).map(k => SECURITY_LEVELS[k]);
-const ctOptions = Object.keys(CONTENT_UNIT_TYPES)
-  .filter(k => !CT_HIDE_FOR_CHANGE.some(x => x === k))
-  .map(k => CONTENT_UNIT_TYPES[k]);
+const ctOptions = UNIT_CT_CAN_CHANGE.map(n => CONTENT_UNIT_TYPES[n]);
 
 class DangerZoneTab extends Component {
   static propTypes = {
@@ -152,7 +154,8 @@ class DangerZoneTab extends Component {
 
   renderChangeCT = () => {
     const { unit: { type_id }, errCT } = this.props;
-    if (type_id === CONTENT_UNIT_TYPES[CT_SOURCE].value) return null;
+    if (!UNIT_CT_CAN_CHANGE.includes(CONTENT_TYPE_BY_ID[type_id])) return null;
+
     return (
       <List.Item>
         <List.Content floated="right">

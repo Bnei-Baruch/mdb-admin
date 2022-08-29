@@ -171,6 +171,23 @@ export const CONTENT_UNIT_TYPES = {
 export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
 export const CONTENT_UNIT_TYPE_OPTIONS = Array.from(Object.values(CONTENT_UNIT_TYPES));
 
+export const UNIT_CT_CAN_CHANGE = [
+  CT_LESSON_PART,
+  CT_LECTURE,
+  CT_VIRTUAL_LESSON,
+  CT_CHILDREN_LESSON,
+  CT_WOMEN_LESSON,
+  CT_FRIENDS_GATHERING,
+  CT_MEAL,
+  CT_VIDEO_PROGRAM_CHAPTER,
+  CT_EVENT_PART,
+  CT_UNKNOWN,
+  CT_CLIP,
+  CT_TRAINING,
+  CT_LELO_MIKUD,
+  CT_KTAIM_NIVCHARIM,
+];
+
 // Operation Types
 export const OP_CAPTURE_START = 'capture_start';
 export const OP_CAPTURE_STOP  = 'capture_stop';
@@ -282,6 +299,7 @@ export const LANG_SLOVENIAN  = 'sl';
 export const LANG_LATVIAN    = 'lv';
 export const LANG_SLOVAK     = 'sk';
 export const LANG_CZECH      = 'cs';
+export const LANG_CZECH2     = 'cz';
 export const LANG_AMHARIC    = 'am';
 export const LANG_INDONESIAN = 'id';
 export const LANG_ARMENIAN   = 'hy';
@@ -320,6 +338,7 @@ export const LANGUAGES = {
   [LANG_LATVIAN]: { text: 'Latvian', value: LANG_LATVIAN, flag: 'lv' },
   [LANG_SLOVAK]: { text: 'Slovak', value: LANG_SLOVAK, flag: 'sk' },
   [LANG_CZECH]: { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
+  [LANG_CZECH2]: { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
   [LANG_AMHARIC]: { text: 'Amharic', value: LANG_AMHARIC, flag: 'et' },
   [LANG_ARMENIAN]: { text: 'Armenian', value: LANG_ARMENIAN, flag: 'am' },
   [LANG_INDONESIAN]: { text: 'Indonesian', value: LANG_INDONESIAN, flag: 'id' },

@@ -91,8 +91,8 @@ class I18nForm extends Component {
           {keys.map(k => (
             <Table.Row key={k} error={errors[k]}>
               <Table.Cell collapsing>
-                <Flag name={LANGUAGES[k].flag} />
-                {LANGUAGES[k].text}
+                <Flag name={LANGUAGES[k]?.flag} />
+                {LANGUAGES[k]?.text}
               </Table.Cell>
               <Table.Cell>
                 <label htmlFor={`${k}.name`}>Name</label>
