@@ -2,16 +2,24 @@ import React from 'react';
 import moment from 'moment';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
-import {
-  Flag, Header, Icon, List, Menu, Segment
-} from 'semantic-ui-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Header, Icon, List, Menu, Segment, Flag } from 'semantic-ui-react';
 
+import { selectors, actions } from '../../../../redux/modules/files';
 import { LANGUAGES, SECURITY_LEVELS } from '../../../../helpers/consts';
 import { fileIcon } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
+import LanguageSelector from '../../../shared/LanguageSelector';
 
 const Details = (props) => {
   const { file } = props;
+  const errLang  = useSelector(state => selectors.getError(state.files, 'updateProperties'));
+
+  const dispatch             = useDispatch();
+  const handleChangeLanguage = (e, { value }) => {
+    dispatch(actions.updateProperties(file.id, { language: value, content_unit_id: file.content_unit_id }));
+  };
+
   if (!file) {
     return null;
   }
@@ -30,37 +38,36 @@ const Details = (props) => {
       <Segment attached>
         <List divided relaxed>
           <List.Item>
-            <strong>ID</strong>
             <List.Content floated="right">
               {file.id}
             </List.Content>
+            <List.Header>ID</List.Header>
           </List.Item>
           <List.Item>
-            <strong>UID</strong>
             <List.Content floated="right">
               {file.uid}
             </List.Content>
+            <List.Header>UID</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Size</strong>
             <List.Content floated="right">
               {filesize(file.size)}
             </List.Content>
+            <List.Header>Size</List.Header>
           </List.Item>
           <List.Item>
-            <strong>SHA-1</strong>
             <List.Content floated="right">
               {file.sha1}
             </List.Content>
+            <List.Header>SHA-1</List.Header>
           </List.Item>
           <List.Item>
-            <strong>DB created_at</strong>
             <List.Content floated="right">
               {moment.utc(file.created_at).format('YYYY-MM-DD HH:mm:ss')}
             </List.Content>
+            <List.Header>DB created_at</List.Header>
           </List.Item>
           <List.Item>
-            <strong>OS created_at</strong>
             <List.Content floated="right">
               {
                 file.file_created_at
@@ -68,34 +75,47 @@ const Details = (props) => {
                   : null
               }
             </List.Content>
+            <List.Header>OS created_at</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Type</strong>
             <List.Content floated="right">
               {file.type}
             </List.Content>
+            <List.Header>Type</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Sub Type</strong>
             <List.Content floated="right">
               {file.sub_type}
             </List.Content>
+            <List.Header>Sub Type</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Mime Type</strong>
             <List.Content floated="right">
               {file.mime_type}
             </List.Content>
+            <List.Header>Mime Type</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Language</strong>
             <List.Content floated="right">
-              {language.flag ? <Flag name={language.flag} /> : null}
-              {language.text}
+              <LanguageSelector
+                item
+                scrolling
+                value={language.value || 'none'}
+                text={
+                  (
+                    <>
+                      {language.flag ? <Flag name={language.flag} /> : null}
+                      {language.text}
+                    </>
+                  )
+                }
+                onChange={handleChangeLanguage}
+                error={errLang}
+              />
             </List.Content>
+            <List.Header>Language</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Content Unit</strong>
             <List.Content floated="right">
               {
                 file.content_unit_id
@@ -107,9 +127,9 @@ const Details = (props) => {
                   : 'none'
               }
             </List.Content>
+            <List.Header>Content Unit</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Parent</strong>
             <List.Content floated="right">
               {
                 file.parent_id
@@ -121,9 +141,9 @@ const Details = (props) => {
                   : 'none'
               }
             </List.Content>
+            <List.Header>Parent</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Secure</strong>
             <List.Content floated="right">
               <Header
                 size="tiny"
@@ -131,9 +151,9 @@ const Details = (props) => {
                 color={SECURITY_LEVELS[file.secure].color}
               />
             </List.Content>
+            <List.Header>Secure</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Published</strong>
             <List.Content floated="right">
               {
                 file.published
@@ -141,9 +161,9 @@ const Details = (props) => {
                   : <Icon name="ban" color="red" />
               }
             </List.Content>
+            <List.Header>Published</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Removed</strong>
             <List.Content floated="right">
               {
                 file.removed_at
@@ -151,6 +171,7 @@ const Details = (props) => {
                   : null
               }
             </List.Content>
+            <List.Header>Removed</List.Header>
           </List.Item>
         </List>
       </Segment>
