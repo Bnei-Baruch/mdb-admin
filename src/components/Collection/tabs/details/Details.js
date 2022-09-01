@@ -24,31 +24,30 @@ const Details = (props) => {
       <Segment attached>
         <List divided relaxed>
           <List.Item>
-            <strong>ID</strong>
             <List.Content floated="right">
               {collection.id}
             </List.Content>
+            <List.Header>ID</List.Header>
           </List.Item>
           <List.Item>
-            <strong>UID</strong>
             <List.Content floated="right">
               {collection.uid}
             </List.Content>
+            <List.Header>UID</List.Header>
           </List.Item>
           <List.Item>
-            <strong>DB created_at</strong>
             <List.Content floated="right">
               {moment.utc(collection.created_at).format('YYYY-MM-DD HH:mm:ss')}
             </List.Content>
+            <List.Header>DB created_at</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Type</strong>
             <List.Content floated="right">
               {CONTENT_TYPE_BY_ID[collection.type_id]}
             </List.Content>
+            <List.Header>Type</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Secure</strong>
             <List.Content floated="right">
               <Header
                 size="tiny"
@@ -56,9 +55,9 @@ const Details = (props) => {
                 color={SECURITY_LEVELS[collection.secure].color}
               />
             </List.Content>
+            <List.Header>Secure</List.Header>
           </List.Item>
           <List.Item>
-            <strong>Published</strong>
             <List.Content floated="right">
               {
                 collection.published
@@ -66,6 +65,7 @@ const Details = (props) => {
                   : <Icon name="ban" color="red" />
               }
             </List.Content>
+            <List.Header>Published</List.Header>
           </List.Item>
         </List>
       </Segment>
