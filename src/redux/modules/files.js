@@ -147,6 +147,7 @@ const onSuccess = (state, action) => {
       id: action.payload.id,
       content_unit_id: action.payload.properties.content_unit_id,
       language: action.payload.properties.language,
+      type: action.payload.properties.type,
     });
     break;
   case FETCH_ITEM_STORAGES_SUCCESS:
