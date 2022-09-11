@@ -50,8 +50,8 @@ function* changeSecurityLevel(action) {
 function* updateProperties(action) {
   const { id, properties } = action.payload;
   try {
-    yield call(api.put, `/files/${id}/`, properties);
-    yield put(actions.updatePropertiesSuccess({ id, properties }));
+    const { data = {} } = yield call(api.put, `/files/${id}/`, properties);
+    yield put(actions.updatePropertiesSuccess(data));
   } catch (err) {
     yield put(actions.updatePropertiesFailure({ ...err, content_units_id: properties.content_unit_id }));
   }
