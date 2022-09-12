@@ -6,12 +6,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Header, Icon, List, Menu, Segment, Flag, Dropdown } from 'semantic-ui-react';
 
 import { selectors, actions } from '../../../../redux/modules/files';
-import { LANGUAGES, SECURITY_LEVELS, ALL_FILE_TYPES } from '../../../../helpers/consts';
+import { LANGUAGES, SECURITY_LEVELS, ALL_FILE_TYPES, MEDIA_TYPES } from '../../../../helpers/consts';
 import { fileIcon } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
 
 const typeOptions = ALL_FILE_TYPES.map(t => ({ text: t, value: t }));
+
+const mimeTypeOptions = Object.values(MEDIA_TYPES).reduce((acc, v) => {
+  if (!acc.find(x => x.value === v.mime_type)) {
+    acc.push({ text: v.mime_type, value: v.mime_type });
+  }
+  return acc;
+}, []);
 
 const Details = (props) => {
   const { file } = props;
@@ -24,6 +31,10 @@ const Details = (props) => {
 
   const handleChangeType = (e, { value }) => {
     dispatch(actions.updateProperties(file.id, { type: value, content_unit_id: file.content_unit_id }));
+  };
+
+  const handleChangeMimeType = (e, { value }) => {
+    dispatch(actions.updateProperties(file.id, { mime_type: value, content_unit_id: file.content_unit_id }));
   };
 
   if (!file) {
@@ -102,7 +113,12 @@ const Details = (props) => {
           </List.Item>
           <List.Item>
             <List.Content floated="right">
-              {file.mime_type}
+              <Dropdown
+                options={mimeTypeOptions}
+                value={file.mime_type || 'none'}
+                onChange={handleChangeMimeType}
+                selectOnBlur={false}
+              />
             </List.Content>
             <List.Header>Mime Type</List.Header>
           </List.Item>
