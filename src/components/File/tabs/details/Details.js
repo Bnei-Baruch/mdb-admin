@@ -13,12 +13,15 @@ import LanguageSelector from '../../../shared/LanguageSelector';
 
 const typeOptions = ALL_FILE_TYPES.map(t => ({ text: t, value: t }));
 
-const mimeTypeOptions = Object.values(MEDIA_TYPES).reduce((acc, v) => {
-  if (!acc.find(x => x.value === v.mime_type)) {
-    acc.push({ text: v.mime_type, value: v.mime_type });
+const byTypeMimeTypeOptions = Object.values(MEDIA_TYPES).reduce((acc, { mime_type, type }) => {
+  if (!mime_type || !type) return acc;
+  const byT = acc[type] || [];
+  if (!byT.find(x => x.value === mime_type)) {
+    byT.push({ text: mime_type, value: mime_type });
   }
+  acc[type] = byT;
   return acc;
-}, []);
+}, {});
 
 const Details = (props) => {
   const { file } = props;
@@ -114,7 +117,7 @@ const Details = (props) => {
           <List.Item>
             <List.Content floated="right">
               <Dropdown
-                options={mimeTypeOptions}
+                options={byTypeMimeTypeOptions[file.type]}
                 value={file.mime_type || 'none'}
                 onChange={handleChangeMimeType}
                 selectOnBlur={false}
