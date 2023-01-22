@@ -3,13 +3,25 @@ import moment from 'moment';
 import filesize from 'filesize';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Header, Icon, List, Menu, Segment, Flag } from 'semantic-ui-react';
+import { Header, Icon, List, Menu, Segment, Flag, Dropdown } from 'semantic-ui-react';
 
 import { selectors, actions } from '../../../../redux/modules/files';
-import { LANGUAGES, SECURITY_LEVELS } from '../../../../helpers/consts';
+import { LANGUAGES, SECURITY_LEVELS, ALL_FILE_TYPES, MEDIA_TYPES } from '../../../../helpers/consts';
 import { fileIcon } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
+
+const typeOptions = ALL_FILE_TYPES.map(t => ({ text: t, value: t }));
+
+const byTypeMimeTypeOptions = Object.values(MEDIA_TYPES).reduce((acc, { mime_type, type }) => {
+  if (!mime_type || !type) return acc;
+  const byT = acc[type] || [];
+  if (!byT.find(x => x.value === mime_type)) {
+    byT.push({ text: mime_type, value: mime_type });
+  }
+  acc[type] = byT;
+  return acc;
+}, {});
 
 const Details = (props) => {
   const { file } = props;
@@ -18,6 +30,14 @@ const Details = (props) => {
   const dispatch             = useDispatch();
   const handleChangeLanguage = (e, { value }) => {
     dispatch(actions.updateProperties(file.id, { language: value, content_unit_id: file.content_unit_id }));
+  };
+
+  const handleChangeType = (e, { value }) => {
+    dispatch(actions.updateProperties(file.id, { type: value, content_unit_id: file.content_unit_id }));
+  };
+
+  const handleChangeMimeType = (e, { value }) => {
+    dispatch(actions.updateProperties(file.id, { mime_type: value, content_unit_id: file.content_unit_id }));
   };
 
   if (!file) {
@@ -79,7 +99,12 @@ const Details = (props) => {
           </List.Item>
           <List.Item>
             <List.Content floated="right">
-              {file.type}
+              <Dropdown
+                options={typeOptions}
+                value={file.type || 'none'}
+                onChange={handleChangeType}
+                selectOnBlur={false}
+              />
             </List.Content>
             <List.Header>Type</List.Header>
           </List.Item>
@@ -91,7 +116,12 @@ const Details = (props) => {
           </List.Item>
           <List.Item>
             <List.Content floated="right">
-              {file.mime_type}
+              <Dropdown
+                options={byTypeMimeTypeOptions[file.type]}
+                value={file.mime_type || 'none'}
+                onChange={handleChangeMimeType}
+                selectOnBlur={false}
+              />
             </List.Content>
             <List.Header>Mime Type</List.Header>
           </List.Item>

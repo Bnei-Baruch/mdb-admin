@@ -142,13 +142,18 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
-  case UPDATE_PROPERTIES_SUCCESS:
+  case UPDATE_PROPERTIES_SUCCESS: {
+    const { id, content_unit_id, language, type, mime_type } = action.payload;
+
     byID = merge(state.byID, {
-      id: action.payload.id,
-      content_unit_id: action.payload.properties.content_unit_id,
-      language: action.payload.properties.language,
+      id,
+      content_unit_id,
+      language,
+      type,
+      mime_type
     });
     break;
+  }
   case FETCH_ITEM_STORAGES_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,
