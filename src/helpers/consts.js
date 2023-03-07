@@ -511,3 +511,5 @@ export const GENRE_BY_ID = {
 };
 
 export const GENRE_OPTIONS = Array.from(Object.values(GENRE_BY_ID));
+
+export const JWPLAYER_ID = 'jwplayer_id';

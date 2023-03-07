@@ -17,3 +17,6 @@ export const API_BACKEND = process.env.REACT_APP_MDB_URL;
 
 // Physical files links service url
 export const LINKER_URL = process.env.REACT_APP_LINKER_URL;
+
+// Physical HLS files links service url
+export const LINKER_HLS_URL = process.env.REACT_APP_LINKER_HLS_URL;
