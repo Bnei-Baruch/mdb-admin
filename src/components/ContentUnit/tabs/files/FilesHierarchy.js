@@ -12,7 +12,8 @@ import {
   EMPTY_ARRAY,
   LANG_UNKNOWN,
   LANGUAGES,
-  SECURITY_LEVELS
+  SECURITY_LEVELS,
+  JWPLAYER_ID
 } from '../../../../helpers/consts';
 import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
@@ -141,6 +142,8 @@ class FilesHierarchy extends Component {
     e.stopPropagation();
     if (['audio', 'video'].includes(file.type)) {
       this.setState({ currentFile: file });
+      const src = physicalFile(file, true);
+      window.jwplayer(JWPLAYER_ID).setup({ file: src, preload: 'auto' });
     }
   };
 
@@ -229,7 +232,7 @@ class FilesHierarchy extends Component {
               {
                 currentFile ? (
                     <div>
-                      <video controls src={physicalFile(currentFile, true)} />
+                      <div id={JWPLAYER_ID} />
                       <br />
                       <Button
                         content="Download"
