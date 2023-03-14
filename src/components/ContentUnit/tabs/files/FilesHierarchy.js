@@ -143,7 +143,7 @@ class FilesHierarchy extends Component {
     if (['audio', 'video'].includes(file.type)) {
       this.setState({ currentFile: file });
       const src = physicalFile(file, true);
-      window.jwplayer(JWPLAYER_ID)?.setup({ file: src, preload: 'auto' });
+      window.jwplayer(JWPLAYER_ID).setup({ file: src, preload: 'auto' });
     }
   };
 
