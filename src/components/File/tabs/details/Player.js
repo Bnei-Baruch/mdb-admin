@@ -14,7 +14,9 @@ const Player = (props) => {
   const types = fileTypes(file);
   useEffect(() => {
     const src = physicalFile(file, true);
-    window.jwplayer(JWPLAYER_ID).setup({ file: src, preload: 'auto' });
+    const jwp = window.jwplayer(JWPLAYER_ID);
+    if (!jwp.setup) return;
+    jwp.setup({ file: src, preload: 'auto' });
   }, [file]);
 
   return (
