@@ -431,6 +431,7 @@ export const MT_TEXT         = 'text';
 export const MT_SHEET        = 'sheet';
 export const MT_BANNER       = 'banner';
 export const MT_PRESENTATION = 'presentation';
+export const MT_SUBTITLES = 'subtitles';
 
 export const MEDIA_TYPES = {
   mp4: { type: MT_VIDEO, sub_type: '', mime_type: 'video/mp4' },
@@ -487,6 +488,7 @@ export const ALL_FILE_TYPES = [
   MT_SHEET,
   MT_BANNER,
   MT_PRESENTATION,
+  MT_SUBTITLES,
 ];
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
