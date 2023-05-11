@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import { selectors } from '../../redux/modules/user';
 import { actions as actionsSystem, selectors as selectorsSystem } from '../../redux/modules/system';
@@ -64,4 +63,4 @@ function mapDispatch(dispatch) {
   }, dispatch);
 }
 
-export default withRouter(connect(mapState, mapDispatch)(MainPage));
+export default connect(mapState, mapDispatch)(MainPage);

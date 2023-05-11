@@ -1,14 +1,14 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import LoginPage from './LoginPage';
 import LoginCallback from './LoginCallback';
 
-const Routes = () => (
-  <Switch>
+const LoginRoutes = () => (
+  <Routes>
     <Route exact path="/callback" component={LoginCallback} />
     <Route component={LoginPage} />
-  </Switch>
+  </Routes>
 );
 
-export default Routes;
+export default LoginRoutes;

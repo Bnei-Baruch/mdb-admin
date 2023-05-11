@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import File from '../File/Container';
 import Files from '../Files/Container';
@@ -22,7 +22,7 @@ import Label from '../Label/Container';
 import Welcome from './Welcome';
 
 const AppRoutes = () => (
-  <Switch>
+  <Routes>
     <Route exact path="/" component={Welcome} />
     <Route exact path="/files" component={Files} />
     <Route exact path="/files/:id" component={File} />
@@ -43,7 +43,7 @@ const AppRoutes = () => (
     <Route exact path="/labels" component={Labels} />
     <Route exact path="/labels/:id" component={Label} />
     <Route render={() => <h1>Page not found</h1>} />
-  </Switch>
+  </Routes>
 );
 
 export default AppRoutes;

@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import filesize from 'filesize';
+import { filesize } from 'filesize';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Header, Icon, List, Menu, Segment, Flag, Dropdown } from 'semantic-ui-react';
