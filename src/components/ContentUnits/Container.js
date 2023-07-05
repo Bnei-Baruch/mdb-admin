@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { CONTENT_TYPE_BY_ID, CT_SOURCE, EMPTY_ARRAY, EMPTY_OBJECT, NS_UNITS } from '../../helpers/consts';
+import { actions as unitActions, selectors as units } from '../../redux/modules/content_units';
 
 import { actions, selectors } from '../../redux/modules/lists';
 import { selectors as sourcesSelectors } from '../../redux/modules/sources';
-import { actions as unitActions, selectors as units } from '../../redux/modules/content_units';
 import { selectors as system } from '../../redux/modules/system';
-import { CONTENT_TYPE_BY_ID, CT_SOURCE, EMPTY_ARRAY, EMPTY_OBJECT, NS_UNITS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 import { selectors as filterSelectors } from '../../redux/modules/filters';
@@ -64,7 +64,7 @@ class ContentUnitsContainer extends Component {
 
 const mapState = (state) => {
   const status    = selectors.getNamespaceState(state.lists, NS_UNITS) || EMPTY_OBJECT;
-  const sByUid     = sourcesSelectors.getSourceByUID(state.sources);
+  const sByUid    = sourcesSelectors.getSourceByUID(state.sources);
   const denormIDs = units.denormIDs(state.content_units);
 
   let items = EMPTY_ARRAY;

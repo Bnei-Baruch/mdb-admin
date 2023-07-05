@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { Divider, Grid } from 'semantic-ui-react';
+import { selectors as system } from '../../redux/modules/system';
 
 import { actions, selectors } from '../../redux/modules/tags';
-import { selectors as system } from '../../redux/modules/system';
 import * as shapes from '../shapes';
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
-import TagMenu from './TagMenu';
-import TagInfoForm from './TagInfoForm';
-import TagI18nForm from './TagI18nForm';
 import TagChildren from './TagChildren';
+import TagI18nForm from './TagI18nForm';
+import TagInfoForm from './TagInfoForm';
+import TagMenu from './TagMenu';
 
 class TagContainer extends Component {
   static propTypes = {
@@ -87,6 +87,7 @@ class TagContainer extends Component {
 const mapState = (state, props) => ({
   tag: selectors.getTagById(state.tags)(parseInt(props.match.params.id, 10)),
   getTagById: selectors.getTagById(state.tags),
+  getTags: selectors.getTags(state.tags),
   hierarchy: selectors.getHierarchy(state.tags),
   getWIP: selectors.getWIP(state.tags),
   getError: selectors.getError(state.tags),

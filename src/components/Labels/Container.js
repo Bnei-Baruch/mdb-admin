@@ -1,40 +1,24 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import { EMPTY_ARRAY, EMPTY_OBJECT, NS_PERSONS } from '../../helpers/consts';
+import { EMPTY_ARRAY, EMPTY_OBJECT, NS_LABELS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';
-import { actions as personActions, selectors as persons } from '../../redux/modules/persons';
+import { selectors as labels } from '../../redux/modules/labels';
 import { selectors as system } from '../../redux/modules/system';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
-class PersonsContainer extends Component {
+class Container extends Component {
   static propTypes = {
     location: shapes.HistoryLocation.isRequired,
-    wipOfCreate: PropTypes.bool,
-    errOfCreate: shapes.Error,
     fetchList: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    wipOfCreate: false,
-    errOfCreate: null,
-  };
-
   componentDidMount() {
     this.handlePageChange(1);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { wipOfCreate } = prevProps;
-    const nWip            = this.props.wipOfCreate;
-    const nErr            = this.props.errOfCreate;
-    if (wipOfCreate && !nWip && !nErr) {
-      this.askForData(this.getPageNo());
-    }
   }
 
   getPageNo = (search) => {
@@ -51,12 +35,12 @@ class PersonsContainer extends Component {
 
   handlePageChange = (pageNo) => {
     const { setPage } = this.props;
-    setPage(NS_PERSONS, pageNo);
+    setPage(NS_LABELS, pageNo);
     this.askForData(pageNo);
   };
 
   askForData = (pageNo) => {
-    this.props.fetchList(NS_PERSONS, pageNo);
+    this.props.fetchList(NS_LABELS, pageNo);
   };
 
   render() {
@@ -72,13 +56,12 @@ class PersonsContainer extends Component {
 }
 
 const mapState = (state) => {
-  const status    = selectors.getNamespaceState(state.lists, NS_PERSONS) || EMPTY_OBJECT;
-  const denormIDs = persons.denormIDs(state.persons);
+  const status    = selectors.getNamespaceState(state.lists, NS_LABELS) || EMPTY_OBJECT;
+  const denormIDs = labels.denormIDs(state.labels);
+  const items     = Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY;
   return {
     ...status,
-    wipOfCreate: persons.getWIP(state.persons, 'create'),
-    errOfCreate: persons.getError(state.persons, 'create'),
-    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    items,
     currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
@@ -86,10 +69,8 @@ const mapState = (state) => {
 function mapDispatch(dispatch) {
   return bindActionCreators({
     fetchList: actions.fetchList,
-    updateInfo: actions.updateInfo,
     setPage: actions.setPage,
-    create: personActions.create,
   }, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(PersonsContainer);
+export default connect(mapState, mapDispatch)(Container);

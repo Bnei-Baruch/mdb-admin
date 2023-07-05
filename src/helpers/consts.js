@@ -22,6 +22,7 @@ export const NS_FILES                       = 'files';
 export const NS_OPERATIONS                  = 'operations';
 export const NS_PERSONS                     = 'persons';
 export const NS_PUBLISHERS                  = 'publishers';
+export const NS_LABELS                      = 'labels';
 
 export const PAGE_SIZE = 50;
 
@@ -170,6 +171,23 @@ export const CONTENT_UNIT_TYPES = {
 export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
 export const CONTENT_UNIT_TYPE_OPTIONS = Array.from(Object.values(CONTENT_UNIT_TYPES));
 
+export const UNIT_CT_CAN_CHANGE = [
+  CT_LESSON_PART,
+  CT_LECTURE,
+  CT_VIRTUAL_LESSON,
+  CT_CHILDREN_LESSON,
+  CT_WOMEN_LESSON,
+  CT_FRIENDS_GATHERING,
+  CT_MEAL,
+  CT_VIDEO_PROGRAM_CHAPTER,
+  CT_EVENT_PART,
+  CT_UNKNOWN,
+  CT_CLIP,
+  CT_TRAINING,
+  CT_LELO_MIKUD,
+  CT_KTAIM_NIVCHARIM,
+];
+
 // Operation Types
 export const OP_CAPTURE_START = 'capture_start';
 export const OP_CAPTURE_STOP  = 'capture_stop';
@@ -281,7 +299,10 @@ export const LANG_SLOVENIAN  = 'sl';
 export const LANG_LATVIAN    = 'lv';
 export const LANG_SLOVAK     = 'sk';
 export const LANG_CZECH      = 'cs';
+export const LANG_CZECH2     = 'cz';
 export const LANG_AMHARIC    = 'am';
+export const LANG_INDONESIAN = 'id';
+export const LANG_ARMENIAN   = 'hy';
 export const LANG_MULTI      = 'zz';
 export const LANG_UNKNOWN    = 'xx';
 
@@ -317,7 +338,10 @@ export const LANGUAGES = {
   [LANG_LATVIAN]: { text: 'Latvian', value: LANG_LATVIAN, flag: 'lv' },
   [LANG_SLOVAK]: { text: 'Slovak', value: LANG_SLOVAK, flag: 'sk' },
   [LANG_CZECH]: { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
+  [LANG_CZECH2]: { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
   [LANG_AMHARIC]: { text: 'Amharic', value: LANG_AMHARIC, flag: 'et' },
+  [LANG_ARMENIAN]: { text: 'Armenian', value: LANG_ARMENIAN, flag: 'am' },
+  [LANG_INDONESIAN]: { text: 'Indonesian', value: LANG_INDONESIAN, flag: 'id' },
   [LANG_MULTI]: { text: 'Multi', value: LANG_MULTI },
   [LANG_UNKNOWN]: { text: 'Unknown', value: LANG_UNKNOWN },
 };
@@ -355,6 +379,8 @@ export const ALL_LANGUAGES = [
   LANG_SLOVAK,
   LANG_CZECH,
   LANG_AMHARIC,
+  LANG_ARMENIAN,
+  LANG_INDONESIAN,
   LANG_MULTI,
   LANG_UNKNOWN,
 ];
@@ -405,6 +431,7 @@ export const MT_TEXT         = 'text';
 export const MT_SHEET        = 'sheet';
 export const MT_BANNER       = 'banner';
 export const MT_PRESENTATION = 'presentation';
+export const MT_SUBTITLES = 'subtitles';
 
 export const MEDIA_TYPES = {
   mp4: { type: MT_VIDEO, sub_type: '', mime_type: 'video/mp4' },
@@ -461,6 +488,7 @@ export const ALL_FILE_TYPES = [
   MT_SHEET,
   MT_BANNER,
   MT_PRESENTATION,
+  MT_SUBTITLES,
 ];
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
@@ -485,3 +513,5 @@ export const GENRE_BY_ID = {
 };
 
 export const GENRE_OPTIONS = Array.from(Object.values(GENRE_BY_ID));
+
+export const JWPLAYER_ID = 'jwplayer_id';

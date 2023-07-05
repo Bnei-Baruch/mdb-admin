@@ -1,24 +1,23 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import moment from 'moment';
 import filesize from 'filesize';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
-import isEqual from 'react-fast-compare';
 
-import * as shapes from '../../../shapes';
-import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
-import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
 import {
   ALL_FILE_TYPES,
   ALL_LANGUAGES,
   EMPTY_ARRAY,
   LANG_UNKNOWN,
   LANGUAGES,
-  SECURITY_LEVELS
+  SECURITY_LEVELS,
+  JWPLAYER_ID
 } from '../../../../helpers/consts';
-
+import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '../../../../helpers/utils';
+import * as shapes from '../../../shapes';
+import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import './files.css';
 
 const getStateFromFiles = (files) => {
@@ -121,6 +120,8 @@ const cmpFiles = (a, b) => {
 };
 
 class FilesHierarchy extends Component {
+  static;
+
   constructor(props) {
     super(props);
     const { files, unit: { id } } = props;
@@ -137,12 +138,12 @@ class FilesHierarchy extends Component {
 
   handleSwitchToAddFiles = () => this.props.setEditMode(true);
 
-  static;
-
   handlePlay = (e, file) => {
     e.stopPropagation();
     if (['audio', 'video'].includes(file.type)) {
       this.setState({ currentFile: file });
+      const src = physicalFile(file, true);
+      window.jwplayer(JWPLAYER_ID).setup({ file: src, preload: 'auto' });
     }
   };
 
@@ -231,7 +232,7 @@ class FilesHierarchy extends Component {
               {
                 currentFile ? (
                     <div>
-                      <video controls src={physicalFile(currentFile, true)} />
+                      <div id={JWPLAYER_ID} />
                       <br />
                       <Button
                         content="Download"

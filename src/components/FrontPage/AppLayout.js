@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import {
-  Dropdown, Grid, Image, Menu, Flag
-} from 'semantic-ui-react';
+import { Dropdown, Flag, Grid, Image, Menu } from 'semantic-ui-react';
 
 import { AUTH_URL, } from '../../helpers/env';
 import { LANGUAGE_OPTIONS, SITE_LANGUAGES } from '../../helpers/consts';
@@ -55,6 +53,7 @@ class AppLayout extends PureComponent {
               <Menu.Item key={7} as={NavLink} to="/sources">Sources</Menu.Item>
               <Menu.Item key={8} as={NavLink} to="/persons">Persons</Menu.Item>
               <Menu.Item key={9} as={NavLink} to="/publishers">Publishers</Menu.Item>
+              <Menu.Item key={10} as={NavLink} to="/labels">Labels</Menu.Item>
 
               <Menu.Menu position="right">
                 <Menu.Item>

@@ -17,6 +17,8 @@ import Publishers from '../Publishers/Container';
 import Publisher from '../Publisher/Container';
 import Sources from '../Sources/SourcesContainer';
 import Source from '../Sources/SourceContainer';
+import Labels from '../Labels/Container';
+import Label from '../Label/Container';
 import Welcome from './Welcome';
 
 const AppRoutes = () => (
@@ -38,6 +40,8 @@ const AppRoutes = () => (
     <Route exact path="/persons/:id" component={Person} />
     <Route exact path="/publishers" component={Publishers} />
     <Route exact path="/publishers/:id" component={Publisher} />
+    <Route exact path="/labels" component={Labels} />
+    <Route exact path="/labels/:id" component={Label} />
     <Route render={() => <h1>Page not found</h1>} />
   </Switch>
 );

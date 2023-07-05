@@ -1,18 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  Icon, Menu, Button, Modal
-} from 'semantic-ui-react';
+import { Button, Icon, Menu, Modal } from 'semantic-ui-react';
 
-import {
-  EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_CU, CONTENT_UNIT_TYPES
-} from '../../../../helpers/consts';
-import { actions, selectors } from '../../../../redux/modules/lists';
+import { CONTENT_UNIT_TYPES, EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_CU } from '../../../../helpers/consts';
 import { selectors as units } from '../../../../redux/modules/collections';
-import * as shapes from '../../../shapes';
+import { actions, selectors } from '../../../../redux/modules/lists';
 import CUList from '../../../BaseClasses/CUList';
 import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
+import * as shapes from '../../../shapes';
 
 class CUModal extends ListWithCheckboxBase {
   static propTypes = {
@@ -36,7 +32,7 @@ class CUModal extends ListWithCheckboxBase {
 
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
-    console.log('renderList associatedIds ', associatedIds);
+
     return (
       <CUList
         {...this.getSelectListProps()}

@@ -38,7 +38,7 @@ $text-colors: (
 );
 
 @each $colorname, $colorvalue in $text-colors {
-  .text.#{$colorname} {
+  .text.#{"" + $colorname} {
     color: #{$colorvalue};
   }
 }

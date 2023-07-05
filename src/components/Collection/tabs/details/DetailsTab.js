@@ -21,6 +21,7 @@ const editableProperties = [
   'genres',
   'source',
   'tags',
+  'number',
 ];
 
 const DetailsTab = (props) => {
