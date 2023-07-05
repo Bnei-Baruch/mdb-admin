@@ -35,7 +35,7 @@ class CreateCollectionForm extends BaseCollectionForm {
       default_language: '',
       holiday_tag: '',
       source: '',
-      tagsUIDs: []
+      tagsUIDs: [],
     };
   }
 
@@ -72,7 +72,6 @@ class CreateCollectionForm extends BaseCollectionForm {
   }
 
   doSubmit(typeID, properties, i18n) {
-    console.log('CCF.doSubmit');
     this.props.create(typeID, properties, i18n);
   }
 

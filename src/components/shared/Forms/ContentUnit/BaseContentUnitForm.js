@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button, Form, Header, Input, Segment, Table } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Button, Form, Header, Input, Segment } from 'semantic-ui-react';
 
 import {
   CONTENT_UNIT_TYPES,
@@ -13,18 +13,18 @@ import {
   CT_FRIENDS_GATHERING,
   CT_FULL_LESSON,
   CT_KITEI_MAKOR,
+  CT_KTAIM_NIVCHARIM,
   CT_LECTURE,
   CT_LESSON_PART,
+  CT_LIKUTIM,
   CT_MEAL,
   CT_PUBLICATION,
   CT_RESEARCH_MATERIAL,
-  CT_KTAIM_NIVCHARIM,
   CT_TRAINING,
   CT_UNKNOWN,
   CT_VIDEO_PROGRAM_CHAPTER,
   CT_VIRTUAL_LESSON,
   CT_WOMEN_LESSON,
-  CT_LIKUTIM, RTL_LANGUAGES,
 } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';
 import { FilmDateField, LanguageField } from '../../Fields';

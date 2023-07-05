@@ -25,12 +25,6 @@ export const actions = {
 
 /* Reducer */
 
-const keys = new Map([
-  [SEARCH_COLLECTIONS, 'deleteItemUnit'],
-  [SEARCH_COLLECTIONS_SUCCESS, 'deleteItemUnit'],
-  [SEARCH_COLLECTIONS_FAILURE, 'deleteItemUnit'],
-]);
-
 const initialState = {
   collections: [],
   wip: false,

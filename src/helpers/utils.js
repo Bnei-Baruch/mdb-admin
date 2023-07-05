@@ -1,9 +1,7 @@
 import capitalize from 'lodash/capitalize';
 import words from 'lodash/words';
 
-import {
-  I18N_ORDER, LANG_ENGLISH, MEDIA_TYPES, REQUIRED_LANGUAGES
-} from './consts';
+import { I18N_ORDER, LANG_ENGLISH, MEDIA_TYPES, REQUIRED_LANGUAGES } from './consts';
 import * as env from './env';
 
 export const isEmpty = (obj) => {
@@ -187,38 +185,38 @@ export const fileIcon = (file) => {
   const { type, mime_type: mime } = fileTypes(file);
 
   switch (type) {
-  case 'audio':
-    return 'file audio outline';
-  case 'video':
-    return 'file video outline';
-  case 'image':
-    return mime && mime.startsWith('application')
-      ? 'file archive outline'
-      : 'file image outline';
-  case 'text':
-    switch (mime) {
-    case 'application/msword':
-    case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-      return 'file word outline';
-    case 'text/xml':
-    case 'text/html':
-      return 'file code outline';
-    case 'application/epub+zip':
-    case 'application/x-rocketbook':
-    case 'application/pdf':
-      return 'file pdf outline';
-    case 'text/rtf':
-    case 'text/plain':
-      return 'file text outline';
+    case 'audio':
+      return 'file audio outline';
+    case 'video':
+      return 'file video outline';
+    case 'image':
+      return mime && mime.startsWith('application')
+        ? 'file archive outline'
+        : 'file image outline';
+    case 'text':
+      switch (mime) {
+        case 'application/msword':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+          return 'file word outline';
+        case 'text/xml':
+        case 'text/html':
+          return 'file code outline';
+        case 'application/epub+zip':
+        case 'application/x-rocketbook':
+        case 'application/pdf':
+          return 'file pdf outline';
+        case 'text/rtf':
+        case 'text/plain':
+          return 'file text outline';
+        default:
+          return 'file text outline';
+      }
+    case 'sheet':
+      return 'file excel outline';
+    case 'presentation':
+      return 'file powerpoint outline';
     default:
-      return 'file text outline';
-    }
-  case 'sheet':
-    return 'file excel outline';
-  case 'presentation':
-    return 'file powerpoint outline';
-  default:
-    return 'file outline';
+      return 'file outline';
   }
 };
 
@@ -228,6 +226,9 @@ export const fileIcon = (file) => {
  * @param ext {boolean} include file name extension in url or not
  */
 export const physicalFile = (file, ext = false) => {
+  if (file.properties?.video_size === 'HLS') {
+    return `${env.LINKER_HLS_URL}${file.uid}.m3u8`;
+  }
   let suffix = '';
   if (ext) {
     suffix = `.${filenameExtension(file.name)}`;

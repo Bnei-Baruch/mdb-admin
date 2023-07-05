@@ -9,6 +9,7 @@ import { actions as actionsSystem, selectors as selectorsSystem } from '../../re
 import AppLayout from './AppLayout';
 import AppRoutes from './AppRoutes';
 import LoginRoutes from './LoginRoutes';
+import ForbiddenPage from './ForbiddenPage';
 
 class MainPage extends PureComponent {
   static propTypes = {
@@ -26,6 +27,16 @@ class MainPage extends PureComponent {
 
     if (!user || user.expired) {
       return <LoginRoutes />;
+    }
+
+    if (user.realm_access.roles.every(r => !r.startsWith('archive_'))) {
+      return (
+        <ForbiddenPage
+          user={user}
+          currentLanguage={currentLanguage}
+          updateCurrentLanguage={updateCurrentLanguage}
+        />
+      );
     }
 
     return (

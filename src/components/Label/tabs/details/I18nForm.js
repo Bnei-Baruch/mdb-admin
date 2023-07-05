@@ -3,63 +3,49 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import {
-  Button, Flag, Header, Input, Menu, Segment, Table
-} from 'semantic-ui-react';
+import cloneDeep from 'lodash/cloneDeep';
+import { Button, Flag, Header, Input, Menu, Message, Segment, Table } from 'semantic-ui-react';
 
-import {
-  ALL_LANGUAGES,
-  LANG_MULTI,
-  LANG_UNKNOWN,
-  LANGUAGES,
-  RTL_LANGUAGES,
-  REQUIRED_LANGUAGES
-} from '../../../../helpers/consts';
-import { formatError, compareI18nWithMust } from '../../../../helpers/utils';
-import { actions, selectors } from '../../../../redux/modules/content_units';
+import { ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGES, RTL_LANGUAGES } from '../../../../helpers/consts';
+import { formatError } from '../../../../helpers/utils';
+import { actions, selectors } from '../../../../redux/modules/labels';
 import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
 
 class I18nForm extends Component {
+  static propTypes = {
+    updateI18n: PropTypes.func.isRequired,
+    label: PropTypes.object,
+    wip: PropTypes.bool,
+    err: shapes.Error,
+  };
+
+  static defaultProps = {
+    label: {
+      i18n: {},
+    },
+    wip: false,
+    err: null,
+  };
+
   constructor(props) {
     super(props);
-
-    const { i18n }                = props.unit;
-    const { i18nErrors, newI18n } = compareI18nWithMust(i18n, this.i18nObjectFromKey);
-
     this.state = {
-      i18n: newI18n,
+      i18n: cloneDeep(props.label.i18n),
       submitted: false,
-      errors: i18nErrors
     };
   }
 
-  i18nObjectFromKey = language => ({
-    language,
-    name: '',
-    description: ''
-  });
-
   onNameChange = (e, { value }) => {
-    const { i18n, errors } = this.state;
-    const langKey          = e.target.name;
-
-    if (REQUIRED_LANGUAGES.includes(langKey)) {
-      errors[langKey] = !value;
-    }
-    i18n[langKey].name = value;
-    this.setState({ i18n, errors });
-  };
-
-  onDescriptionChange = (e, { value }) => {
-    const { i18n }                  = this.state;
-    i18n[e.target.name].description = value;
+    const { i18n }           = this.state;
+    i18n[e.target.name].name = value;
     this.setState({ i18n });
   };
 
   addLanguage = (e, data) => {
-    const { i18n }   = this.state;
-    i18n[data.value] = this.i18nObjectFromKey(data.value);
+    const language = data.value;
+    const { i18n } = this.state;
+    i18n[language] = { language, name: '' };
     this.setState({ i18n });
   };
 
@@ -70,29 +56,30 @@ class I18nForm extends Component {
   };
 
   handleSubmit = () => {
-    const { unit, updateI18n } = this.props;
-    const { i18n }             = this.state;
-
-    const data = Object.keys(i18n).map(x => i18n[x]);
-    updateI18n(unit.id, data);
+    const { label, updateI18n } = this.props;
+    const { i18n }              = this.state;
+    const data                  = Object.keys(i18n).map(x => i18n[x]);
+    updateI18n(label.id, data);
 
     this.setState({ submitted: true });
   };
 
   renderI18ns() {
-    const { i18n, errors } = this.state;
-    const { disabled }     = this.props;
-    const keys             = Object.keys(i18n)
+    const { i18n } = this.state;
+    const keys     = Object.keys(i18n)
       .sort((a, b) => ALL_LANGUAGES.indexOf(a) - ALL_LANGUAGES.indexOf(b));
 
+    if (keys.length === 0) {
+      return <Message size="tiny">No translations found</Message>;
+    }
     return (
       <Table basic compact>
         <Table.Body>
           {keys.map(k => (
-            <Table.Row key={k} error={errors[k]}>
+            <Table.Row key={k}>
               <Table.Cell collapsing>
-                <Flag name={LANGUAGES[k]?.flag} />
-                {LANGUAGES[k]?.text}
+                <Flag name={LANGUAGES[k].flag} />
+                {LANGUAGES[k].text}
               </Table.Cell>
               <Table.Cell>
                 <label htmlFor={`${k}.name`}>Name</label>
@@ -103,36 +90,27 @@ class I18nForm extends Component {
                   value={i18n[k].name}
                   className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
                   onChange={this.onNameChange}
-                  disabled={disabled}
                 />
-                <label htmlFor={`${k}.description`}>Description</label>
+                <label htmlFor={`${k}.name`}>Author</label>
                 <Input
                   fluid
-                  id={`${k}.description`}
+                  disabled
+                  id={`${k}.author`}
                   name={k}
-                  value={i18n[k].description || ''}
+                  value={i18n[k].author}
                   className={classNames({ 'bb-input': true, 'rtl-dir': RTL_LANGUAGES.includes(k) })}
-                  onChange={this.onDescriptionChange}
-                  disabled={disabled}
                 />
               </Table.Cell>
               <Table.Cell collapsing>
-                {
-                  !REQUIRED_LANGUAGES.includes(k)
-                    ? (
-                      <Button
-                        circular
-                        compact
-                        inverted
-                        size="mini"
-                        icon="remove"
-                        color="red"
-                        onClick={() => this.removeLanguage(k)}
-                        disabled={disabled}
-                      />
-                    )
-                    : null
-                }
+                <Button
+                  circular
+                  compact
+                  size="mini"
+                  icon="remove"
+                  color="red"
+                  inverted
+                  onClick={() => this.removeLanguage(k)}
+                />
               </Table.Cell>
             </Table.Row>
           ))}
@@ -142,11 +120,9 @@ class I18nForm extends Component {
   }
 
   render() {
-    const { wip, err, disabled }      = this.props;
-    const { i18n, submitted, errors } = this.state;
-
-    const hasError = Object.keys(errors).some(e => errors[e]);
-    const exclude  = [LANG_MULTI, LANG_UNKNOWN].concat(Object.keys(i18n));
+    const { wip, err }        = this.props;
+    const { i18n, submitted } = this.state;
+    const exclude             = [LANG_MULTI, LANG_UNKNOWN].concat(Object.keys(i18n));
 
     return (
       <div>
@@ -162,7 +138,6 @@ class I18nForm extends Component {
               text="Add Language"
               exclude={exclude}
               onChange={this.addLanguage}
-              disabled={disabled}
             />
           </Menu.Menu>
         </Menu>
@@ -192,7 +167,7 @@ class I18nForm extends Component {
             size="tiny"
             floated="right"
             loading={wip}
-            disabled={wip || hasError || disabled}
+            disabled={wip}
             onClick={this.handleSubmit}
           />
         </Segment>
@@ -201,26 +176,9 @@ class I18nForm extends Component {
   }
 }
 
-I18nForm.propTypes = {
-  updateI18n: PropTypes.func.isRequired,
-  unit: shapes.ContentUnit,
-  wip: PropTypes.bool,
-  err: shapes.Error,
-  disabled: PropTypes.bool,
-};
-
-I18nForm.defaultProps = {
-  unit: {
-    i18n: {},
-  },
-  wip: false,
-  err: null,
-  disabled: false
-};
-
 const mapState = state => ({
-  wip: selectors.getWIP(state.content_units, 'updateI18n'),
-  err: selectors.getError(state.content_units, 'updateI18n'),
+  wip: selectors.getWIP(state.labels, 'updateI18n'),
+  err: selectors.getError(state.labels, 'updateI18n'),
 });
 
 function mapDispatch(dispatch) {

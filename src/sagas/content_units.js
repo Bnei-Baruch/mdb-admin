@@ -155,6 +155,16 @@ function* changeSecurityLevel(action) {
   }
 }
 
+function* changeCT(action) {
+  try {
+    const { id, type_id } = action.payload;
+    const resp            = yield call(api.put, `/content_units/${id}/`, { type_id });
+    yield put(actions.changeCTSuccess(resp.data));
+  } catch (err) {
+    yield put(actions.changeCTFailure(err));
+  }
+}
+
 function* updateI18n(action) {
   try {
     const { id, i18n } = action.payload;
@@ -311,6 +321,10 @@ function* watchChangeSecurityLevel() {
   yield takeEvery(types.CHANGE_SECURITY_LEVEL, changeSecurityLevel);
 }
 
+function* watchChangeCT() {
+  yield takeEvery(types.CHANGE_CT, changeCT);
+}
+
 function* watchUpdateI18n() {
   yield takeEvery(types.UPDATE_I18N, updateI18n);
 }
@@ -366,6 +380,7 @@ export const sagas = [
   watchCreate,
   watchUpdateProperties,
   watchChangeSecurityLevel,
+  watchChangeCT,
   watchUpdateI18n,
   watchAddSource,
   watchRemoveSource,

@@ -10,6 +10,7 @@ import { sagas as tags } from './tags';
 import { sagas as persons } from './persons';
 import { sagas as publishers } from './publishers';
 import { sagas as search } from './search';
+import { sagas as labels } from './labels';
 
 export default [
   ...collections,
@@ -24,4 +25,5 @@ export default [
   ...persons,
   ...publishers,
   ...search,
+  ...labels,
 ];

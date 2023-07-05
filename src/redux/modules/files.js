@@ -19,9 +19,9 @@ const FETCH_TREE_WITH_OPERATIONS_FAILURE = 'Files/FETCH_TREE_WITH_OPERATIONS_FAI
 const CHANGE_SECURITY_LEVEL         = 'Files/CHANGE_SECURITY_LEVEL';
 const CHANGE_SECURITY_LEVEL_SUCCESS = 'Files/CHANGE_SECURITY_LEVEL_SUCCESS';
 const CHANGE_SECURITY_LEVEL_FAILURE = 'Files/CHANGE_SECURITY_LEVEL_FAILURE';
-const UPDATE_PROPERTIES                = 'Files/UPDATE_PROPERTIES';
-const UPDATE_PROPERTIES_SUCCESS        = 'Files/UPDATE_PROPERTIES_SUCCESS';
-const UPDATE_PROPERTIES_FAILURE        = 'Files/UPDATE_PROPERTIES_FAILURE';
+const UPDATE_PROPERTIES             = 'Files/UPDATE_PROPERTIES';
+const UPDATE_PROPERTIES_SUCCESS     = 'Files/UPDATE_PROPERTIES_SUCCESS';
+const UPDATE_PROPERTIES_FAILURE     = 'Files/UPDATE_PROPERTIES_FAILURE';
 
 const RECEIVE_ITEMS = 'Files/RECEIVE_ITEMS';
 
@@ -61,9 +61,9 @@ const fetchTreeWithOperationsFailure = createAction(FETCH_TREE_WITH_OPERATIONS_F
 const changeSecurityLevel        = createAction(CHANGE_SECURITY_LEVEL, (id, level) => ({ id, level }));
 const changeSecurityLevelSuccess = createAction(CHANGE_SECURITY_LEVEL_SUCCESS);
 const changeSecurityLevelFailure = createAction(CHANGE_SECURITY_LEVEL_FAILURE);
-const updateProperties              = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
-const updatePropertiesSuccess       = createAction(UPDATE_PROPERTIES_SUCCESS);
-const updatePropertiesFailure       = createAction(UPDATE_PROPERTIES_FAILURE);
+const updateProperties           = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
+const updatePropertiesSuccess    = createAction(UPDATE_PROPERTIES_SUCCESS);
+const updatePropertiesFailure    = createAction(UPDATE_PROPERTIES_FAILURE);
 
 const receiveItems = createAction(RECEIVE_ITEMS);
 
@@ -142,12 +142,18 @@ const onSuccess = (state, action) => {
   case FETCH_ITEM_SUCCESS:
     byID = merge(state.byID, action.payload);
     break;
-  case UPDATE_PROPERTIES_SUCCESS:
+  case UPDATE_PROPERTIES_SUCCESS: {
+    const { id, content_unit_id, language, type, mime_type } = action.payload;
+
     byID = merge(state.byID, {
-      id: action.payload.id,
-      content_unit_id: action.payload.properties.content_unit_id,
+      id,
+      content_unit_id,
+      language,
+      type,
+      mime_type
     });
     break;
+  }
   case FETCH_ITEM_STORAGES_SUCCESS:
     byID = merge(state.byID, {
       id: action.payload.id,

@@ -1,14 +1,13 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import noop from 'lodash/noop';
-import { Button, Form, List } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { Button, Form } from 'semantic-ui-react';
 
 import { selectors } from '../../../redux/modules/sources';
-import * as shapes from '../../shapes';
 import SourcesSearch from '../../Autocomplete/SourcesSearch';
+import * as shapes from '../../shapes';
 import SourceBreadcrumbs from '../../Sources/SourceBreadcrumbs';
-import TagBreadcrumbs from '../../Tags/TagBreadcrumbs';
 
 class SourceField extends PureComponent {
   static propTypes = {
