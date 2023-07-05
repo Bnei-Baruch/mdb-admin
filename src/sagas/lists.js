@@ -47,7 +47,7 @@ const dataReceivers = {
 function* fetchList(action) {
   const { namespace, pageNo } = action.payload;
   const filters               = yield select(state => filterSelectors.getFilters(state.filters, namespace));
-  let params                  = filtersTransformer.toApiParams(filters);
+  const params                = filtersTransformer.toApiParams(filters);
 
   let urlParam;
   switch (namespace) {
@@ -64,8 +64,8 @@ function* fetchList(action) {
       urlParam = NS_FILES;
       break;
     case NS_UNITS:
-      urlParam = NS_UNITS;
-      params   = { ...params, with_collections: true };
+      urlParam                = NS_UNITS;
+      params.with_collections = true;
       break;
     default:
       urlParam = namespace;
