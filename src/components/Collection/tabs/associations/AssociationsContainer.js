@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {
-  Button, Grid, Header, Icon, Menu, Popup, Sticky
-} from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, Menu, Sticky } from 'semantic-ui-react';
 
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/collections';
@@ -14,20 +12,6 @@ import Units from './Units';
 import './style.css';
 
 class AssociationsContainer extends Component {
-  static propTypes = {
-    collection: shapes.Collection,
-    units: PropTypes.arrayOf(shapes.CollectionContentUnit),
-    updateItemUnitProperties: PropTypes.func.isRequired,
-    fetchItemUnits: PropTypes.func.isRequired,
-    deleteItemUnit: PropTypes.func.isRequired,
-    setEditMode: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    collection: null,
-    units: EMPTY_ARRAY,
-  };
-
   state = {
     selectedCCU: [],
     allTableRef: null
@@ -127,6 +111,11 @@ class AssociationsContainer extends Component {
     if (collection) orderPositions(collection.id);
   };
 
+  sortByName = () => {
+    const { collection, orderPositions } = this.props;
+    if (collection) orderPositions(collection.id, 'name');
+  };
+
   handleContextRef = ref => this.setState({ contextRef: ref });
 
   handleAllTableRef = ref => this.setState({ allTableRef: ref });
@@ -142,9 +131,6 @@ class AssociationsContainer extends Component {
     const isFirst = selectedCCU.length === 0
       || units.length === 0
       || selectedCCU[0].content_unit_id === units[0].content_unit_id;
-
-    const orderButton =
-            <Button basic style={{ marginLeft: '1em' }} icon="sort numeric down" color="black" onClick={this.sortByFileDate} />;
 
     return (
       <div ref={this.handleAllTableRef}>
@@ -186,9 +172,21 @@ class AssociationsContainer extends Component {
             <span style={{ float: 'right' }}>
               <strong>{`Total: ${units.length} Selected: ${selectedCCU.length}`}</strong>
             </span>
-            <Popup
-              content="Order all units by film date"
-              trigger={orderButton}
+            <Button
+              basic
+              style={{ marginLeft: '1em' }}
+              icon="sort numeric down"
+              color="black"
+              onClick={this.sortByFileDate}
+              content="Order by film date"
+            />
+            <Button
+              basic
+              style={{ marginLeft: '1em' }}
+              icon="sort numeric down"
+              color="black"
+              onClick={this.sortByName}
+              content="Order by Associations Name"
             />
           </Sticky>
           <Grid>
@@ -209,7 +207,20 @@ class AssociationsContainer extends Component {
   }
 }
 
-const mapState = state => ({
+AssociationsContainer.propTypes = {
+  collection: shapes.Collection,
+  units: PropTypes.arrayOf(shapes.CollectionContentUnit),
+  updateItemUnitProperties: PropTypes.func.isRequired,
+  fetchItemUnits: PropTypes.func.isRequired,
+  deleteItemUnit: PropTypes.func.isRequired,
+  setEditMode: PropTypes.func.isRequired,
+};
+
+AssociationsContainer.defaultProps = {
+  collection: null,
+  units: EMPTY_ARRAY,
+};
+const mapState                     = state => ({
   errDeleteCu: selectors.getError(state.collections, 'deleteItemUnit'),
   errUpdateCu: selectors.getError(state.collections, 'updateItemUnitProperties'),
   currentLanguage: system.getCurrentLanguage(state.system),

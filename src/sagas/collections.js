@@ -76,9 +76,9 @@ function* updateItemUnitProperties(action) {
 }
 
 function* orderPositions(action) {
-  const { id } = action.payload;
+  const { id, ...params } = action.payload;
   try {
-    const resp = yield call(api.post, `/collections/${id}/order_positions`);
+    const resp = yield call(api.post, `/collections/${id}/order_positions`, params);
     yield put(units.receiveItems(resp.data.map(x => x.content_unit)));
     yield put(actions.fetchItemUnitsSuccess({ id, data: resp.data }));
   } catch (err) {

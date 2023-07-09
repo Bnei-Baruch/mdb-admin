@@ -2,9 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import memoize from 'lodash/memoize';
 
-import {
-  bulkMerge, del, merge, setMap, update
-} from '../utils';
+import { bulkMerge, del, merge, setMap, update } from '../utils';
 
 /* Types */
 
@@ -98,7 +96,7 @@ const fetchItemUnitsFailure = createAction(FETCH_ITEM_UNITS_FAILURE);
 const updateI18n                      = createAction(UPDATE_I18N, (id, i18n) => ({ id, i18n }));
 const updateI18nSuccess               = createAction(UPDATE_I18N_SUCCESS);
 const updateI18nFailure               = createAction(UPDATE_I18N_FAILURE);
-const orderPositions                  = createAction(ORDER_POSITIONS, (id) => ({ id }));
+const orderPositions                  = createAction(ORDER_POSITIONS, (id, order_type) => ({ id, order_type }));
 const updateProperties                = createAction(UPDATE_PROPERTIES, (id, properties) => ({ id, properties }));
 const updatePropertiesSuccess         = createAction(UPDATE_PROPERTIES_SUCCESS);
 const updatePropertiesFailure         = createAction(UPDATE_PROPERTIES_FAILURE);
@@ -238,50 +236,50 @@ const onSuccess = (state, action) => {
 
   let byID;
   switch (action.type) {
-  case FETCH_ITEM_SUCCESS:
-  case UPDATE_I18N_SUCCESS:
-  case CHANGE_SECURITY_LEVEL_SUCCESS:
-  case CHANGE_ACTIVE_SUCCESS:
-  case CREATE_SUCCESS:
-  case UPDATE_PROPERTIES_SUCCESS:
-    byID = merge(state.byID, action.payload);
-    break;
-  case FETCH_ITEM_UNITS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      content_units: action.payload.data.map(x => ({
-        name: x.name,
-        position: x.position,
-        content_unit_id: x.content_unit.id
-      })),
-    });
-    break;
-  case DELETE_SUCCESS:
-    byID = del(state.byID, action.payload);
-    break;
-  case UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS:
-    byID = update(state.byID, action.payload.id, coll => ({
-      ...coll,
-      content_units: coll.content_units.map(x =>
-        (x.content_unit_id !== action.payload.ccuId ? x : { ...x, ...action.payload.properties })),
-    }));
-    break;
-  case DELETE_ITEM_UNIT_SUCCESS:
-    byID = update(state.byID, action.payload.id, x => ({
-      ...x,
-      content_units: x.content_units ? x.content_units.filter(ccu => ccu.content_unit_id !== action.payload.ccuId) : []
-    }));
+    case FETCH_ITEM_SUCCESS:
+    case UPDATE_I18N_SUCCESS:
+    case CHANGE_SECURITY_LEVEL_SUCCESS:
+    case CHANGE_ACTIVE_SUCCESS:
+    case CREATE_SUCCESS:
+    case UPDATE_PROPERTIES_SUCCESS:
+      byID = merge(state.byID, action.payload);
+      break;
+    case FETCH_ITEM_UNITS_SUCCESS:
+      byID = merge(state.byID, {
+        id: action.payload.id,
+        content_units: action.payload.data.map(x => ({
+          name: x.name,
+          position: x.position,
+          content_unit_id: x.content_unit.id
+        })),
+      });
+      break;
+    case DELETE_SUCCESS:
+      byID = del(state.byID, action.payload);
+      break;
+    case UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS:
+      byID = update(state.byID, action.payload.id, coll => ({
+        ...coll,
+        content_units: coll.content_units.map(x =>
+          (x.content_unit_id !== action.payload.ccuId ? x : { ...x, ...action.payload.properties })),
+      }));
+      break;
+    case DELETE_ITEM_UNIT_SUCCESS:
+      byID = update(state.byID, action.payload.id, x => ({
+        ...x,
+        content_units: x.content_units ? x.content_units.filter(ccu => ccu.content_unit_id !== action.payload.ccuId) : []
+      }));
 
-    break;
-  case ASSOCIATE_UNIT_SUCCESS:
-    byID = update(state.byID, action.payload.id, x => ({
-      ...x,
-      content_units: [...(x.content_units || []), ...action.payload.properties]
-    }));
+      break;
+    case ASSOCIATE_UNIT_SUCCESS:
+      byID = update(state.byID, action.payload.id, x => ({
+        ...x,
+        content_units: [...(x.content_units || []), ...action.payload.properties]
+      }));
 
-    break;
-  default:
-    byID = state.byID;
+      break;
+    default:
+      byID = state.byID;
   }
 
   return {
