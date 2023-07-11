@@ -73,6 +73,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
         associatedIds={associatedIds}
         currentLanguage={currentLanguage}
         withCheckBox={false}
+        withCollections
       />
     );
   };
@@ -80,7 +81,6 @@ class ContentUnitMainPage extends ListWithFiltersBase {
   renderAssociateLastCreated = () => {
     const { lastCreated }       = this.props;
     const { associateLastOpen } = this.state;
-
     if (!lastCreated || !associateLastOpen) {
       return null;
     }

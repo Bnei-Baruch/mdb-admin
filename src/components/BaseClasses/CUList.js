@@ -14,15 +14,18 @@ class CUList extends ListBase {
     ...ListBase.propTypes,
     items: PropTypes.arrayOf(shapes.ContentUnit),
     currentLanguage: PropTypes.string.isRequired,
-    ownerId: PropTypes.number
+    ownerId: PropTypes.number,
+    withCollections: PropTypes.bool,
   };
 
   renderItem = (item) => {
     const {
-      selectedIds, currentLanguage, associatedIds, withCheckBox, ownerId
-    } = this.props;
+            selectedIds, currentLanguage, associatedIds, withCheckBox, ownerId, withCollections
+          } = this.props;
 
-    const properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
+    const properties  = extractI18n(item.i18n, ['name'], currentLanguage)[0];
+    const collections = item.collections?.map(c => extractI18n(c.i18n, ['name'], currentLanguage)?.[0]).filter(c => !!c) || [];
+
     return (
       <Table.Row key={item.id} disabled={!item || associatedIds.includes(item.id) || ownerId === item.id}>
         {withCheckBox ? (
@@ -45,14 +48,21 @@ class CUList extends ListBase {
         <Table.Cell>
           {properties}
         </Table.Cell>
+        {
+          withCollections && (
+            <Table.Cell>
+              {CONTENT_TYPE_BY_ID[item.type_id]}
+            </Table.Cell>
+          )
+        }
         <Table.Cell>
-          {CONTENT_TYPE_BY_ID[item.type_id]}
+          {collections.join(' | ')}
         </Table.Cell>
         <Table.Cell>
           {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
         </Table.Cell>
         <Table.Cell collapsing>
-          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).format('YYYY-MM-DD HH:mm:ss') : null}
+          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).format('YYYY-MM-DD') : null}
         </Table.Cell>
         <Table.Cell>
           {
@@ -76,7 +86,7 @@ class CUList extends ListBase {
   };
 
   render() {
-    const { items, withCheckBox, hasSelectAll } = this.props;
+    const { items, withCheckBox, hasSelectAll, withCollections } = this.props;
     return (
       <Table>
         <Table.Header>
@@ -94,6 +104,7 @@ class CUList extends ListBase {
             <Table.HeaderCell>UID</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Type</Table.HeaderCell>
+            {withCollections && <Table.HeaderCell>Collections</Table.HeaderCell>}
             <Table.HeaderCell>Created At</Table.HeaderCell>
             <Table.HeaderCell>Film Date</Table.HeaderCell>
             <Table.HeaderCell>Duration</Table.HeaderCell>
