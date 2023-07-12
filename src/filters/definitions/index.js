@@ -7,3 +7,4 @@ export { default as secure } from './secure';
 export { default as published } from './published';
 export { default as sourcesFilter } from './sourcesFilter';
 export { default as topicsFilter } from './topicsFilter';
+export { default as originalLanguage } from './originalLanguage';

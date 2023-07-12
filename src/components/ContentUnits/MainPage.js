@@ -23,8 +23,6 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     errOfCreate: null
   };
 
-  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
-
   getPageNo = this.props.getPageNo;
 
   constructor(props) {
@@ -48,6 +46,8 @@ class ContentUnitMainPage extends ListWithFiltersBase {
   closeNewCU = () => this.setState({ showNewCU: false });
 
   closeAssociateLast = () => this.setState({ associateLastOpen: false });
+
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others', 'OriginalLanguage'];
 
   getNamespace = () => NS_UNITS;
 

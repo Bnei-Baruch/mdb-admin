@@ -319,7 +319,8 @@ const tabsWithFilterNames = {
   operation_type: 'Others',
   content_type: 'Others',
   secure: 'Others',
-  published: 'Others'
+  published: 'Others',
+  original_language: 'Original Language'
 };
 
 const getTabNameByFilterName = fName => tabsWithFilterNames[fName];
