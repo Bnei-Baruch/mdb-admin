@@ -456,133 +456,133 @@ const onSuccess = (state, action) => {
   let autonameI18n = [];
   let lastCreated  = state.lastCreated;
   switch (action.type) {
-  case FETCH_ITEM_SUCCESS:
-  case CREATE:
-  case UPDATE_PROPERTIES_SUCCESS:
-  case UPDATE_I18N_SUCCESS:
-  case CHANGE_SECURITY_LEVEL_SUCCESS:
-  case CHANGE_CT_SUCCESS:
-    byID = merge(state.byID, action.payload);
-    break;
-  case FETCH_ITEM_FILES_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      files: action.payload.data.map(x => x.id),
-    });
-    break;
-  case FETCH_ITEM_COLLECTIONS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      collections: action.payload.data.map(x => ({ name: x.name, collection_id: x.collection.id })),
-    });
-    break;
-  case FETCH_ITEM_DERIVATIVES_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      derivatives: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.derived.id })),
-    });
-    break;
-  case ADD_ITEM_DERIVATIVES_SUCCESS: {
-    const { id: aId, duID: aDuID } = action.payload;
+    case FETCH_ITEM_SUCCESS:
+    case CREATE:
+    case UPDATE_PROPERTIES_SUCCESS:
+    case UPDATE_I18N_SUCCESS:
+    case CHANGE_SECURITY_LEVEL_SUCCESS:
+    case CHANGE_CT_SUCCESS:
+      byID = merge(state.byID, action.payload);
+      break;
+    case FETCH_ITEM_FILES_SUCCESS:
+      byID = merge(state.byID, {
+        id: action.payload.id,
+        files: action.payload.data.map(x => x.id),
+      });
+      break;
+    case FETCH_ITEM_COLLECTIONS_SUCCESS:
+      byID = merge(state.byID, {
+        id: action.payload.id,
+        collections: action.payload.data.map(x => ({ name: x.name, collection_id: x.collection.id })),
+      });
+      break;
+    case FETCH_ITEM_DERIVATIVES_SUCCESS:
+      byID = merge(state.byID, {
+        id: action.payload.id,
+        derivatives: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.derived.id })),
+      });
+      break;
+    case ADD_ITEM_DERIVATIVES_SUCCESS: {
+      const { id: aId, duID: aDuID } = action.payload;
 
-    byID = update(state.byID, aId,
-      x => ({ ...x, derivatives: [...x.derivatives || [], { name: '', content_unit_id: aDuID }] }));
-    byID = update(byID, aDuID,
-      x => ({ ...x, origins: [...x.origins || [], { name: '', content_unit_id: aId }] }));
-    break;
-  }
-  case UPDATE_ITEM_DERIVATIVES_SUCCESS: {
-    const { id: uId, duID: uDuID, params } = action.payload;
+      byID = update(state.byID, aId,
+        x => ({ ...x, derivatives: [...x.derivatives || [], { name: '', content_unit_id: aDuID }] }));
+      byID = update(byID, aDuID,
+        x => ({ ...x, origins: [...x.origins || [], { name: '', content_unit_id: aId }] }));
+      break;
+    }
+    case UPDATE_ITEM_DERIVATIVES_SUCCESS: {
+      const { id: uId, duID: uDuID, params } = action.payload;
 
-    byID = update(state.byID, uId,
-      x => ({
-        ...x,
-        derivatives: x.derivatives ? [
-          { ...x.derivatives.find(d => d.content_unit_id === uDuID), ...params }, ...x.derivatives.filter(d => d.content_unit_id !== uDuID)
-        ] : []
-      }));
-    byID = update(byID, uDuID,
-      x => ({
-        ...x,
-        origins: x.origins ? [
-          { ...x.origins.find(d => d.content_unit_id === uId), ...params }, ...x.origins.filter(d => d.content_unit_id !== uId)
-        ] : []
-      }));
-    break;
-  }
-  case REMOVE_ITEM_DERIVATIVES_SUCCESS: {
-    const { id: dId, duID: dDuID } = action.payload;
+      byID = update(state.byID, uId,
+        x => ({
+          ...x,
+          derivatives: x.derivatives ? [
+            { ...x.derivatives.find(d => d.content_unit_id === uDuID), ...params }, ...x.derivatives.filter(d => d.content_unit_id !== uDuID)
+          ] : []
+        }));
+      byID = update(byID, uDuID,
+        x => ({
+          ...x,
+          origins: x.origins ? [
+            { ...x.origins.find(d => d.content_unit_id === uId), ...params }, ...x.origins.filter(d => d.content_unit_id !== uId)
+          ] : []
+        }));
+      break;
+    }
+    case REMOVE_ITEM_DERIVATIVES_SUCCESS: {
+      const { id: dId, duID: dDuID } = action.payload;
 
-    byID = update(state.byID, dId,
-      x => ({ ...x, derivatives: x.derivatives ? x.derivatives.filter(d => d.content_unit_id !== dDuID) : [] }));
-    byID = update(byID, dDuID,
-      x => ({ ...x, origins: x.origins ? x.origins.filter(d => d.content_unit_id !== dId) : [] }));
-    break;
-  }
-  case FETCH_ITEM_ORIGINS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      origins: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.source.id })),
-    });
-    break;
-  case FETCH_ITEM_SOURCES_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      sources: action.payload.data.map(x => x.id),
-    });
-    break;
-  case ADD_SOURCE_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, sources: [...x.sources, action.payload.sourceID] }));
-    break;
-  case REMOVE_SOURCE_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, sources: x.sources.filter(s => s !== action.payload.sourceID) }));
-    break;
-  case FETCH_ITEM_TAGS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      tags: action.payload.data.map(x => x.id),
-    });
-    break;
-  case ADD_TAG_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, tags: [...x.tags, action.payload.tagID] }));
-    break;
-  case REMOVE_TAG_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, tags: x.tags.filter(t => t !== action.payload.tagID) }));
-    break;
-  case FETCH_ITEM_PERSONS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      persons: action.payload.data.map(x => x.person.id),
-    });
-    break;
-  case ADD_PERSON_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, persons: [...x.persons, action.payload.personID] }));
-    break;
-  case REMOVE_PERSON_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, persons: x.persons.filter(t => t !== action.payload.personID) }));
-    break;
-  case ADD_FILES_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, files: [...x.files, ...action.payload.filesIds] }));
-    break;
-  case MERGE_UNITS_SUCCESS:
-    byID = delList(state.byID, action.payload.cuIds);
-    break;
-  case AUTONAME_SUCCESS:
-    byID         = state.byID;
-    autonameI18n = action.payload;
-    break;
-  case CREATE_SUCCESS:
-    byID        = state.byID;
-    lastCreated = action.payload.id;
-    break;
-  default:
+      byID = update(state.byID, dId,
+        x => ({ ...x, derivatives: x.derivatives ? x.derivatives.filter(d => d.content_unit_id !== dDuID) : [] }));
+      byID = update(byID, dDuID,
+        x => ({ ...x, origins: x.origins ? x.origins.filter(d => d.content_unit_id !== dId) : [] }));
+      break;
+    }
+    case FETCH_ITEM_ORIGINS_SUCCESS:
+      byID = merge(state.byID, {
+        id: action.payload.id,
+        origins: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.source.id })),
+      });
+      break;
+    case FETCH_ITEM_SOURCES_SUCCESS:
+      byID = merge(state.byID, {
+        id: action.payload.id,
+        sources: action.payload.data.map(x => x.id),
+      });
+      break;
+    case ADD_SOURCE_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, sources: [...x.sources, action.payload.sourceID] }));
+      break;
+    case REMOVE_SOURCE_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, sources: x.sources.filter(s => s !== action.payload.sourceID) }));
+      break;
+    case FETCH_ITEM_TAGS_SUCCESS:
+      byID = merge(state.byID, {
+        id: action.payload.id,
+        tags: action.payload.data.map(x => x.id),
+      });
+      break;
+    case ADD_TAG_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, tags: [...x.tags, action.payload.tagID] }));
+      break;
+    case REMOVE_TAG_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, tags: x.tags.filter(t => t !== action.payload.tagID) }));
+      break;
+    case FETCH_ITEM_PERSONS_SUCCESS:
+      byID = merge(state.byID, {
+        id: action.payload.id,
+        persons: action.payload.data.map(x => x.person.id),
+      });
+      break;
+    case ADD_PERSON_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, persons: [...x.persons, action.payload.personID] }));
+      break;
+    case REMOVE_PERSON_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, persons: x.persons.filter(t => t !== action.payload.personID) }));
+      break;
+    case ADD_FILES_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, files: [...x.files, ...action.payload.filesIds] }));
+      break;
+    case MERGE_UNITS_SUCCESS:
+      byID = delList(state.byID, action.payload.cuIds);
+      break;
+    case AUTONAME_SUCCESS:
+      byID         = state.byID;
+      autonameI18n = action.payload;
+      break;
+    case CREATE_SUCCESS:
+      byID        = state.byID;
+      lastCreated = action.payload.id;
+      break;
+    default:
   }
 
   return {
@@ -702,6 +702,11 @@ export const reducer = handleActions({
 
 const getUnits           = state => state.byID;
 const getContentUnitById = (state, id) => state.byID.get(id);
+const getCUsByFilter     = state => predicate => {
+  const arr  = Array.from(state.byID.values());
+  const resp = arr.filter(predicate);
+  return resp;
+};
 const getWIP             = (state, key) => state.wip.get(key);
 const getError           = (state, key) => state.errors.get(key);
 const getAutonameI18n    = state => state.autonameI18n;
@@ -726,5 +731,6 @@ export const selectors = {
   denormCCUs,
   denormCUDs,
   getAutonameI18n,
-  getLastCreated
+  getLastCreated,
+  getCUsByFilter,
 };

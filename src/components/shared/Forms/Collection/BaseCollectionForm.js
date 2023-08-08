@@ -37,6 +37,7 @@ import {
 } from '../../Fields';
 import './collections.css';
 import LessonNumber from '../../Fields/LessonNumber';
+import LikutimField from '../../Fields/Likutim';
 
 class BaseCollectionForm extends Component {
   static propTypes = {
@@ -69,58 +70,59 @@ class BaseCollectionForm extends Component {
 
     // per type specific properties
     switch (state.type_id) {
-    case COLLECTION_TYPES[CT_DAILY_LESSON].value:
-    case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
-      data.film_date = state.film_date;
-      data.number    = state.number;
-      break;
-    case COLLECTION_TYPES[CT_CONGRESS].value:
-      data.pattern      = state.pattern;
-      data.active       = state.active;
-      data.start_date   = state.start_date;
-      data.end_date     = state.end_date;
-      data.country      = state.country ? countries.find(x => x.value === state.country).text : state.country;
-      data.city         = state.city;
-      data.full_address = state.full_address;
-      break;
-    case COLLECTION_TYPES[CT_HOLIDAY].value:
-      data.holiday_tag = state.holiday_tag;
-      data.start_date  = state.start_date;
-      data.end_date    = state.end_date;
-      break;
-    case COLLECTION_TYPES[CT_PICNIC].value:
-    case COLLECTION_TYPES[CT_UNITY_DAY].value:
-      data.pattern    = state.pattern;
-      data.active     = state.active;
-      data.start_date = state.start_date;
-      data.end_date   = state.end_date;
-      break;
-    case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
-      data.pattern          = state.pattern;
-      data.active           = state.active;
-      data.default_language = state.default_language;
-      data.genres           = state.genres;
-      break;
-    case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
-    case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
-    case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
-    case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
-    case COLLECTION_TYPES[CT_CLIPS].value:
-      data.pattern          = state.pattern;
-      data.active           = state.active;
-      data.default_language = state.default_language;
-      break;
-    case COLLECTION_TYPES[CT_ARTICLES].value:
-      data.pattern = state.pattern;
-      break;
-    case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
-      data.source     = state.source;
-      data.tags       = state.tagsUIDs?.length === 0 ? [] : state.tagsUIDs;
-      data.start_date = state.start_date;
-      data.end_date   = state.end_date;
-      break;
-    default:
-      break;
+      case COLLECTION_TYPES[CT_DAILY_LESSON].value:
+      case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
+        data.film_date = state.film_date;
+        data.number    = state.number;
+        break;
+      case COLLECTION_TYPES[CT_CONGRESS].value:
+        data.pattern      = state.pattern;
+        data.active       = state.active;
+        data.start_date   = state.start_date;
+        data.end_date     = state.end_date;
+        data.country      = state.country ? countries.find(x => x.value === state.country).text : state.country;
+        data.city         = state.city;
+        data.full_address = state.full_address;
+        break;
+      case COLLECTION_TYPES[CT_HOLIDAY].value:
+        data.holiday_tag = state.holiday_tag;
+        data.start_date  = state.start_date;
+        data.end_date    = state.end_date;
+        break;
+      case COLLECTION_TYPES[CT_PICNIC].value:
+      case COLLECTION_TYPES[CT_UNITY_DAY].value:
+        data.pattern    = state.pattern;
+        data.active     = state.active;
+        data.start_date = state.start_date;
+        data.end_date   = state.end_date;
+        break;
+      case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
+        data.pattern          = state.pattern;
+        data.active           = state.active;
+        data.default_language = state.default_language;
+        data.genres           = state.genres;
+        break;
+      case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
+      case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
+      case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
+      case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
+      case COLLECTION_TYPES[CT_CLIPS].value:
+        data.pattern          = state.pattern;
+        data.active           = state.active;
+        data.default_language = state.default_language;
+        break;
+      case COLLECTION_TYPES[CT_ARTICLES].value:
+        data.pattern = state.pattern;
+        break;
+      case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
+        data.source     = state.source;
+        data.likutim    = state.likutim;
+        data.tags       = state.tagsUIDs?.length === 0 ? [] : state.tagsUIDs;
+        data.start_date = state.start_date;
+        data.end_date   = state.end_date;
+        break;
+      default:
+        break;
     }
 
     return data;
@@ -197,6 +199,12 @@ class BaseCollectionForm extends Component {
     this.setState({ tagsUIDs: [...tagsUIDs] });
   };
 
+  handleLikutimChange = (likutim) => {
+    const { errors } = this.state;
+    delete errors.likutim;
+    this.setState({ likutim: [...likutim] });
+  };
+
   handleGenresChange = (e, data) =>
     this.setState({ genres: data.value });
 
@@ -247,9 +255,9 @@ class BaseCollectionForm extends Component {
   }
 
   getI18nErrors() {
-    const { tagsUIDs, source, type_id } = this.state;
+    const { tagsUIDs, source, likutim, type_id } = this.state;
     if (type_id !== COLLECTION_TYPES[CT_LESSONS_SERIES].value) return {};
-    return { sourceOrTag: tagsUIDs?.length === 0 && !source };
+    return { sourceOrTag: tagsUIDs?.length === 0 && !source && likutim?.length === 0 };
   }
 
   isValid() {
@@ -382,6 +390,17 @@ class BaseCollectionForm extends Component {
     );
   };
 
+  renderLikutimFields = () => {
+    const { likutim, errors: { sourceOrTag: err } } = this.state;
+    return (
+      <LikutimField
+        uids={likutim}
+        onChange={this.handleLikutimChange}
+        err={err}
+      />
+    );
+  };
+
   renderLessonNumberFields = () => {
     const { number, errors: { number: err } } = this.state;
     return (
@@ -450,35 +469,36 @@ class BaseCollectionForm extends Component {
       {this.renderSourceField()}
       {this.renderTagsFields()}
       {this.renderDateRangeFields()}
+      {this.renderLikutimFields()}
     </div>
   );
 
   renderProperties = () => {
     switch (this.state.type_id) {
-    case COLLECTION_TYPES[CT_DAILY_LESSON].value:
-    case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
-      return this.renderDailyLesson();
-    case COLLECTION_TYPES[CT_CONGRESS].value:
-      return this.renderCongress();
-    case COLLECTION_TYPES[CT_HOLIDAY].value:
-      return this.renderHoliday();
-    case COLLECTION_TYPES[CT_PICNIC].value:
-    case COLLECTION_TYPES[CT_UNITY_DAY].value:
-      return this.renderPicnic();
-    case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
-      return this.renderVideoProgram();
-    case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
-    case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
-    case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
-    case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
-    case COLLECTION_TYPES[CT_CLIPS].value:
-      return this.renderLesson();
-    case COLLECTION_TYPES[CT_ARTICLES].value:
-      return this.renderArticles();
-    case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
-      return this.renderLessonsSeries();
-    default:
-      return null;
+      case COLLECTION_TYPES[CT_DAILY_LESSON].value:
+      case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
+        return this.renderDailyLesson();
+      case COLLECTION_TYPES[CT_CONGRESS].value:
+        return this.renderCongress();
+      case COLLECTION_TYPES[CT_HOLIDAY].value:
+        return this.renderHoliday();
+      case COLLECTION_TYPES[CT_PICNIC].value:
+      case COLLECTION_TYPES[CT_UNITY_DAY].value:
+        return this.renderPicnic();
+      case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
+        return this.renderVideoProgram();
+      case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
+      case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
+      case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
+      case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
+      case COLLECTION_TYPES[CT_CLIPS].value:
+        return this.renderLesson();
+      case COLLECTION_TYPES[CT_ARTICLES].value:
+        return this.renderArticles();
+      case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
+        return this.renderLessonsSeries();
+      default:
+        return null;
     }
   };
 
