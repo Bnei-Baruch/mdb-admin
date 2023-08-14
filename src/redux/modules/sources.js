@@ -7,12 +7,15 @@ import { buildHierarchy, extractI18n } from '../../helpers/utils';
 
 /* Types */
 
-const FETCH_ITEM         = 'Sources/FETCH_ITEM';
-const FETCH_ITEM_SUCCESS = 'Sources/FETCH_ITEM_SUCCESS';
-const FETCH_ITEM_FAILURE = 'Sources/FETCH_ITEM_FAILURE';
-const FETCH_ALL          = 'Sources/FETCH_ALL';
-const FETCH_ALL_SUCCESS  = 'Sources/FETCH_ALL_SUCCESS';
-const FETCH_ALL_FAILURE  = 'Sources/FETCH_ALL_FAILURE';
+const FETCH_ITEM                = 'Sources/FETCH_ITEM';
+const FETCH_ITEM_SUCCESS        = 'Sources/FETCH_ITEM_SUCCESS';
+const FETCH_ITEM_FAILURE        = 'Sources/FETCH_ITEM_FAILURE';
+const FETCH_ALL                 = 'Sources/FETCH_ALL';
+const FETCH_ALL_SUCCESS         = 'Sources/FETCH_ALL_SUCCESS';
+const FETCH_ALL_FAILURE         = 'Sources/FETCH_ALL_FAILURE';
+const FETCH_ALL_LIKUTIM         = 'Sources/FETCH_ALL_LIKUTIM';
+const FETCH_ALL_LIKUTIM_SUCCESS = 'Sources/FETCH_ALL_LIKUTIM_SUCCESS';
+const FETCH_ALL_LIKUTIM_FAILURE = 'Sources/FETCH_ALL_LIKUTIM_FAILURE';
 
 const UPDATE_INFO         = 'Sources/UPDATE_INFO';
 const UPDATE_INFO_SUCCESS = 'Sources/UPDATE_INFO_SUCCESS';
@@ -31,6 +34,7 @@ export const types = {
   FETCH_ALL,
   FETCH_ALL_SUCCESS,
   FETCH_ALL_FAILURE,
+  FETCH_ALL_LIKUTIM,
 
   UPDATE_INFO,
   UPDATE_INFO_SUCCESS,
@@ -45,12 +49,15 @@ export const types = {
 
 /* Actions */
 
-const fetchItem        = createAction(FETCH_ITEM);
-const fetchItemSuccess = createAction(FETCH_ITEM_SUCCESS);
-const fetchItemFailure = createAction(FETCH_ITEM_FAILURE);
-const fetchAll         = createAction(FETCH_ALL);
-const fetchAllSuccess  = createAction(FETCH_ALL_SUCCESS);
-const fetchAllFailure  = createAction(FETCH_ALL_FAILURE);
+const fetchItem              = createAction(FETCH_ITEM);
+const fetchItemSuccess       = createAction(FETCH_ITEM_SUCCESS);
+const fetchItemFailure       = createAction(FETCH_ITEM_FAILURE);
+const fetchAll               = createAction(FETCH_ALL);
+const fetchAllSuccess        = createAction(FETCH_ALL_SUCCESS);
+const fetchAllFailure        = createAction(FETCH_ALL_FAILURE);
+const fetchAllLikutim        = createAction(FETCH_ALL_LIKUTIM);
+const fetchAllLikutimSuccess = createAction(FETCH_ALL_LIKUTIM_SUCCESS);
+const fetchAllLikutimFailure = createAction(FETCH_ALL_LIKUTIM_FAILURE);
 
 const updateInfo        = createAction(UPDATE_INFO,
   (id, pattern, description, typeID, position) => ({
@@ -85,6 +92,9 @@ export const actions = {
   fetchAll,
   fetchAllSuccess,
   fetchAllFailure,
+  fetchAllLikutim,
+  fetchAllLikutimSuccess,
+  fetchAllLikutimFailure,
 
   updateInfo,
   updateInfoSuccess,
@@ -106,6 +116,8 @@ const keys = new Map([
   [FETCH_ALL, 'fetchAll'],
   [FETCH_ALL_SUCCESS, 'fetchAll'],
   [FETCH_ALL_FAILURE, 'fetchAll'],
+  [FETCH_ALL, 'fetchAll'],
+  [FETCH_ALL_SUCCESS, 'fetchAll'],
 
   [UPDATE_INFO, 'updateInfo'],
   [UPDATE_INFO_SUCCESS, 'updateInfo'],
@@ -122,6 +134,7 @@ const initialState = {
   byID: new Map(),
   wip: new Map(Array.from(keys.values(), x => [x, false])),
   errors: new Map(Array.from(keys.values(), x => [x, null])),
+  likutim: { wip: false, fetched: false },
 };
 
 const onRequest = (state, action) => ({
@@ -143,17 +156,17 @@ const onSuccess = (state, action) => {
 
   let byID;
   switch (action.type) {
-  case FETCH_ITEM_SUCCESS:
-  case UPDATE_INFO_SUCCESS:
-  case UPDATE_I18N_SUCCESS:
-  case CREATE_SUCCESS:
-    byID = merge(state.byID, action.payload);
-    break;
-  case FETCH_ALL_SUCCESS:
-    byID = new Map(action.payload.map(x => [x.id, x]));
-    break;
-  default:
-    byID = state.byID;
+    case FETCH_ITEM_SUCCESS:
+    case UPDATE_INFO_SUCCESS:
+    case UPDATE_I18N_SUCCESS:
+    case CREATE_SUCCESS:
+      byID = merge(state.byID, action.payload);
+      break;
+    case FETCH_ALL_SUCCESS:
+      byID = new Map(action.payload.map(x => [x.id, x]));
+      break;
+    default:
+      byID = state.byID;
   }
 
   return {
@@ -171,6 +184,12 @@ export const reducer = handleActions({
   [FETCH_ALL]: onRequest,
   [FETCH_ALL_SUCCESS]: onSuccess,
   [FETCH_ALL_FAILURE]: onFailure,
+  [FETCH_ALL_LIKUTIM]: (state) => ({ ...state, likutim: { wip: true, fetched: false } }),
+  [FETCH_ALL_LIKUTIM_SUCCESS]: (state) => ({ ...state, likutim: { wip: true, fetched: true } }),
+  [FETCH_ALL_LIKUTIM_FAILURE]: (state, action) => ({
+    ...state,
+    likutim: { wip: true, fetched: true, err: action.payload }
+  }),
 
   [UPDATE_INFO]: onRequest,
   [UPDATE_INFO_SUCCESS]: onSuccess,
@@ -211,10 +230,11 @@ const sortHierarchy = (h, getById) => {
   return h;
 };
 
-const getSources    = state => state.byID;
-const getSourceById = state => id => state.byID.get(id);
-const getWIP        = state => key => state.wip.get(key);
-const getError      = state => key => state.errors.get(key);
+const getSources       = state => state.byID;
+const getSourceById    = state => id => state.byID.get(id);
+const getWIP           = state => key => state.wip.get(key);
+const getError         = state => key => state.errors.get(key);
+const getLikutimStatus = state => state.likutim;
 
 const getHierarchy = createSelector(getSources,
   sources => sortHierarchy(buildHierarchy(sources), x => sources.get(x)));
@@ -259,4 +279,5 @@ export const selectors = {
   denormIDs,
   getPathByID,
   getSourceByUID,
+  getLikutimStatus,
 };

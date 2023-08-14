@@ -2,9 +2,11 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { USER_FOUND } from 'redux-oidc';
 
 import { actions, types } from '../redux/modules/sources';
+import { actions as cuActions } from '../redux/modules/content_units';
 import { actions as actionsAuthor } from '../redux/modules/authors';
 import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
+import { CT_LIKUTIM } from '../helpers/consts';
 
 function* fetchItem(action) {
   try {
@@ -22,6 +24,16 @@ function* fetchAll() {
     yield put(actions.fetchAllSuccess(data));
   } catch (err) {
     yield put(actions.fetchAllFailure(err));
+  }
+}
+
+function* fetchAllLikutim() {
+  try {
+    const data = yield loadAllPages(`/content_units/?content_type=${CT_LIKUTIM}`);
+    yield put(cuActions.receiveItems(data));
+    yield put(actions.fetchAllLikutimSuccess());
+  } catch (err) {
+    yield put(actions.fetchAllLikutimFailure(err));
   }
 }
 
@@ -68,6 +80,10 @@ function* watchLastFetchAll() {
   yield takeLatest([types.FETCH_ALL, USER_FOUND], fetchAll);
 }
 
+function* watchFetchAllLikutim() {
+  yield takeLatest([types.FETCH_ALL_LIKUTIM, USER_FOUND], fetchAllLikutim);
+}
+
 function* watchUpdateInfo() {
   yield takeEvery(types.UPDATE_INFO, updateInfo);
 }
@@ -83,6 +99,7 @@ function* watchCreate() {
 export const sagas = [
   watchFetchItem,
   watchLastFetchAll,
+  watchFetchAllLikutim,
   watchUpdateInfo,
   watchUpdateI18n,
   watchCreate,
