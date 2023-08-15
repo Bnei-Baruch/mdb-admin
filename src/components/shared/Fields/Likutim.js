@@ -20,8 +20,8 @@ const LikutimField = (props) => {
   const denorm                = useSelector(state => selectors.getCUsByFilter(state.content_units));
   const dispatch              = useDispatch();
 
-  const { uids, onChange } = props;
-  const needFetch          = !wip && !err && !fetched;
+  const { uids = [], onChange } = props;
+  const needFetch               = !wip && !err && !fetched;
   useEffect(() => {
     if (needFetch) dispatch(actions.fetchAllLikutim());
   }, [needFetch]);
