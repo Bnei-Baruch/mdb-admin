@@ -201,6 +201,7 @@ export const OP_SIRTUTIM      = 'sirtutim';
 export const OP_INSERT        = 'insert';
 export const OP_TRANSCODE     = 'transcode';
 export const OP_JOIN          = 'join';
+export const OP_REPLACE       = 'replace';
 
 export const OPERATION_TYPE_BY_ID = {
   1: OP_CAPTURE_START,
@@ -215,6 +216,7 @@ export const OPERATION_TYPE_BY_ID = {
   10: OP_INSERT,
   11: OP_TRANSCODE,
   12: OP_JOIN,
+  13: OP_REPLACE,
 };
 
 // Source Types
