@@ -28,7 +28,7 @@ COPY . .
 
 RUN yarn install --frozen-lockfile && \
     yarn build-css && \
-    react-scripts build && \
+    yarn react-scripts build && \
     rm -rf node_modules
 
 FROM alpine
