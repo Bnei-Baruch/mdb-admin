@@ -9600,7 +9600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.7.0":
+"lodash@npm:^4.17.10, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
@@ -9759,7 +9759,6 @@ __metadata:
     semantic-ui-css: "npm:^2.4.1"
     semantic-ui-react: "npm:^2.0.1"
     util: "npm:^0.12.5"
-    why-did-you-update: "npm:1.0.8"
   languageName: unknown
   linkType: soft
 
@@ -11903,13 +11902,6 @@ __metadata:
   version: 6.0.11
   resolution: "react-error-overlay@npm:6.0.11"
   checksum: 10c0/8fc93942976e0c704274aec87dbc8e21f62a2cc78d1c93f9bcfff9f7494b00c60f7a2f0bd48d832bcd3190627c0255a1df907373f61f820371373a65ec4b2d64
-  languageName: node
-  linkType: hard
-
-"react-fast-compare@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "react-fast-compare@npm:2.0.4"
-  checksum: 10c0/f0300c677e95198b5f993cbb8a983dab09586157dc678f9e2b5b29ff941b6677a8776fbbdc425ce102fad86937e36bb45cfcfd797f006270b97ccf287ebfb885
   languageName: node
   linkType: hard
 
@@ -14700,18 +14692,6 @@ __metadata:
   bin:
     node-which: bin/which.js
   checksum: 10c0/449fa5c44ed120ccecfe18c433296a4978a7583bf2391c50abce13f76878d2476defde04d0f79db8165bdf432853c1f8389d0485ca6e8ebce3bbcded513d5e6a
-  languageName: node
-  linkType: hard
-
-"why-did-you-update@npm:1.0.8":
-  version: 1.0.8
-  resolution: "why-did-you-update@npm:1.0.8"
-  dependencies:
-    lodash: "npm:^4.17.11"
-    react-fast-compare: "npm:^2.0.4"
-  peerDependencies:
-    react: ">=16"
-  checksum: 10c0/7a753405c59c7af965c2ad6dbf857393eae058ae4da48610b9b159038d2378a2056e5a5dff380ce8d32d3c70ae675dca12b0594206046e6373a7098338bfaf8c
   languageName: node
   linkType: hard
 

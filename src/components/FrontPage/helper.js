@@ -1,8 +1,8 @@
 import Keycloak from 'keycloak-js';
 
 const KC_API_URL   = 'https://accounts.kab.info/auth';
-const KC_REALM     = 'main';
 const KC_CLIENT_ID = 'kmedia-public';
+const KC_REALM     = 'main';
 
 export const kcLogin = () => {
   const url = new URL(window.location.href);
