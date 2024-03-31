@@ -29,5 +29,6 @@ export const reducer = handleActions({
 }, initialState);
 
 export const selectors = {
-  getUser: state => state.user,
+  getUser : state => state.user,
+  getToken: state => state.token,
 };

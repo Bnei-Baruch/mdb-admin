@@ -6,7 +6,6 @@ import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
 import { NS_PERSONS } from '../helpers/consts';
 import { actions as lists } from '../redux/modules/lists';
-import { SET_USER } from '../redux/modules/user';
 
 function* fetchItem(action) {
   try {
@@ -73,7 +72,7 @@ function* watchFetchItem() {
 }
 
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, SET_USER], fetchAll);
+  yield takeLatest(types.FETCH_ALL, fetchAll);
 }
 
 function* watchCreate() {

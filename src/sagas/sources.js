@@ -4,7 +4,6 @@ import { actions, types } from '../redux/modules/sources';
 import { actions as actionsAuthor } from '../redux/modules/authors';
 import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
-import { SET_USER } from '../redux/modules/user';
 
 function* fetchItem(action) {
   try {
@@ -65,7 +64,7 @@ function* watchFetchItem() {
 }
 
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, SET_USER], fetchAll);
+  yield takeLatest(types.FETCH_ALL, fetchAll);
 }
 
 function* watchUpdateInfo() {

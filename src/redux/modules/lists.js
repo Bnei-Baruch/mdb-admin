@@ -50,20 +50,17 @@ const initialState = {
 
 const onSetPage = (state, action) => ({
   ...state,
-  byNS: update(state.byNS, action.payload.namespace,
-    x => ({ ...x, pageNo: action.payload.pageNo })),
+  byNS: update(state.byNS, action.payload.namespace, x => ({ ...x, pageNo: action.payload.pageNo })),
 });
 
 const onRequest = (state, action) => ({
   ...state,
-  byNS: update(state.byNS, action.payload.namespace,
-    x => ({ ...x, wip: true })),
+  byNS: update(state.byNS, action.payload.namespace, x => ({ ...x, wip: true })),
 });
 
 const onFailure = (state, action) => ({
   ...state,
-  byNS: update(state.byNS, action.payload.namespace,
-    x => ({ ...x, wip: false, err: action.payload.err })),
+  byNS: update(state.byNS, action.payload.namespace, x => ({ ...x, wip: false, err: action.payload.err })),
 });
 
 const onSuccess = (state, action) => ({
