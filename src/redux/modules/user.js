@@ -23,7 +23,7 @@ export const reducer = handleActions({
   [SET_USER]  : (state, action) => ({ ...state, user: action.payload }),
   [CLEAR_USER]: () => ({ user: null, token: null }),
   [SET_TOKEN] : (state, action) => {
-    client.defaults.headers.common.Authorization = action.payload;
+    client.defaults.headers.common.Authorization = `Bearer ${action.payload}`;
     return { ...state, token: action.payload };
   },
 }, initialState);
