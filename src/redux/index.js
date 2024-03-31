@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
-import { reducer as oidc } from 'redux-oidc';
 
 import { reducer as user } from './modules/user';
 import { reducer as filters } from './modules/filters';
@@ -21,7 +20,6 @@ import { reducer as labels } from './modules/labels';
 
 export default history => combineReducers({
   router: connectRouter(history),
-  oidc,
   system,
   user,
   filters,

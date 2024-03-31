@@ -212,8 +212,8 @@ const keys = new Map([
 ]);
 
 const initialState = {
-  byID: new Map(),
-  wip: new Map(Array.from(keys.values(), x => [x, false])),
+  byID  : new Map(),
+  wip   : new Map(Array.from(keys.values(), x => [x, false])),
   errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
@@ -226,7 +226,7 @@ const onFailure = (state, action) => {
   const key = keys.get(action.type);
   return {
     ...state,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, action.payload),
   };
 };
@@ -246,10 +246,10 @@ const onSuccess = (state, action) => {
       break;
     case FETCH_ITEM_UNITS_SUCCESS:
       byID = merge(state.byID, {
-        id: action.payload.id,
+        id           : action.payload.id,
         content_units: action.payload.data.map(x => ({
-          name: x.name,
-          position: x.position,
+          name           : x.name,
+          position       : x.position,
           content_unit_id: x.content_unit.id
         })),
       });
@@ -285,7 +285,7 @@ const onSuccess = (state, action) => {
   return {
     ...state,
     byID,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, null),
   };
 };
@@ -296,40 +296,40 @@ const onReceiveItems = (state, action) => ({
 });
 
 export const reducer = handleActions({
-  [FETCH_ITEM]: onRequest,
-  [FETCH_ITEM_SUCCESS]: onSuccess,
-  [FETCH_ITEM_FAILURE]: onFailure,
-  [FETCH_ITEM_UNITS]: onRequest,
+  [FETCH_ITEM]              : onRequest,
+  [FETCH_ITEM_SUCCESS]      : onSuccess,
+  [FETCH_ITEM_FAILURE]      : onFailure,
+  [FETCH_ITEM_UNITS]        : onRequest,
   [FETCH_ITEM_UNITS_SUCCESS]: onSuccess,
   [FETCH_ITEM_UNITS_FAILURE]: onFailure,
 
-  [UPDATE_I18N]: onRequest,
-  [UPDATE_I18N_SUCCESS]: onSuccess,
-  [UPDATE_I18N_FAILURE]: onFailure,
-  [UPDATE_PROPERTIES]: onRequest,
-  [UPDATE_PROPERTIES_SUCCESS]: onSuccess,
-  [UPDATE_PROPERTIES_FAILURE]: onFailure,
-  [CHANGE_SECURITY_LEVEL]: onRequest,
-  [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
-  [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
-  [CHANGE_ACTIVE]: onRequest,
-  [CHANGE_ACTIVE_SUCCESS]: onSuccess,
-  [CHANGE_ACTIVE_FAILURE]: onFailure,
-  [CREATE]: onRequest,
-  [CREATE_SUCCESS]: onSuccess,
-  [CREATE_FAILURE]: onFailure,
-  [DELETE]: onRequest,
-  [DELETE_SUCCESS]: onSuccess,
-  [DELETE_FAILURE]: onFailure,
-  [ASSOCIATE_UNIT]: onRequest,
-  [ASSOCIATE_UNIT_SUCCESS]: onSuccess,
-  [ASSOCIATE_UNIT_FAILURE]: onFailure,
-  [UPDATE_ITEM_UNIT_PROPERTIES]: onRequest,
+  [UPDATE_I18N]                        : onRequest,
+  [UPDATE_I18N_SUCCESS]                : onSuccess,
+  [UPDATE_I18N_FAILURE]                : onFailure,
+  [UPDATE_PROPERTIES]                  : onRequest,
+  [UPDATE_PROPERTIES_SUCCESS]          : onSuccess,
+  [UPDATE_PROPERTIES_FAILURE]          : onFailure,
+  [CHANGE_SECURITY_LEVEL]              : onRequest,
+  [CHANGE_SECURITY_LEVEL_SUCCESS]      : onSuccess,
+  [CHANGE_SECURITY_LEVEL_FAILURE]      : onFailure,
+  [CHANGE_ACTIVE]                      : onRequest,
+  [CHANGE_ACTIVE_SUCCESS]              : onSuccess,
+  [CHANGE_ACTIVE_FAILURE]              : onFailure,
+  [CREATE]                             : onRequest,
+  [CREATE_SUCCESS]                     : onSuccess,
+  [CREATE_FAILURE]                     : onFailure,
+  [DELETE]                             : onRequest,
+  [DELETE_SUCCESS]                     : onSuccess,
+  [DELETE_FAILURE]                     : onFailure,
+  [ASSOCIATE_UNIT]                     : onRequest,
+  [ASSOCIATE_UNIT_SUCCESS]             : onSuccess,
+  [ASSOCIATE_UNIT_FAILURE]             : onFailure,
+  [UPDATE_ITEM_UNIT_PROPERTIES]        : onRequest,
   [UPDATE_ITEM_UNIT_PROPERTIES_SUCCESS]: onSuccess,
   [UPDATE_ITEM_UNIT_PROPERTIES_FAILURE]: onFailure,
-  [DELETE_ITEM_UNIT]: onRequest,
-  [DELETE_ITEM_UNIT_SUCCESS]: onSuccess,
-  [DELETE_ITEM_UNIT_FAILURE]: onFailure,
+  [DELETE_ITEM_UNIT]                   : onRequest,
+  [DELETE_ITEM_UNIT_SUCCESS]           : onSuccess,
+  [DELETE_ITEM_UNIT_FAILURE]           : onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 

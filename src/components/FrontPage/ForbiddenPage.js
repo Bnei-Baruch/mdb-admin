@@ -1,6 +1,6 @@
 import React from 'react';
 import { Header, Grid, Menu, Dropdown } from 'semantic-ui-react';
-import userManager from '../../helpers/userManager';
+import userManager from './InitKeycloak';
 import { LANGUAGE_OPTIONS, SITE_LANGUAGES } from '../../helpers/consts';
 import { AUTH_URL } from '../../helpers/env';
 
@@ -24,7 +24,7 @@ const ForbiddenPage = ({ user, updateCurrentLanguage, currentLanguage }) => {
           <Menu pointing>
             <Menu.Menu position="right">
               <Menu.Item>
-                <Dropdown item text={user.profile.name}>
+                <Dropdown item text={user.name}>
                   <Dropdown.Menu>
                     <Dropdown.Item as="a" href={`${AUTH_URL}/account`} target="_blank">
                       My Account

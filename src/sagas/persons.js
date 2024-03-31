@@ -1,12 +1,12 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { USER_FOUND } from 'redux-oidc';
 
 import { actions, types } from '../redux/modules/persons';
 import api from '../helpers/apiClient';
 import { loadAllPages } from './utils';
 import { NS_PERSONS } from '../helpers/consts';
 import { actions as lists } from '../redux/modules/lists';
+import { SET_USER } from '../redux/modules/user';
 
 function* fetchItem(action) {
   try {
@@ -73,7 +73,7 @@ function* watchFetchItem() {
 }
 
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, USER_FOUND], fetchAll);
+  yield takeLatest([types.FETCH_ALL, SET_USER], fetchAll);
 }
 
 function* watchCreate() {

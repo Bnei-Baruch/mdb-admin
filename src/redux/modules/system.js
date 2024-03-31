@@ -32,12 +32,12 @@ export const actions = {
 /* Reducer */
 
 const initialState = {
-  isReady: false,
+  isReady        : false,
   currentLanguage: localStorage.getItem('currentLanguage') || LANG_ENGLISH
 };
 
 export const reducer = handleActions({
-  [READY]: state => ({
+  [READY]                  : state => ({
     ...state,
     isReady: true
   }),

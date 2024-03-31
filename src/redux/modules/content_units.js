@@ -429,11 +429,11 @@ const keys = new Map([
 ]);
 
 const initialState = {
-  byID: new Map(),
-  wip: new Map(Array.from(keys.values(), x => [x, false])),
-  errors: new Map(Array.from(keys.values(), x => [x, null])),
+  byID        : new Map(),
+  wip         : new Map(Array.from(keys.values(), x => [x, false])),
+  errors      : new Map(Array.from(keys.values(), x => [x, null])),
   autonameI18n: [],
-  lastCreated: null
+  lastCreated : null
 };
 
 const onRequest = (state, action) => ({
@@ -445,7 +445,7 @@ const onFailure = (state, action) => {
   const key = keys.get(action.type);
   return {
     ...state,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, action.payload),
   };
 };
@@ -456,133 +456,133 @@ const onSuccess = (state, action) => {
   let autonameI18n = [];
   let lastCreated  = state.lastCreated;
   switch (action.type) {
-  case FETCH_ITEM_SUCCESS:
-  case CREATE:
-  case UPDATE_PROPERTIES_SUCCESS:
-  case UPDATE_I18N_SUCCESS:
-  case CHANGE_SECURITY_LEVEL_SUCCESS:
-  case CHANGE_CT_SUCCESS:
-    byID = merge(state.byID, action.payload);
-    break;
-  case FETCH_ITEM_FILES_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      files: action.payload.data.map(x => x.id),
-    });
-    break;
-  case FETCH_ITEM_COLLECTIONS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      collections: action.payload.data.map(x => ({ name: x.name, collection_id: x.collection.id })),
-    });
-    break;
-  case FETCH_ITEM_DERIVATIVES_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      derivatives: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.derived.id })),
-    });
-    break;
-  case ADD_ITEM_DERIVATIVES_SUCCESS: {
-    const { id: aId, duID: aDuID } = action.payload;
+    case FETCH_ITEM_SUCCESS:
+    case CREATE:
+    case UPDATE_PROPERTIES_SUCCESS:
+    case UPDATE_I18N_SUCCESS:
+    case CHANGE_SECURITY_LEVEL_SUCCESS:
+    case CHANGE_CT_SUCCESS:
+      byID = merge(state.byID, action.payload);
+      break;
+    case FETCH_ITEM_FILES_SUCCESS:
+      byID = merge(state.byID, {
+        id   : action.payload.id,
+        files: action.payload.data.map(x => x.id),
+      });
+      break;
+    case FETCH_ITEM_COLLECTIONS_SUCCESS:
+      byID = merge(state.byID, {
+        id         : action.payload.id,
+        collections: action.payload.data.map(x => ({ name: x.name, collection_id: x.collection.id })),
+      });
+      break;
+    case FETCH_ITEM_DERIVATIVES_SUCCESS:
+      byID = merge(state.byID, {
+        id         : action.payload.id,
+        derivatives: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.derived.id })),
+      });
+      break;
+    case ADD_ITEM_DERIVATIVES_SUCCESS: {
+      const { id: aId, duID: aDuID } = action.payload;
 
-    byID = update(state.byID, aId,
-      x => ({ ...x, derivatives: [...x.derivatives || [], { name: '', content_unit_id: aDuID }] }));
-    byID = update(byID, aDuID,
-      x => ({ ...x, origins: [...x.origins || [], { name: '', content_unit_id: aId }] }));
-    break;
-  }
-  case UPDATE_ITEM_DERIVATIVES_SUCCESS: {
-    const { id: uId, duID: uDuID, params } = action.payload;
+      byID = update(state.byID, aId,
+        x => ({ ...x, derivatives: [...x.derivatives || [], { name: '', content_unit_id: aDuID }] }));
+      byID = update(byID, aDuID,
+        x => ({ ...x, origins: [...x.origins || [], { name: '', content_unit_id: aId }] }));
+      break;
+    }
+    case UPDATE_ITEM_DERIVATIVES_SUCCESS: {
+      const { id: uId, duID: uDuID, params } = action.payload;
 
-    byID = update(state.byID, uId,
-      x => ({
-        ...x,
-        derivatives: x.derivatives ? [
-          { ...x.derivatives.find(d => d.content_unit_id === uDuID), ...params }, ...x.derivatives.filter(d => d.content_unit_id !== uDuID)
-        ] : []
-      }));
-    byID = update(byID, uDuID,
-      x => ({
-        ...x,
-        origins: x.origins ? [
-          { ...x.origins.find(d => d.content_unit_id === uId), ...params }, ...x.origins.filter(d => d.content_unit_id !== uId)
-        ] : []
-      }));
-    break;
-  }
-  case REMOVE_ITEM_DERIVATIVES_SUCCESS: {
-    const { id: dId, duID: dDuID } = action.payload;
+      byID = update(state.byID, uId,
+        x => ({
+          ...x,
+          derivatives: x.derivatives ? [
+            { ...x.derivatives.find(d => d.content_unit_id === uDuID), ...params }, ...x.derivatives.filter(d => d.content_unit_id !== uDuID)
+          ] : []
+        }));
+      byID = update(byID, uDuID,
+        x => ({
+          ...x,
+          origins: x.origins ? [
+            { ...x.origins.find(d => d.content_unit_id === uId), ...params }, ...x.origins.filter(d => d.content_unit_id !== uId)
+          ] : []
+        }));
+      break;
+    }
+    case REMOVE_ITEM_DERIVATIVES_SUCCESS: {
+      const { id: dId, duID: dDuID } = action.payload;
 
-    byID = update(state.byID, dId,
-      x => ({ ...x, derivatives: x.derivatives ? x.derivatives.filter(d => d.content_unit_id !== dDuID) : [] }));
-    byID = update(byID, dDuID,
-      x => ({ ...x, origins: x.origins ? x.origins.filter(d => d.content_unit_id !== dId) : [] }));
-    break;
-  }
-  case FETCH_ITEM_ORIGINS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      origins: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.source.id })),
-    });
-    break;
-  case FETCH_ITEM_SOURCES_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      sources: action.payload.data.map(x => x.id),
-    });
-    break;
-  case ADD_SOURCE_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, sources: [...x.sources, action.payload.sourceID] }));
-    break;
-  case REMOVE_SOURCE_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, sources: x.sources.filter(s => s !== action.payload.sourceID) }));
-    break;
-  case FETCH_ITEM_TAGS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      tags: action.payload.data.map(x => x.id),
-    });
-    break;
-  case ADD_TAG_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, tags: [...x.tags, action.payload.tagID] }));
-    break;
-  case REMOVE_TAG_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, tags: x.tags.filter(t => t !== action.payload.tagID) }));
-    break;
-  case FETCH_ITEM_PERSONS_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      persons: action.payload.data.map(x => x.person.id),
-    });
-    break;
-  case ADD_PERSON_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, persons: [...x.persons, action.payload.personID] }));
-    break;
-  case REMOVE_PERSON_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, persons: x.persons.filter(t => t !== action.payload.personID) }));
-    break;
-  case ADD_FILES_SUCCESS:
-    byID = update(state.byID, action.payload.id,
-      x => ({ ...x, files: [...x.files, ...action.payload.filesIds] }));
-    break;
-  case MERGE_UNITS_SUCCESS:
-    byID = delList(state.byID, action.payload.cuIds);
-    break;
-  case AUTONAME_SUCCESS:
-    byID         = state.byID;
-    autonameI18n = action.payload;
-    break;
-  case CREATE_SUCCESS:
-    byID        = state.byID;
-    lastCreated = action.payload.id;
-    break;
-  default:
+      byID = update(state.byID, dId,
+        x => ({ ...x, derivatives: x.derivatives ? x.derivatives.filter(d => d.content_unit_id !== dDuID) : [] }));
+      byID = update(byID, dDuID,
+        x => ({ ...x, origins: x.origins ? x.origins.filter(d => d.content_unit_id !== dId) : [] }));
+      break;
+    }
+    case FETCH_ITEM_ORIGINS_SUCCESS:
+      byID = merge(state.byID, {
+        id     : action.payload.id,
+        origins: action.payload.data.map(x => ({ name: x.name, content_unit_id: x.source.id })),
+      });
+      break;
+    case FETCH_ITEM_SOURCES_SUCCESS:
+      byID = merge(state.byID, {
+        id     : action.payload.id,
+        sources: action.payload.data.map(x => x.id),
+      });
+      break;
+    case ADD_SOURCE_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, sources: [...x.sources, action.payload.sourceID] }));
+      break;
+    case REMOVE_SOURCE_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, sources: x.sources.filter(s => s !== action.payload.sourceID) }));
+      break;
+    case FETCH_ITEM_TAGS_SUCCESS:
+      byID = merge(state.byID, {
+        id  : action.payload.id,
+        tags: action.payload.data.map(x => x.id),
+      });
+      break;
+    case ADD_TAG_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, tags: [...x.tags, action.payload.tagID] }));
+      break;
+    case REMOVE_TAG_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, tags: x.tags.filter(t => t !== action.payload.tagID) }));
+      break;
+    case FETCH_ITEM_PERSONS_SUCCESS:
+      byID = merge(state.byID, {
+        id     : action.payload.id,
+        persons: action.payload.data.map(x => x.person.id),
+      });
+      break;
+    case ADD_PERSON_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, persons: [...x.persons, action.payload.personID] }));
+      break;
+    case REMOVE_PERSON_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, persons: x.persons.filter(t => t !== action.payload.personID) }));
+      break;
+    case ADD_FILES_SUCCESS:
+      byID = update(state.byID, action.payload.id,
+        x => ({ ...x, files: [...x.files, ...action.payload.filesIds] }));
+      break;
+    case MERGE_UNITS_SUCCESS:
+      byID = delList(state.byID, action.payload.cuIds);
+      break;
+    case AUTONAME_SUCCESS:
+      byID         = state.byID;
+      autonameI18n = action.payload;
+      break;
+    case CREATE_SUCCESS:
+      byID        = state.byID;
+      lastCreated = action.payload.id;
+      break;
+    default:
   }
 
   return {
@@ -590,7 +590,7 @@ const onSuccess = (state, action) => {
     byID,
     autonameI18n,
     lastCreated,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, null),
   };
 };
@@ -616,86 +616,86 @@ const onReceiveItems = (state, action) => ({
 });
 
 export const reducer = handleActions({
-  [FETCH_ITEM]: onRequest,
-  [FETCH_ITEM_SUCCESS]: onSuccess,
-  [FETCH_ITEM_FAILURE]: onFailure,
-  [FETCH_ITEM_FILES]: onRequest,
-  [FETCH_ITEM_FILES_SUCCESS]: onSuccess,
-  [FETCH_ITEM_FILES_FAILURE]: onFailure,
-  [FETCH_ITEM_COLLECTIONS]: onRequest,
-  [FETCH_ITEM_COLLECTIONS_SUCCESS]: onSuccess,
-  [FETCH_ITEM_COLLECTIONS_FAILURE]: onFailure,
-  [FETCH_ITEM_DERIVATIVES]: onRequest,
-  [FETCH_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
-  [FETCH_ITEM_DERIVATIVES_FAILURE]: onFailure,
-  [ADD_ITEM_DERIVATIVES]: onRequest,
-  [ADD_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
-  [ADD_ITEM_DERIVATIVES_FAILURE]: onFailure,
-  [UPDATE_ITEM_DERIVATIVES]: onRequest,
+  [FETCH_ITEM]                     : onRequest,
+  [FETCH_ITEM_SUCCESS]             : onSuccess,
+  [FETCH_ITEM_FAILURE]             : onFailure,
+  [FETCH_ITEM_FILES]               : onRequest,
+  [FETCH_ITEM_FILES_SUCCESS]       : onSuccess,
+  [FETCH_ITEM_FILES_FAILURE]       : onFailure,
+  [FETCH_ITEM_COLLECTIONS]         : onRequest,
+  [FETCH_ITEM_COLLECTIONS_SUCCESS] : onSuccess,
+  [FETCH_ITEM_COLLECTIONS_FAILURE] : onFailure,
+  [FETCH_ITEM_DERIVATIVES]         : onRequest,
+  [FETCH_ITEM_DERIVATIVES_SUCCESS] : onSuccess,
+  [FETCH_ITEM_DERIVATIVES_FAILURE] : onFailure,
+  [ADD_ITEM_DERIVATIVES]           : onRequest,
+  [ADD_ITEM_DERIVATIVES_SUCCESS]   : onSuccess,
+  [ADD_ITEM_DERIVATIVES_FAILURE]   : onFailure,
+  [UPDATE_ITEM_DERIVATIVES]        : onRequest,
   [UPDATE_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
   [UPDATE_ITEM_DERIVATIVES_FAILURE]: onFailure,
-  [REMOVE_ITEM_DERIVATIVES]: onRequest,
+  [REMOVE_ITEM_DERIVATIVES]        : onRequest,
   [REMOVE_ITEM_DERIVATIVES_SUCCESS]: onSuccess,
   [REMOVE_ITEM_DERIVATIVES_FAILURE]: onFailure,
-  [FETCH_ITEM_ORIGINS]: onRequest,
-  [FETCH_ITEM_ORIGINS_SUCCESS]: onSuccess,
-  [FETCH_ITEM_ORIGINS_FAILURE]: onFailure,
-  [FETCH_ITEM_SOURCES]: onRequest,
-  [FETCH_ITEM_SOURCES_SUCCESS]: onSuccess,
-  [FETCH_ITEM_SOURCES_FAILURE]: onFailure,
-  [FETCH_ITEM_TAGS]: onRequest,
-  [FETCH_ITEM_TAGS_SUCCESS]: onSuccess,
-  [FETCH_ITEM_TAGS_FAILURE]: onFailure,
-  [FETCH_ITEM_PERSONS]: onRequest,
-  [FETCH_ITEM_PERSONS_SUCCESS]: onSuccess,
-  [FETCH_ITEM_PERSONS_FAILURE]: onFailure,
+  [FETCH_ITEM_ORIGINS]             : onRequest,
+  [FETCH_ITEM_ORIGINS_SUCCESS]     : onSuccess,
+  [FETCH_ITEM_ORIGINS_FAILURE]     : onFailure,
+  [FETCH_ITEM_SOURCES]             : onRequest,
+  [FETCH_ITEM_SOURCES_SUCCESS]     : onSuccess,
+  [FETCH_ITEM_SOURCES_FAILURE]     : onFailure,
+  [FETCH_ITEM_TAGS]                : onRequest,
+  [FETCH_ITEM_TAGS_SUCCESS]        : onSuccess,
+  [FETCH_ITEM_TAGS_FAILURE]        : onFailure,
+  [FETCH_ITEM_PERSONS]             : onRequest,
+  [FETCH_ITEM_PERSONS_SUCCESS]     : onSuccess,
+  [FETCH_ITEM_PERSONS_FAILURE]     : onFailure,
 
-  [CREATE]: onRequest,
-  [CREATE_SUCCESS]: onSuccess,
-  [CREATE_FAILURE]: onFailure,
-  [UPDATE_PROPERTIES]: onRequest,
-  [UPDATE_PROPERTIES_SUCCESS]: onSuccess,
-  [UPDATE_PROPERTIES_FAILURE]: onFailure,
-  [UPDATE_I18N]: onRequest,
-  [UPDATE_I18N_SUCCESS]: onSuccess,
-  [UPDATE_I18N_FAILURE]: onFailure,
-  [CHANGE_SECURITY_LEVEL]: onRequest,
+  [CREATE]                       : onRequest,
+  [CREATE_SUCCESS]               : onSuccess,
+  [CREATE_FAILURE]               : onFailure,
+  [UPDATE_PROPERTIES]            : onRequest,
+  [UPDATE_PROPERTIES_SUCCESS]    : onSuccess,
+  [UPDATE_PROPERTIES_FAILURE]    : onFailure,
+  [UPDATE_I18N]                  : onRequest,
+  [UPDATE_I18N_SUCCESS]          : onSuccess,
+  [UPDATE_I18N_FAILURE]          : onFailure,
+  [CHANGE_SECURITY_LEVEL]        : onRequest,
   [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
   [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
-  [CHANGE_CT]: onRequest,
-  [CHANGE_CT_SUCCESS]: onSuccess,
-  [CHANGE_CT_FAILURE]: onFailure,
-  [ADD_SOURCE]: onRequest,
-  [ADD_SOURCE_SUCCESS]: onSuccess,
-  [ADD_SOURCE_FAILURE]: onFailure,
-  [REMOVE_SOURCE]: onRequest,
-  [REMOVE_SOURCE_SUCCESS]: onSuccess,
-  [REMOVE_SOURCE_FAILURE]: onFailure,
-  [ADD_FILES]: onRequest,
-  [ADD_FILES_SUCCESS]: onSuccess,
-  [ADD_FILES_FAILURE]: onFailure,
-  [ADD_TAG]: onRequest,
-  [ADD_TAG_SUCCESS]: onSuccess,
-  [ADD_TAG_FAILURE]: onFailure,
-  [REMOVE_TAG]: onRequest,
-  [REMOVE_TAG_SUCCESS]: onSuccess,
-  [REMOVE_TAG_FAILURE]: onFailure,
-  [ADD_PERSON]: onRequest,
-  [ADD_PERSON_SUCCESS]: onSuccess,
-  [ADD_PERSON_FAILURE]: onFailure,
-  [REMOVE_PERSON]: onRequest,
-  [REMOVE_PERSON_SUCCESS]: onSuccess,
-  [REMOVE_PERSON_FAILURE]: onFailure,
-  [MERGE_UNITS]: onRequest,
-  [MERGE_UNITS_SUCCESS]: onSuccess,
-  [MERGE_UNITS_FAILURE]: onFailure,
-  [AUTONAME]: onRequest,
-  [AUTONAME_SUCCESS]: onSuccess,
-  [AUTONAME_FAILURE]: onFailure,
+  [CHANGE_CT]                    : onRequest,
+  [CHANGE_CT_SUCCESS]            : onSuccess,
+  [CHANGE_CT_FAILURE]            : onFailure,
+  [ADD_SOURCE]                   : onRequest,
+  [ADD_SOURCE_SUCCESS]           : onSuccess,
+  [ADD_SOURCE_FAILURE]           : onFailure,
+  [REMOVE_SOURCE]                : onRequest,
+  [REMOVE_SOURCE_SUCCESS]        : onSuccess,
+  [REMOVE_SOURCE_FAILURE]        : onFailure,
+  [ADD_FILES]                    : onRequest,
+  [ADD_FILES_SUCCESS]            : onSuccess,
+  [ADD_FILES_FAILURE]            : onFailure,
+  [ADD_TAG]                      : onRequest,
+  [ADD_TAG_SUCCESS]              : onSuccess,
+  [ADD_TAG_FAILURE]              : onFailure,
+  [REMOVE_TAG]                   : onRequest,
+  [REMOVE_TAG_SUCCESS]           : onSuccess,
+  [REMOVE_TAG_FAILURE]           : onFailure,
+  [ADD_PERSON]                   : onRequest,
+  [ADD_PERSON_SUCCESS]           : onSuccess,
+  [ADD_PERSON_FAILURE]           : onFailure,
+  [REMOVE_PERSON]                : onRequest,
+  [REMOVE_PERSON_SUCCESS]        : onSuccess,
+  [REMOVE_PERSON_FAILURE]        : onFailure,
+  [MERGE_UNITS]                  : onRequest,
+  [MERGE_UNITS_SUCCESS]          : onSuccess,
+  [MERGE_UNITS_FAILURE]          : onFailure,
+  [AUTONAME]                     : onRequest,
+  [AUTONAME_SUCCESS]             : onSuccess,
+  [AUTONAME_FAILURE]             : onFailure,
 
-  [RECEIVE_ITEMS]: onReceiveItems,
+  [RECEIVE_ITEMS]            : onReceiveItems,
   [RECEIVE_ITEMS_COLLECTIONS]: onReceiveItemsCollections,
-  [REMOVE_ITEM_COLLECTIONS]: onRemoveItemCollections,
+  [REMOVE_ITEM_COLLECTIONS]  : onRemoveItemCollections,
 }, initialState);
 
 /* Selectors */

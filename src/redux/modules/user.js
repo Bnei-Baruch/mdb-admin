@@ -1,51 +1,33 @@
-import { handleActions } from 'redux-actions';
-import { USER_EXPIRED, USER_FOUND, USER_SIGNED_OUT } from 'redux-oidc';
-import { jws } from 'jsrsasign';
+import { handleActions, createAction } from 'redux-actions';
+import client from '../../helpers/apiClient';
 
-import api from '../../helpers/apiClient';
+export const SET_USER   = 'auth/SET_USER';
+export const CLEAR_USER = 'auth/CLEAR_USER';
+export const SET_TOKEN  = 'auth/SET_TOKEN';
+export const LOGIN      = 'auth/LOGIN';
 
-/* Reducer */
+export const types = { LOGIN };
+
+const setUser        = createAction(SET_USER);
+const clearUser      = createAction(CLEAR_USER);
+const setToken       = createAction(SET_TOKEN);
+const login          = createAction(LOGIN);
+export const actions = { setUser, clearUser, setToken, login };
 
 const initialState = {
-  user: null,
-};
-
-const onUser = (state, action) => {
-  const user = action.payload;
-
-  if (user.fake) {
-    return { user };
-  }
-
-  // Keycloak special handling
-  // We decode the access token for the user's roles
-  const { payloadObj: { realm_access, resource_access } } = jws.JWS.parse(user.access_token);
-  user.realm_access                                       = realm_access;  // eslint-disable-line camelcase
-  user.resource_access                                    = resource_access; // eslint-disable-line camelcase
-
-  // Add 'Authorization' header to api client
-  api.defaults.headers.common.Authorization = `${user.token_type} ${user.access_token}`;
-
-  return { user };
-};
-
-const onNoUser = () => {
-  // Remove Authorization header from api client
-  delete api.defaults.headers.common.Authorization;
-
-  return { user: null };
+  user : null,
+  token: null
 };
 
 export const reducer = handleActions({
-  [USER_FOUND]: onUser,
-  [USER_EXPIRED]: onNoUser,
-  [USER_SIGNED_OUT]: onNoUser,
+  [SET_USER]  : (state, action) => ({ ...state, user: action.payload }),
+  [CLEAR_USER]: () => ({ user: null, token: null }),
+  [SET_TOKEN] : (state, action) => {
+    client.defaults.headers.common.Authorization = action.payload;
+    return { ...state, token: action.payload };
+  },
 }, initialState);
 
-/* Selectors */
-
-const getUser = state => state.user;
-
 export const selectors = {
-  getUser,
+  getUser: state => state.user,
 };

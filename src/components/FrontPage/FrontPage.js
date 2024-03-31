@@ -8,13 +8,13 @@ import { selectors } from '../../redux/modules/user';
 import { actions as actionsSystem, selectors as selectorsSystem } from '../../redux/modules/system';
 import AppLayout from './AppLayout';
 import AppRoutes from './AppRoutes';
-import LoginRoutes from './LoginRoutes';
 import ForbiddenPage from './ForbiddenPage';
+import LoginPage from './LoginPage';
 
-class MainPage extends PureComponent {
+class FrontPage extends PureComponent {
   static propTypes = {
-    user: PropTypes.object,
-    currentLanguage: PropTypes.string.isRequired,
+    user                 : PropTypes.object,
+    currentLanguage      : PropTypes.string.isRequired,
     updateCurrentLanguage: PropTypes.func.isRequired,
   };
 
@@ -25,8 +25,8 @@ class MainPage extends PureComponent {
   render() {
     const { user, currentLanguage, updateCurrentLanguage } = this.props;
 
-    if (!user || user.expired) {
-      return <LoginRoutes />;
+    if (!user) {
+      return <LoginPage />;
     }
 
     if (user.realm_access.roles.every(r => !r.startsWith('archive_'))) {
@@ -53,7 +53,7 @@ class MainPage extends PureComponent {
 
 function mapState(state) {
   return {
-    user: selectors.getUser(state.user),
+    user           : selectors.getUser(state.user),
     currentLanguage: selectorsSystem.getCurrentLanguage(state.system),
   };
 }
@@ -64,4 +64,4 @@ function mapDispatch(dispatch) {
   }, dispatch);
 }
 
-export default withRouter(connect(mapState, mapDispatch)(MainPage));
+export default withRouter(connect(mapState, mapDispatch)(FrontPage));

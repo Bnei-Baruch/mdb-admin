@@ -5,16 +5,16 @@ import { Dropdown, Flag, Grid, Image, Menu } from 'semantic-ui-react';
 
 import { AUTH_URL, } from '../../helpers/env';
 import { LANGUAGE_OPTIONS, SITE_LANGUAGES } from '../../helpers/consts';
-import userManager from '../../helpers/userManager';
 
 import logo from './KL_Tree_32.png';
+import { getKeycloak } from './helper';
 
 class AppLayout extends PureComponent {
   static propTypes = {
-    children: PropTypes.element,
-    user: PropTypes.object.isRequired,
+    children             : PropTypes.element,
+    user                 : PropTypes.object.isRequired,
     updateCurrentLanguage: PropTypes.func.isRequired,
-    currentLanguage: PropTypes.string.isRequired,
+    currentLanguage      : PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -26,10 +26,7 @@ class AppLayout extends PureComponent {
     updateCurrentLanguage(value);
   };
 
-  handleSignout = (e) => {
-    e.preventDefault();
-    userManager.signoutRedirect();
-  };
+  handleSignout = () => getKeycloak().logout();
 
   render() {
     const { user, currentLanguage, children } = this.props;
@@ -67,7 +64,7 @@ class AppLayout extends PureComponent {
                   />
                 </Menu.Item>
                 <Menu.Item>
-                  <Dropdown item text={user.profile.name}>
+                  <Dropdown item text={user.name}>
                     <Dropdown.Menu>
                       <Dropdown.Item as="a" href={`${AUTH_URL}/account`} target="_blank">
                         My Account

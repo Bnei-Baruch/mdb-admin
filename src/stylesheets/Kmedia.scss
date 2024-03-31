@@ -71,3 +71,10 @@
   max-height: 300px;
   overflow-y: auto;
 }
+
+.login-form{
+  display: flex;
+  min-height: 100VH;
+  justify-content: center;
+  align-items: center;
+}

@@ -3,7 +3,7 @@
     "airbnb",
     "plugin:jest/recommended"
   ],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "env": {
     "browser": true,
     "es6": true,
@@ -12,11 +12,12 @@
   "plugins": [
     "react",
     "jest",
-    "import"
+    "import",
+    "react-hooks"
   ],
   "settings": {
-    "parser": "babel-eslint",
-    "import/parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
+    "import/parser": "@babel/eslint-parser",
     "import/resolve": {},
     "ecmaFeatures": {
       "classes": true,
@@ -34,6 +35,7 @@
     "react/jsx-one-expression-per-line": "off",
     "react/destructuring-assignment": "off",
     "react/prefer-stateless-function": "off",
+    "react/function-component-definition": "off",
     "no-multi-spaces": "off",
     "no-plusplus": "off",
     "import/no-named-as-default-member": "off",

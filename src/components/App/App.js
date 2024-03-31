@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect, Provider } from 'react-redux';
-import { OidcProvider } from 'redux-oidc';
 import { ConnectedRouter } from 'connected-react-router';
 import 'semantic-ui-css/semantic.min.css';
-
-import userManager from '../../helpers/userManager';
 import { selectors as system } from '../../redux/modules/system';
 import FrontPage from '../FrontPage/FrontPage';
 import '../../stylesheets/Kmedia.css';
 import './App.css';
+import InitKeycloak from '../FrontPage/InitKeycloak';
 
 class App extends Component {
   static propTypes = {
-    store: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
+    store     : PropTypes.object.isRequired,
+    history   : PropTypes.object.isRequired,
     isAppReady: PropTypes.bool
   };
 
@@ -27,11 +25,10 @@ class App extends Component {
     if (isAppReady) {
       return (
         <Provider store={store}>
-          <OidcProvider store={store} userManager={userManager}>
-            <ConnectedRouter history={history}>
-              <FrontPage />
-            </ConnectedRouter>
-          </OidcProvider>
+          <ConnectedRouter history={history}>
+            <InitKeycloak />
+            <FrontPage />
+          </ConnectedRouter>
         </Provider>
       );
     }

@@ -73,7 +73,7 @@ const create            = createAction(CREATE,
     description,
     i18n,
     author,
-    type_id: typeID
+    type_id  : typeID
   }));
 const createSuccess     = createAction(CREATE_SUCCESS);
 const createFailure     = createAction(CREATE_FAILURE);
@@ -119,8 +119,8 @@ const keys = new Map([
 ]);
 
 const initialState = {
-  byID: new Map(),
-  wip: new Map(Array.from(keys.values(), x => [x, false])),
+  byID  : new Map(),
+  wip   : new Map(Array.from(keys.values(), x => [x, false])),
   errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
@@ -133,7 +133,7 @@ const onFailure = (state, action) => {
   const key = keys.get(action.type);
   return {
     ...state,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, action.payload),
   };
 };
@@ -143,44 +143,44 @@ const onSuccess = (state, action) => {
 
   let byID;
   switch (action.type) {
-  case FETCH_ITEM_SUCCESS:
-  case UPDATE_INFO_SUCCESS:
-  case UPDATE_I18N_SUCCESS:
-  case CREATE_SUCCESS:
-    byID = merge(state.byID, action.payload);
-    break;
-  case FETCH_ALL_SUCCESS:
-    byID = new Map(action.payload.map(x => [x.id, x]));
-    break;
-  default:
-    byID = state.byID;
+    case FETCH_ITEM_SUCCESS:
+    case UPDATE_INFO_SUCCESS:
+    case UPDATE_I18N_SUCCESS:
+    case CREATE_SUCCESS:
+      byID = merge(state.byID, action.payload);
+      break;
+    case FETCH_ALL_SUCCESS:
+      byID = new Map(action.payload.map(x => [x.id, x]));
+      break;
+    default:
+      byID = state.byID;
   }
 
   return {
     ...state,
     byID,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, null),
   };
 };
 
 export const reducer = handleActions({
-  [FETCH_ITEM]: onRequest,
+  [FETCH_ITEM]        : onRequest,
   [FETCH_ITEM_SUCCESS]: onSuccess,
   [FETCH_ITEM_FAILURE]: onFailure,
-  [FETCH_ALL]: onRequest,
-  [FETCH_ALL_SUCCESS]: onSuccess,
-  [FETCH_ALL_FAILURE]: onFailure,
+  [FETCH_ALL]         : onRequest,
+  [FETCH_ALL_SUCCESS] : onSuccess,
+  [FETCH_ALL_FAILURE] : onFailure,
 
-  [UPDATE_INFO]: onRequest,
+  [UPDATE_INFO]        : onRequest,
   [UPDATE_INFO_SUCCESS]: onSuccess,
   [UPDATE_INFO_FAILURE]: onFailure,
-  [UPDATE_I18N]: onRequest,
+  [UPDATE_I18N]        : onRequest,
   [UPDATE_I18N_SUCCESS]: onSuccess,
   [UPDATE_I18N_FAILURE]: onFailure,
-  [CREATE]: onRequest,
-  [CREATE_SUCCESS]: onSuccess,
-  [CREATE_FAILURE]: onFailure,
+  [CREATE]             : onRequest,
+  [CREATE_SUCCESS]     : onSuccess,
+  [CREATE_FAILURE]     : onFailure,
 
 }, initialState);
 

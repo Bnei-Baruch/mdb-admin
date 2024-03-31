@@ -114,8 +114,8 @@ const keys = new Map([
 ]);
 
 const initialState = {
-  byID: new Map(),
-  wip: new Map(Array.from(keys.values(), x => [x, false])),
+  byID  : new Map(),
+  wip   : new Map(Array.from(keys.values(), x => [x, false])),
   errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
@@ -128,7 +128,7 @@ const onFailure = (state, action) => {
   const key = keys.get(action.type);
   return {
     ...state,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, action.payload),
   };
 };
@@ -138,43 +138,43 @@ const onSuccess = (state, action) => {
 
   let byID;
   switch (action.type) {
-  case CHANGE_SECURITY_LEVEL_SUCCESS:
-  case FETCH_ITEM_SUCCESS:
-    byID = merge(state.byID, action.payload);
-    break;
-  case UPDATE_PROPERTIES_SUCCESS: {
-    const { id, content_unit_id, language, type, mime_type } = action.payload;
+    case CHANGE_SECURITY_LEVEL_SUCCESS:
+    case FETCH_ITEM_SUCCESS:
+      byID = merge(state.byID, action.payload);
+      break;
+    case UPDATE_PROPERTIES_SUCCESS: {
+      const { id, content_unit_id, language, type, mime_type } = action.payload;
 
-    byID = merge(state.byID, {
-      id,
-      content_unit_id,
-      language,
-      type,
-      mime_type
-    });
-    break;
-  }
-  case FETCH_ITEM_STORAGES_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      storages: action.payload.data.map(x => x.id),
-    });
-    break;
-  case FETCH_TREE_WITH_OPERATIONS_SUCCESS:
-    byID = bulkMerge(state.byID, action.payload.files);
-    byID = merge(byID, {
-      id: action.payload.id,
-      tree: action.payload.files.map(x => x.id),
-    });
-    break;
-  default:
-    byID = state.byID;
+      byID = merge(state.byID, {
+        id,
+        content_unit_id,
+        language,
+        type,
+        mime_type
+      });
+      break;
+    }
+    case FETCH_ITEM_STORAGES_SUCCESS:
+      byID = merge(state.byID, {
+        id      : action.payload.id,
+        storages: action.payload.data.map(x => x.id),
+      });
+      break;
+    case FETCH_TREE_WITH_OPERATIONS_SUCCESS:
+      byID = bulkMerge(state.byID, action.payload.files);
+      byID = merge(byID, {
+        id  : action.payload.id,
+        tree: action.payload.files.map(x => x.id),
+      });
+      break;
+    default:
+      byID = state.byID;
   }
 
   return {
     ...state,
     byID,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, null),
   };
 };
@@ -185,22 +185,22 @@ const onReceiveItems = (state, action) => ({
 });
 
 export const reducer = handleActions({
-  [FETCH_ITEM]: onRequest,
-  [FETCH_ITEM_SUCCESS]: onSuccess,
-  [FETCH_ITEM_FAILURE]: onFailure,
-  [FETCH_ITEM_STORAGES]: onRequest,
-  [FETCH_ITEM_STORAGES_SUCCESS]: onSuccess,
-  [FETCH_ITEM_STORAGES_FAILURE]: onFailure,
-  [FETCH_TREE_WITH_OPERATIONS]: onRequest,
+  [FETCH_ITEM]                        : onRequest,
+  [FETCH_ITEM_SUCCESS]                : onSuccess,
+  [FETCH_ITEM_FAILURE]                : onFailure,
+  [FETCH_ITEM_STORAGES]               : onRequest,
+  [FETCH_ITEM_STORAGES_SUCCESS]       : onSuccess,
+  [FETCH_ITEM_STORAGES_FAILURE]       : onFailure,
+  [FETCH_TREE_WITH_OPERATIONS]        : onRequest,
   [FETCH_TREE_WITH_OPERATIONS_SUCCESS]: onSuccess,
   [FETCH_TREE_WITH_OPERATIONS_FAILURE]: onFailure,
 
-  [CHANGE_SECURITY_LEVEL]: onRequest,
+  [CHANGE_SECURITY_LEVEL]        : onRequest,
   [CHANGE_SECURITY_LEVEL_SUCCESS]: onSuccess,
   [CHANGE_SECURITY_LEVEL_FAILURE]: onFailure,
-  [UPDATE_PROPERTIES]: onRequest,
-  [UPDATE_PROPERTIES_SUCCESS]: onSuccess,
-  [UPDATE_PROPERTIES_FAILURE]: onFailure,
+  [UPDATE_PROPERTIES]            : onRequest,
+  [UPDATE_PROPERTIES_SUCCESS]    : onSuccess,
+  [UPDATE_PROPERTIES_FAILURE]    : onFailure,
 
   [RECEIVE_ITEMS]: onReceiveItems,
 
