@@ -4,7 +4,7 @@ ARG cdn_url="https://cdn.kabbalahmedia.info/"
 ARG cdn_hls_url="https://cdn.kab.info/"
 ARG auth_url="https://accounts.kab.info/auth/realms/main"
 
-FROM node:15 as build
+FROM node:21 as build
 
 LABEL maintainer="edoshor@gmail.com"
 
@@ -28,7 +28,7 @@ COPY . .
 
 RUN yarn install --frozen-lockfile && \
     yarn build-css && \
-    node_modules/.bin/react-app-rewired build && \
+    react-scripts build && \
     rm -rf node_modules
 
 FROM alpine

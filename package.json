@@ -19,7 +19,6 @@
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.34.1",
     "npm-run-all": "^4.1.5",
-    "react-app-rewired": "^2.2.1",
     "react-scripts": "^5.0.1",
     "sass": "^1.43.5",
     "why-did-you-update": "1.0.8"
@@ -53,8 +52,8 @@
   },
   "scripts": {
     "start": "npm-run-all -p watch-css start-js",
-    "start-js": "react-scripts --openssl-legacy-provider start",
-    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; yarn build-css && react-app-rewired build'",
+    "start-js": "react-scripts start",
+    "build": "sh -ac '. .env; yarn build-css && react-scripts build'",
     "build:external": "REACT_APP_ENV=external yarn build",
     "build:production": "REACT_APP_ENV=production yarn build",
     "build:staging": "REACT_APP_ENV=staging yarn build",
