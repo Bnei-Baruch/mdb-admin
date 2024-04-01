@@ -26,7 +26,7 @@ const ForbiddenPage = ({ user, updateCurrentLanguage, currentLanguage }) => {
               <Menu.Item>
                 <Dropdown item text={user.name}>
                   <Dropdown.Menu>
-                    <Dropdown.Item as="a" href={`${AUTH_URL}/account`} target="_blank">
+                    <Dropdown.Item as="a" href={`${AUTH_URL}/realms/account`} target="_blank">
                       My Account
                     </Dropdown.Item>
                     <Dropdown.Divider />

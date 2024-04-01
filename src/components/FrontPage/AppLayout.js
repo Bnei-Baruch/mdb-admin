@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
 import { Dropdown, Flag, Grid, Image, Menu } from 'semantic-ui-react';
 
-import { AUTH_URL, } from '../../helpers/env';
+import { AUTH_URL } from '../../helpers/env';
 import { LANGUAGE_OPTIONS, SITE_LANGUAGES } from '../../helpers/consts';
 
 import logo from './KL_Tree_32.png';

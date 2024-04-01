@@ -1,8 +1,5 @@
 import Keycloak from 'keycloak-js';
-
-const KC_API_URL   = 'https://accounts.kab.info/auth';
-const KC_CLIENT_ID = 'kmedia-public';
-const KC_REALM     = 'main';
+import { KC_CLIENT, AUTH_URL } from '../../helpers/env';
 
 export const kcLogin = () => {
   const url = new URL(window.location.href);
@@ -10,9 +7,9 @@ export const kcLogin = () => {
 };
 
 const userManagerConfig = {
-  url          : KC_API_URL,
-  realm        : KC_REALM,
-  clientId     : KC_CLIENT_ID,
+  url          : AUTH_URL,
+  realm        : 'main',
+  clientId     : KC_CLIENT,
   scope        : 'profile',
   enableLogging: true
 };
