@@ -15,7 +15,6 @@ const InitKeycloak = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     getKeycloak().init(options).then(ok => {
-      console.log('check KC bug: on init', ok);
       if (!ok) {
         dispatch(actions.clearUser());
         return;
