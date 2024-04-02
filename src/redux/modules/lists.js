@@ -50,20 +50,17 @@ const initialState = {
 
 const onSetPage = (state, action) => ({
   ...state,
-  byNS: update(state.byNS, action.payload.namespace,
-    x => ({ ...x, pageNo: action.payload.pageNo })),
+  byNS: update(state.byNS, action.payload.namespace, x => ({ ...x, pageNo: action.payload.pageNo })),
 });
 
 const onRequest = (state, action) => ({
   ...state,
-  byNS: update(state.byNS, action.payload.namespace,
-    x => ({ ...x, wip: true })),
+  byNS: update(state.byNS, action.payload.namespace, x => ({ ...x, wip: true })),
 });
 
 const onFailure = (state, action) => ({
   ...state,
-  byNS: update(state.byNS, action.payload.namespace,
-    x => ({ ...x, wip: false, err: action.payload.err })),
+  byNS: update(state.byNS, action.payload.namespace, x => ({ ...x, wip: false, err: action.payload.err })),
 });
 
 const onSuccess = (state, action) => ({
@@ -71,8 +68,8 @@ const onSuccess = (state, action) => ({
   byNS: update(state.byNS, action.payload.namespace,
     x => ({
       ...x,
-      wip: false,
-      err: null,
+      wip  : false,
+      err  : null,
       total: action.payload.total,
       items: action.payload.data.map(y => y.id),
     })),
@@ -125,12 +122,12 @@ const onRemoveItems = (state, action) => {
 };
 
 export const reducer = handleActions({
-  [SET_PAGE]: onSetPage,
-  [FETCH_LIST]: onRequest,
+  [SET_PAGE]          : onSetPage,
+  [FETCH_LIST]        : onRequest,
   [FETCH_LIST_FAILURE]: onFailure,
   [FETCH_LIST_SUCCESS]: onSuccess,
-  [REMOVE_ITEM]: onRemoveItem,
-  [REMOVE_ITEMS]: onRemoveItems,
+  [REMOVE_ITEM]       : onRemoveItem,
+  [REMOVE_ITEMS]      : onRemoveItems,
 }, initialState);
 
 /* Selectors */

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
-import filesize from 'filesize';
 
 import { SECURITY_LEVELS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import ListBase from './ListBase';
+import { filesize } from 'filesize';
 
 class FilesList extends ListBase {
   static propTypes = {

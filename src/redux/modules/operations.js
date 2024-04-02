@@ -60,8 +60,8 @@ const keys = new Map([
 ]);
 
 const initialState = {
-  byID: new Map(),
-  wip: new Map(Array.from(keys.values(), x => [x, false])),
+  byID  : new Map(),
+  wip   : new Map(Array.from(keys.values(), x => [x, false])),
   errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
@@ -74,7 +74,7 @@ const onFailure = (state, action) => {
   const key = keys.get(action.type);
   return {
     ...state,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, action.payload),
   };
 };
@@ -84,23 +84,23 @@ const onSuccess = (state, action) => {
 
   let byID;
   switch (action.type) {
-  case FETCH_ITEM_SUCCESS:
-    byID = merge(state.byID, action.payload);
-    break;
-  case FETCH_ITEM_FILES_SUCCESS:
-    byID = merge(state.byID, {
-      id: action.payload.id,
-      files: action.payload.data.map(x => x.id),
-    });
-    break;
-  default:
-    byID = state.byID;
+    case FETCH_ITEM_SUCCESS:
+      byID = merge(state.byID, action.payload);
+      break;
+    case FETCH_ITEM_FILES_SUCCESS:
+      byID = merge(state.byID, {
+        id   : action.payload.id,
+        files: action.payload.data.map(x => x.id),
+      });
+      break;
+    default:
+      byID = state.byID;
   }
 
   return {
     ...state,
     byID,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, null),
   };
 };
@@ -111,10 +111,10 @@ const onReceiveItems = (state, action) => ({
 });
 
 export const reducer = handleActions({
-  [FETCH_ITEM]: onRequest,
-  [FETCH_ITEM_SUCCESS]: onSuccess,
-  [FETCH_ITEM_FAILURE]: onFailure,
-  [FETCH_ITEM_FILES]: onRequest,
+  [FETCH_ITEM]              : onRequest,
+  [FETCH_ITEM_SUCCESS]      : onSuccess,
+  [FETCH_ITEM_FAILURE]      : onFailure,
+  [FETCH_ITEM_FILES]        : onRequest,
   [FETCH_ITEM_FILES_SUCCESS]: onSuccess,
   [FETCH_ITEM_FILES_FAILURE]: onFailure,
 

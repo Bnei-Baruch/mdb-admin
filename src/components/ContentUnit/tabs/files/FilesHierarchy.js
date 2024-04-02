@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import filesize from 'filesize';
+import { filesize } from 'filesize';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';

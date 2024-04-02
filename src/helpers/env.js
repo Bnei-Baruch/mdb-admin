@@ -9,8 +9,11 @@ export const BASE_URL = process.env.REACT_APP_BASE_URL ||
 // Base name for history (path of BASE_URL)
 export const HISTORY_BASENAME = process.env.REACT_APP_HISTORY_BASENAME || '';
 
-// Authentication service root url (OIDC Identity Provider)
+// Authentication service root url
 export const AUTH_URL = process.env.REACT_APP_AUTH_URL;
+
+// Authentication service root url
+export const KC_CLIENT = process.env.REACT_APP_KC_CLIENT;
 
 // Base url of our beloved backend API
 export const API_BACKEND = process.env.REACT_APP_MDB_URL;

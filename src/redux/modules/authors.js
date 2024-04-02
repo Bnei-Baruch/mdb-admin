@@ -41,8 +41,8 @@ const keys = new Map([
 ]);
 
 const initialState = {
-  byID: new Map(),
-  wip: new Map(Array.from(keys.values(), x => [x, false])),
+  byID  : new Map(),
+  wip   : new Map(Array.from(keys.values(), x => [x, false])),
   errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
@@ -55,7 +55,7 @@ const onFailure = (state, action) => {
   const key = keys.get(action.type);
   return {
     ...state,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, action.payload),
   };
 };
@@ -65,24 +65,24 @@ const onSuccess = (state, action) => {
 
   let byID;
   switch (action.type) {
-  case FETCH_ALL_SUCCESS:
-    byID = new Map(action.payload.data.map(x =>
-      [
-        x.id,
-        {
-          ...x,
-          sources: x.sources.map(y => y.id)
-        }
-      ]));
-    break;
-  default:
-    byID = state.byID;
+    case FETCH_ALL_SUCCESS:
+      byID = new Map(action.payload.data.map(x =>
+        [
+          x.id,
+          {
+            ...x,
+            sources: x.sources.map(y => y.id)
+          }
+        ]));
+      break;
+    default:
+      byID = state.byID;
   }
 
   return {
     ...state,
     byID,
-    wip: setMap(state.wip, key, false),
+    wip   : setMap(state.wip, key, false),
     errors: setMap(state.errors, key, null),
   };
 };
@@ -103,10 +103,10 @@ const onNewSource = (state, action) => {
 };
 
 export const reducer = handleActions({
-  [FETCH_ALL]: onRequest,
+  [FETCH_ALL]        : onRequest,
   [FETCH_ALL_SUCCESS]: onSuccess,
   [FETCH_ALL_FAILURE]: onFailure,
-  [ON_NEW_SOURCE]: onNewSource,
+  [ON_NEW_SOURCE]    : onNewSource,
 }, initialState);
 
 /* Selectors */

@@ -117,7 +117,7 @@ const onStopEditing = (state, action) => {
   const { namespace, name } = action.payload;
   return setFilterState(state, namespace, name, {
     editingExistingValue: false,
-    activeValueIndex: null
+    activeValueIndex    : null
   });
 };
 
@@ -132,7 +132,7 @@ const onEditNewFilter = (state, action) => {
   const { namespace, name } = action.payload;
 
   const newState                   = setFilterState(state, namespace, name, (filterState) => ({
-    activeValueIndex: Array.isArray(filterState.values) && filterState.values.length > 0 ? filterState.length - 1 : 0,
+    activeValueIndex    : Array.isArray(filterState.values) && filterState.values.length > 0 ? filterState.length - 1 : 0,
     editingExistingValue: false,
   }));
   newState[namespace].activeFilter = name;
@@ -142,7 +142,7 @@ const onEditNewFilter = (state, action) => {
 const onEditExistingFilter = (state, action) => {
   const { namespace, name, index } = action.payload;
   const newState                   = setFilterState(state, namespace, name, {
-    activeValueIndex: index,
+    activeValueIndex    : index,
     editingExistingValue: true
   });
 
@@ -162,7 +162,7 @@ const onAddFilterValue = (state, action) => {
     const newValues = values.concat([value]);
 
     return {
-      values: newValues,
+      values          : newValues,
       activeValueIndex: null
     };
   });
@@ -177,7 +177,7 @@ const onSetFilterValue = (state, action) => {
 
     const values = filterState.values || [];
     return {
-      values: values.slice(0, index).concat([value]).concat(values.slice(index + 1)),
+      values          : values.slice(0, index).concat([value]).concat(values.slice(index + 1)),
       activeValueIndex: index
     };
   });
@@ -238,17 +238,17 @@ const onFiltersHydrated = (state, action) => ({
 });
 
 export const reducer = handleActions({
-  [STOP_EDITING_FILTER]: onStopEditing,
-  [CLOSE_ACTIVE_FILTER]: onCloseActiveFilter,
-  [EDIT_NEW_FILTER]: onEditNewFilter,
+  [STOP_EDITING_FILTER] : onStopEditing,
+  [CLOSE_ACTIVE_FILTER] : onCloseActiveFilter,
+  [EDIT_NEW_FILTER]     : onEditNewFilter,
   [EDIT_EXISTING_FILTER]: onEditExistingFilter,
 
-  [ADD_FILTER_VALUE]: onAddFilterValue,
-  [SET_FILTER_VALUE]: onSetFilterValue,
-  [REMOVE_FILTER_VALUE]: onRemoveFilterValue,
+  [ADD_FILTER_VALUE]          : onAddFilterValue,
+  [SET_FILTER_VALUE]          : onSetFilterValue,
+  [REMOVE_FILTER_VALUE]       : onRemoveFilterValue,
   [SET_HYDRATED_FILTER_VALUES]: onSetHydratedFilterValues,
-  [HYDRATE_FILTERS]: onHydrateFilters,
-  [FILTERS_HYDRATED]: onFiltersHydrated
+  [HYDRATE_FILTERS]           : onHydrateFilters,
+  [FILTERS_HYDRATED]          : onFiltersHydrated
 }, initialState);
 
 /* Selectors */
@@ -313,14 +313,14 @@ const getActiveFilter = (state, namespace) => (
 
 const tabsWithFilterNames = {
   'date-range-filter': 'Date Range',
-  query: 'Free Text',
-  'sources-filter': 'Sources',
-  'topics-filter': 'Topics',
-  operation_type: 'Others',
-  content_type: 'Others',
-  secure: 'Others',
-  published: 'Others',
-  original_language: 'Original Language'
+  query              : 'Free Text',
+  'sources-filter'   : 'Sources',
+  'topics-filter'    : 'Topics',
+  operation_type     : 'Others',
+  content_type       : 'Others',
+  secure             : 'Others',
+  published          : 'Others',
+  original_language  : 'Original Language'
 };
 
 const getTabNameByFilterName = fName => tabsWithFilterNames[fName];

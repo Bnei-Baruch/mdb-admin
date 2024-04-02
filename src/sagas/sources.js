@@ -1,5 +1,4 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { USER_FOUND } from 'redux-oidc';
 
 import { actions, types } from '../redux/modules/sources';
 import { actions as actionsAuthor } from '../redux/modules/authors';
@@ -65,7 +64,7 @@ function* watchFetchItem() {
 }
 
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, USER_FOUND], fetchAll);
+  yield takeLatest(types.FETCH_ALL, fetchAll);
 }
 
 function* watchUpdateInfo() {

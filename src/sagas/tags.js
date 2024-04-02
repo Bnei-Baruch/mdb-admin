@@ -1,4 +1,3 @@
-import { USER_FOUND } from 'redux-oidc';
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import api from '../helpers/apiClient';
 
@@ -59,7 +58,7 @@ function* watchFetchItem() {
 }
 
 function* watchLastFetchAll() {
-  yield takeLatest([types.FETCH_ALL, USER_FOUND], fetchAll);
+  yield takeLatest(types.FETCH_ALL, fetchAll);
 }
 
 function* watchUpdateInfo() {

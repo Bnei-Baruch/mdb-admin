@@ -7,9 +7,6 @@ import { JWPLAYER_ID } from '../../../../helpers/consts';
 
 const Player = (props) => {
   const { file } = props;
-  if (!file) {
-    return null;
-  }
 
   const types = fileTypes(file);
   useEffect(() => {
@@ -20,6 +17,9 @@ const Player = (props) => {
     }
   }, [file]);
 
+  if (!file) {
+    return null;
+  }
   return (
     <div>
       {['audio', 'video'].includes(types.type) && <div id={JWPLAYER_ID} />}

@@ -27,8 +27,8 @@ export const actions = {
 
 const initialState = {
   collections: [],
-  wip: false,
-  error: null,
+  wip        : false,
+  error      : null,
 };
 
 const onRequest = (state) => ({ ...state, wip: true });
@@ -36,7 +36,7 @@ const onRequest = (state) => ({ ...state, wip: true });
 const onFailure = (state, action) => {
   return {
     ...state,
-    wip: false,
+    wip  : false,
     error: action.payload,
   };
 };
@@ -45,13 +45,13 @@ const onSuccess = (state, action) => {
   return {
     ...state,
     collections: action.payload.map(c => c.id),
-    wip: false,
-    error: null,
+    wip        : false,
+    error      : null,
   };
 };
 
 export const reducer = handleActions({
-  [SEARCH_COLLECTIONS]: onRequest,
+  [SEARCH_COLLECTIONS]        : onRequest,
   [SEARCH_COLLECTIONS_SUCCESS]: onSuccess,
   [SEARCH_COLLECTIONS_FAILURE]: onFailure,
 }, initialState);
