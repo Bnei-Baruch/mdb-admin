@@ -3,6 +3,7 @@ import { useDispatch, useSelector, batch } from 'react-redux';
 import { actions as persons } from '../../redux/modules/persons';
 import { actions as sources } from '../../redux/modules/sources';
 import { actions as authors } from '../../redux/modules/authors';
+import { actions as tags } from '../../redux/modules/tags';
 import { selectors as user } from '../../redux/modules/user';
 
 const InitialFetchAll = () => {
@@ -15,6 +16,7 @@ const InitialFetchAll = () => {
         dispatch(authors.fetchAll());
         dispatch(sources.fetchAll());
         dispatch(persons.fetchAll());
+        dispatch(tags.fetchAll());
 
       });
     }
