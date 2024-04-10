@@ -28,3 +28,6 @@ yarn-error.log*
 /src/stylesheets/Kmedia.css
 /.eslintcache
 /src/stylesheets/Kmedia.css.map
+
+#yarn
+.pnp.*
