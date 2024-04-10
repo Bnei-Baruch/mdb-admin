@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router';
+import  { createRouterReducer as connectRouter  } from '@lagunovsky/redux-react-router';
 
 import { reducer as user } from './modules/user';
 import { reducer as filters } from './modules/filters';

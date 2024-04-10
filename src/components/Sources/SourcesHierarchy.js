@@ -1,31 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import {
-  Grid, Header, Icon, List, Menu, Modal, Segment
-} from 'semantic-ui-react';
+import { Grid, Header, Icon, List, Menu, Modal, Segment } from 'semantic-ui-react';
 
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import NewSourceForm from './NewSourceForm';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class SourcesHierarchy extends Component {
   static propTypes = {
-    getSourceById: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    getError: PropTypes.func.isRequired,
-    location: shapes.HistoryLocation.isRequired,
-    authors: PropTypes.arrayOf(shapes.Author),
-    hierarchy: shapes.Hierarchy,
+    getSourceById  : PropTypes.func.isRequired,
+    getWIP         : PropTypes.func.isRequired,
+    getError       : PropTypes.func.isRequired,
+    location       : shapes.HistoryLocation.isRequired,
+    authors        : PropTypes.arrayOf(shapes.Author),
+    hierarchy      : shapes.Hierarchy,
     currentLanguage: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
-    authors: [],
+    authors  : [],
     hierarchy: {
-      roots: [],
-      childMap: new Map(),
+      roots          : [],
+      childMap       : new Map(),
       currentLanguage: PropTypes.string.isRequired,
     }
   };
@@ -42,7 +41,7 @@ class SourcesHierarchy extends Component {
     this.state = {
       modalOpen: false,
       author,
-      wip: false
+      wip      : false
     };
   }
 
@@ -58,13 +57,13 @@ class SourcesHierarchy extends Component {
     const response = {};
     if (state.wip && !nWip && !nErr) {
       response.modalOpen = false;
-      response.wip = false;
+      response.wip       = false;
     }
 
     // set default author once we have authors if we need one
     if (!state.author && props.authors.length > 0) {
       response.author = props.authors[0];
-      response.wip = false;
+      response.wip    = false;
     }
 
     return Object.entries(response).length > 0 ? response : null;
@@ -111,8 +110,8 @@ class SourcesHierarchy extends Component {
 
   renderHierarchy() {
     const {
-      authors, hierarchy, getWIP, currentLanguage
-    } = this.props;
+            authors, hierarchy, getWIP, currentLanguage
+          } = this.props;
 
     const wip     = getWIP('fetchAll');
     const isEmpty = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
@@ -197,4 +196,4 @@ class SourcesHierarchy extends Component {
   }
 }
 
-export default SourcesHierarchy;
+export default withRouter(SourcesHierarchy);

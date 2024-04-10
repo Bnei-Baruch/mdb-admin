@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import File from '../File/Container';
 import Files from '../Files/Container';
@@ -22,28 +22,28 @@ import Label from '../Label/Container';
 import Welcome from './Welcome';
 
 const AppRoutes = () => (
-  <Switch>
-    <Route exact path="/" component={Welcome} />
-    <Route exact path="/files" component={Files} />
-    <Route exact path="/files/:id" component={File} />
-    <Route exact path="/content_units" component={ContentUnits} />
-    <Route exact path="/content_units/:id" component={ContentUnit} />
-    <Route exact path="/collections" component={Collections} />
-    <Route exact path="/collections/:id" component={Collection} />
-    <Route exact path="/operations" component={Operations} />
-    <Route exact path="/operations/:id" component={Operation} />
-    <Route exact path="/tags" component={Tags} />
-    <Route exact path="/tags/:id" component={Tag} />
-    <Route exact path="/sources" component={Sources} />
-    <Route exact path="/sources/:id" component={Source} />
-    <Route exact path="/persons" component={Persons} />
-    <Route exact path="/persons/:id" component={Person} />
-    <Route exact path="/publishers" component={Publishers} />
-    <Route exact path="/publishers/:id" component={Publisher} />
-    <Route exact path="/labels" component={Labels} />
-    <Route exact path="/labels/:id" component={Label} />
-    <Route render={() => <h1>Page not found</h1>} />
-  </Switch>
+  <Routes>
+    <Route path="/" element={<Welcome />} />
+    <Route path="/files" element={<Files />} />
+    <Route path="/files/:id" element={<File />} />
+    <Route path="/content_units" element={<ContentUnits />} />
+    <Route path="/content_units/:id" element={<ContentUnit />} />
+    <Route path="/collections" element={<Collections />} />
+    <Route path="/collections/:id" element={<Collection />} />
+    <Route path="/operations" element={<Operations />} />
+    <Route path="/operations/:id" element={<Operation />} />
+    <Route path="/tags" element={<Tags />} />
+    <Route path="/tags/:id" element={<Tag />} />
+    <Route path="/sources" element={<Sources />} />
+    <Route path="/sources/:id" element={<Source />} />
+    <Route path="/persons" element={<Persons />} />
+    <Route path="/persons/:id" element={<Person />} />
+    <Route path="/publishers" element={<Publishers />} />
+    <Route path="/publishers/:id" element={<Publisher />} />
+    <Route path="/labels" element={<Labels />} />
+    <Route path="/labels/:id" element={<Label />} />
+    <Route path="*" element={<h1>Page not found</h1>} />
+  </Routes>
 );
 
 export default AppRoutes;

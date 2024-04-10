@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/persons';
 import MainPage from './MainPage';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class Container extends Component {
   static propTypes = {
@@ -56,4 +57,4 @@ function mapDispatch(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(Container);
+export default withRouter(connect(mapState, mapDispatch)(Container));

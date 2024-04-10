@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect, Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
+import { ReduxRouter as ConnectedRouter } from '@lagunovsky/redux-react-router';
 import 'semantic-ui-css/semantic.min.css';
 import { selectors as system } from '../../redux/modules/system';
 import FrontPage from '../FrontPage/FrontPage';

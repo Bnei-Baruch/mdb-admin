@@ -1,5 +1,5 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
+import { push } from '@lagunovsky/redux-react-router';
 
 import { actions, types } from '../redux/modules/persons';
 import api from '../helpers/apiClient';

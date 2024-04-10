@@ -12,11 +12,10 @@ import MainPage from './MainPage';
 
 class Container extends Component {
   static propTypes = {
-    location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
-    fetchList: PropTypes.func.isRequired,
-    setPage: PropTypes.func.isRequired,
+    fetchList  : PropTypes.func.isRequired,
+    setPage    : PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -60,7 +59,7 @@ class Container extends Component {
   };
 
   render() {
-    const { location, fetchList, setPage, ...rest } = this.props;
+    const { fetchList, setPage, ...rest } = this.props;
 
     return (
       <MainPage
@@ -76,19 +75,19 @@ const mapState = (state) => {
   const denormIDs = publishers.denormIDs(state.publishers);
   return {
     ...status,
-    wipOfCreate: publishers.getWIP(state.publishers, 'create'),
-    errOfCreate: publishers.getError(state.publishers, 'create'),
-    items: Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
+    wipOfCreate    : publishers.getWIP(state.publishers, 'create'),
+    errOfCreate    : publishers.getError(state.publishers, 'create'),
+    items          : Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY,
     currentLanguage: system.getCurrentLanguage(state.system),
   };
 };
 
 function mapDispatch(dispatch) {
   return bindActionCreators({
-    fetchList: actions.fetchList,
+    fetchList : actions.fetchList,
     updateInfo: actions.updateInfo,
-    setPage: actions.setPage,
-    create: publisherActions.create,
+    setPage   : actions.setPage,
+    create    : publisherActions.create,
   }, dispatch);
 }
 

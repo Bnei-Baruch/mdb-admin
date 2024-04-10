@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import noop from 'lodash/noop';
 import DayPicker, { DateUtils } from 'react-day-picker';
-import {
-  Button, Divider, Dropdown, Grid, Header, Input, Segment
-} from 'semantic-ui-react';
+import { Button, Divider, Dropdown, Grid, Header, Input, Segment } from 'semantic-ui-react';
 
 import 'react-day-picker/lib/style.css';
 import connectFilter from './connectFilter';
@@ -32,44 +30,44 @@ const THIS_MONTH   = 6;
 const CUSTOM_RANGE = 100;
 
 const datePresets = {
-  TODAY: { key: 1, text: 'Today', value: TODAY },
-  YESTERDAY: { key: 2, text: 'Yesterday', value: YESTERDAY },
-  LAST_7_DAYS: { key: 3, text: 'Last 7 Days', value: LAST_7_DAYS },
+  TODAY       : { key: 1, text: 'Today', value: TODAY },
+  YESTERDAY   : { key: 2, text: 'Yesterday', value: YESTERDAY },
+  LAST_7_DAYS : { key: 3, text: 'Last 7 Days', value: LAST_7_DAYS },
   LAST_30_DAYS: { key: 4, text: 'Last 30 Days', value: LAST_30_DAYS },
-  LAST_MONTH: { key: 5, text: 'Last Month', value: LAST_MONTH },
-  THIS_MONTH: { key: 6, text: 'This Month', value: THIS_MONTH },
+  LAST_MONTH  : { key: 5, text: 'Last Month', value: LAST_MONTH },
+  THIS_MONTH  : { key: 6, text: 'This Month', value: THIS_MONTH },
   CUSTOM_RANGE: { key: 7, text: 'Custom Range', value: CUSTOM_RANGE },
 };
 
 const datePresetsOptions = Object.keys(datePresets).map(key => datePresets[key]);
 
 const presetToRange = {
-  [TODAY]: () => {
+  [TODAY]       : () => {
     const today = moment().toDate();
     return ({ from: today, to: today });
   },
-  [YESTERDAY]: () => {
+  [YESTERDAY]   : () => {
     const yesterday = moment().subtract(1, 'days').toDate();
     return ({ from: yesterday, to: yesterday });
   },
-  [LAST_7_DAYS]: () => ({
+  [LAST_7_DAYS] : () => ({
     from: moment().subtract(6, 'days').toDate(),
-    to: moment().toDate()
+    to  : moment().toDate()
   }),
   [LAST_30_DAYS]: () => ({
     from: moment().subtract(30, 'days').toDate(),
-    to: moment().toDate()
+    to  : moment().toDate()
   }),
-  [LAST_MONTH]: () => {
+  [LAST_MONTH]  : () => {
     const todayMinusMonthMoment = moment().subtract(1, 'months');
     return ({
       from: todayMinusMonthMoment.startOf('month').toDate(),
-      to: todayMinusMonthMoment.endOf('month').toDate()
+      to  : todayMinusMonthMoment.endOf('month').toDate()
     });
   },
-  [THIS_MONTH]: () => ({
+  [THIS_MONTH]  : () => ({
     from: moment().startOf('month').toDate(),
-    to: moment().toDate()
+    to  : moment().toDate()
   })
 };
 
@@ -109,20 +107,20 @@ const isValidDateRange = (fromValue, toValue) => {
 
 class DateFilter extends Component {
   static propTypes = {
-    value: PropTypes.shape({
-      from: PropTypes.objectOf(Date),
-      to: PropTypes.objectOf(Date),
+    value      : PropTypes.shape({
+      from      : PropTypes.objectOf(Date),
+      to        : PropTypes.objectOf(Date),
       datePreset: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     }),
-    onCancel: PropTypes.func,
-    onApply: PropTypes.func,
+    onCancel   : PropTypes.func,
+    onApply    : PropTypes.func,
     updateValue: PropTypes.func.isRequired
   };
 
   static defaultProps = {
     onCancel: noop,
-    onApply: noop,
-    value: {
+    onApply : noop,
+    value   : {
       datePreset: TODAY,
       ...presetToRange[TODAY]()
     }
@@ -180,7 +178,7 @@ class DateFilter extends Component {
       ...range,
       datePreset,
       fromInputValue: fromInputValue || (momentFrom.isValid() ? momentFrom.format(format) : ''),
-      toInputValue: toInputValue || (momentTo.isValid() ? momentTo.format(format) : '')
+      toInputValue  : toInputValue || (momentTo.isValid() ? momentTo.format(format) : '')
     });
   }
 

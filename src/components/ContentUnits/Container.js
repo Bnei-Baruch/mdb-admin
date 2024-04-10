@@ -14,10 +14,9 @@ import { selectors as filterSelectors } from '../../redux/modules/filters';
 
 class ContentUnitsContainer extends Component {
   static propTypes = {
-    location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
-    fetchList: PropTypes.func.isRequired,
+    fetchList  : PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -29,7 +28,7 @@ class ContentUnitsContainer extends Component {
   // so need fetch units on mount even we are here before and filters was hydrated
   componentDidMount() {
     if (this.props.isHydrated)
-        this.askForData(this.getPageNo());
+      this.askForData(this.getPageNo());
   }
 
   componentDidUpdate(prevProps) {
@@ -57,8 +56,12 @@ class ContentUnitsContainer extends Component {
     this.props.fetchList(NS_UNITS, pageNo);
 
   render() {
-    const { location, ...rest } = this.props;
-    return (<MainPage {...rest} getPageNo={this.getPageNo} />);
+    return (
+      <MainPage
+        {...this.props}
+        getPageNo={this.getPageNo}
+      />
+    );
   }
 }
 
@@ -82,20 +85,20 @@ const mapState = (state) => {
 
   return {
     ...status,
-    wipOfCreate: units.getWIP(state.content_units, 'create'),
-    errOfCreate: units.getError(state.content_units, 'create'),
-    lastCreated: units.getLastCreated(state.content_units),
+    wipOfCreate    : units.getWIP(state.content_units, 'create'),
+    errOfCreate    : units.getError(state.content_units, 'create'),
+    lastCreated    : units.getLastCreated(state.content_units),
     items,
     currentLanguage: system.getCurrentLanguage(state.system),
-    isHydrated: filterSelectors.getIsHydrated(state.filters, NS_UNITS)
+    isHydrated     : filterSelectors.getIsHydrated(state.filters, NS_UNITS)
   };
 };
 
 function mapDispatch(dispatch) {
   return bindActionCreators({
     fetchList: actions.fetchList,
-    setPage: actions.setPage,
-    create: unitActions.create,
+    setPage  : actions.setPage,
+    create   : unitActions.create,
   }, dispatch);
 }
 

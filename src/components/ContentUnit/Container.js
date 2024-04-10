@@ -9,6 +9,7 @@ import * as shapes from '../shapes';
 import MainPage from './MainPage';
 import { selectors as sourcesSelectors } from '../../redux/modules/sources';
 import { CONTENT_TYPE_BY_ID, CT_SOURCE } from '../../helpers/consts';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class Container extends Component {
   static propTypes = {
@@ -64,4 +65,4 @@ function mapDispatch(dispatch) {
   return bindActionCreators({ fetchItem: actions.fetchItem }, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(Container);
+export default withRouter(connect(mapState, mapDispatch)(Container));

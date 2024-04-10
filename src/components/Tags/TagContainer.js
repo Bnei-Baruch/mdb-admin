@@ -13,14 +13,15 @@ import TagChildren from './TagChildren';
 import TagI18nForm from './TagI18nForm';
 import TagInfoForm from './TagInfoForm';
 import TagMenu from './TagMenu';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class TagContainer extends Component {
   static propTypes = {
-    match: shapes.RouterMatch.isRequired,
+    match    : shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
-    fetchAll: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    tag: shapes.Tag,
+    fetchAll : PropTypes.func.isRequired,
+    getWIP   : PropTypes.func.isRequired,
+    tag      : shapes.Tag,
   };
 
   static defaultProps = {
@@ -85,12 +86,12 @@ class TagContainer extends Component {
 }
 
 const mapState = (state, props) => ({
-  tag: selectors.getTagById(state.tags)(parseInt(props.match.params.id, 10)),
-  getTagById: selectors.getTagById(state.tags),
-  getTags: selectors.getTags(state.tags),
-  hierarchy: selectors.getHierarchy(state.tags),
-  getWIP: selectors.getWIP(state.tags),
-  getError: selectors.getError(state.tags),
+  tag            : selectors.getTagById(state.tags)(parseInt(props.match.params.id, 10)),
+  getTagById     : selectors.getTagById(state.tags),
+  getTags        : selectors.getTags(state.tags),
+  hierarchy      : selectors.getHierarchy(state.tags),
+  getWIP         : selectors.getWIP(state.tags),
+  getError       : selectors.getError(state.tags),
   currentLanguage: system.getCurrentLanguage(state.system),
 });
 
@@ -98,4 +99,4 @@ function mapDispatch(dispatch) {
   return bindActionCreators(actions, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(TagContainer);
+export default withRouter(connect(mapState, mapDispatch)(TagContainer));

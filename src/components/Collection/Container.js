@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { actions, selectors } from '../../redux/modules/collections';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class Container extends Component {
   componentDidMount() {
@@ -36,19 +37,18 @@ class Container extends Component {
 }
 
 Container.propTypes = {
-  location: shapes.HistoryLocation.isRequired,
-  match: shapes.RouterMatch.isRequired,
+  match    : shapes.RouterMatch.isRequired,
   fetchItem: PropTypes.func.isRequired,
 };
 
 const mapState = (state, props) => ({
   collection: selectors.getCollectionById(state.collections, parseInt(props.match.params.id, 10)),
-  wip: selectors.getWIP(state.collections, 'fetchItem'),
-  err: selectors.getError(state.collections, 'fetchItem'),
+  wip       : selectors.getWIP(state.collections, 'fetchItem'),
+  err       : selectors.getError(state.collections, 'fetchItem'),
 });
 
 function mapDispatch(dispatch) {
   return bindActionCreators({ fetchItem: actions.fetchItem }, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(Container);
+export default withRouter(connect(mapState, mapDispatch)(Container));

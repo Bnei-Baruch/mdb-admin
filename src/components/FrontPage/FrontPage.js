@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import { selectors } from '../../redux/modules/user';
 import { actions as actionsSystem, selectors as selectorsSystem } from '../../redux/modules/system';
@@ -10,6 +9,7 @@ import AppLayout from './AppLayout';
 import AppRoutes from './AppRoutes';
 import ForbiddenPage from './ForbiddenPage';
 import LoginPage from './LoginPage';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class FrontPage extends PureComponent {
   static propTypes = {
