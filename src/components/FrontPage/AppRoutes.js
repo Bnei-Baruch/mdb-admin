@@ -22,7 +22,7 @@ import Label from '../Label/Container';
 import Welcome from './Welcome';
 
 const AppRoutes = () => (
-  <Routes>
+  <Routes >
     <Route path="/" element={<Welcome />} />
     <Route path="/files" element={<Files />} />
     <Route path="/files/:id" element={<File />} />

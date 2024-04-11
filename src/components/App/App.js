@@ -9,6 +9,7 @@ import '../../stylesheets/Kmedia.css';
 import './App.css';
 import InitKeycloak from '../FrontPage/InitKeycloak';
 import InitialFetchAll from '../FrontPage/InitialFetchAll';
+import * as env from '../../helpers/env';
 
 class App extends Component {
   static propTypes = {
@@ -26,7 +27,7 @@ class App extends Component {
     if (isAppReady) {
       return (
         <Provider store={store}>
-          <ConnectedRouter history={history}>
+          <ConnectedRouter history={history} basename={env.HISTORY_BASENAME}>
             <InitKeycloak />
             <InitialFetchAll />
             <FrontPage />

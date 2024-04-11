@@ -19,10 +19,7 @@ const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? wi
 const sagaMiddlewareOptions = env.isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
 
-const history = createBrowserHistory({
-  basename: env.HISTORY_BASENAME
-});
-
+const history          = createBrowserHistory();
 const routerMiddleware = createRouterMiddleware(history);
 
 const store = createStore(reducer(history), {}, compose(
