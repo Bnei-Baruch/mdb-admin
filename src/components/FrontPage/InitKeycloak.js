@@ -1,34 +1,12 @@
 import { useEffect } from 'react';
-import { useDispatch, batch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { actions } from '../../redux/modules/user';
-import { getKeycloak } from './helper';
-
-const options = {
-  checkLoginIframe: false,
-  flow            : 'standard',
-  pkceMethod      : 'S256',
-  enableLogging   : true,
-  onLoad          : 'check-sso'
-};
+import { getKeycloak, onceInitKC } from './helper';
 
 const InitKeycloak = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    getKeycloak().init(options).then(ok => {
-      if (!ok) {
-        dispatch(actions.clearUser());
-        return;
-      }
-
-      const { sub, name, realm_access } = getKeycloak().tokenParsed;
-      batch(() => {
-        dispatch(actions.setUser({ id: sub, name, realm_access }));
-        dispatch(actions.setToken(getKeycloak().token));
-      });
-    }).catch(error => {
-      console.error(error);
-      dispatch(actions.clearUser());
-    });
+    onceInitKC(dispatch);
   }, [dispatch]);
 
   getKeycloak().onTokenExpired = () => {

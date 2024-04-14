@@ -14,13 +14,14 @@ import SourceMenu from './SourceMenu';
 import SourceInfoForm from './SourceInfoForm';
 import SourceI18nForm from './SourceI18nForm';
 import SourceChildren from './SourceChildren';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class SourceContainer extends Component {
   static propTypes = {
-    match: shapes.RouterMatch.isRequired,
+    match    : shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
-    getWIP: PropTypes.func.isRequired,
-    source: shapes.Source,
+    getWIP   : PropTypes.func.isRequired,
+    source   : shapes.Source,
   };
 
   static defaultProps = {
@@ -78,17 +79,17 @@ class SourceContainer extends Component {
 }
 
 const mapState = (state, props) => ({
-  source: selectors.getSourceById(state.sources)(parseInt(props.match.params.id, 10)),
-  getSourceById: selectors.getSourceById(state.sources),
-  hierarchy: selectors.getHierarchy(state.sources),
-  getWIP: selectors.getWIP(state.sources),
-  getError: selectors.getError(state.sources),
+  source                 : selectors.getSourceById(state.sources)(parseInt(props.match.params.id, 10)),
+  getSourceById          : selectors.getSourceById(state.sources),
+  hierarchy              : selectors.getHierarchy(state.sources),
+  getWIP                 : selectors.getWIP(state.sources),
+  getError               : selectors.getError(state.sources),
   getAuthorByCollectionId: authors.getAuthorByCollectionId(state.authors),
-  currentLanguage: system.getCurrentLanguage(state.system),
+  currentLanguage        : system.getCurrentLanguage(state.system),
 });
 
 function mapDispatch(dispatch) {
   return bindActionCreators(actions, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(SourceContainer);
+export default withRouter(connect(mapState, mapDispatch)(SourceContainer));

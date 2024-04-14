@@ -11,7 +11,6 @@ import MainPage from './MainPage';
 
 class CollectionsContainer extends Component {
   static propTypes = {
-    location: shapes.HistoryLocation.isRequired,
     wipOfCreate: PropTypes.bool,
     errOfCreate: shapes.Error,
     fetchList: PropTypes.func.isRequired,
@@ -33,7 +32,7 @@ class CollectionsContainer extends Component {
   getPageNo = (notUseLocation) => {
     let page = 0;
     if (!notUseLocation) {
-      const match = this.props.location.search.match(/page=(\d+)/);
+      const match = window.location.search.match(/page=(\d+)/);
       if (match) {
         page = parseInt(match[1], 10);
       }
@@ -43,12 +42,9 @@ class CollectionsContainer extends Component {
   };
 
   render() {
-    // eslint-disable-next-line no-unused-vars
-    const { location, ...rest } = this.props;
-
     return (
       <MainPage
-        {...rest}
+        {...this.props}
         getPageNo={this.getPageNo}
       />
     );

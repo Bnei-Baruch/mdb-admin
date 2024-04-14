@@ -9,10 +9,6 @@ import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class FilesContainer extends Component {
-  static propTypes = {
-    location: shapes.HistoryLocation.isRequired,
-  };
-
   getPageNo = (search) => {
     let page = 0;
     if (search) {
@@ -26,8 +22,7 @@ class FilesContainer extends Component {
   };
 
   render() {
-    const { location, ...rest } = this.props;
-    return (<MainPage {...rest} getPageNo={this.getPageNo} />);
+    return (<MainPage {...this.props} getPageNo={this.getPageNo} />);
   }
 }
 

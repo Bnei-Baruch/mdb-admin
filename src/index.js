@@ -1,9 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware, { delay } from 'redux-saga';
 import { put } from 'redux-saga/effects';
-import { routerMiddleware as createRouterMiddleware } from 'connected-react-router';
+import { createRouterMiddleware } from '@lagunovsky/redux-react-router';
 import { createBrowserHistory } from 'history';
 
 import * as env from './helpers/env';
@@ -19,10 +19,7 @@ const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? wi
 const sagaMiddlewareOptions = env.isProduction ? {} : { sagaMonitor };
 const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
 
-const history = createBrowserHistory({
-  basename: env.HISTORY_BASENAME
-});
-
+const history          = createBrowserHistory();
 const routerMiddleware = createRouterMiddleware(history);
 
 const store = createStore(reducer(history), {}, compose(
@@ -31,12 +28,12 @@ const store = createStore(reducer(history), {}, compose(
 ));
 
 // Render regardless of application's state. let App decide what to render.
-const appContainer = document.getElementById('root');
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <App store={store} history={history} />
   </React.StrictMode>
-  , appContainer);
+);
 
 //
 // The main application

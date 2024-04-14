@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { actions, selectors } from '../../redux/modules/files';
 import * as shapes from '../shapes';
 import MainPage from './MainPage';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class FileContainer extends Component {
   static propTypes = {
@@ -55,4 +56,4 @@ function mapDispatch(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(FileContainer);
+export default withRouter(connect(mapState, mapDispatch)(FileContainer));

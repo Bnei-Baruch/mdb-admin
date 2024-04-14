@@ -6,10 +6,11 @@ import { connect } from 'react-redux';
 import * as shapes from '../shapes';
 import { actions, selectors } from '../../redux/modules/labels';
 import MainPage from './MainPage';
+import { withRouter } from '../../helpers/withRouterPatch';
 
 class Container extends Component {
   static propTypes = {
-    match: shapes.RouterMatch.isRequired,
+    match    : shapes.RouterMatch.isRequired,
     fetchItem: PropTypes.func.isRequired,
   };
 
@@ -42,8 +43,8 @@ class Container extends Component {
 
 const mapState = (state, props) => ({
   label: selectors.getLabelById(state.labels, parseInt(props.match.params.id, 10)),
-  wip: selectors.getWIP(state.labels, 'fetchItem'),
-  err: selectors.getError(state.labels, 'fetchItem'),
+  wip  : selectors.getWIP(state.labels, 'fetchItem'),
+  err  : selectors.getError(state.labels, 'fetchItem'),
 });
 
 function mapDispatch(dispatch) {
@@ -52,4 +53,4 @@ function mapDispatch(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapState, mapDispatch)(Container);
+export default withRouter(connect(mapState, mapDispatch)(Container));

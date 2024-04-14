@@ -1,6 +1,6 @@
 import { put, select } from 'redux-saga/effects';
 import qs from 'qs';
-import { replace } from 'connected-react-router';
+import { replace } from '@lagunovsky/redux-react-router';
 
 export function* getQuery() {
   const router = yield select(state => state.router);

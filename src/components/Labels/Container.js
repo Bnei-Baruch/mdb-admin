@@ -7,14 +7,12 @@ import { EMPTY_ARRAY, EMPTY_OBJECT, NS_LABELS } from '../../helpers/consts';
 import { actions, selectors } from '../../redux/modules/lists';
 import { selectors as labels } from '../../redux/modules/labels';
 import { selectors as system } from '../../redux/modules/system';
-import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class Container extends Component {
   static propTypes = {
-    location: shapes.HistoryLocation.isRequired,
     fetchList: PropTypes.func.isRequired,
-    setPage: PropTypes.func.isRequired,
+    setPage  : PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -44,7 +42,7 @@ class Container extends Component {
   };
 
   render() {
-    const { location, fetchList, setPage, ...rest } = this.props;
+    const { fetchList, setPage, ...rest } = this.props;
 
     return (
       <MainPage
@@ -69,7 +67,7 @@ const mapState = (state) => {
 function mapDispatch(dispatch) {
   return bindActionCreators({
     fetchList: actions.fetchList,
-    setPage: actions.setPage,
+    setPage  : actions.setPage,
   }, dispatch);
 }
 
