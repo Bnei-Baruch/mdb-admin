@@ -78,23 +78,15 @@ export const extractI18n = (i18ns, fields, defaultLanguage = LANG_ENGLISH, langu
   if (!i18ns) {
     return null;
   }
+  languages          = [defaultLanguage, ...languages.filter(l => l !== defaultLanguage)];
   // Order i18ns by language
   const orderedI18ns = [];
   let defaultI18n;
   for (let i = 0; i < languages.length; i++) {
-    if (languages[i] === defaultLanguage) {
-      defaultI18n = i18ns[languages[i]];
-      continue;  // eslint-disable-line no-continue
-    }
-
     const i18n = i18ns[languages[i]];
     if (i18n) {
       orderedI18ns.push(i18n);
     }
-  }
-
-  if (defaultI18n) {
-    orderedI18ns.unshift(defaultI18n);
   }
 
   // Coalesce values per field

@@ -43,7 +43,7 @@ class SourcesSearch extends Component {
         let title;
         for (const i18n of Object.values(node.i18n)) {
           if (regex.test(i18n.name)) {
-            title = i18n.name;
+            title = extractI18n(node.i18n, ['name'], currentLanguage)[0];
             break;
           }
         }
@@ -75,7 +75,7 @@ class SourcesSearch extends Component {
           let title;
           for (const i18n of Object.values(node.i18n)) {
             if (regex.test(i18n.name)) {
-              title = i18n.name;
+              title = extractI18n(node.i18n, ['name'], currentLanguage)[0];
               break;
             }
           }

@@ -31,7 +31,7 @@ class AppLayout extends PureComponent {
   render() {
     const { user, currentLanguage, children } = this.props;
 
-    const options  = LANGUAGE_OPTIONS.filter(x => SITE_LANGUAGES.includes(x.value) && currentLanguage !== x.value);
+    const options  = LANGUAGE_OPTIONS.filter(x => currentLanguage !== x.value);
     const selected = LANGUAGE_OPTIONS.find(x => currentLanguage === x.value);
     return (
       <Grid>
