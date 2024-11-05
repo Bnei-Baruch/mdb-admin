@@ -49,7 +49,7 @@ class TagsSearch extends Component {
         let title;
         for (const i18n of Object.values(node.i18n)) {
           if (regex.test(i18n.label)) {
-            title = i18n.label;
+            title = extractI18n(node.i18n, ['label'], currentLanguage)[0];
             break;
           }
         }
@@ -117,22 +117,22 @@ class TagsSearch extends Component {
 }
 
 const mapState = state => ({
-  tagsById: selectors.getTags(state.tags),
-  hierarchy: selectors.getHierarchy(state.tags),
+  tagsById       : selectors.getTags(state.tags),
+  hierarchy      : selectors.getHierarchy(state.tags),
   currentLanguage: system.getCurrentLanguage(state.system),
 });
 
 TagsSearch.propTypes = {
-  onSelect: PropTypes.func.isRequired,
-  tagsById: PropTypes.instanceOf(Map),
-  hierarchy: shapes.Hierarchy,
-  placeholder: PropTypes.string,
+  onSelect       : PropTypes.func.isRequired,
+  tagsById       : PropTypes.instanceOf(Map),
+  hierarchy      : shapes.Hierarchy,
+  placeholder    : PropTypes.string,
   currentLanguage: PropTypes.string.isRequired,
 };
 
 TagsSearch.defaultProps = {
-  tagsById: EMPTY_MAP,
-  hierarchy: EMPTY_HIERARCHY,
+  tagsById   : EMPTY_MAP,
+  hierarchy  : EMPTY_HIERARCHY,
   placeholder: 'חפש תגית',
 };
 
