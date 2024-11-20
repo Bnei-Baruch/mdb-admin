@@ -273,82 +273,92 @@ export const SECURITY_LEVELS = {
 };
 
 // Languages
-export const LANG_HEBREW     = 'he';
-export const LANG_ENGLISH    = 'en';
-export const LANG_RUSSIAN    = 'ru';
-export const LANG_SPANISH    = 'es';
-export const LANG_ITALIAN    = 'it';
-export const LANG_GERMAN     = 'de';
-export const LANG_DUTCH      = 'nl';
-export const LANG_FRENCH     = 'fr';
-export const LANG_PORTUGUESE = 'pt';
-export const LANG_TURKISH    = 'tr';
-export const LANG_POLISH     = 'pl';
-export const LANG_ARABIC     = 'ar';
-export const LANG_HUNGARIAN  = 'hu';
-export const LANG_FINNISH    = 'fi';
-export const LANG_LITHUANIAN = 'lt';
-export const LANG_JAPANESE   = 'ja';
-export const LANG_BULGARIAN  = 'bg';
-export const LANG_GEORGIAN   = 'ka';
-export const LANG_NORWEGIAN  = 'no';
-export const LANG_SWEDISH    = 'sv';
-export const LANG_CROATIAN   = 'hr';
-export const LANG_CHINESE    = 'zh';
-export const LANG_PERSIAN    = 'fa';
-export const LANG_ROMANIAN   = 'ro';
-export const LANG_HINDI      = 'hi';
-export const LANG_UKRAINIAN  = 'ua';
-export const LANG_MACEDONIAN = 'mk';
-export const LANG_SLOVENIAN  = 'sl';
-export const LANG_LATVIAN    = 'lv';
-export const LANG_SLOVAK     = 'sk';
-export const LANG_CZECH      = 'cs';
-export const LANG_CZECH2     = 'cz';
-export const LANG_AMHARIC    = 'am';
-export const LANG_INDONESIAN = 'id';
-export const LANG_ARMENIAN   = 'hy';
-export const LANG_MULTI      = 'zz';
-export const LANG_UNKNOWN    = 'xx';
+export const LANG_HEBREW      = 'he';
+export const LANG_ENGLISH     = 'en';
+export const LANG_RUSSIAN     = 'ru';
+export const LANG_SPANISH     = 'es';
+export const LANG_ITALIAN     = 'it';
+export const LANG_GERMAN      = 'de';
+export const LANG_DUTCH       = 'nl';
+export const LANG_FRENCH      = 'fr';
+export const LANG_PORTUGUESE  = 'pt';
+export const LANG_TURKISH     = 'tr';
+export const LANG_POLISH      = 'pl';
+export const LANG_ARABIC      = 'ar';
+export const LANG_HUNGARIAN   = 'hu';
+export const LANG_FINNISH     = 'fi';
+export const LANG_LITHUANIAN  = 'lt';
+export const LANG_JAPANESE    = 'ja';
+export const LANG_BULGARIAN   = 'bg';
+export const LANG_GEORGIAN    = 'ka';
+export const LANG_NORWEGIAN   = 'no';
+export const LANG_SWEDISH     = 'sv';
+export const LANG_CROATIAN    = 'hr';
+export const LANG_CHINESE     = 'zh';
+export const LANG_PERSIAN     = 'fa';
+export const LANG_ROMANIAN    = 'ro';
+export const LANG_HINDI       = 'hi';
+export const LANG_UKRAINIAN   = 'ua';
+export const LANG_MACEDONIAN  = 'mk';
+export const LANG_SLOVENIAN   = 'sl';
+export const LANG_LATVIAN     = 'lv';
+export const LANG_SLOVAK      = 'sk';
+export const LANG_CZECH       = 'cs';
+export const LANG_CZECH2      = 'cz';
+export const LANG_AMHARIC     = 'am';
+export const LANG_INDONESIAN  = 'id';
+export const LANG_ARMENIAN    = 'hy';
+export const LANG_DANISH      = 'da';
+export const LANG_ESTONIAN    = 'et';
+export const LANG_GREEK       = 'el';
+export const LANG_TAGALOG     = 'tl';
+export const LANG_AZERBAIJANI = 'az';
+export const LANG_MULTI       = 'zz';
+export const LANG_UNKNOWN     = 'xx';
 
 export const LANGUAGES = {
-  [LANG_HEBREW]    : { text: 'Hebrew', value: LANG_HEBREW, flag: 'il' },
-  [LANG_ENGLISH]   : { text: 'English', value: LANG_ENGLISH, flag: 'us' },
-  [LANG_RUSSIAN]   : { text: 'Russian', value: LANG_RUSSIAN, flag: 'ru' },
-  [LANG_SPANISH]   : { text: 'Spanish', value: LANG_SPANISH, flag: 'es' },
-  [LANG_ITALIAN]   : { text: 'Italian', value: LANG_ITALIAN, flag: 'it' },
-  [LANG_GERMAN]    : { text: 'German', value: LANG_GERMAN, flag: 'de' },
-  [LANG_DUTCH]     : { text: 'Dutch', value: LANG_DUTCH, flag: 'nl' },
-  [LANG_FRENCH]    : { text: 'French', value: LANG_FRENCH, flag: 'fr' },
-  [LANG_PORTUGUESE]: { text: 'Portuguese', value: LANG_PORTUGUESE, flag: 'pt' },
-  [LANG_TURKISH]   : { text: 'Turkish', value: LANG_TURKISH, flag: 'tr' },
-  [LANG_POLISH]    : { text: 'Polish', value: LANG_POLISH, flag: 'pl' },
-  [LANG_ARABIC]    : { text: 'Arabic', value: LANG_ARABIC, flag: 'sa' },
-  [LANG_HUNGARIAN] : { text: 'Hungarian', value: LANG_HUNGARIAN, flag: 'hu' },
-  [LANG_FINNISH]   : { text: 'Finnish', value: LANG_FINNISH, flag: 'fi' },
-  [LANG_LITHUANIAN]: { text: 'Lithuanian', value: LANG_LITHUANIAN, flag: 'lt' },
-  [LANG_JAPANESE]  : { text: 'Japanese', value: LANG_JAPANESE, flag: 'jp' },
-  [LANG_BULGARIAN] : { text: 'Bulgarian', value: LANG_BULGARIAN, flag: 'bg' },
-  [LANG_GEORGIAN]  : { text: 'Georgian', value: LANG_GEORGIAN, flag: 'ge' },
-  [LANG_NORWEGIAN] : { text: 'Norwegian', value: LANG_NORWEGIAN, flag: 'no' },
-  [LANG_SWEDISH]   : { text: 'Swedish', value: LANG_SWEDISH, flag: 'se' },
-  [LANG_CROATIAN]  : { text: 'Croatian', value: LANG_CROATIAN, flag: 'hr' },
-  [LANG_CHINESE]   : { text: 'Chinese', value: LANG_CHINESE, flag: 'cn' },
-  [LANG_PERSIAN]   : { text: 'Persian', value: LANG_PERSIAN, flag: 'ir' },
-  [LANG_ROMANIAN]  : { text: 'Romanian', value: LANG_ROMANIAN, flag: 'ro' },
-  [LANG_HINDI]     : { text: 'Hindi', value: LANG_HINDI, flag: 'in' },
-  [LANG_UKRAINIAN] : { text: 'Ukrainian', value: LANG_UKRAINIAN, flag: 'ua' },
-  [LANG_MACEDONIAN]: { text: 'Macedonian', value: LANG_MACEDONIAN, flag: 'mk' },
-  [LANG_SLOVENIAN] : { text: 'Slovenian', value: LANG_SLOVENIAN, flag: 'si' },
-  [LANG_LATVIAN]   : { text: 'Latvian', value: LANG_LATVIAN, flag: 'lv' },
-  [LANG_SLOVAK]    : { text: 'Slovak', value: LANG_SLOVAK, flag: 'sk' },
-  [LANG_CZECH]     : { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
-  [LANG_CZECH2]    : { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
-  [LANG_AMHARIC]   : { text: 'Amharic', value: LANG_AMHARIC, flag: 'et' },
-  [LANG_ARMENIAN]  : { text: 'Armenian', value: LANG_ARMENIAN, flag: 'am' },
-  [LANG_INDONESIAN]: { text: 'Indonesian', value: LANG_INDONESIAN, flag: 'id' },
-  [LANG_MULTI]     : { text: 'Multi', value: LANG_MULTI },
-  [LANG_UNKNOWN]   : { text: 'Unknown', value: LANG_UNKNOWN },
+  [LANG_HEBREW]     : { text: 'Hebrew', value: LANG_HEBREW, flag: 'il' },
+  [LANG_ENGLISH]    : { text: 'English', value: LANG_ENGLISH, flag: 'us' },
+  [LANG_RUSSIAN]    : { text: 'Russian', value: LANG_RUSSIAN, flag: 'ru' },
+  [LANG_SPANISH]    : { text: 'Spanish', value: LANG_SPANISH, flag: 'es' },
+  [LANG_ITALIAN]    : { text: 'Italian', value: LANG_ITALIAN, flag: 'it' },
+  [LANG_GERMAN]     : { text: 'German', value: LANG_GERMAN, flag: 'de' },
+  [LANG_DUTCH]      : { text: 'Dutch', value: LANG_DUTCH, flag: 'nl' },
+  [LANG_FRENCH]     : { text: 'French', value: LANG_FRENCH, flag: 'fr' },
+  [LANG_PORTUGUESE] : { text: 'Portuguese', value: LANG_PORTUGUESE, flag: 'pt' },
+  [LANG_TURKISH]    : { text: 'Turkish', value: LANG_TURKISH, flag: 'tr' },
+  [LANG_POLISH]     : { text: 'Polish', value: LANG_POLISH, flag: 'pl' },
+  [LANG_ARABIC]     : { text: 'Arabic', value: LANG_ARABIC, flag: 'sa' },
+  [LANG_HUNGARIAN]  : { text: 'Hungarian', value: LANG_HUNGARIAN, flag: 'hu' },
+  [LANG_FINNISH]    : { text: 'Finnish', value: LANG_FINNISH, flag: 'fi' },
+  [LANG_LITHUANIAN] : { text: 'Lithuanian', value: LANG_LITHUANIAN, flag: 'lt' },
+  [LANG_JAPANESE]   : { text: 'Japanese', value: LANG_JAPANESE, flag: 'jp' },
+  [LANG_BULGARIAN]  : { text: 'Bulgarian', value: LANG_BULGARIAN, flag: 'bg' },
+  [LANG_GEORGIAN]   : { text: 'Georgian', value: LANG_GEORGIAN, flag: 'ge' },
+  [LANG_NORWEGIAN]  : { text: 'Norwegian', value: LANG_NORWEGIAN, flag: 'no' },
+  [LANG_SWEDISH]    : { text: 'Swedish', value: LANG_SWEDISH, flag: 'se' },
+  [LANG_CROATIAN]   : { text: 'Croatian', value: LANG_CROATIAN, flag: 'hr' },
+  [LANG_CHINESE]    : { text: 'Chinese', value: LANG_CHINESE, flag: 'cn' },
+  [LANG_PERSIAN]    : { text: 'Persian', value: LANG_PERSIAN, flag: 'ir' },
+  [LANG_ROMANIAN]   : { text: 'Romanian', value: LANG_ROMANIAN, flag: 'ro' },
+  [LANG_HINDI]      : { text: 'Hindi', value: LANG_HINDI, flag: 'in' },
+  [LANG_UKRAINIAN]  : { text: 'Ukrainian', value: LANG_UKRAINIAN, flag: 'ua' },
+  [LANG_MACEDONIAN] : { text: 'Macedonian', value: LANG_MACEDONIAN, flag: 'mk' },
+  [LANG_SLOVENIAN]  : { text: 'Slovenian', value: LANG_SLOVENIAN, flag: 'si' },
+  [LANG_LATVIAN]    : { text: 'Latvian', value: LANG_LATVIAN, flag: 'lv' },
+  [LANG_SLOVAK]     : { text: 'Slovak', value: LANG_SLOVAK, flag: 'sk' },
+  [LANG_CZECH]      : { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
+  [LANG_CZECH2]     : { text: 'Czech', value: LANG_CZECH, flag: 'cz' },
+  [LANG_AMHARIC]    : { text: 'Amharic', value: LANG_AMHARIC, flag: 'et' },
+  [LANG_INDONESIAN] : { text: 'Indonesian', value: LANG_INDONESIAN, flag: 'id' },
+  [LANG_ARMENIAN]   : { text: 'Armenian', value: LANG_ARMENIAN, flag: 'am' },
+  [LANG_DANISH]     : { text: 'Danish', value: LANG_DANISH, flag: 'da' },
+  [LANG_ESTONIAN]   : { text: 'Estonian', value: LANG_ESTONIAN, flag: 'et' },
+  [LANG_GREEK]      : { text: 'Greek', value: LANG_GREEK, flag: 'el' },
+  [LANG_TAGALOG]    : { text: 'Tagalog', value: LANG_TAGALOG, flag: 'tl' },
+  [LANG_AZERBAIJANI]: { text: 'Azerbaijani', value: LANG_AZERBAIJANI, flag: 'az' },
+  [LANG_MULTI]      : { text: 'Multi', value: LANG_MULTI },
+  [LANG_UNKNOWN]    : { text: 'Unknown', value: LANG_UNKNOWN },
 };
 
 export const ALL_LANGUAGES = [
@@ -384,8 +394,13 @@ export const ALL_LANGUAGES = [
   LANG_SLOVAK,
   LANG_CZECH,
   LANG_AMHARIC,
-  LANG_ARMENIAN,
   LANG_INDONESIAN,
+  LANG_ARMENIAN,
+  LANG_DANISH,
+  LANG_ESTONIAN,
+  LANG_GREEK,
+  LANG_TAGALOG,
+  LANG_AZERBAIJANI,
   LANG_MULTI,
   LANG_UNKNOWN,
 ];
