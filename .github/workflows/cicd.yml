@@ -1,0 +1,110 @@
+name: CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+          - internal
+          - dev
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.BBDEPLOYMENT_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.BBDEPLOYMENT_DOCKERHUB_PASSWORD }}
+
+      - name: Set environment-specific variables
+        run: |
+          case "${{ inputs.environment }}" in
+            production)
+              echo "PUBLIC_BASE=https://kabbalahmedia.info/" >> $GITHUB_ENV
+              echo "CDN_URL=https://cdn.kabbalahmedia.info/" >> $GITHUB_ENV
+              ;;
+            staging)
+              echo "PUBLIC_BASE=https://staging-archive.kabbalahmedia.info/" >> $GITHUB_ENV
+              echo "CDN_URL=https://staging-cdn.kabbalahmedia.info/" >> $GITHUB_ENV
+              ;;
+            internal)
+              echo "PUBLIC_BASE=http://app.mdb.bbdomain.org/" >> $GITHUB_ENV
+              echo "CDN_URL=http://app.mdb.bbdomain.org/links/" >> $GITHUB_ENV
+              ;;
+            dev)
+              echo "PUBLIC_BASE=http://dev.mdb.bbdomain.org/" >> $GITHUB_ENV
+              echo "CDN_URL=http://dev.mdb.bbdomain.org/links/" >> $GITHUB_ENV
+              ;;
+          esac
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            bneibaruch/mdb_admin:${{inputs.environment}}
+            bneibaruch/mdb_admin:${{inputs.environment}}_${{github.run_number}}
+          build-args: |
+            app_env=${{inputs.environment}}
+            public_base=${{env.PUBLIC_BASE}}
+            cdn_url=${{env.CDN_URL}}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.environment == 'staging' || github.event.inputs.environment == 'production')
+    steps:
+      - name: Set deployment variables
+        run: |
+          if [[ "${{ github.event.inputs.environment }}" == "staging" ]]; then
+            echo "SSH_HOST=${{ secrets.ARCHIVE_HOST_STAGING }}" >> $GITHUB_ENV
+          else
+            echo "SSH_HOST=${{ secrets.ARCHIVE_HOST_PRODUCTION }}" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy to ${{ github.event.inputs.environment }} via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: root
+          key: ${{ secrets.BBDEPLOYMENT_SSH_PRIVATE_KEY }}
+          proxy_host: ${{ secrets.SSH_PROXY_HOST }}
+          proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
+          proxy_key: ${{ secrets.BBDEPLOYMENT_SSH_PRIVATE_KEY }}
+          script: |
+            cd /root/archive-docker
+            docker compose pull admin_ui
+            docker compose up -d --no-deps admin_ui
+
+  deploy-internal:
+    runs-on: [self-hosted, linux, merkaz]
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.environment == 'internal' || github.event.inputs.environment == 'dev')
+    steps:
+      - name: Set deployment variables
+        run: |
+          if [[ "${{ github.event.inputs.environment }}" == "internal" ]]; then
+            echo "SSH_HOST=${{ secrets.MDB_HOST_PRODUCTION }}" >> $GITHUB_ENV
+          else
+            echo "SSH_HOST=${{ secrets.MDB_HOST_STAGING }}" >> $GITHUB_ENV
+          fi
+      
+      - name: Deploy to ${{ github.event.inputs.environment }} via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: root
+          key: ${{ secrets.BBDEPLOYMENT_SSH_PRIVATE_KEY }}
+          script: |
+            echo "Implement me!"
