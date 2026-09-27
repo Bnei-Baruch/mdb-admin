@@ -8,7 +8,7 @@ import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';
 
 const Details = (props) => {
-  const { operation } = props;
+  const { operation = null } = props;
   if (!operation) {
     return null;
   }
@@ -67,10 +67,6 @@ const Details = (props) => {
 
 Details.propTypes = {
   operation: shapes.Operation,
-};
-
-Details.defaultProps = {
-  operation: null,
 };
 
 export default Details;

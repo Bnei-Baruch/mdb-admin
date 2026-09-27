@@ -10,7 +10,7 @@ import { selectors as system } from '../../redux/modules/system';
 import * as shapes from '../shapes';
 
 const TagBreadcrumbs = (props) => {
-  const { path, lastIsLink, currentLanguage } = props;
+  const { path = [], lastIsLink = false, currentLanguage } = props;
 
   // convert path to breadcrumbs
   const crumbs = [];
@@ -45,11 +45,6 @@ TagBreadcrumbs.propTypes = {
   path: PropTypes.arrayOf(shapes.Tag),
   lastIsLink: PropTypes.bool,
   currentLanguage: PropTypes.string.isRequired,
-};
-
-TagBreadcrumbs.defaultProps = {
-  path: [],
-  lastIsLink: false
 };
 
 const mapState = (state, ownProps) => {

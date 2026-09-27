@@ -4,7 +4,7 @@ import noop from 'lodash/noop';
 import { Form } from 'semantic-ui-react';
 
 const LessonNumber = (props) => {
-  const { value, err, onChange, ...rest } = props;
+  const { value, err = false, onChange = noop, ...rest } = props;
 
   return (
     <Form.Field error={err} {...rest}>
@@ -26,11 +26,6 @@ LessonNumber.propTypes = {
   value: PropTypes.number,
   err: PropTypes.bool,
   onChange: PropTypes.func,
-};
-
-LessonNumber.defaultProps = {
-  err: false,
-  onChange: noop,
 };
 
 export default LessonNumber;

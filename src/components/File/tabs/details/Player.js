@@ -6,7 +6,7 @@ import { fileTypes, physicalFile } from '../../../../helpers/utils';
 import { JWPLAYER_ID } from '../../../../helpers/consts';
 
 const Player = (props) => {
-  const { file } = props;
+  const { file = null } = props;
 
   const types = fileTypes(file);
   useEffect(() => {
@@ -36,10 +36,6 @@ const Player = (props) => {
 
 Player.propTypes = {
   file: shapes.File,
-};
-
-Player.defaultProps = {
-  file: null,
 };
 
 export default Player;

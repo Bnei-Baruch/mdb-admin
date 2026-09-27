@@ -19,7 +19,7 @@ const items = [
 ];
 
 const MainPage = (props) => {
-  const { file, wip, err } = props;
+  const { file = null, wip = false, err = null } = props;
 
   if (err) {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -45,12 +45,6 @@ MainPage.propTypes = {
   file: shapes.File,
   wip: PropTypes.bool,
   err: shapes.Error,
-};
-
-MainPage.defaultProps = {
-  file: null,
-  wip: false,
-  err: null,
 };
 
 export default MainPage;

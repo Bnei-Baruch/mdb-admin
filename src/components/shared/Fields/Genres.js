@@ -6,7 +6,7 @@ import { Form } from 'semantic-ui-react';
 import { EMPTY_ARRAY, GENRE_OPTIONS } from '../../../helpers/consts';
 
 const GenresField = (props) => {
-  const { value, err, onChange, ...rest } = props;
+  const { value = EMPTY_ARRAY, err = false, onChange = noop, ...rest } = props;
 
   return (
     <Form.Field error={err} {...rest}>
@@ -31,12 +31,6 @@ GenresField.propTypes = {
   value: PropTypes.arrayOf(PropTypes.string),
   err: PropTypes.bool,
   onChange: PropTypes.func,
-};
-
-GenresField.defaultProps = {
-  value: EMPTY_ARRAY,
-  err: false,
-  onChange: noop,
 };
 
 export default GenresField;

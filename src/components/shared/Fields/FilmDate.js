@@ -9,7 +9,7 @@ import { Form } from 'semantic-ui-react';
 import { DATE_FORMAT } from '../../../helpers/consts';
 
 const FilmDateField = (props) => {
-  const { value, err, onChange, ...rest } = props;
+  const { value = moment(), err = false, onChange = noop, ...rest } = props;
 
   const dayPickerProps = {
     firstDayOfWeek: 0,
@@ -37,12 +37,6 @@ FilmDateField.propTypes = {
   value: PropTypes.instanceOf(moment),
   err: PropTypes.bool,
   onChange: PropTypes.func,
-};
-
-FilmDateField.defaultProps = {
-  value: moment(),
-  err: false,
-  onChange: noop,
 };
 
 export default FilmDateField;

@@ -6,7 +6,7 @@ import { Flag, Form, Input } from 'semantic-ui-react';
 import { LANGUAGES } from '../../../helpers/consts';
 
 const NameField = (props) => {
-  const { value, language, err, onChange, ...rest } = props;
+  const { value = '', language = '', err = false, onChange = noop, ...rest } = props;
   const langData                                    = LANGUAGES[language];
 
   return (
@@ -30,13 +30,6 @@ NameField.propTypes = {
   value: PropTypes.string,
   err: PropTypes.bool,
   onChange: PropTypes.func,
-};
-
-NameField.defaultProps = {
-  language: '',
-  value: '',
-  err: false,
-  onChange: noop,
 };
 
 export default NameField;

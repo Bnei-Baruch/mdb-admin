@@ -21,7 +21,7 @@ const items = [
 ];
 
 const MainPage = (props) => {
-  const { unit, wip, err } = props;
+  const { unit = null, wip = false, err = null } = props;
 
   if (err) {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -45,12 +45,6 @@ MainPage.propTypes = {
   unit: shapes.ContentUnit,
   wip: PropTypes.bool,
   err: shapes.Error,
-};
-
-MainPage.defaultProps = {
-  unit: null,
-  wip: false,
-  err: null,
 };
 
 export default MainPage;

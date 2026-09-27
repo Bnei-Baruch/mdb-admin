@@ -20,8 +20,4 @@ ErrWip.propTypes = {
   err: PropTypes.any,
 };
 
-ErrWip.defaultProps = {
-  wipText: 'Loading'
-};
-
 export default ErrWip;

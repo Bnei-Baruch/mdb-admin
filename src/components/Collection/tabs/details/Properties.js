@@ -10,7 +10,7 @@ import UpdateCollectionPropertiesForm from '../../../shared/Forms/Collection/Upd
 
 const Properties = (props) => {
   const {
-    collection, wip, err, updateProperties
+    collection = null, wip = false, err = null, updateProperties
   } = props;
 
   return (
@@ -37,12 +37,6 @@ Properties.propTypes = {
   wip: PropTypes.bool,
   err: shapes.Error,
   updateProperties: PropTypes.func.isRequired,
-};
-
-Properties.defaultProps = {
-  collection: null,
-  wip: false,
-  err: null,
 };
 
 const mapState = state => ({

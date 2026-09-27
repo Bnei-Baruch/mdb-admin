@@ -5,7 +5,7 @@ ARG cdn_hls_url="https://cdn.kab.info/"
 ARG auth_url="https://accounts.kab.info/auth"
 ARG kc_client="mdb-admin-ui"
 
-FROM node:21 as build
+FROM node:24 as build
 
 LABEL maintainer="edoshor@gmail.com"
 
@@ -20,7 +20,7 @@ WORKDIR /app
 
 ENV REACT_APP_ENV=${app_env} \
     REACT_APP_BASE_URL=${public_base}admin \
-    REACT_APP_HISTORY_BASENAME=/admin/ \
+    REACT_APP_HISTORY_BASENAME=/admin \
     REACT_APP_AUTH_URL=${auth_url} \
     REACT_APP_KC_CLIENT=${kc_client} \
     REACT_APP_MDB_URL=/mdb-api/ \

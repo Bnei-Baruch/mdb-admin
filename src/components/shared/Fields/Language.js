@@ -8,7 +8,7 @@ import { titleize } from '../../../helpers/utils';
 import LanguageSelector from '../LanguageSelector';
 
 const LanguageField = (props) => {
-  const { name, value, err, onChange, ...rest } = props;
+  const { name, value = LANG_UNKNOWN, err = false, onChange = noop, ...rest } = props;
 
   return (
     <Form.Field error={err} {...rest}>
@@ -29,12 +29,6 @@ LanguageField.propTypes = {
   value: PropTypes.string,
   err: PropTypes.bool,
   onChange: PropTypes.func,
-};
-
-LanguageField.defaultProps = {
-  value: LANG_UNKNOWN,
-  err: false,
-  onChange: noop,
 };
 
 export default LanguageField;

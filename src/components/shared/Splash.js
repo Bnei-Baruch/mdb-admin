@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Header, Icon } from 'semantic-ui-react';
 
 export const Splash = (props) => {
-  const { text, subtext, icon, color, isLoading } = props;
+  const { text = '', subtext = null, icon, color = 'black', isLoading = false } = props;
 
   return (
     <Header as="h2" icon textAlign="center">
@@ -22,13 +22,6 @@ Splash.propTypes = {
   subtext: PropTypes.node,
   color: PropTypes.string,
   isLoading: PropTypes.bool,
-};
-
-Splash.defaultProps = {
-  text: '',
-  subtext: null,
-  color: 'black',
-  isLoading: false,
 };
 
 export const LoadingSplash = props => (<Splash isLoading icon="spinner" {...props} />);
