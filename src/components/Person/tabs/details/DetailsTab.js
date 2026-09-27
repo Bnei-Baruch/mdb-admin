@@ -7,7 +7,7 @@ import PersonInfoForm from './PersonInfoForm';
 import I18nForm from './I18nForm';
 
 const DetailsTab = (props) => {
-  const { person } = props;
+  const { person = null } = props;
   if (!person) {
     return null;
   }
@@ -32,10 +32,6 @@ const DetailsTab = (props) => {
 
 DetailsTab.propTypes = {
   person: shapes.Person,
-};
-
-DetailsTab.defaultProps = {
-  person: null,
 };
 
 export default DetailsTab;

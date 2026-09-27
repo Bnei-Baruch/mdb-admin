@@ -6,7 +6,7 @@ import { Checkbox, Form } from 'semantic-ui-react';
 import { titleize } from '../../../helpers/utils';
 
 const ToggleField = (props) => {
-  const { name, value, err, onChange, ...rest } = props;
+  const { name, value = true, err = false, onChange = noop, ...rest } = props;
 
   return (
     <Form.Field error={err} {...rest}>
@@ -26,12 +26,6 @@ ToggleField.propTypes = {
   value: PropTypes.bool,
   err: PropTypes.bool,
   onChange: PropTypes.func,
-};
-
-ToggleField.defaultProps = {
-  value: true,
-  err: false,
-  onChange: noop,
 };
 
 export default ToggleField;

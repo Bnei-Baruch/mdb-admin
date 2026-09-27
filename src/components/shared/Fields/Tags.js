@@ -15,7 +15,7 @@ const TagsField = (props) => {
   const getTagByUID = useSelector(state => selectors.getTagByUID(state.tags));
   const hierarchy   = useSelector(state => selectors.getHierarchy(state.tags));
 
-  const { tagsUIDs, dispatch, err, onChange, ...rest } = props;
+  const { tagsUIDs = [], dispatch, err = false, onChange = noop, value = [], ...rest } = props;
 
   useEffect(() => {
     if (!hierarchy.roots.length !== 0 && hierarchy.childMap.length !== 0) {
@@ -65,7 +65,7 @@ const TagsField = (props) => {
   };
 
   return (
-    <Form.Field error={err} {...rest}>
+    <Form.Field error={err} {...rest} value={value}>
       <List>
         {
           tags.map(renderTag)
@@ -80,13 +80,6 @@ TagsField.propTypes = {
   value: PropTypes.arrayOf(PropTypes.any),
   err: PropTypes.bool,
   onChange: PropTypes.func
-};
-
-TagsField.defaultProps = {
-  value: [],
-  err: false,
-  onChange: noop,
-  tagsUIDs: [],
 };
 
 export default TagsField;

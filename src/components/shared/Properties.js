@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Header, Menu, Message, Segment } from 'semantic-ui-react';
 
-const Properties = props => (
+const Properties = ({ properties = null }) => (
   <div>
     <Menu attached borderless size="large">
       <Menu.Item header>
@@ -11,8 +11,8 @@ const Properties = props => (
     </Menu>
     <Segment attached>
       {
-        props.properties ?
-          <pre>{JSON.stringify(props.properties, null, 2)}</pre> :
+        properties ?
+          <pre>{JSON.stringify(properties, null, 2)}</pre> :
           <Message>No properties</Message>
       }
     </Segment>
@@ -21,10 +21,6 @@ const Properties = props => (
 
 Properties.propTypes = {
   properties: PropTypes.object,
-};
-
-Properties.defaultProps = {
-  properties: null,
 };
 
 export default Properties;

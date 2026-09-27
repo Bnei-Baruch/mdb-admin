@@ -17,7 +17,7 @@ import {
 const editableProperties = ['film_date', 'original_language'];
 
 const DetailsTab = (props) => {
-  const { unit } = props;
+  const { unit = null } = props;
   if (!unit) {
     return null;
   }
@@ -52,10 +52,6 @@ const DetailsTab = (props) => {
 
 DetailsTab.propTypes = {
   unit: shapes.ContentUnit,
-};
-
-DetailsTab.defaultProps = {
-  unit: null,
 };
 
 export default DetailsTab;

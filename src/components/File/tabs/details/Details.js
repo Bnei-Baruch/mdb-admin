@@ -24,7 +24,7 @@ const byTypeMimeTypeOptions = Object.values(MEDIA_TYPES).reduce((acc, { mime_typ
 }, {});
 
 const Details = (props) => {
-  const { file } = props;
+  const { file = null } = props;
   const errLang  = useSelector(state => selectors.getError(state.files, 'updateProperties'));
 
   const dispatch             = useDispatch();
@@ -211,10 +211,6 @@ const Details = (props) => {
 
 Details.propTypes = {
   file: shapes.File,
-};
-
-Details.defaultProps = {
-  file: null,
 };
 
 export default Details;

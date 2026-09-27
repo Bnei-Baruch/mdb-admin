@@ -6,7 +6,7 @@ import LabelInfoForm from './LabelInfoForm';
 import I18nForm from './I18nForm';
 
 const DetailsTab = (props) => {
-  const { label } = props;
+  const { label = null } = props;
   if (!label) {
     return null;
   }
@@ -31,10 +31,6 @@ const DetailsTab = (props) => {
 
 DetailsTab.propTypes = {
   label: PropTypes.object,
-};
-
-DetailsTab.defaultProps = {
-  label: null,
 };
 
 export default DetailsTab;

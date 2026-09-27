@@ -8,7 +8,7 @@ import Player from './Player';
 import Storages from './Storages';
 
 const DetailsTab = (props) => {
-  const { file } = props;
+  const { file = null } = props;
   if (!file) {
     return null;
   }
@@ -33,10 +33,6 @@ const DetailsTab = (props) => {
 
 DetailsTab.propTypes = {
   file: shapes.File,
-};
-
-DetailsTab.defaultProps = {
-  file: null,
 };
 
 export default DetailsTab;

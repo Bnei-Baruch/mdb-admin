@@ -4,7 +4,7 @@ import noop from 'lodash/noop';
 import { Form, Input } from 'semantic-ui-react';
 
 const FilenamePatternField = (props) => {
-  const { value, err, onChange, ...rest } = props;
+  const { value = '', err = false, onChange = noop, ...rest } = props;
 
   return (
     <Form.Field error={err} {...rest}>
@@ -27,12 +27,6 @@ FilenamePatternField.propTypes = {
   value: PropTypes.string,
   err: PropTypes.bool,
   onChange: PropTypes.func,
-};
-
-FilenamePatternField.defaultProps = {
-  value: '',
-  err: false,
-  onChange: noop,
 };
 
 export default FilenamePatternField;

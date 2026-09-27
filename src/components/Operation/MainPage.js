@@ -11,7 +11,7 @@ import Details from './Details';
 import Files from './Files';
 
 const MainPage = (props) => {
-  const { operation, wip, err } = props;
+  const { operation = null, wip = false, err = null } = props;
 
   if (err) {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -48,12 +48,6 @@ MainPage.propTypes = {
   operation: shapes.Operation,
   wip: PropTypes.bool,
   err: shapes.Error,
-};
-
-MainPage.defaultProps = {
-  operation: null,
-  wip: false,
-  err: null,
 };
 
 export default MainPage;

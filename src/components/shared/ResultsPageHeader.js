@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { PAGE_SIZE } from '../../helpers/consts';
 
 const ResultsPageHeader = (props) => {
-  const { pageNo, pageSize, total } = props;
+  const { pageNo = 1, pageSize = PAGE_SIZE, total = 0 } = props;
   let content                       = '';
   if (total === 0) {
     content = <span>No results</span>;
@@ -25,12 +25,6 @@ ResultsPageHeader.propTypes = {
   pageNo: PropTypes.number,
   pageSize: PropTypes.number,
   total: PropTypes.number,
-};
-
-ResultsPageHeader.defaultProps = {
-  pageNo: 1,
-  pageSize: PAGE_SIZE,
-  total: 0,
 };
 
 export default ResultsPageHeader;

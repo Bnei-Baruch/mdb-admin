@@ -11,7 +11,7 @@ import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
 const SourceBreadcrumbs = (props) => {
-  const { path, author, lastIsLink, currentLanguage } = props;
+  const { path = [], author = null, lastIsLink = false, currentLanguage } = props;
 
   // convert path to breadcrumbs
   const crumbs = [];
@@ -55,12 +55,6 @@ SourceBreadcrumbs.propTypes = {
   author: shapes.Author,
   lastIsLink: PropTypes.bool,
   currentLanguage: PropTypes.string.isRequired,
-};
-
-SourceBreadcrumbs.defaultProps = {
-  path: [],
-  author: null,
-  lastIsLink: false
 };
 
 const mapState = (state, ownProps) => {

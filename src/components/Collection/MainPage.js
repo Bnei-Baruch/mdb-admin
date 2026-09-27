@@ -17,7 +17,7 @@ const items = [
 ];
 
 const MainPage = (props) => {
-  const { collection, wip, err } = props;
+  const { collection = null, wip = false, err = null } = props;
 
   if (err) {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
@@ -41,12 +41,6 @@ MainPage.propTypes = {
   collection: shapes.Collection,
   wip: PropTypes.bool,
   err: shapes.Error,
-};
-
-MainPage.defaultProps = {
-  collection: null,
-  wip: false,
-  err: null,
 };
 
 export default MainPage;

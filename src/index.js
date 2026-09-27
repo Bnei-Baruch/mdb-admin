@@ -1,8 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { applyMiddleware, compose, createStore } from 'redux';
-import createSagaMiddleware, { delay } from 'redux-saga';
-import { put } from 'redux-saga/effects';
+import createSagaMiddleware from 'redux-saga';
+import { delay, put } from 'redux-saga/effects';
 import { createRouterMiddleware } from '@lagunovsky/redux-react-router';
 import { createBrowserHistory } from 'history';
 
@@ -10,14 +10,12 @@ import * as env from './helpers/env';
 import reducer from './redux';
 import { actions as system } from './redux/modules/system';
 import allSagas from './sagas';
-import sagaMonitor from './sagas/helpers/sagaMonitor';
 import App from './components/App/App';
 
 const devToolsArePresent    = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined';
 const devToolsStoreEnhancer = () => !env.isProduction && devToolsArePresent ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
 
-const sagaMiddlewareOptions = env.isProduction ? {} : { sagaMonitor };
-const sagaMiddleWare        = createSagaMiddleware(sagaMiddlewareOptions);
+const sagaMiddleWare = createSagaMiddleware();
 
 const history          = createBrowserHistory();
 const routerMiddleware = createRouterMiddleware(history);

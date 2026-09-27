@@ -10,7 +10,7 @@ import { selectors as storagesSelectors } from '../../../../redux/modules/storag
 import * as shapes from '../../../shapes';
 
 const Storages = (props) => {
-  const { items } = props;
+  const { items = EMPTY_ARRAY } = props;
 
   items.sort((a, b) => {
     if (a.country === b.country) {
@@ -82,11 +82,6 @@ const Storages = (props) => {
 Storages.propTypes = {
   file: shapes.File,  // eslint-disable-line react/no-unused-prop-types
   items: PropTypes.arrayOf(shapes.Storage),
-};
-
-Storages.defaultProps = {
-  file: null,
-  items: EMPTY_ARRAY,
 };
 
 const mapState = (state, props) => ({

@@ -10,7 +10,7 @@ import UpdateContentUnitPropertiesForm from '../../../shared/Forms/ContentUnit/U
 
 const Properties = (props) => {
   const {
-    unit, wip, err, updateProperties
+    unit = null, wip = false, err = null, updateProperties
   } = props;
 
   return (
@@ -37,12 +37,6 @@ Properties.propTypes = {
   wip: PropTypes.bool,
   err: shapes.Error,
   updateProperties: PropTypes.func.isRequired,
-};
-
-Properties.defaultProps = {
-  unit: null,
-  wip: false,
-  err: null,
 };
 
 const mapState = state => ({

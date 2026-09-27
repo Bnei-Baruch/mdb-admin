@@ -15,14 +15,14 @@ const tabs = [
 ];
 
 const MainPage = (props) => {
-  const { label, wip, err } = props;
+  const { label = null, wip = false, err = null } = props;
 
   if (err) {
     return <ErrorSplash text="Server Error" subtext={formatError(err)} />;
   }
 
   if (label) {
-    return <TabsMenu items={tabs} {...props} />;
+    return <TabsMenu items={tabs} {...props} label={label} wip={wip} err={err} />;
   }
 
   return wip
@@ -39,12 +39,6 @@ MainPage.propTypes = {
   label: PropTypes.object,
   wip: PropTypes.bool,
   err: shapes.Error,
-};
-
-MainPage.defaultProps = {
-  label: null,
-  wip: false,
-  err: null,
 };
 
 export default MainPage;

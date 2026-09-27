@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Icon, Loader, Statistic } from 'semantic-ui-react';
 
 function SearchHeader(props) {
-  const { searching, total } = props;
+  const { searching = false, total = 0 } = props;
 
   return (
     <Grid divided reversed="computer">
@@ -31,11 +31,6 @@ function SearchHeader(props) {
 SearchHeader.propTypes = {
   searching: PropTypes.bool,
   total: PropTypes.number
-};
-
-SearchHeader.defaultProps = {
-  searching: false,
-  total: 0
 };
 
 export default SearchHeader;

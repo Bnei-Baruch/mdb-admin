@@ -6,7 +6,7 @@ import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../../../helpers/consts'
 import * as shapes from '../../../shapes';
 
 const Details = (props) => {
-  const { unit } = props;
+  const { unit = null } = props;
   if (!unit) {
     return null;
   }
@@ -73,10 +73,6 @@ const Details = (props) => {
 
 Details.propTypes = {
   unit: shapes.ContentUnit,
-};
-
-Details.defaultProps = {
-  unit: null,
 };
 
 export default Details;

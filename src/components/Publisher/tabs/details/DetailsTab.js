@@ -7,7 +7,7 @@ import PublisherInfoForm from './PublisherInfoForm';
 import I18nForm from './I18nForm';
 
 const DetailsTab = (props) => {
-  const { publisher } = props;
+  const { publisher = null } = props;
   if (!publisher) {
     return null;
   }
@@ -32,10 +32,6 @@ const DetailsTab = (props) => {
 
 DetailsTab.propTypes = {
   publisher: shapes.Publisher,
-};
-
-DetailsTab.defaultProps = {
-  publisher: null,
 };
 
 export default DetailsTab;

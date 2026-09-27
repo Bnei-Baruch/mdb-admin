@@ -7,7 +7,7 @@ import { EMPTY_ARRAY } from '../../helpers/consts';
 import { filterConfigShape } from '../shapes';
 
 const Filters = (props) => {
-  const { filters, onFilterApplication, onFilterCancel } = props;
+  const { filters = EMPTY_ARRAY, onFilterApplication, onFilterCancel } = props;
 
   const filterChunks = chunk(filters, 4);
   return (
@@ -42,10 +42,6 @@ Filters.propTypes = {
   filters: PropTypes.arrayOf(filterConfigShape),
   onFilterApplication: PropTypes.func.isRequired,
   onFilterCancel: PropTypes.func.isRequired
-};
-
-Filters.defaultProps = {
-  filters: EMPTY_ARRAY,
 };
 
 export default Filters;

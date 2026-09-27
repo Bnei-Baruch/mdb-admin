@@ -25,7 +25,7 @@ const editableProperties = [
 ];
 
 const DetailsTab = (props) => {
-  const { collection } = props;
+  const { collection = null } = props;
   if (!collection) {
     return null;
   }
@@ -53,10 +53,6 @@ const DetailsTab = (props) => {
 
 DetailsTab.propTypes = {
   collection: shapes.Collection,
-};
-
-DetailsTab.defaultProps = {
-  collection: null,
 };
 
 export default DetailsTab;
