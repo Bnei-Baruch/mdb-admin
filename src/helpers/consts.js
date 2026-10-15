@@ -72,6 +72,7 @@ export const CT_KTAIM_NIVCHARIM       = 'KTAIM_NIVCHARIM';
 export const CT_SOURCE                = 'SOURCE';
 export const CT_LIKUTIM               = 'LIKUTIM';
 export const CT_PUBLIC_EVENTS         = 'PUBLIC_EVENTS';
+export const CT_TAPE                  = 'TAPE';
 
 export const CONTENT_TYPE_BY_ID = {
   1 : CT_DAILY_LESSON,
@@ -117,6 +118,7 @@ export const CONTENT_TYPE_BY_ID = {
   47: CT_SOURCE,
   48: CT_LIKUTIM,
   49: CT_PUBLIC_EVENTS,
+  50: CT_TAPE,
 };
 
 // Collection types
@@ -169,6 +171,7 @@ export const CONTENT_UNIT_TYPES = {
   [CT_KTAIM_NIVCHARIM]      : { text: CT_KTAIM_NIVCHARIM, value: 46 },
   [CT_SOURCE]               : { text: CT_SOURCE, value: 47 },
   [CT_LIKUTIM]              : { text: CT_LIKUTIM, value: 48 },
+  [CT_TAPE]                 : { text: CT_TAPE, value: 50 },
 };
 
 export const COLLECTION_TYPE_OPTIONS   = Array.from(Object.values(COLLECTION_TYPES));
