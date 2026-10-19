@@ -21,7 +21,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
+    outputs:
+      image: bneibaruch/mdb_admin:${{ steps.tag.outputs.tag }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -57,6 +60,10 @@ jobs:
               echo "CDN_URL=http://dev.mdb.bbdomain.org/links/" >> $GITHUB_ENV
               ;;
           esac
+      - name: Set image tag
+        id: tag
+        run: echo "tag=${TAG_PREFIX}${{ inputs.environment }}_${{ github.run_number }}" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -99,28 +106,100 @@ jobs:
             docker compose pull admin_ui
             docker compose up -d --no-deps admin_ui
 
-  deploy-internal:
+  deploy-dev:
     runs-on: [self-hosted, linux, merkaz]
     needs: build
-    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.environment == 'internal' || github.event.inputs.environment == 'dev')
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'dev'
     steps:
-      - name: Set deployment variables
-        run: |
-          if [[ "${{ github.event.inputs.environment }}" == "internal" ]]; then
-            echo "SSH_HOST=${{ secrets.MDB_HOST_PRODUCTION }}" >> $GITHUB_ENV
-          else
-            echo "SSH_HOST=${{ secrets.MDB_HOST_STAGING }}" >> $GITHUB_ENV
-          fi
-      
-      - name: Deploy to ${{ github.event.inputs.environment }} via SSH
+      - name: Deploy to dev via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ env.SSH_HOST }}
+          host: ${{ secrets.MDB_HOST_STAGING }}
           username: root
           key: ${{ secrets.BBDEPLOYMENT_SSH_PRIVATE_KEY }}
           script: |
             set -e
             cd /root/mdb-docker
-            sed -i 's/^ADMIN_UI_VERSION=.*/ADMIN_UI_VERSION=${{github.event.inputs.environment}}_${{github.run_number}}/' .env
+            sed -i 's/^ADMIN_UI_VERSION=.*/ADMIN_UI_VERSION=dev_${{github.run_number}}/' .env
             docker compose pull admin_ui
             docker compose up -d --no-deps admin_ui
+
+  # internal production is a legacy (non docker) VM: extract the build out of the
+  # image and serve it from /sites/admin (nginx root /sites)
+  extract-internal:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'internal'
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.BBDEPLOYMENT_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.BBDEPLOYMENT_DOCKERHUB_PASSWORD }}
+
+      - name: Extract build from image
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}
+        run: |
+          set -euo pipefail
+          docker pull "${IMAGE}"
+          dummy="dummy_mdb_admin_${{ github.run_number }}"
+          docker create --name "${dummy}" "${IMAGE}"
+          docker cp "${dummy}:/app" ./build
+          docker rm -f "${dummy}"
+          [ -f build/index.html ] || exit 1
+          mkdir -p dist
+          tar -czf "dist/admin-${{ github.run_number }}.tar.gz" -C build .
+
+      - name: Upload deployment payload
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-${{ github.run_number }}
+          path: dist
+          retention-days: 7
+
+  deploy-internal:
+    runs-on: [self-hosted, linux, merkaz]
+    needs: extract-internal
+
+    env:
+      VER: ${{ github.run_number }}
+      SSH_HOST: ${{ secrets.MDB_HOST_OLD || 'app.mdb.bbdomain.org' }}
+
+    steps:
+      - name: Download deployment payload
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-${{ github.run_number }}
+          path: dist
+
+      - name: Upload build to ${{ env.SSH_HOST }}
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: root
+          key: ${{ secrets.BBDEPLOYMENT_SSH_PRIVATE_KEY }}
+          source: "dist/*"
+          strip_components: 1
+          target: /tmp/admin-${{ env.VER }}
+
+      - name: Install
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: root
+          key: ${{ secrets.BBDEPLOYMENT_SSH_PRIVATE_KEY }}
+          envs: VER
+          script: |
+            set -e
+            rm -rf /sites/admin_new
+            mkdir /sites/admin_new
+            tar -xzf /tmp/admin-${VER}/admin-${VER}.tar.gz -C /sites/admin_new
+            chown -R archive:archive /sites/admin_new
+
+            # keep the previous build around for a quick rollback
+            rm -rf /sites/admin_prev
+            mv /sites/admin /sites/admin_prev
+            mv /sites/admin_new /sites/admin
+
+            rm -rf /tmp/admin-${VER}
