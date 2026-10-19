@@ -13,6 +13,11 @@ on:
           - production
           - internal
           - dev
+
+# GITHUB_TOKEN only ever needs to read the repo
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,6 +34,11 @@ jobs:
 
       - name: Set environment-specific variables
         run: |
+          # archive servers (staging/production) pull external-* tags (see /root/archive-docker/docker-compose.yml)
+          case "${{ inputs.environment }}" in
+            staging|production) echo "TAG_PREFIX=external-" >> $GITHUB_ENV ;;
+            *) echo "TAG_PREFIX=" >> $GITHUB_ENV ;;
+          esac
           case "${{ inputs.environment }}" in
             production)
               echo "PUBLIC_BASE=https://kabbalahmedia.info/" >> $GITHUB_ENV
@@ -53,8 +63,8 @@ jobs:
           context: .
           push: true
           tags: |
-            bneibaruch/mdb_admin:${{inputs.environment}}
-            bneibaruch/mdb_admin:${{inputs.environment}}_${{github.run_number}}
+            bneibaruch/mdb_admin:${{env.TAG_PREFIX}}${{inputs.environment}}
+            bneibaruch/mdb_admin:${{env.TAG_PREFIX}}${{inputs.environment}}_${{github.run_number}}
           build-args: |
             app_env=${{inputs.environment}}
             public_base=${{env.PUBLIC_BASE}}
@@ -83,7 +93,9 @@ jobs:
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
           proxy_key: ${{ secrets.BBDEPLOYMENT_SSH_PRIVATE_KEY }}
           script: |
+            set -e
             cd /root/archive-docker
+            sed -i 's/^MDB_ADMIN_VERSION=.*/MDB_ADMIN_VERSION=${{github.event.inputs.environment}}_${{github.run_number}}/' .env
             docker compose pull admin_ui
             docker compose up -d --no-deps admin_ui
 
@@ -107,4 +119,8 @@ jobs:
           username: root
           key: ${{ secrets.BBDEPLOYMENT_SSH_PRIVATE_KEY }}
           script: |
-            echo "Implement me!"
+            set -e
+            cd /root/mdb-docker
+            sed -i 's/^ADMIN_UI_VERSION=.*/ADMIN_UI_VERSION=${{github.event.inputs.environment}}_${{github.run_number}}/' .env
+            docker compose pull admin_ui
+            docker compose up -d --no-deps admin_ui
