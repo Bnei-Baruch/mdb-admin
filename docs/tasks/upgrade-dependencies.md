@@ -83,7 +83,7 @@ moment ──► date-fns ──► react-day-picker v9+
    - Обновить `scripts`, `Dockerfile`, `.github/workflows/cicd.yml`, README.
    - Удалить `react-scripts`, `npm-run-all`.
    - Тесты: Vitest + Testing Library (минимум smoke-тест) либо явно без тестов.
-3. **Semantic → Tailwind**, см. [semantic-to-tailwind.md](./semantic-to-tailwind.md). Делать после Vite, тогда сразу Tailwind v4 через `@tailwindcss/vite`.
+3. ⏳ **Semantic → Tailwind** (в работе): см. [semantic-to-tailwind.md](./semantic-to-tailwind.md), там статус по подэтапам. Готово: инфраструктура Tailwind v4, UI-кит, каркас приложения (`2e1ba07`).
 4. **moment → date-fns + react-day-picker v9+**
    - Можно делать параллельно с этапом 3. Компоненты дат (`DateRangeFilter`, `DateRange`, `FilmDate`) всё равно переделываются под Tailwind.
    - Аккуратно с форматами дат, которые уходят в API (`YYYY-MM-DD` и т.п.), и с `PropTypes.instanceOf(moment)`.

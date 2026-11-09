@@ -48,38 +48,72 @@
 
 ## Технический подход
 
-### 1. Подключение Tailwind
-- После перехода на Vite (этап 2 общей задачи) ставим **Tailwind v4** через `@tailwindcss/vite`. Тема задаётся в CSS (`@theme`), `tailwind.config.js` не нужен.
-- Если эту задачу нужно начать до Vite: в CRA 5 работает только Tailwind v3 через PostCSS. Это временный вариант, потом придётся мигрировать на v4.
-- Добавить `@tailwindcss/forms` для нормальных стилей инпутов.
+### 1. Подключение Tailwind ✅
+- **Tailwind v4** через `@tailwindcss/vite`, точка входа: `src/stylesheets/tailwind.css`. Тема задаётся в CSS (`@theme`), `tailwind.config.js` не нужен.
+- `@tailwindcss/forms` подключён со `strategy: "class"`: стили применяются только через классы `form-input`/`form-textarea`, глобального ресета инпутов нет.
+- `tailwind.css` импортируется в `App.jsx` **последним**, после `semantic.min.css`, `Kmedia.scss` и `App.css`.
 
-### 2. Сосуществование на время миграции
-Semantic CSS и Tailwind preflight конфликтуют (reset, `box-sizing`, шрифты, заголовки).
-- На время миграции: **не подключать preflight**. В v4 импортировать `tailwindcss/theme` и `tailwindcss/utilities` без `preflight`, либо использовать префикс `@import "tailwindcss" prefix(tw)`.
-- После удаления `semantic.min.css` — включить preflight обратно и убрать префикс (если был).
+### 2. Сосуществование на время миграции ✅
+- **Preflight не подключён.** Импортируются только `theme.css` и `utilities.css`.
+- Utilities подключены **вне cascade layer**. Иначе неслоёные правила Semantic (например `h1 { font-size }`) всегда побеждали бы утилиты Tailwind.
+- Вместо preflight подключён минимальный `@layer base`: `border-style: solid; border-width: 0` через `:where(...)`, чтобы работали утилиты `border-*`. Нативные контролы, `table` и `hr` исключены.
+- Флаги: `flag-icons` (CSS-классы `fi fi-xx`). В `vite.config.mjs` для них отключён `assetsInlineLimit`, иначе ~500 SVG встраиваются в CSS.
+- `build.cssMinify: 'esbuild'`: Lightning CSS падает на невалидных селекторах в `semantic.min.css`.
+- **После удаления Semantic:** заменить импорты в `tailwind.css` на `@import "tailwindcss";`, убрать migration base, вернуть `cssMinify` по умолчанию.
 
-### 3. Слой своих UI-компонентов
-Создать `src/components/ui/` — тонкие обёртки на Tailwind + Headless UI:
-`Button`, `Input`, `Textarea`, `Field`, `Select/Listbox`, `Combobox`, `Checkbox`, `Switch`, `Modal`, `Alert`, `Badge`, `Card`, `Table`, `Tabs`, `Menu`, `Breadcrumb`, `Spinner`, `Flag`, `Icon`.
+### 3. UI-кит `src/components/ui/` ✅
+Tailwind + Headless UI + Heroicons. **API повторяет используемое подмножество пропсов Semantic.** Статистику собирали AST-скриптом по всем файлам. Поэтому перенос файла в основном сводится к замене импорта.
 
-- API близкий к Semantic там, где это удешевляет миграцию (`loading`, `disabled`, `color`/`variant`, `onChange(e, { value })` для Dropdown-замен), чтобы не переписывать логику в контейнерах.
-- Не переносить лишнее: если пропс Semantic не используется — не реализовывать.
+| Файл | Компоненты | Основа |
+|---|---|---|
+| `Button.jsx` | `Button`, `Button.Group` | color/primary/basic/size/floated/loading/icon/circular/compact; `inverted` игнорируется |
+| `Dropdown.jsx` | `Dropdown` (+ `.Menu`, `.Item`, `.Divider`) | Headless `Listbox` (options), `Combobox` (search, multiple), `Menu` (children); режимы `selection`/`button`/`item`; `onChange(e, { ...props, value })` |
+| `Form.jsx` | `Form`, `.Field`, `.Group`, `.Input`, `.Dropdown`, `.Select`, `.TextArea`, `.Checkbox`, `Input`, `TextArea`, `Checkbox` | `Form` делает `preventDefault` как Semantic; `Field error` подсвечивает вложенные контролы через context; `Checkbox` на Headless `Checkbox`/`Switch` (toggle) |
+| `Grid.jsx` | `Grid`, `.Row`, `.Column` | 16-колоночная сетка на flex; `stackable`, `divided`, `reversed="computer"`, `columns` |
+| `Header.jsx` | `Header`, `.Content`, `.Subheader` | size/color/icon/attached/inverted/floated/sub; `icon={true}`: иконка над текстом |
+| `Icon.jsx` | `Icon`, `renderIcon` | маппинг используемых имён Semantic → Heroicons; `icon` может быть строкой, `{ name, ... }` или элементом |
+| `List.jsx` | `List` (+ `.Item`, `.Content`, `.Header`, `.Description`, `.List`, `.Icon`) | divided/relaxed/horizontal; `Content floated` через float |
+| `Menu.jsx` | `Menu`, `.Item`, `.Menu` | варианты: toolbar (attached borderless), nav (pointing, NavLink `.active`), tabs (secondary/tabular), vertical, pagination |
+| `Modal.jsx` | `Modal`, `.Header`, `.Content`, `.Actions` | Headless `Dialog`; `closeIcon`, `closeOnDimmerClick`, `size` |
+| `Search.jsx` | `Search` | **своя реализация**: запрос полностью контролирует родитель (`value` + `onSearchChange`), Headless `Combobox` так не умеет; категории, клавиатура |
+| `Segment.jsx` | `Segment`, `.Group` | attached/basic/clearing/secondary/padded/color |
+| `Table.jsx` | `Table` (+ `.Header`, `.Body`, `.Footer`, `.Row`, `.HeaderCell`, `.Cell`) | compact/basic/celled/selectable/striped; `collapsing`, `width`, `sorted` |
+| `misc.jsx` | `Divider`, `Message`, `Label`, `Flag`, `Loader`, `Image`, `Container`, `Sticky`, `Statistic`, `Breadcrumb` | `Sticky` — CSS `position: sticky` вместо `context` |
+| `colors.js` | карты цветов Semantic → Tailwind | классы выписаны полностью, чтобы их увидел сканер Tailwind |
 
-### 4. Зависимости
-- Добавить: `tailwindcss`, `@tailwindcss/vite`, `@tailwindcss/forms`, `@headlessui/react`, `@heroicons/react`, `flag-icons`.
+### Как мигрировать файл
+1. `from 'semantic-ui-react'` → `from '<относительный путь>/ui'`.
+2. Проверить нестандартные пропсы. Если компонент кита чего-то не умеет, **доработать кит**, а не обходить его в файле.
+3. Если в Dev-консоли пишет `ui/Icon: unknown icon "..."`, добавить иконку в `ICONS` в `Icon.jsx`.
+4. Проверить экран вживую: dev-сервер запускать как `BROWSER=none yarn start`. Флаг `--open false` Vite понимает как путь `/admin/false`.
+
+### 4. Зависимости ✅
+- Добавлены: `tailwindcss`, `@tailwindcss/vite`, `@tailwindcss/forms`, `@headlessui/react`, `@heroicons/react`, `flag-icons`.
 - Удалить в конце: `semantic-ui-react`, `semantic-ui-css`.
 - `react-day-picker` v7 → v9+ и `moment` → `date-fns`: этап 4 общей задачи. Компоненты дат удобно переделать заодно.
 
-## План работ (по этапам, каждый — отдельный PR)
+## План работ и статус
 
-1. **Инфраструктура** — Tailwind + конфиг, preflight off, базовая тема (цвета, шрифт). Приложение выглядит как раньше.
-2. **UI-кит** — `src/components/ui/*` с базовыми компонентами.
-3. **Каркас приложения** — `App`, `FrontPage`, основное меню/навигация, `shared/*` (`Pagination`, `SearchHeader`, `ResultsPageHeader`, `TabsMenu`, `Splash`, `LanguageSelector`, `ErrWip`).
-4. **Поля и формы** — `shared/Fields/*`, `shared/Forms/*` (Collection, ContentUnit, Persons, Publishers).
-5. **Фильтры и автокомплит** — `Filters/*`, `Autocomplete/*` (Combobox с async-поиском).
-6. **Списки (MainPage)** — `Collections`, `ContentUnits`, `Files`, `Operations`, `Persons`, `Publishers`, `Labels`, `Sources`, `Tags`.
-7. **Страницы сущностей и вкладки** — `Collection`, `ContentUnit`, `File`, `Operation`, `Person`, `Publisher`, `Label`, `Source`, `Tag` (details, associations, files hierarchy, danger zone и т.д.).
-8. **Очистка** — удалить `semantic-ui-*`, включить preflight, вычистить неиспользуемые css/scss (`Kmedia.scss`, `_colors-helpers.scss` и т.п.), обновить README.
+| # | Подэтап | Статус |
+|---|---|---|
+| 1 | **Инфраструктура**: Tailwind, режим миграции, флаги | ✅ `2e1ba07` |
+| 2 | **UI-кит** `src/components/ui/*` | ✅ `2e1ba07` |
+| 3 | **Каркас**: `FrontPage/*` (AppLayout, Login, Forbidden, Welcome), `shared/*.jsx` (Pagination, TabsMenu, Splash, SearchHeader, ErrWip, Properties, LanguageSelector) | ✅ `2e1ba07`. ⚠️ после логина вживую не проверено |
+| 4 | **Поля и формы**: `shared/Fields/*` (14), `shared/Forms/*` (12) | ⏳ в работе |
+| 5 | **Фильтры и автокомплит**: `Filters/*` (11), `Autocomplete/*` (2), `Operations/filters` | ⬜ |
+| 6 | **Списки (MainPage)**: `BaseClasses` (4), `Collections`, `ContentUnits`, `Operations`, `Persons`, `Publishers`, `Labels` | ⬜ |
+| 7 | **Страницы сущностей**: `ContentUnit/tabs` (16), `Collection/tabs` (8), `File/tabs` (7), `Sources` (8), `Tags` (8), `Label`, `Person`, `Publisher` (по 4), `Operation` (3) | ⬜ |
+| 8 | **Очистка**: удалить `semantic-ui-*`, включить preflight, вернуть `cssMinify`, вычистить старые css/scss (`Kmedia.scss`, `_colors-helpers.scss`, `App.css`, `files.css`, `collections.css`, `associations/style.css`), обновить README | ⬜ |
+
+Осталось файлов с `semantic-ui-react`: **~115** (на момент `2e1ba07`).
+
+### Попутно исправлено
+- Коды флагов в `consts.js`: датский `da`→`dk`, эстонский `et`→`ee`, греческий `el`→`gr`, тагальский `tl`→`ph`. Раньше флаги не показывались или показывались чужие.
+
+### Открытые вопросы / риски
+- Внутренние страницы после логина Keycloak ещё не проверены вживую.
+- `ForbiddenPage` вызывает `userManager.signoutRedirect()` у объекта из `InitKeycloak`. Похоже на старый баг, не связанный с миграцией. Проверить.
+- `Kmedia.scss` и `App.css` могут содержать селекторы под разметку Semantic (`.ui ...`). Проверить на подэтапе 8.
 
 ## Чеклист функциональности (проверить после каждого этапа)
 
