@@ -124,7 +124,7 @@ class DeepListFilter extends React.Component {
     return (
       <div key={selectedId} className="filter-steps__column-wrapper" ref={el => this.menus[depth] = el}>
         <div className="filter-steps__column">
-          <Menu fluid vertical color="blue" size="tiny">
+          <Menu fluid vertical color="blue" size="tiny" className="rounded-none! border-0! shadow-none!">
             {
               items.map(({ id }) => {
                 const node  = hierarchyNodeToTreeNode(hierarchy, getSubItemById(id));

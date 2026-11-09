@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {
+  ArchiveBoxIcon,
   ArrowDownIcon,
   ArrowDownTrayIcon,
   ArrowPathIcon,
@@ -15,16 +16,24 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  CodeBracketIcon,
+  DocumentIcon,
+  DocumentTextIcon,
   ExclamationTriangleIcon,
   EyeSlashIcon,
   FaceFrownIcon,
+  FilmIcon,
   FunnelIcon,
   LockClosedIcon,
   MagnifyingGlassIcon,
+  MusicalNoteIcon,
   NoSymbolIcon,
   PencilIcon,
+  PhotoIcon,
   PlusIcon,
+  PresentationChartBarIcon,
   ShieldCheckIcon,
+  TableCellsIcon,
   TagIcon,
   TrashIcon,
   XMarkIcon,
@@ -63,6 +72,18 @@ export const ICONS = {
   'tag'               : TagIcon,
   'trash'             : TrashIcon,
   'warning sign'      : ExclamationTriangleIcon,
+  // file types (helpers/utils.js fileIcon)
+  'file outline'           : DocumentIcon,
+  'file archive outline'   : ArchiveBoxIcon,
+  'file audio outline'     : MusicalNoteIcon,
+  'file code outline'      : CodeBracketIcon,
+  'file excel outline'     : TableCellsIcon,
+  'file image outline'     : PhotoIcon,
+  'file pdf outline'       : DocumentTextIcon,
+  'file powerpoint outline': PresentationChartBarIcon,
+  'file text outline'      : DocumentTextIcon,
+  'file video outline'     : FilmIcon,
+  'file word outline'      : DocumentTextIcon,
 };
 
 const SIZES = {

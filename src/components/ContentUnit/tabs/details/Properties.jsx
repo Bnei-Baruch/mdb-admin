@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Header, Menu, Segment } from 'semantic-ui-react';
+import { Header, Menu, Segment } from '../../../ui';
 
 import { actions, selectors } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';

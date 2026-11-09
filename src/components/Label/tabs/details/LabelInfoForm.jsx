@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Header, List, Menu, Segment } from 'semantic-ui-react';
+import { Header, List, Menu, Segment } from '../../../ui';
 
 import { EMPTY_OBJECT } from '../../../../helpers/consts';
 

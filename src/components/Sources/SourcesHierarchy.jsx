@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Grid, Header, Icon, List, Menu, Modal, Segment } from 'semantic-ui-react';
+import { Grid, Header, Icon, List, Menu, Modal, Segment } from '../ui';
 
 import { FrownSplash, LoadingSplash } from '../shared/Splash';
 import { extractI18n } from '../../helpers/utils';

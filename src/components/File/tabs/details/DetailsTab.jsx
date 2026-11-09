@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Grid } from 'semantic-ui-react';
+import { Divider, Grid } from '../../../ui';
 
 import * as shapes from '../../../shapes';
 import Properties from '../../../shared/Properties';

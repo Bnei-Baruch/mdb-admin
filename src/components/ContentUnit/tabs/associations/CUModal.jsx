@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Icon, Menu, Modal } from 'semantic-ui-react';
+import { Button, Icon, Menu, Modal } from '../../../ui';
 
 import { CONTENT_UNIT_TYPES, EMPTY_ARRAY, EMPTY_OBJECT, NS_UNIT_ASSOCIATION_CU } from '../../../../helpers/consts';
 import { selectors as units } from '../../../../redux/modules/collections';

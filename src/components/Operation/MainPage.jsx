@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Divider, Grid } from 'semantic-ui-react';
+import { Divider, Grid } from '../ui';
 
 import { formatError } from '../../helpers/utils';
 import * as shapes from '../shapes';

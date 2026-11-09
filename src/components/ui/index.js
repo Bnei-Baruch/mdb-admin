@@ -1,6 +1,6 @@
 // UI kit: Tailwind + Headless UI replacements for semantic-ui-react.
 // The API intentionally mirrors the subset of Semantic UI props used in this app,
-// so migrating a file is mostly `from 'semantic-ui-react'` -> `from '../ui'`.
+// so migrating a file was mostly replacing the semantic-ui-react import with '../ui'.
 export { default as Button } from './Button';
 export { default as Dropdown } from './Dropdown';
 export { default as Form, Input, TextArea, Checkbox, inputClasses } from './Form';

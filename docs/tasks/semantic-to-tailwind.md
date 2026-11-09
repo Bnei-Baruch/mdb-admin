@@ -102,10 +102,10 @@ Tailwind + Headless UI + Heroicons. **API повторяет используе�
 | 4 | **Поля и формы**: `shared/Fields/*` (14), `shared/Forms/*` (12) | ✅ перенесено. ⚠️ вживую не проверено. В кит добавлены `inputClasses()` для `DayPickerInput` и неконтролируемый режим `Search` (`value={undefined}`, как в Semantic) |
 | 5 | **Фильтры и автокомплит**: `Filters/*` (11), `Autocomplete/*` (2), `Operations/filters` | ✅ перенесено. ⚠️ вживую не проверено. В `Icon` добавлены `tag`, `calendar`, `book`, `protect` (иконки тегов фильтров); ширина `Form.Field width` теперь только с `md` |
 | 6 | **Списки (MainPage)**: `BaseClasses` (4), `Collections`, `ContentUnits`, `Operations`, `Persons`, `Publishers`, `Labels` | ✅ перенесено (14 файлов, кит без доработок). ⚠️ вживую не проверено; `Sticky` теперь CSS-sticky — проверить закрепление пагинации |
-| 7 | **Страницы сущностей**: `ContentUnit/tabs` (16), `Collection/tabs` (8), `File/tabs` (7), `Sources` (8), `Tags` (8), `Label`, `Person`, `Publisher` (по 4), `Operation` (3) | ⬜ |
+| 7 | **Страницы сущностей**: `ContentUnit/tabs` (16), `Collection/tabs` (8), `File/tabs` (7), `Sources` (8), `Tags` (8), `Label`, `Person`, `Publisher` (по 4), `Operation` (3) | ✅ перенесено (62 файла). ⚠️ вживую не проверено. В `Icon` добавлены 11 иконок типов файлов (`fileIcon` из `helpers/utils.js`); в `DeepListFilter` меню без рамок через классы вместо `.filter-steps .ui.menu` |
 | 8 | **Очистка**: удалить `semantic-ui-*`, включить preflight, вернуть `cssMinify`, вычистить старые css/scss (`Kmedia.scss`, `_colors-helpers.scss`, `App.css`, `files.css`, `collections.css`, `associations/style.css`), обновить README | ⬜ |
 
-Осталось файлов с `semantic-ui-react`: **62** (после подэтапа 6).
+Осталось файлов с `semantic-ui-react`: **0** в JS (после подэтапа 7). Сам пакет и `semantic.min.css` ещё подключены, их убираем на подэтапе 8.
 
 ### Попутно исправлено
 - Коды флагов в `consts.js`: датский `da`→`dk`, эстонский `et`→`ee`, греческий `el`→`gr`, тагальский `tl`→`ph`. Раньше флаги не показывались или показывались чужие.
@@ -113,7 +113,7 @@ Tailwind + Headless UI + Heroicons. **API повторяет используе�
 ### Открытые вопросы / риски
 - Внутренние страницы после логина Keycloak ещё не проверены вживую.
 - `ForbiddenPage` вызывает `userManager.signoutRedirect()` у объекта из `InitKeycloak`. Похоже на старый баг, не связанный с миграцией. Проверить.
-- `Kmedia.scss` и `App.css` могут содержать селекторы под разметку Semantic (`.ui ...`). Проверить на подэтапе 8.
+- Мёртвый CSS для подэтапа 8: в `Kmedia.scss` блоки `.filter-steps__lists`, `.filter-tags`, `.filter-steps .ui.menu`, `.search_association .transition` (классов больше нет в разметке).
 
 ## Чеклист функциональности (проверить после каждого этапа)
 

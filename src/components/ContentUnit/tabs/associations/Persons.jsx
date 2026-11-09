@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 import { Link } from 'react-router-dom';
 import {
   Button, Header, List, Menu, Message, Segment, Search
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, extractI18n } from '../../../../helpers/utils';

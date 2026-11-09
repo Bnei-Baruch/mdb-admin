@@ -4,7 +4,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
+import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from '../../../ui';
 
 import {
   ALL_FILE_TYPES,

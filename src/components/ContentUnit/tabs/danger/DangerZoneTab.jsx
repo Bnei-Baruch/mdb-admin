@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import { Button, Dropdown, Grid, Header, Icon, List, Modal, Segment } from '../../../ui';
 
 import {
   EMPTY_OBJECT,

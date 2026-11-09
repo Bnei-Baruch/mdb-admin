@@ -3,7 +3,7 @@ import moment from 'moment';
 import { filesize } from 'filesize';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Header, Icon, List, Menu, Segment, Flag, Dropdown } from 'semantic-ui-react';
+import { Header, Icon, List, Menu, Segment, Flag, Dropdown } from '../../../ui';
 
 import { selectors, actions } from '../../../../redux/modules/files';
 import { LANGUAGES, SECURITY_LEVELS, ALL_FILE_TYPES, MEDIA_TYPES } from '../../../../helpers/consts';

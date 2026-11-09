@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   Button, Dropdown, Grid, Header, Icon, List, Modal, Segment
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import { EMPTY_OBJECT, SECURITY_LEVELS } from '../../../../helpers/consts';
 import { formatError } from '../../../../helpers/utils';

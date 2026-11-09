@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Header, Icon, List, Menu, Segment } from 'semantic-ui-react';
+import { Header, Icon, List, Menu, Segment } from '../../../ui';
 
 import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';

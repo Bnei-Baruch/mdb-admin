@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import delay from 'lodash/delay';
 import orderBy from 'lodash/orderBy';
-import { Icon, Button, Segment } from 'semantic-ui-react';
+import { Icon, Button, Segment } from '../../../ui';
 
 import {
   EMPTY_ARRAY, EMPTY_OBJECT, NS_COLLECTION_UNITS, CONTENT_UNIT_TYPES

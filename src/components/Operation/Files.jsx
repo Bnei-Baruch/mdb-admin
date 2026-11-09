@@ -7,7 +7,7 @@ import { filesize } from 'filesize';
 import { Link } from 'react-router-dom';
 import {
   Flag, Header, Icon, List, Menu, Message, Segment
-} from 'semantic-ui-react';
+} from '../ui';
 import isEqual from 'react-fast-compare';
 
 import {

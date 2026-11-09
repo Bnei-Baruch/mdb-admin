@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import {
   Checkbox, Header, Icon, Message, Table
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import {
   CONTENT_TYPE_BY_ID,

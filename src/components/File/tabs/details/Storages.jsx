@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Flag, Header, Menu, Message, Segment, Table
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { selectors as storagesSelectors } from '../../../../redux/modules/storages';

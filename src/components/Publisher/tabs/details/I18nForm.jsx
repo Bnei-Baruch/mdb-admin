@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
 import {
   Button, Flag, Header, Input, Menu, Message, Segment, Table
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import {
   ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGES, RTL_LANGUAGES

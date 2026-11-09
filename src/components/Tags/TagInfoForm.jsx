@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Button, Dropdown, Form, Header, Input, List, Menu, Segment } from 'semantic-ui-react';
+import { Button, Dropdown, Form, Header, Input, List, Menu, Segment } from '../ui';
 
 import { extractI18n, formatError, isValidPattern } from '../../helpers/utils';
 import * as shapes from '../shapes';

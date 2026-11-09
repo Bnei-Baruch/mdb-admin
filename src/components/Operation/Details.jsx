@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {
   Header, List, Menu, Segment
-} from 'semantic-ui-react';
+} from '../ui';
 
 import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';

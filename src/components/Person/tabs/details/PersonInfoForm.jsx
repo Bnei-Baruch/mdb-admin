@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Form, Header, Input, List, Menu, Segment
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import { EMPTY_OBJECT } from '../../../../helpers/consts';
 import { formatError, isValidPattern } from '../../../../helpers/utils';

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Breadcrumb } from 'semantic-ui-react';
+import { Breadcrumb } from '../ui';
 
 import { extractI18n } from '../../helpers/utils';
 import { selectors } from '../../redux/modules/tags';

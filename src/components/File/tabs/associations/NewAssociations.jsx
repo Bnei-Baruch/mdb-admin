@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { Button, Icon, Segment } from '../../../ui';
 
 import { NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button } from '../../../ui';
 
 import * as shapes from '../../../shapes';
 import { fileTypes, physicalFile } from '../../../../helpers/utils';

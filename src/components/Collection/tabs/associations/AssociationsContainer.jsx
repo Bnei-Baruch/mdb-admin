@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Grid, Header, Icon, Menu, Sticky } from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, Menu, Sticky } from '../../../ui';
 
 import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/collections';

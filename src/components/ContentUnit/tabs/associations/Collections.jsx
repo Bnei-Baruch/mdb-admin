@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Header, Icon, Menu, Message, Segment, Table, Button } from 'semantic-ui-react';
+import { Header, Icon, Menu, Message, Segment, Table, Button } from '../../../ui';
 
 import { selectors } from '../../../../redux/modules/content_units';
 import { actions as collectionActions, selectors as collections } from '../../../../redux/modules/collections';

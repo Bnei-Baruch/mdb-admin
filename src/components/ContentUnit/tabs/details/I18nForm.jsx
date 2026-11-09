@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import {
   Button, Flag, Header, Input, Menu, Segment, Table
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import {
   ALL_LANGUAGES,

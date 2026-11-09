@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Divider, Grid } from 'semantic-ui-react';
+import { Divider, Grid } from '../ui';
 import { selectors as system } from '../../redux/modules/system';
 
 import { actions, selectors } from '../../redux/modules/tags';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Divider, Grid } from 'semantic-ui-react';
+import { Divider, Grid } from '../../../ui';
 
 import { actions } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';

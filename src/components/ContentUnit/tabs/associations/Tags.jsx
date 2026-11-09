@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   Button, Header, List, Menu, Message, Segment
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import { EMPTY_ARRAY, EMPTY_OBJECT } from '../../../../helpers/consts';
 import { actions, selectors } from '../../../../redux/modules/content_units';

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
   Icon, Menu, Button, Modal
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import {
   EMPTY_ARRAY,

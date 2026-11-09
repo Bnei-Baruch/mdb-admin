@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
   Header, Icon, Menu, Message, Segment, Table, Button
-} from 'semantic-ui-react';
+} from '../../../ui';
 
 import { CONTENT_TYPE_BY_ID, EMPTY_ARRAY } from '../../../../helpers/consts';
 import { extractI18n, formatError, titleize } from '../../../../helpers/utils';

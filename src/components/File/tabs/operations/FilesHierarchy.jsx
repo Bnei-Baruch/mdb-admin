@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import { filesize } from 'filesize';
 import { Link } from 'react-router-dom';
-import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from 'semantic-ui-react';
+import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from '../../../ui';
 import isEqual from 'react-fast-compare';
 
 import {

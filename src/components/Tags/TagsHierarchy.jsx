@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
   Grid, Header, Icon, Label, List, Menu, Modal, Segment
-} from 'semantic-ui-react';
+} from '../ui';
 
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';

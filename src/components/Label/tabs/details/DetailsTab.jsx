@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Grid } from 'semantic-ui-react';
+import { Divider, Grid } from '../../../ui';
 import ReadonlyProperties from '../../../shared/Properties';
 import LabelInfoForm from './LabelInfoForm';
 import I18nForm from './I18nForm';

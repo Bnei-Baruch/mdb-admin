@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Divider, Flag, Form, Header, Input, Message, Segment
-} from 'semantic-ui-react';
+} from '../ui';
 
 import {
   LANG_ENGLISH, LANG_HEBREW, LANG_RUSSIAN, LANG_SPANISH, MAJOR_LANGUAGES
