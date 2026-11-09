@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Flag, Form, Input } from 'semantic-ui-react';
+import { Flag, Form, Input } from '../../ui';
 
 import { LANGUAGES } from '../../../helpers/consts';
 

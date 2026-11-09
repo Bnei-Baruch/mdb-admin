@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Divider, Grid, Modal, Segment } from 'semantic-ui-react';
+import { Button, Divider, Grid, Modal, Segment } from '../../../ui';
 
 import { actions } from '../../../../redux/modules/content_units';
 import DerivativesContainer from '../../../ContentUnit/tabs/associations/DerivativesContainer';

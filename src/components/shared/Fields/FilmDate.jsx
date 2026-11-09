@@ -4,7 +4,7 @@ import moment from 'moment';
 import noop from 'lodash/noop';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { formatDate, parseDate, } from 'react-day-picker/moment';
-import { Form } from 'semantic-ui-react';
+import { Form, inputClasses } from '../../ui';
 
 import { DATE_FORMAT } from '../../../helpers/consts';
 
@@ -28,6 +28,7 @@ const FilmDateField = (props) => {
         onDayChange={onChange}
         dayPickerProps={dayPickerProps}
         style={{ width: '100%', zIndex: 1000 }}
+        inputProps={{ className: inputClasses(err) }}
       />
     </Form.Field>
   );

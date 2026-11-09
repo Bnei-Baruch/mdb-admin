@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Form } from 'semantic-ui-react';
+import { Form } from '../../../ui';
 
 import * as shapes from '../../../shapes';
 import BasePersonForm from './BasePersonForm';

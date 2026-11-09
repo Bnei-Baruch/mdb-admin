@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Divider, Form, Label, Message, Search } from 'semantic-ui-react';
+import { Divider, Form, Label, Message, Search } from '../../../ui';
 import {
   CONTENT_TYPE_BY_ID,
   CONTENT_UNIT_TYPE_OPTIONS,

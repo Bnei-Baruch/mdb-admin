@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Form } from 'semantic-ui-react';
+import { Form } from '../../ui';
 
 import { LANG_MULTI, LANG_UNKNOWN } from '../../../helpers/consts';
 import { titleize } from '../../../helpers/utils';

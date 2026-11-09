@@ -2,7 +2,7 @@ import noop from 'lodash/noop';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form } from '../../ui';
 
 import { selectors } from '../../../redux/modules/sources';
 import SourcesSearch from '../../Autocomplete/SourcesSearch';

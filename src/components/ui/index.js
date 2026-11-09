@@ -3,7 +3,7 @@
 // so migrating a file is mostly `from 'semantic-ui-react'` -> `from '../ui'`.
 export { default as Button } from './Button';
 export { default as Dropdown } from './Dropdown';
-export { default as Form, Input, TextArea, Checkbox } from './Form';
+export { default as Form, Input, TextArea, Checkbox, inputClasses } from './Form';
 export { default as Grid } from './Grid';
 export { default as Header } from './Header';
 export { default as Icon } from './Icon';

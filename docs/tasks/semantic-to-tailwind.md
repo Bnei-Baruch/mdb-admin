@@ -99,13 +99,13 @@ Tailwind + Headless UI + Heroicons. **API повторяет используе�
 | 1 | **Инфраструктура**: Tailwind, режим миграции, флаги | ✅ `2e1ba07` |
 | 2 | **UI-кит** `src/components/ui/*` | ✅ `2e1ba07` |
 | 3 | **Каркас**: `FrontPage/*` (AppLayout, Login, Forbidden, Welcome), `shared/*.jsx` (Pagination, TabsMenu, Splash, SearchHeader, ErrWip, Properties, LanguageSelector) | ✅ `2e1ba07`. ⚠️ после логина вживую не проверено |
-| 4 | **Поля и формы**: `shared/Fields/*` (14), `shared/Forms/*` (12) | ⏳ в работе |
+| 4 | **Поля и формы**: `shared/Fields/*` (14), `shared/Forms/*` (12) | ✅ перенесено. ⚠️ вживую не проверено. В кит добавлены `inputClasses()` для `DayPickerInput` и неконтролируемый режим `Search` (`value={undefined}`, как в Semantic) |
 | 5 | **Фильтры и автокомплит**: `Filters/*` (11), `Autocomplete/*` (2), `Operations/filters` | ⬜ |
 | 6 | **Списки (MainPage)**: `BaseClasses` (4), `Collections`, `ContentUnits`, `Operations`, `Persons`, `Publishers`, `Labels` | ⬜ |
 | 7 | **Страницы сущностей**: `ContentUnit/tabs` (16), `Collection/tabs` (8), `File/tabs` (7), `Sources` (8), `Tags` (8), `Label`, `Person`, `Publisher` (по 4), `Operation` (3) | ⬜ |
 | 8 | **Очистка**: удалить `semantic-ui-*`, включить preflight, вернуть `cssMinify`, вычистить старые css/scss (`Kmedia.scss`, `_colors-helpers.scss`, `App.css`, `files.css`, `collections.css`, `associations/style.css`), обновить README | ⬜ |
 
-Осталось файлов с `semantic-ui-react`: **~115** (на момент `2e1ba07`).
+Осталось файлов с `semantic-ui-react`: **90** (после подэтапа 4).
 
 ### Попутно исправлено
 - Коды флагов в `consts.js`: датский `da`→`dk`, эстонский `et`→`ee`, греческий `el`→`gr`, тагальский `tl`→`ph`. Раньше флаги не показывались или показывались чужие.

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import noop from 'lodash/noop';
-import { Form } from 'semantic-ui-react';
+import { Form } from '../../ui';
 
 import { EMPTY_ARRAY } from '../../../helpers/consts';
 import { extractI18n } from '../../../helpers/utils';

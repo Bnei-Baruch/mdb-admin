@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Button, Form, Input } from 'semantic-ui-react';
+import { Button, Form, Input } from '../../ui';
 
 class EditedField extends PureComponent {
   static propTypes = {

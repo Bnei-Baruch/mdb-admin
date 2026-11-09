@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Checkbox, Form } from 'semantic-ui-react';
+import { Checkbox, Form } from '../../ui';
 
 import { titleize } from '../../../helpers/utils';
 

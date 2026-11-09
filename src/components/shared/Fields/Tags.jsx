@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { Button, Form, List } from 'semantic-ui-react';
+import { Button, Form, List } from '../../ui';
 import noop from 'lodash/noop';
 
 import { selectors } from '../../../redux/modules/tags';

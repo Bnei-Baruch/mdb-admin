@@ -4,7 +4,7 @@ import moment from 'moment';
 import noop from 'lodash/noop';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { formatDate, parseDate, } from 'react-day-picker/moment';
-import { Form } from 'semantic-ui-react';
+import { Form, inputClasses } from '../../ui';
 
 import { DATE_FORMAT } from '../../../helpers/consts';
 
@@ -55,6 +55,7 @@ class DateRangeField extends PureComponent {
             onDayChange={this.handleStartChange}
             dayPickerProps={dayPickerStartProps}
             style={{ width: '100%', zIndex: 1000 }}
+            inputProps={{ className: inputClasses(err.start) }}
           />
         </Form.Field>
         <Form.Field required error={err.end}>
@@ -69,6 +70,7 @@ class DateRangeField extends PureComponent {
             onDayChange={this.handleEndChange}
             dayPickerProps={dayPickerEndProps}
             style={{ width: '100%', zIndex: 1000 }}
+            inputProps={{ className: inputClasses(err.end) }}
           />
         </Form.Field>
       </Form.Group>

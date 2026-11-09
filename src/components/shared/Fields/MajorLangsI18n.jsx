@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Form } from 'semantic-ui-react';
+import { Form } from '../../ui';
 
 import { LANG_ENGLISH, LANG_HEBREW, LANG_RUSSIAN, LANG_SPANISH, MAJOR_LANGUAGES } from '../../../helpers/consts';
 import NameField from './Name';

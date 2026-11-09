@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Form } from 'semantic-ui-react';
+import { Form } from '../../ui';
 
 import { EMPTY_ARRAY, GENRE_OPTIONS } from '../../../helpers/consts';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button, Header, Segment } from 'semantic-ui-react';
+import { Button, Header, Segment } from '../../../ui';
 
 import {
   COLLECTION_TYPES,

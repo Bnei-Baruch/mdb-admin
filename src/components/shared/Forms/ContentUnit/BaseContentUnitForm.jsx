@@ -1,7 +1,7 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Button, Form, Header, Input, Segment } from 'semantic-ui-react';
+import { Button, Form, Header, Input, Segment } from '../../../ui';
 
 import {
   CONTENT_UNIT_TYPES,

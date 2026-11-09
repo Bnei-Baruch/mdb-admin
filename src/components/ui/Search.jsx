@@ -22,7 +22,7 @@ const flatten = (results, category) => {
 };
 
 const Search = ({
-  value = '',
+  value: valueProp,
   results,
   category,
   onSearchChange,
@@ -43,6 +43,10 @@ const Search = ({
   const [active, setActive] = React.useState(0);
   const rootRef             = React.useRef(null);
   const listId              = React.useId();
+
+  // Like Semantic: `value={undefined}` means "uncontrolled" — keep the typed text internally.
+  const [innerValue, setInnerValue] = React.useState(valueProp ?? '');
+  const value = valueProp !== undefined && valueProp !== null ? valueProp : innerValue;
 
   const { groups } = flatten(results, category);
   const flat       = groups.flatMap(g => g.results || []);
@@ -106,6 +110,7 @@ const Search = ({
           placeholder={placeholder}
           onChange={e => {
             setOpen(true);
+            setInnerValue(e.target.value);
             if (onSearchChange) {
               onSearchChange(e, { value: e.target.value });
             }

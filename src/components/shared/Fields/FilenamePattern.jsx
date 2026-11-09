@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Form, Input } from 'semantic-ui-react';
+import { Form, Input } from '../../ui';
 
 const FilenamePatternField = (props) => {
   const { value = '', err = false, onChange = noop, ...rest } = props;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Header, Segment, Form, Input } from 'semantic-ui-react';
+import { Button, Header, Segment, Form, Input } from '../../../ui';
 
 import { formatError, isValidPattern } from '../../../../helpers/utils';
 

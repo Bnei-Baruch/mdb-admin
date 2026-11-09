@@ -34,6 +34,9 @@ const WIDTH = {
 const CONTROL = 'form-input block w-full rounded-md border-0 bg-white py-1.5 px-3 text-sm text-gray-900 shadow-xs ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500';
 const controlRing = error => (error ? 'ring-red-400 focus:ring-red-600' : 'ring-gray-300 focus:ring-blue-600');
 
+/** Classes for a raw <input> rendered by 3rd-party components (e.g. react-day-picker's DayPickerInput). */
+export const inputClasses = (error = false) => cx(CONTROL, controlRing(error));
+
 /* ---------------------------------- Input ----------------------------------- */
 
 export const Input = React.forwardRef(({
