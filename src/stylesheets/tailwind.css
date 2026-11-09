@@ -1,41 +1,49 @@
-/*
- * Tailwind entry point.
- *
- * MIGRATION MODE (docs/tasks/semantic-to-tailwind.md):
- * semantic.min.css is still loaded, so:
- *  - preflight is NOT imported (it would reset Semantic's typography and controls);
- *  - utilities are imported WITHOUT a cascade layer, otherwise unlayered Semantic
- *    rules (e.g. `h1 { font-size }`) would always win over Tailwind utilities.
- *
- * After Semantic UI is removed: replace everything below the theme block with
- * `@import "tailwindcss";` and drop the `migration base` block.
- */
-@layer theme, base, components, utilities;
+@import "tailwindcss";
 
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css";
-
-/* Form styles only via explicit classes (form-input, form-checkbox...) — no global input reset. */
+/* Form styles only via explicit classes (form-input, form-textarea...) — no global input reset. */
 @plugin "@tailwindcss/forms" {
   strategy: "class";
 }
 
-@theme {
-  --font-sans: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
-}
-
 /*
- * Minimal subset of preflight needed for Tailwind border utilities to work
- * (`border` only sets width; preflight normally sets `border-style: solid`).
- * Native form controls, tables and hr are excluded so their UA borders survive.
- * :where() keeps specificity at 0 so any Semantic or utility rule wins.
+ * Base styles for the few raw elements the app still renders directly
+ * (previously styled globally by semantic.min.css). Components from
+ * src/components/ui style themselves with utilities, which win over this layer.
  */
 @layer base {
-  :where(*:not(input, select, textarea, button, hr, table, td, th, fieldset, iframe)),
-  ::before,
-  ::after {
-    border-width: 0;
-    border-style: solid;
-    border-color: var(--color-gray-200);
+  body {
+    @apply bg-white text-sm text-gray-900 antialiased;
+  }
+
+  a {
+    @apply text-blue-600 hover:text-blue-800 hover:underline;
+  }
+
+  h1 {
+    @apply text-2xl font-bold;
+  }
+
+  h2 {
+    @apply text-xl font-bold;
+  }
+
+  h3 {
+    @apply text-lg font-semibold;
+  }
+
+  h4 {
+    @apply text-base font-semibold;
+  }
+
+  :where(p) + :where(p) {
+    @apply mt-2;
+  }
+
+  pre {
+    @apply overflow-x-auto font-mono text-xs whitespace-pre-wrap;
+  }
+
+  small {
+    @apply text-xs text-gray-500;
   }
 }

@@ -1,5 +1,7 @@
 # Задача: миграция с Semantic UI на Tailwind CSS
 
+> ✅ **Выполнено** (ветка `upgrade_deps`). Осталась ручная проверка по чеклисту ниже.
+>
 > Часть общей задачи [upgrade-dependencies.md](./upgrade-dependencies.md), этап 3. Делается **после** перехода CRA → Vite. Блокирует апгрейд на React 19: `semantic-ui-react` поддерживает только React ≤18.
 
 ## Цель
@@ -51,15 +53,13 @@
 ### 1. Подключение Tailwind ✅
 - **Tailwind v4** через `@tailwindcss/vite`, точка входа: `src/stylesheets/tailwind.css`. Тема задаётся в CSS (`@theme`), `tailwind.config.js` не нужен.
 - `@tailwindcss/forms` подключён со `strategy: "class"`: стили применяются только через классы `form-input`/`form-textarea`, глобального ресета инпутов нет.
-- `tailwind.css` импортируется в `App.jsx` **последним**, после `semantic.min.css`, `Kmedia.scss` и `App.css`.
+- `tailwind.css` импортируется в `App.jsx` **последним**, после `Kmedia.css` и `App.css`.
 
-### 2. Сосуществование на время миграции ✅
-- **Preflight не подключён.** Импортируются только `theme.css` и `utilities.css`.
-- Utilities подключены **вне cascade layer**. Иначе неслоёные правила Semantic (например `h1 { font-size }`) всегда побеждали бы утилиты Tailwind.
-- Вместо preflight подключён минимальный `@layer base`: `border-style: solid; border-width: 0` через `:where(...)`, чтобы работали утилиты `border-*`. Нативные контролы, `table` и `hr` исключены.
+### 2. Сосуществование на время миграции ✅ (снято на подэтапе 8)
+- Пока оба CSS были подключены, preflight был выключен, а utilities Tailwind подключались вне cascade layer, чтобы перекрывать Semantic. Для `semantic.min.css` использовался `cssMinify: 'esbuild'`.
+- Сейчас `tailwind.css` — это обычный `@import "tailwindcss"` (с preflight) плюс небольшой `@layer base` для голых `a`, `h1`–`h4`, `p`, `pre`, `small`.
 - Флаги: `flag-icons` (CSS-классы `fi fi-xx`). В `vite.config.mjs` для них отключён `assetsInlineLimit`, иначе ~500 SVG встраиваются в CSS.
-- `build.cssMinify: 'esbuild'`: Lightning CSS падает на невалидных селекторах в `semantic.min.css`.
-- **После удаления Semantic:** заменить импорты в `tailwind.css` на `@import "tailwindcss";`, убрать migration base, вернуть `cssMinify` по умолчанию.
+- Шрифт: системный (Tailwind по умолчанию) вместо Lato, который подгружал Semantic.
 
 ### 3. UI-кит `src/components/ui/` ✅
 Tailwind + Headless UI + Heroicons. **API повторяет используемое подмножество пропсов Semantic.** Статистику собирали AST-скриптом по всем файлам. Поэтому перенос файла в основном сводится к замене импорта.
@@ -103,17 +103,17 @@ Tailwind + Headless UI + Heroicons. **API повторяет используе�
 | 5 | **Фильтры и автокомплит**: `Filters/*` (11), `Autocomplete/*` (2), `Operations/filters` | ✅ перенесено. ⚠️ вживую не проверено. В `Icon` добавлены `tag`, `calendar`, `book`, `protect` (иконки тегов фильтров); ширина `Form.Field width` теперь только с `md` |
 | 6 | **Списки (MainPage)**: `BaseClasses` (4), `Collections`, `ContentUnits`, `Operations`, `Persons`, `Publishers`, `Labels` | ✅ перенесено (14 файлов, кит без доработок). ⚠️ вживую не проверено; `Sticky` теперь CSS-sticky — проверить закрепление пагинации |
 | 7 | **Страницы сущностей**: `ContentUnit/tabs` (16), `Collection/tabs` (8), `File/tabs` (7), `Sources` (8), `Tags` (8), `Label`, `Person`, `Publisher` (по 4), `Operation` (3) | ✅ перенесено (62 файла). ⚠️ вживую не проверено. В `Icon` добавлены 11 иконок типов файлов (`fileIcon` из `helpers/utils.js`); в `DeepListFilter` меню без рамок через классы вместо `.filter-steps .ui.menu` |
-| 8 | **Очистка**: удалить `semantic-ui-*`, включить preflight, вернуть `cssMinify`, вычистить старые css/scss (`Kmedia.scss`, `_colors-helpers.scss`, `App.css`, `files.css`, `collections.css`, `associations/style.css`), обновить README | ⬜ |
+| 8 | **Очистка**: удалены `semantic-ui-react`, `semantic-ui-css`, `sass`; включён preflight; `cssMinify` по умолчанию (Lightning CSS); `Kmedia.scss` + `_colors-helpers.scss` + `_text-helpers.scss` → один `Kmedia.css` без мёртвых блоков | ✅ CSS-бандл 588 kB → 86 kB |
 
-Осталось файлов с `semantic-ui-react`: **0** в JS (после подэтапа 7). Сам пакет и `semantic.min.css` ещё подключены, их убираем на подэтапе 8.
+Semantic UI полностью удалён из проекта.
 
 ### Попутно исправлено
 - Коды флагов в `consts.js`: датский `da`→`dk`, эстонский `et`→`ee`, греческий `el`→`gr`, тагальский `tl`→`ph`. Раньше флаги не показывались или показывались чужие.
 
 ### Открытые вопросы / риски
-- Внутренние страницы после логина Keycloak ещё не проверены вживую.
 - `ForbiddenPage` вызывает `userManager.signoutRedirect()` у объекта из `InitKeycloak`. Похоже на старый баг, не связанный с миграцией. Проверить.
-- Мёртвый CSS для подэтапа 8: в `Kmedia.scss` блоки `.filter-steps__lists`, `.filter-tags`, `.filter-steps .ui.menu`, `.search_association .transition` (классов больше нет в разметке).
+- **Вживую после логина ничего не проверялось.** Проверены только сборка, lint, AST-анализ пропсов и страница логина. Нужно пройти чеклист функциональности ниже.
+- JS-бандл вырос ~1075 → ~1195 kB (Headless UI). Code splitting — отдельная задача.
 
 ## Чеклист функциональности (проверить после каждого этапа)
 

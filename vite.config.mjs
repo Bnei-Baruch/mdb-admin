@@ -17,8 +17,5 @@ export default defineConfig({
     sourcemap: true,
     // Do not inline ~500 flag SVGs from flag-icons into the CSS bundle; load them on demand.
     assetsInlineLimit: file => (file.includes('flag-icons') ? false : undefined),
-    // lightningcss (Vite 8 default) fails on invalid selectors in semantic.min.css.
-    // TODO: switch back to default after Semantic UI removal (docs/tasks/semantic-to-tailwind.md).
-    cssMinify: 'esbuild',
   },
 });

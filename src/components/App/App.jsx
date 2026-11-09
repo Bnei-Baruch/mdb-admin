@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect, Provider } from 'react-redux';
 import { ReduxRouter as ConnectedRouter } from '@lagunovsky/redux-react-router';
-import 'semantic-ui-css/semantic.min.css';
 import 'flag-icons/css/flag-icons.min.css';
 import { selectors as system } from '../../redux/modules/system';
 import FrontPage from '../FrontPage/FrontPage';
-import '../../stylesheets/Kmedia.scss';
+import '../../stylesheets/Kmedia.css';
 import './App.css';
 import '../../stylesheets/tailwind.css'; // last: utilities must win over legacy CSS
 import InitKeycloak from '../FrontPage/InitKeycloak';

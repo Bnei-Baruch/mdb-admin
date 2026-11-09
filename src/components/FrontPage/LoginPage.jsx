@@ -12,11 +12,11 @@ const LoginPage = () => {
 
   return (
     <div className="login-form">
-      <Segment raised padded="very" color="blue" textAlign="center">
-        <Image src={logo} centered />
+      <Segment raised padded="very" color="blue" textAlign="center" className="flex flex-col items-center gap-3">
+        <Image src={logo} centered className="mb-2" />
         <h3>Welcome to BB Archive admin app!</h3>
-        <p>Please log in to continue</p>
-        <Button primary size="huge" onClick={handleLogin}>Login</Button>
+        <p className="text-gray-600">Please log in to continue</p>
+        <Button primary size="large" className="mt-2 px-8" onClick={handleLogin}>Login</Button>
       </Segment>
     </div>
   );
