@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown } from '../ui';
 
 import { ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGE_OPTIONS } from '../../helpers/consts';
 

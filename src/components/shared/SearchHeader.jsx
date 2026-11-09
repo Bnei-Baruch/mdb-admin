@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Icon, Loader, Statistic } from 'semantic-ui-react';
+import { Grid, Icon, Loader, Statistic } from '../ui';
 
 function SearchHeader(props) {
   const { searching = false, total = 0 } = props;

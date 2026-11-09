@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Image, Segment } from 'semantic-ui-react';
+import { Button, Image, Segment } from '../ui';
 import logo from './KL_Tree_128.png';
 import { actions } from '../../redux/modules/user';
 

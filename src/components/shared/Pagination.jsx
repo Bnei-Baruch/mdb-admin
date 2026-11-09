@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
-import { Icon, Menu } from 'semantic-ui-react';
+import { Icon, Menu } from '../ui';
 
 import { PAGE_SIZE } from '../../helpers/consts';
 

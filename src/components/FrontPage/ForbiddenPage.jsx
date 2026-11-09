@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Grid, Menu, Dropdown } from 'semantic-ui-react';
+import { Header, Grid, Menu, Dropdown } from '../ui';
 import userManager from './InitKeycloak';
 import { LANGUAGE_OPTIONS, SITE_LANGUAGES } from '../../helpers/consts';
 import { AUTH_URL } from '../../helpers/env';

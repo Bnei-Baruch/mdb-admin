@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header, Menu, Message, Segment } from 'semantic-ui-react';
+import { Header, Menu, Message, Segment } from '../ui';
 
 const Properties = ({ properties = null }) => (
   <div>

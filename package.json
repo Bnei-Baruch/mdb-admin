@@ -10,6 +10,8 @@
     "@babel/core": "^7.29.13",
     "@babel/eslint-parser": "^7.29.13",
     "@babel/preset-react": "^7.29.7",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/vite": "^4.3.5",
     "@vitejs/plugin-react": "^6.3.0",
     "esbuild": "^0.28.0",
     "eslint": "^9.39.5",
@@ -21,11 +23,14 @@
     "vite": "^8.3.7"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.10",
+    "@heroicons/react": "^2.2.0",
     "@lagunovsky/redux-react-router": "^4.6.0",
     "axios": "^1.21.0",
     "classnames": "^2.5.1",
     "date-fns": "^4.4.0",
     "filesize": "^11.0.30",
+    "flag-icons": "^7.6.0",
     "history": "^5.3.0",
     "keycloak-js": "^26.2.5",
     "lodash": "^4.18.1",
@@ -44,7 +49,8 @@
     "redux-saga": "^1.5.1",
     "reselect": "^5.3.0",
     "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.5"
+    "semantic-ui-react": "^2.1.5",
+    "tailwindcss": "^4.3.5"
   },
   "scripts": {
     "start": "vite",

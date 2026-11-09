@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Image } from 'semantic-ui-react';
+import { Header, Image } from '../ui';
 
 import logo from './KL_Tree_128.png';
 

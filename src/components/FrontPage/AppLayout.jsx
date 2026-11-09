@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import { Dropdown, Flag, Grid, Image, Menu } from 'semantic-ui-react';
+import { Dropdown, Flag, Grid, Image, Menu } from '../ui';
 
 import { AUTH_URL } from '../../helpers/env';
 import { LANGUAGE_OPTIONS, SITE_LANGUAGES } from '../../helpers/consts';

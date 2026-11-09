@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Menu } from 'semantic-ui-react';
+import { Menu } from '../ui';
 import { connect } from 'react-redux';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
