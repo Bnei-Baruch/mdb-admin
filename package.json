@@ -2,7 +2,6 @@
   "name": "mdb-admin",
   "version": "0.1.0",
   "license": "MIT",
-  "homepage": "http://app.mdb.bbdomain.org/admin/",
   "repository": {
     "type": "git",
     "url": "https://github.com/Bnei-Baruch/mdb-admin"
@@ -11,14 +10,15 @@
     "@babel/core": "^7.29.13",
     "@babel/eslint-parser": "^7.29.13",
     "@babel/preset-react": "^7.29.7",
+    "@vitejs/plugin-react": "^6.3.0",
+    "esbuild": "^0.28.0",
     "eslint": "^9.39.5",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.14.0",
-    "npm-run-all": "^4.1.5",
-    "react-scripts": "^5.0.1",
-    "sass": "^1.108.1"
+    "sass": "^1.108.1",
+    "vite": "^8.3.7"
   },
   "dependencies": {
     "@lagunovsky/redux-react-router": "^4.6.0",
@@ -47,32 +47,17 @@
     "semantic-ui-react": "^2.1.5"
   },
   "scripts": {
-    "start": "npm-run-all -p watch-css start-js",
-    "start-js": "react-scripts start",
-    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; yarn build-css && react-scripts build'",
-    "build-js": "echo '>>> Building Scripts...'; react-scripts build",
-    "build:external": "REACT_APP_ENV=external yarn build",
-    "build:production": "REACT_APP_ENV=production yarn build",
-    "build:staging": "REACT_APP_ENV=staging yarn build",
-    "build:suitcase": "REACT_APP_ENV=suitcase yarn build",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "vite build",
+    "build:external": "vite build --mode external",
+    "build:production": "vite build --mode production",
+    "build:staging": "vite build --mode staging",
+    "build:suitcase": "vite build --mode suitcase",
+    "preview": "vite preview",
+    "lint": "eslint src",
     "deploy": "yarn build:production && scp -r build/* archive@app.mdb.bbdomain.org:/sites/admin",
     "deploy:external": "yarn build:external && scp -r build/* archive@app.archive.bbdomain.org:/sites/admin",
     "deploy:staging": "yarn build:staging && scp -r build/* archive@dev.mdb.bbdomain.org:/sites/admin",
-    "deploy:suitcase": "yarn build:suitcase && scp -r build/* root@suitcase.bbdomain.org:/sites/admin",
-    "build-css": "sass src/:src/",
-    "watch-css": "sass src/:src/ --watch"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "deploy:suitcase": "yarn build:suitcase && scp -r build/* root@suitcase.bbdomain.org:/sites/admin"
   }
 }

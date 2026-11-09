@@ -9,7 +9,7 @@ module.exports = [
     ignores: ['build/**', 'coverage/**', 'node_modules/**'],
   },
   {
-    files: ['**/*.js'],
+    files: ['**/*.{js,jsx}'],
     languageOptions: {
       parser: babelParser,
       ecmaVersion: 2021,

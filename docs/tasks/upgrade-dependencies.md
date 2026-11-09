@@ -75,7 +75,7 @@ moment ──► date-fns ──► react-day-picker v9+
    - Применены 🟢 обновления, eslint-плагины перенесены в devDeps.
    - Обновлены вложенные `follow-redirects` → 1.16.3 и `source-map-js` → 1.2.2.
    - Итог: `yarn audit` 83 → **66** (critical 7 → 3, high 29 → 17). Всё оставшееся приходит из `react-scripts` и `npm-run-all` и уйдёт на этапе 2.
-2. **CRA → Vite**
+2. ✅ **CRA → Vite** (сделано 2026-11-09: Vite 8, 172 файла с JSX переименованы в `.jsx`, `cssMinify: 'esbuild'` временно, пока подключён Semantic; `yarn audit`: 66 → 0 от `react-scripts`/`npm-run-all`)
    - `vite.config.js`: `base` с учётом `/admin/`, `build.outDir: 'build'` (на это завязаны Dockerfile и deploy-скрипты), `envPrefix: 'REACT_APP_'`, чтобы не переименовывать env-переменные (Dockerfile, `.env.*`, CI).
    - `process.env.REACT_APP_*` → `import.meta.env.REACT_APP_*` (7 мест, в основном `src/helpers/env.js`).
    - `public/index.html` → `index.html` в корне.

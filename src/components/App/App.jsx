@@ -5,7 +5,7 @@ import { ReduxRouter as ConnectedRouter } from '@lagunovsky/redux-react-router';
 import 'semantic-ui-css/semantic.min.css';
 import { selectors as system } from '../../redux/modules/system';
 import FrontPage from '../FrontPage/FrontPage';
-import '../../stylesheets/Kmedia.css';
+import '../../stylesheets/Kmedia.scss';
 import './App.css';
 import InitKeycloak from '../FrontPage/InitKeycloak';
 import InitialFetchAll from '../FrontPage/InitialFetchAll';

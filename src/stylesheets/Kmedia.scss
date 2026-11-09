@@ -1,5 +1,5 @@
-@import 'colors-helpers';
-@import 'text-helpers';
+@use 'colors-helpers' as *;
+@use 'text-helpers' as *;
 
 .filter-steps {
   display: flex;

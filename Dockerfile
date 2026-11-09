@@ -30,8 +30,7 @@ ENV REACT_APP_ENV=${app_env} \
 COPY . .
 
 RUN yarn install --immutable && \
-    yarn build-css && \
-    yarn build-js && \
+    yarn build && \
     rm -rf node_modules
 
 FROM alpine
