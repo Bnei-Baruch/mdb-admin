@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import escapeRegExp from 'lodash/escapeRegExp';
-import { Search } from 'semantic-ui-react';
+import { Search } from '../ui';
 
 import * as shapes from '../shapes';
 import { selectors } from '../../redux/modules/tags';

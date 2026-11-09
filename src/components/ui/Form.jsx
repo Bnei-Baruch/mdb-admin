@@ -12,22 +12,23 @@ import Icon from './Icon';
 
 const FieldContext = React.createContext({ error: false });
 
+// Field widths apply from md up; on small screens fields stack full-width (Semantic's stackable behaviour).
 const WIDTH = {
-  1 : 'w-1/16',
-  2 : 'w-2/16',
-  3 : 'w-3/16',
-  4 : 'w-4/16',
-  5 : 'w-5/16',
-  6 : 'w-6/16',
-  7 : 'w-7/16',
-  8 : 'w-8/16',
-  9 : 'w-9/16',
-  10: 'w-10/16',
-  11: 'w-11/16',
-  12: 'w-12/16',
-  13: 'w-13/16',
-  14: 'w-14/16',
-  15: 'w-15/16',
+  1 : 'w-full md:w-1/16',
+  2 : 'w-full md:w-2/16',
+  3 : 'w-full md:w-3/16',
+  4 : 'w-full md:w-4/16',
+  5 : 'w-full md:w-5/16',
+  6 : 'w-full md:w-6/16',
+  7 : 'w-full md:w-7/16',
+  8 : 'w-full md:w-8/16',
+  9 : 'w-full md:w-9/16',
+  10: 'w-full md:w-10/16',
+  11: 'w-full md:w-11/16',
+  12: 'w-full md:w-12/16',
+  13: 'w-full md:w-13/16',
+  14: 'w-full md:w-14/16',
+  15: 'w-full md:w-15/16',
   16: 'w-full',
 };
 

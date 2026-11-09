@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect, ReactReduxContext } from 'react-redux';
 import reduce from 'lodash/reduce';
-import { Label } from 'semantic-ui-react';
+import { Label } from '../../ui';
 
 import { filtersTransformer } from '../../../filters';
 import { actions as filterActions, selectors as filterSelectors } from '../../../redux/modules/filters';

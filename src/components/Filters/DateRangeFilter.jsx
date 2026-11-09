@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import noop from 'lodash/noop';
 import DayPicker, { DateUtils } from 'react-day-picker';
-import { Button, Divider, Dropdown, Grid, Header, Input, Segment } from 'semantic-ui-react';
+import { Button, Divider, Dropdown, Grid, Header, Input, Segment } from '../ui';
 
 import 'react-day-picker/lib/style.css';
 import connectFilter from './connectFilter';

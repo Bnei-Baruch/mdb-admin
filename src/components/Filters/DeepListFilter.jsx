@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import {
   Button, Menu, Segment, Container
-} from 'semantic-ui-react';
+} from '../ui';
 
 import { hierarchyToTree, hierarchyNodeToTreeNode, extractI18n } from '../../helpers/utils';
 import connectFilter from './connectFilter';

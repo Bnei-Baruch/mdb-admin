@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown } from '../ui';
 
 import { CONTENT_TYPE_BY_ID } from '../../helpers/consts';
 import connectFilter from './connectFilter';

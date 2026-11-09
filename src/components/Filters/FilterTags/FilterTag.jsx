@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Icon, Label } from 'semantic-ui-react';
+import { Icon, Label } from '../../ui';
 
 class FilterTag extends PureComponent {
   static propTypes = {

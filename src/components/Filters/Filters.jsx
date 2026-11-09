@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import chunk from 'lodash/chunk';
-import { Form, Segment } from 'semantic-ui-react';
+import { Form, Segment } from '../ui';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
 import { filterConfigShape } from '../shapes';

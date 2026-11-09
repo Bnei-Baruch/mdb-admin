@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Segment } from 'semantic-ui-react';
+import { Grid, Header, Segment } from '../../ui';
 
 import { NS_OPERATIONS } from '../../../helpers/consts';
 import { OperationTypeFilter } from '../../Filters/filterComponents';
