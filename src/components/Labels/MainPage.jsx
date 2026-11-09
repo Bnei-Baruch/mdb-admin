@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from 'semantic-ui-react';
+import { Grid } from '../ui';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
 import * as shapes from '../shapes';

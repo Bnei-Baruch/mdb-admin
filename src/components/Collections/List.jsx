@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Icon, Table } from 'semantic-ui-react';
+import { Icon, Table } from '../ui';
 
 import {
   CONTENT_TYPE_BY_ID,

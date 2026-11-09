@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Grid, Header, Icon, Menu, Sticky
-} from 'semantic-ui-react';
+} from '../ui';
 
 import * as shapes from '../shapes';
 import ErrWip from '../shared/ErrWip';

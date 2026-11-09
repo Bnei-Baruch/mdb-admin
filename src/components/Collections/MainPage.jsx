@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Menu, Modal } from 'semantic-ui-react';
+import { Icon, Menu, Modal } from '../ui';
 
 import { NS_COLLECTIONS, COLLECTION_TYPES } from '../../helpers/consts';
 import * as shapes from '../shapes';

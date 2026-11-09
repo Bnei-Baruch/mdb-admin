@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Menu, Modal } from 'semantic-ui-react';
+import { Icon, Menu, Modal } from '../ui';
 
 import { CONTENT_UNIT_TYPES, NS_UNITS } from '../../helpers/consts';
 import CUList from '../BaseClasses/CUList';

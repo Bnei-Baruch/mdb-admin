@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Grid, Header, Icon, Menu, Modal
-} from 'semantic-ui-react';
+} from '../ui';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
 import * as shapes from '../shapes';

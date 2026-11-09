@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Checkbox, Icon, Table } from 'semantic-ui-react';
+import { Checkbox, Icon, Table } from '../ui';
 
 import { SECURITY_LEVELS } from '../../helpers/consts';
 import * as shapes from '../shapes';

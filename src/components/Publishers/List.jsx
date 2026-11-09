@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Table } from 'semantic-ui-react';
+import { Table } from '../ui';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';

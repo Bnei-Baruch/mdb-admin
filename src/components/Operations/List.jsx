@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Table } from 'semantic-ui-react';
+import { Table } from '../ui';
 
 import { EMPTY_ARRAY, OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';
