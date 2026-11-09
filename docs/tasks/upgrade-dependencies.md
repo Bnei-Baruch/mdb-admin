@@ -46,7 +46,7 @@ moment ──► date-fns ──► react-day-picker v9+
 | `semantic-ui-react`, `semantic-ui-css` | 127 файлов | Tailwind + Headless UI, см. [semantic-to-tailwind.md](./semantic-to-tailwind.md) |
 | ~~`moment`~~ | ✅ заменён | `date-fns` + `@date-fns/utc` (этап 4) |
 | ~~`react-day-picker` 7.4.10~~ | ✅ обновлён | v10, `DayPickerInput` заменён на `ui/DateInput` (этап 4) |
-| `react-router-dom` | 36 файлов | В v7 всё есть в `react-router`, в v8 `react-router-dom` уже не выпускается. Поменять импорты на `react-router` |
+| ~~`react-router-dom`~~ | ✅ удалён | импорты переведены на `react-router` (этап 5) |
 | `redux-actions` | 17 файлов (16 `handleActions`) | Опционально: Redux Toolkit (`createSlice`/`createAction`). Пакет живой, но не развивается. Низкий приоритет |
 | `redux` `createStore` | `src/index.js` | Помечен deprecated. Опционально `configureStore` из RTK. Работает и так |
 
@@ -54,8 +54,8 @@ moment ──► date-fns ──► react-day-picker v9+
 
 | Пакет | Сейчас → последняя | Условие / заметки |
 |---|---|---|
-| `react`, `react-dom` | 18.3.1 → 19.x | После удаления Semantic. 100 class-компонентов, но `findDOMNode`, string refs, legacy context и `componentWill*` не найдены. Нужно проверить `defaultProps` в function-компонентах (в 19 игнорируются). `propTypes` в 19 не проверяются; пакет `prop-types` (149 файлов) можно оставить или постепенно убрать |
-| `react-router` | 7.18 → 8.x | После React 19. Проверить совместимость `@lagunovsky/redux-react-router` (peer: `react-router ^6–8`, ок) |
+| ✅ `react`, `react-dom` | 18.3.1 → 19.3 | После удаления Semantic. 100 class-компонентов, но `findDOMNode`, string refs, legacy context и `componentWill*` не найдены. Нужно проверить `defaultProps` в function-компонентах (в 19 игнорируются). `propTypes` в 19 не проверяются; пакет `prop-types` (149 файлов) можно оставить или постепенно убрать |
+| ✅ `react-router` | 7.18 → 8.5 | После React 19. Проверить совместимость `@lagunovsky/redux-react-router` (peer: `react-router ^6–8`, ок) |
 | `eslint` | 9 → 10 | Проверить плагины `react`, `import`, `react-hooks` на поддержку v10 |
 | `@babel/*` | 7 → 8 | После перехода на Vite `@babel/core`/`preset-react` нужны только для `@babel/eslint-parser`. Как вариант, перейти на стандартный парсер ESLint (JSX поддерживается через `ecmaFeatures`) и убрать Babel совсем |
 | `eslint-plugin-import`, `eslint-plugin-react-hooks` | — | Перенести из `dependencies` в `devDependencies` |
@@ -91,7 +91,12 @@ moment ──► date-fns ──► react-day-picker v9+
    - **Исправлено попутно:** даты в формах раньше хранились то как moment, то как `Date` (после выбора в календаре). `cleanProperties` форматировал только moment, `Date` уходил в API ISO-строкой со временем. Теперь в состоянии форм всегда строки `yyyy-MM-dd`.
    - Удалены `moment`, константа `DATE_FORMAT`, `collections.css` (стили `DayPickerInput`). JS-бандл ~1195 → ~1086 kB.
    - ⚠️ После смены зависимостей dev-сервер нужно запускать с `--force` (кэш предсобранных зависимостей Vite).
-5. **React 19**, затем импорты `react-router-dom` → `react-router`, затем **react-router 8**.
+5. ✅ **React 19 + react-router 8** (сделано 2026-11-09)
+   - `react`/`react-dom` 18.3 → 19.3. AST-скан: `defaultProps` у function-компонентов, string refs, legacy context, `findDOMNode`, `UNSAFE_*` не найдены. `static contextType` в `FilterTags` — современный API, работает.
+   - Все зависимости с peer `react` поддерживают 19: Headless UI, react-redux 9, `@lagunovsky/redux-react-router`, react-day-picker 10, heroicons.
+   - Импорты `react-router-dom` → `react-router` (36 файлов), пакет `react-router-dom` удалён (в v8 его больше нет).
+   - `react-router` 7.18 → 8.5. Из breaking changes v8 нас касаются только удаление `react-router-dom` и Node ≥ 22.22 (Dockerfile: `node:24`). Остальное относится к data/framework mode, которые проект не использует.
+   - Проверено: сборка, lint, страница логина без ошибок в консоли. Внутренние страницы — в общей ручной проверке.
 6. **Линтинг-тулчейн**: ESLint 10, решить вопрос с Babel 8 или убрать Babel.
 7. *(Опционально)* Redux Toolkit вместо `redux-actions` + `createStore`.
 

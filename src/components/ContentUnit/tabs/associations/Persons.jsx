@@ -4,7 +4,7 @@ import escapeRegExp from 'lodash/escapeRegExp';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import {
   Button, Header, List, Menu, Message, Segment, Search
 } from '../../../ui';

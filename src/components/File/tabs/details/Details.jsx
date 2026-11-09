@@ -1,6 +1,6 @@
 import React from 'react';
 import { filesize } from 'filesize';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Header, Icon, List, Menu, Segment, Flag, Dropdown } from '../../../ui';
 

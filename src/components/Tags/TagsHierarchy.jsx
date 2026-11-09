@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import {
   Grid, Header, Icon, Label, List, Menu, Modal, Segment
 } from '../ui';

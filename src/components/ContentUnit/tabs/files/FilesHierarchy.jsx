@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { filesize } from 'filesize';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from '../../../ui';
 
 import {

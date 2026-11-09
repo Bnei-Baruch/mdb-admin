@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Header, Icon, Menu, Message, Segment, Table, Button } from '../../../ui';
 
 import { selectors } from '../../../../redux/modules/content_units';

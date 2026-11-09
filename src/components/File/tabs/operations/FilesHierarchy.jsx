@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { filesize } from 'filesize';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from '../../../ui';
 import isEqual from 'react-fast-compare';
 

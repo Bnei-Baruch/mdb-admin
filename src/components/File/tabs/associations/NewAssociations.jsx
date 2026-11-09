@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Button, Icon, Segment } from '../../../ui';
 
 import { NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';

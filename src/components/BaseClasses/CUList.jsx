@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Icon, Table, Checkbox } from '../ui';
 
 import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../helpers/consts';

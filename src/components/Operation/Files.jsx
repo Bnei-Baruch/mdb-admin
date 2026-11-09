@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { filesize } from 'filesize';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import {
   Flag, Header, Icon, List, Menu, Message, Segment
 } from '../ui';
