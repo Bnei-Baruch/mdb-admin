@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { filesize } from 'filesize';
 import { Link } from 'react-router-dom';
 import {
@@ -18,6 +17,7 @@ import { actions, selectors } from '../../redux/modules/operations';
 import { selectors as filesSelectors } from '../../redux/modules/files';
 import * as shapes from '../shapes';
 import { ErrorSplash, LoadingSplash } from '../shared/Splash';
+import { formatDuration } from '../../helpers/date';
 
 class Files extends Component {
   constructor(props) {
@@ -77,7 +77,7 @@ class Files extends Component {
     const lang            = LANGUAGES[language || LANG_UNKNOWN];
     const { duration }    = properties || {};
     const durationDisplay = duration ?
-      moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
+      formatDuration(properties.duration) :
       null;
 
     return (

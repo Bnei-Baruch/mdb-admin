@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -20,6 +19,7 @@ import { actions, selectors } from '../../../../redux/modules/search';
 import { selectors as system } from '../../../../redux/modules/system';
 import { MajorLangsI18nField } from '../../Fields/index';
 import BaseContentUnitForm from './BaseContentUnitForm';
+import { todayUTC } from '../../../../helpers/date';
 
 class CreateContentUnitForm extends BaseContentUnitForm {
   static getDerivedStateFromProps(props, state) {
@@ -55,7 +55,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
       i18n,
       pattern: '',
       type_id: CONTENT_UNIT_TYPES[CT_LESSON_PART].value,
-      film_date: moment.utc(),
+      film_date: todayUTC(),
       original_language: '',
       collection: {},
       autonameLoaded: true

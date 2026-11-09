@@ -514,7 +514,6 @@ export const ALL_FILE_TYPES = [
   MT_SUBTITLES,
 ];
 
-export const DATE_FORMAT = 'YYYY-MM-DD';
 
 // Genres
 export const GR_DOCUMENTARY = 'documentary';

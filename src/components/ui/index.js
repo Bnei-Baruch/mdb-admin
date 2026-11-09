@@ -2,6 +2,7 @@
 // The API intentionally mirrors the subset of Semantic UI props used in this app,
 // so migrating a file was mostly replacing the semantic-ui-react import with '../ui'.
 export { default as Button } from './Button';
+export { default as DateInput } from './DateInput';
 export { default as Dropdown } from './Dropdown';
 export { default as Form, Input, TextArea, Checkbox, inputClasses } from './Form';
 export { default as Grid } from './Grid';

@@ -1,5 +1,4 @@
-import moment from 'moment/moment';
-import { DATE_FORMAT } from '../../../helpers/consts';
+import { formatLocalDate } from '../../../helpers/date';
 
 export const cleanProperties = properties =>
   Object.entries(properties).reduce((acc, val) => {
@@ -8,8 +7,9 @@ export const cleanProperties = properties =>
       if (v.trim() !== '') {
         acc[k] = v.trim();
       }
-    } else if (moment.isMoment(v)) {
-      acc[k] = v.format(DATE_FORMAT);
+    } else if (v instanceof Date) {
+      // date fields are kept as 'yyyy-MM-dd' strings; guard against a stray Date
+      acc[k] = formatLocalDate(v);
     } else if (v !== null && typeof v !== 'undefined') {
       acc[k] = v;
     }

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Icon, Table } from '../ui';
 
@@ -14,6 +13,7 @@ import {
 } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
+import { formatUTC } from '../../helpers/date';
 
 class CollectionsList extends PureComponent {
   static propTypes = {
@@ -71,7 +71,7 @@ class CollectionsList extends PureComponent {
           {properties}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
+          {formatUTC(item.created_at)}
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />

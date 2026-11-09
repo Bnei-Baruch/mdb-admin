@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Divider, Form, Message } from '../../../ui';
 
 import { MAJOR_LANGUAGES } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../Fields/index';
 import BasePersonForm from './BasePersonForm';
+import { todayUTC } from '../../../../helpers/date';
 
 class CreatePersonForm extends BasePersonForm {
   static propTypes = {
@@ -24,7 +24,7 @@ class CreatePersonForm extends BasePersonForm {
       ...state,
       pattern: null,
       i18n,
-      film_date: moment.utc(),
+      film_date: todayUTC(),
       updateInfo: PropTypes.func.isRequired,
       original_language: '',
     };

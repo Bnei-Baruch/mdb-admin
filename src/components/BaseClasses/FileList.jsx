@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Checkbox, Icon, Table } from '../ui';
 
@@ -8,6 +7,7 @@ import { SECURITY_LEVELS } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import ListBase from './ListBase';
 import { filesize } from 'filesize';
+import { formatUTC } from '../../helpers/date';
 
 class FilesList extends ListBase {
   static propTypes = {
@@ -43,7 +43,7 @@ class FilesList extends ListBase {
           {filesize(item.size)}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
+          {formatUTC(item.created_at)}
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />

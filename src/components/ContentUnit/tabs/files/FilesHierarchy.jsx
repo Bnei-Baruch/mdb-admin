@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import { filesize } from 'filesize';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -19,6 +18,7 @@ import { buildHierarchy, fileIcon, fileTypes, formatError, physicalFile } from '
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import './files.css';
+import { formatDuration } from '../../../../helpers/date';
 
 const getStateFromFiles = (files) => {
   const total   = files.length;
@@ -162,7 +162,7 @@ class FilesHierarchy extends Component {
     const children                                                                           = childMap.get(id) || [];
     const { duration }                                                                       = properties || {};
     const durationDisplay                                                                    = duration ?
-      moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
+      formatDuration(properties.duration) :
       null;
 
     return (

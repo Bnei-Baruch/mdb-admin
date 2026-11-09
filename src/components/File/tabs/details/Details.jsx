@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import { filesize } from 'filesize';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,6 +9,7 @@ import { LANGUAGES, SECURITY_LEVELS, ALL_FILE_TYPES, MEDIA_TYPES } from '../../.
 import { fileIcon } from '../../../../helpers/utils';
 import * as shapes from '../../../shapes';
 import LanguageSelector from '../../../shared/LanguageSelector';
+import { formatUTC } from '../../../../helpers/date';
 
 const typeOptions = ALL_FILE_TYPES.map(t => ({ text: t, value: t }));
 
@@ -83,7 +83,7 @@ const Details = (props) => {
           </List.Item>
           <List.Item>
             <List.Content floated="right">
-              {moment.utc(file.created_at).format('YYYY-MM-DD HH:mm:ss')}
+              {formatUTC(file.created_at)}
             </List.Content>
             <List.Header>DB created_at</List.Header>
           </List.Item>
@@ -91,7 +91,7 @@ const Details = (props) => {
             <List.Content floated="right">
               {
                 file.file_created_at
-                  ? moment.utc(file.file_created_at).format('YYYY-MM-DD HH:mm:ss')
+                  ? formatUTC(file.file_created_at)
                   : null
               }
             </List.Content>
@@ -197,7 +197,7 @@ const Details = (props) => {
             <List.Content floated="right">
               {
                 file.removed_at
-                  ? moment.utc(file.removed_at).format('YYYY-MM-DD HH:mm:ss')
+                  ? formatUTC(file.removed_at)
                   : null
               }
             </List.Content>

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, Form, Header, Input, Segment } from '../../../ui';
@@ -180,7 +179,7 @@ class BaseContentUnitForm extends Component {
 
   renderFilmDateField = () => (
     <FilmDateField
-      value={moment(this.state.film_date)}
+      value={this.state.film_date}
       err={this.state.errors.film_date}
       onChange={this.handleFilmDateChange}
       required

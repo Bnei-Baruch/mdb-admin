@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Header, Icon, Menu, Message, Segment, Table, Button } from '../../../ui';
 
@@ -22,6 +21,7 @@ import {
 } from '../../../../helpers/consts';
 
 import CollectionModal from './CollectionModal';
+import { formatUTC } from '../../../../helpers/date';
 
 class Collections extends Component {
   static propTypes = {
@@ -93,7 +93,7 @@ class Collections extends Component {
         <Table.Cell><Link to={`/collections/${id}`}>{uid}</Link></Table.Cell>
         <Table.Cell>{titleize(type)}</Table.Cell>
         <Table.Cell>{this.getProperties(item)}</Table.Cell>
-        <Table.Cell>{moment.utc(created_at).format('YYYY-MM-DD HH:mm:ss')}</Table.Cell>
+        <Table.Cell>{formatUTC(created_at)}</Table.Cell>
         <Table.Cell width="1">
           <Button
             circular

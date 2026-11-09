@@ -1,19 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import noop from 'lodash/noop';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { formatDate, parseDate, } from 'react-day-picker/moment';
-import { Form, inputClasses } from '../../ui';
 
-import { DATE_FORMAT } from '../../../helpers/consts';
+import { parseLocalDate, todayUTC } from '../../../helpers/date';
+import { DateInput, Form } from '../../ui';
 
+// start / end and onChange({ start, end }): 'yyyy-MM-dd' strings (null when cleared)
 class DateRangeField extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      start: props.start.format(DATE_FORMAT),
-      end: props.end.format(DATE_FORMAT),
+      start: props.start || null,
+      end  : props.end || null,
     };
   }
 
@@ -24,53 +22,31 @@ class DateRangeField extends PureComponent {
     this.setState({ end }, () => this.props.onChange(this.state));
 
   render() {
-    const { err } = this.props;
+    const { err }        = this.props;
     const { start, end } = this.state;
-
-    const dayPickerStartProps = {
-      firstDayOfWeek: 0,
-      disabledDays: {
-        after: moment(end).toDate(),
-      },
-    };
-
-    const dayPickerEndProps = {
-      firstDayOfWeek: 0,
-      disabledDays: {
-        before: moment(start).toDate(),
-      },
-    };
+    const startDate      = parseLocalDate(start);
+    const endDate        = parseLocalDate(end);
 
     return (
       <Form.Group widths="equal">
         <Form.Field required error={err.start}>
           <label htmlFor="start_date">Start Date</label>
-          <DayPickerInput
+          <DateInput
             id="start_date"
-            placeholder={DATE_FORMAT}
-            formatDate={formatDate}
-            parseDate={parseDate}
-            format={DATE_FORMAT}
-            value={start}
-            onDayChange={this.handleStartChange}
-            dayPickerProps={dayPickerStartProps}
-            style={{ width: '100%', zIndex: 1000 }}
-            inputProps={{ className: inputClasses(err.start) }}
+            value={start || ''}
+            onChange={this.handleStartChange}
+            disabled={endDate ? { after: endDate } : undefined}
+            error={!!err.start}
           />
         </Form.Field>
         <Form.Field required error={err.end}>
           <label htmlFor="end_date">End Date</label>
-          <DayPickerInput
+          <DateInput
             id="end_date"
-            placeholder={DATE_FORMAT}
-            formatDate={formatDate}
-            parseDate={parseDate}
-            format={DATE_FORMAT}
-            value={end}
-            onDayChange={this.handleEndChange}
-            dayPickerProps={dayPickerEndProps}
-            style={{ width: '100%', zIndex: 1000 }}
-            inputProps={{ className: inputClasses(err.end) }}
+            value={end || ''}
+            onChange={this.handleEndChange}
+            disabled={startDate ? { before: startDate } : undefined}
+            error={!!err.end}
           />
         </Form.Field>
       </Form.Group>
@@ -79,19 +55,22 @@ class DateRangeField extends PureComponent {
 }
 
 DateRangeField.propTypes = {
-  start: PropTypes.instanceOf(moment),
-  end: PropTypes.instanceOf(moment),
-  err: PropTypes.shape({
-    start: PropTypes.bool,
-    end: PropTypes.bool,
-  }),
+  start   : PropTypes.string,
+  end     : PropTypes.string,
+  err     : PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      start: PropTypes.bool,
+      end  : PropTypes.bool,
+    }),
+  ]),
   onChange: PropTypes.func,
 };
 
 DateRangeField.defaultProps = {
-  start: moment(),
-  end: moment().add(1, 'days'),
-  err: false,
+  start   : todayUTC(),
+  end     : todayUTC(1),
+  err     : false,
   onChange: noop,
 };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Icon, Table, Checkbox } from '../ui';
 
@@ -8,6 +7,7 @@ import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../helpers/consts';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 import ListBase from './ListBase';
+import { formatDuration, formatUTC } from '../../helpers/date';
 
 class CUList extends ListBase {
   static propTypes = {
@@ -59,15 +59,15 @@ class CUList extends ListBase {
           {collections.join(' | ')}
         </Table.Cell>
         <Table.Cell>
-          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
+          {formatUTC(item.created_at)}
         </Table.Cell>
         <Table.Cell collapsing>
-          {item.properties && item.properties.film_date ? moment.utc(item.properties.film_date).format('YYYY-MM-DD') : null}
+          {item.properties && item.properties.film_date ? formatUTC(item.properties.film_date, 'yyyy-MM-dd') : null}
         </Table.Cell>
         <Table.Cell>
           {
             item.properties && item.properties.duration
-              ? moment.utc(moment.duration(item.properties.duration, 's').asMilliseconds()).format('HH:mm:ss')
+              ? formatDuration(item.properties.duration)
               : '??'
           }
         </Table.Cell>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Header, List, Menu, Segment } from '../../../ui';
 
 import { EMPTY_OBJECT } from '../../../../helpers/consts';
+import { formatUTC } from '../../../../helpers/date';
 
 class LabelInfoForm extends Component {
   render() {
@@ -34,7 +34,7 @@ class LabelInfoForm extends Component {
             <List.Item>
               <List.Content floated="right">
                 {
-                  moment.utc(label.created_at).format('YYYY-MM-DD HH:mm:ss')
+                  formatUTC(label.created_at)
                 }
               </List.Content>
               <List.Header>Created At: </List.Header>

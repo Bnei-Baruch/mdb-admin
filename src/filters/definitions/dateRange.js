@@ -1,6 +1,8 @@
-import moment from 'moment';
+import { formatUTC, parseUTC } from '../../helpers/date';
 
 import { createFilterDefinition } from './util';
+
+const toUTCDay = date => formatUTC(new Date(date), 'yyyy-MM-dd');
 
 const dateRange = {
   name: 'date-range-filter',
@@ -10,21 +12,22 @@ const dateRange = {
       return null;
     }
 
-    return `${moment.utc(value.from).format('YYYY-MM-DD')}_${moment.utc(value.to).format('YYYY-MM-DD')}`;
+    return `${toUTCDay(value.from)}_${toUTCDay(value.to)}`;
   },
   queryToValue: (queryValue) => {
     const parts = queryValue.split('_');
 
+    // 'yyyy-MM-dd' -> Date at UTC midnight (same as moment.utc(str, 'YYYY-MM-DD').toDate())
     return {
-      from: moment.utc(parts[0], 'YYYY-MM-DD').toDate(),
-      to: moment.utc(parts[1], 'YYYY-MM-DD').toDate()
+      from: new Date(parseUTC(parts[0])),
+      to: new Date(parseUTC(parts[1]))
     };
   },
   valueToApiParam: (value) => {
     const { from, to } = value;
     return {
-      start_date: moment.utc(new Date(from)).format('YYYY-MM-DD'),
-      end_date: moment.utc(new Date(to)).format('YYYY-MM-DD')
+      start_date: toUTCDay(from),
+      end_date: toUTCDay(to)
     };
   },
   tagIcon: 'calendar',
@@ -34,7 +37,7 @@ const dateRange = {
     }
 
     const { from, to } = value;
-    const dateFormat   = date => moment.utc(new Date(date)).format('D MMM YYYY');
+    const dateFormat   = date => formatUTC(new Date(date), 'd MMM yyyy');
 
     if (value.from === value.to) {
       return dateFormat(from);

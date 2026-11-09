@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Divider, Form, Message } from '../../../ui';
 
 import { COLLECTION_TYPE_OPTIONS, MAJOR_LANGUAGES, REQUIRED_LANGUAGES } from '../../../../helpers/consts';
 import { MajorLangsI18nField } from '../../Fields';
 import BaseCollectionForm from './BaseCollectionForm';
+import { todayUTC } from '../../../../helpers/date';
 
 class CreateCollectionForm extends BaseCollectionForm {
   static propTypes = {
@@ -26,9 +26,9 @@ class CreateCollectionForm extends BaseCollectionForm {
       i18n,
       pattern: '',
       active: true,
-      start_date: moment.utc(),
-      end_date: moment.utc().add(1, 'days'),
-      film_date: moment.utc(),
+      start_date: todayUTC(),
+      end_date: todayUTC(1),
+      film_date: todayUTC(),
       country: '',
       city: '',
       full_address: '',

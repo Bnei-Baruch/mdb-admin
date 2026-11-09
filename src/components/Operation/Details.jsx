@@ -1,11 +1,11 @@
 import React from 'react';
-import moment from 'moment';
 import {
   Header, List, Menu, Segment
 } from '../ui';
 
 import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';
+import { formatUTC } from '../../helpers/date';
 
 const Details = (props) => {
   const { operation = null } = props;
@@ -38,7 +38,7 @@ const Details = (props) => {
           <List.Item>
             <strong>DB created_at</strong>
             <List.Content floated="right">
-              {moment.utc(operation.created_at).format('YYYY-MM-DD HH:mm:ss')}
+              {formatUTC(operation.created_at)}
             </List.Content>
           </List.Item>
           <List.Item>

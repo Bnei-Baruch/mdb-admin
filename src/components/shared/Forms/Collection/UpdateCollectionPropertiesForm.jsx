@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Form } from '../../../ui';
 
 import { countries } from '../../../../helpers/countries';
 import * as shapes from '../../../shapes';
 import BaseCollectionForm from './BaseCollectionForm';
+import { toDateString } from '../../../../helpers/date';
 
 class UpdateCollectionPropertiesForm extends BaseCollectionForm {
   static propTypes = {
@@ -17,7 +17,7 @@ class UpdateCollectionPropertiesForm extends BaseCollectionForm {
     const state                           = super.getInitialState();
     const { type_id: typeID, properties } = this.props.collection;
 
-    // convert date fields to moment
+    // normalize date fields to 'yyyy-MM-dd' strings
     const { start_date: start, end_date: end, film_date: film, tags: tagsUIDs = [], number } = properties;
 
     // convert country to country code
@@ -29,9 +29,9 @@ class UpdateCollectionPropertiesForm extends BaseCollectionForm {
       ...state,
       ...properties,
       type_id: typeID,
-      start_date: start ? moment.utc(start) : null,
-      end_date: end ? moment.utc(end) : null,
-      film_date: film ? moment.utc(film) : null,
+      start_date: toDateString(start),
+      end_date: toDateString(end),
+      film_date: toDateString(film),
       country,
       tagsUIDs: [...tagsUIDs],
       number

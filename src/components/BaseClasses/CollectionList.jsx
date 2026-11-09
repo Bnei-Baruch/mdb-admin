@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Icon, Table, Checkbox } from '../ui';
@@ -17,6 +16,7 @@ import { selectors as system } from '../../redux/modules/system';
 import { selectors as tagSelectors } from '../../redux/modules/tags';
 import * as shapes from '../shapes';
 import ListBase from './ListBase';
+import { formatUTC } from '../../helpers/date';
 
 class CollectionList extends ListBase {
   static propTypes = {
@@ -82,7 +82,7 @@ class CollectionList extends ListBase {
           {properties}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
+          {formatUTC(item.created_at)}
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />

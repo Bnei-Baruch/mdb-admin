@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import {
   Checkbox, Header, Icon, Message, Table
@@ -18,6 +17,7 @@ import shouldUpdate from '../../../../hoc/withShouldUpdate';
 import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import EditedField from '../../../shared/Fields/EditedField';
+import { formatDuration, formatUTC } from '../../../../helpers/date';
 
 const Cell = shouldUpdate(Table.Cell);
 
@@ -107,19 +107,19 @@ class Units extends PureComponent {
           {properties}
         </Cell>
         <Cell collapsing>
-          {moment.utc(unit.created_at).format('YYYY-MM-DD HH:mm:ss')}
+          {formatUTC(unit.created_at)}
         </Cell>
         <Table.Cell collapsing>
           {
             unit.properties && unit.properties.film_date
-              ? moment.utc(unit.properties.film_date).format('YYYY-MM-DD HH:mm:ss')
+              ? formatUTC(unit.properties.film_date)
               : null
           }
         </Table.Cell>
         <Cell collapsing>
           {
             unit.properties && unit.properties.duration
-              ? moment.utc(moment.duration(unit.properties.duration, 's').asMilliseconds()).format('HH:mm:ss')
+              ? formatDuration(unit.properties.duration)
               : '??'
           }
         </Cell>

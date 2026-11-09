@@ -1,11 +1,11 @@
 import React from 'react';
-import moment from 'moment';
 import {
   Header, Icon, List, Menu, Segment
 } from '../../../ui';
 
 import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../../../helpers/consts';
 import * as shapes from '../../../shapes';
+import { formatUTC } from '../../../../helpers/date';
 
 const Details = (props) => {
   const { collection = null } = props;
@@ -37,7 +37,7 @@ const Details = (props) => {
           </List.Item>
           <List.Item>
             <List.Content floated="right">
-              {moment.utc(collection.created_at).format('YYYY-MM-DD HH:mm:ss')}
+              {formatUTC(collection.created_at)}
             </List.Content>
             <List.Header>DB created_at</List.Header>
           </List.Item>

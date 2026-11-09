@@ -44,8 +44,8 @@ moment ──► date-fns ──► react-day-picker v9+
 | `react-scripts` 5.0.1 | Вся сборка | **Vite** + `@vitejs/plugin-react`. CRA официально deprecated (февраль 2025) и даёт ~70 уязвимостей |
 | `npm-run-all` | Параллельные `watch-css` + `start-js` | Не нужен: Vite компилирует `.scss` при импорте |
 | `semantic-ui-react`, `semantic-ui-css` | 127 файлов | Tailwind + Headless UI, см. [semantic-to-tailwind.md](./semantic-to-tailwind.md) |
-| `moment` | 29 файлов | `date-fns` (уже в deps). `moment` в режиме поддержки, тяжёлый, мутабельный |
-| `react-day-picker` 7.4.10 | 4 файла (через `react-day-picker/moment`) | v9/v10 (на `date-fns`), API полностью другой: `DayPickerInput` убран, нужен свой popover + input |
+| ~~`moment`~~ | ✅ заменён | `date-fns` + `@date-fns/utc` (этап 4) |
+| ~~`react-day-picker` 7.4.10~~ | ✅ обновлён | v10, `DayPickerInput` заменён на `ui/DateInput` (этап 4) |
 | `react-router-dom` | 36 файлов | В v7 всё есть в `react-router`, в v8 `react-router-dom` уже не выпускается. Поменять импорты на `react-router` |
 | `redux-actions` | 17 файлов (16 `handleActions`) | Опционально: Redux Toolkit (`createSlice`/`createAction`). Пакет живой, но не развивается. Низкий приоритет |
 | `redux` `createStore` | `src/index.js` | Помечен deprecated. Опционально `configureStore` из RTK. Работает и так |
@@ -84,9 +84,13 @@ moment ──► date-fns ──► react-day-picker v9+
    - Удалить `react-scripts`, `npm-run-all`.
    - Тесты: Vitest + Testing Library (минимум smoke-тест) либо явно без тестов.
 3. ✅ **Semantic → Tailwind** (сделано 2026-11-09, коммиты `2e1ba07`…): см. [semantic-to-tailwind.md](./semantic-to-tailwind.md). Удалены `semantic-ui-react`, `semantic-ui-css`, `sass`. ⚠️ Нужна ручная проверка по чеклисту. **React 19 разблокирован.**
-4. **moment → date-fns + react-day-picker v9+**
-   - Можно делать параллельно с этапом 3. Компоненты дат (`DateRangeFilter`, `DateRange`, `FilmDate`) всё равно переделываются под Tailwind.
-   - Аккуратно с форматами дат, которые уходят в API (`YYYY-MM-DD` и т.п.), и с `PropTypes.instanceOf(moment)`.
+4. ✅ **moment → date-fns + react-day-picker v10** (сделано 2026-11-09)
+   - `src/helpers/date.js`: `formatUTC`, `toDateString`, `todayUTC`, `formatDuration`, `parseLocalDate`, `formatLocalDate`, `localDayAsUTC` (на `date-fns` + `@date-fns/utc`). Протестированы в TZ Asia/Jerusalem и America/New_York.
+   - `ui/DateInput`: замена `DayPickerInput` (поле ввода + `DayPicker` в Headless UI `Popover`). `FilmDateField`/`DateRangeField` используют его.
+   - `DateRangeFilter` переписан на `DayPicker mode="range"`; пресеты и сдвиг на UTC-офсет при Apply сохранены.
+   - **Исправлено попутно:** даты в формах раньше хранились то как moment, то как `Date` (после выбора в календаре). `cleanProperties` форматировал только moment, `Date` уходил в API ISO-строкой со временем. Теперь в состоянии форм всегда строки `yyyy-MM-dd`.
+   - Удалены `moment`, константа `DATE_FORMAT`, `collections.css` (стили `DayPickerInput`). JS-бандл ~1195 → ~1086 kB.
+   - ⚠️ После смены зависимостей dev-сервер нужно запускать с `--force` (кэш предсобранных зависимостей Vite).
 5. **React 19**, затем импорты `react-router-dom` → `react-router`, затем **react-router 8**.
 6. **Линтинг-тулчейн**: ESLint 10, решить вопрос с Babel 8 или убрать Babel.
 7. *(Опционально)* Redux Toolkit вместо `redux-actions` + `createStore`.

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import moment from 'moment';
 import { filesize } from 'filesize';
 import { Link } from 'react-router-dom';
 import { Button, Flag, Grid, Header, Icon, List, Menu, Message, Segment } from '../../../ui';
@@ -21,6 +20,7 @@ import * as shapes from '../../../shapes';
 import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 
 import './files.css';
+import { formatDuration } from '../../../../helpers/date';
 
 class FilesHierarchy extends Component {
   static propTypes = {
@@ -188,7 +188,7 @@ class FilesHierarchy extends Component {
     const children        = childMap.get(id) || [];
     const { duration } = properties || {};
     const durationDisplay = duration ?
-      moment.utc(moment.duration(properties.duration, 's').asMilliseconds()).format('HH:mm:ss') :
+      formatDuration(properties.duration) :
       null;
     const operations      = this.props.operations
       .filter(o =>

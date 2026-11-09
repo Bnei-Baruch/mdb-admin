@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import noop from 'lodash/noop';
-import DayPicker, { DateUtils } from 'react-day-picker';
-import { Button, Divider, Dropdown, Grid, Header, Input, Segment } from '../ui';
+import {
+  endOfMonth, isAfter, isSameDay, isValid, startOfMonth, subDays, subMonths,
+} from 'date-fns';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/style.css';
 
-import 'react-day-picker/lib/style.css';
+import { formatLocalDate, localDayAsUTC, parseLocalDate } from '../../helpers/date';
+import { Button, Divider, Dropdown, Grid, Header, Input, Segment } from '../ui';
+import { DAY_PICKER_STYLE } from '../ui/DateInput';
 import connectFilter from './connectFilter';
 
 // TODO (yaniv -> oleg): need indication for user when clicking on a bad date (after today) or when typing bad dates
 
-const format     = 'YYYY-MM-DD';
-const UTC_OFFSET = moment().utcOffset();
-
-const now = () =>
-  moment(new Date())
-    .hours(12)
-    .minutes(0)
-    .seconds(0)
-    .milliseconds(0)
-    .toDate();
+const now = () => {
+  const d = new Date();
+  d.setHours(12, 0, 0, 0);
+  return d;
+};
 
 const TODAY        = 1;
 const YESTERDAY    = 2;
@@ -43,52 +42,56 @@ const datePresetsOptions = Object.keys(datePresets).map(key => datePresets[key])
 
 const presetToRange = {
   [TODAY]       : () => {
-    const today = moment().toDate();
+    const today = new Date();
     return ({ from: today, to: today });
   },
   [YESTERDAY]   : () => {
-    const yesterday = moment().subtract(1, 'days').toDate();
+    const yesterday = subDays(new Date(), 1);
     return ({ from: yesterday, to: yesterday });
   },
   [LAST_7_DAYS] : () => ({
-    from: moment().subtract(6, 'days').toDate(),
-    to  : moment().toDate()
+    from: subDays(new Date(), 6),
+    to  : new Date()
   }),
   [LAST_30_DAYS]: () => ({
-    from: moment().subtract(30, 'days').toDate(),
-    to  : moment().toDate()
+    from: subDays(new Date(), 30),
+    to  : new Date()
   }),
   [LAST_MONTH]  : () => {
-    const todayMinusMonthMoment = moment().subtract(1, 'months');
+    const prevMonth = subMonths(new Date(), 1);
     return ({
-      from: todayMinusMonthMoment.startOf('month').toDate(),
-      to  : todayMinusMonthMoment.endOf('month').toDate()
+      from: startOfMonth(prevMonth),
+      to  : endOfMonth(prevMonth)
     });
   },
   [THIS_MONTH]  : () => ({
-    from: moment().startOf('month').toDate(),
-    to  : moment().toDate()
+    from: startOfMonth(new Date()),
+    to  : new Date()
   })
 };
 
 const rangeToPreset = (from, to) => {
-  if (moment(from, 'day').isSame(to, 'day')) {
-    if (moment(to).isSame(now(), 'day')) {
+  if (!from || !to) {
+    return CUSTOM_RANGE;
+  }
+  const today = new Date();
+  if (isSameDay(from, to)) {
+    if (isSameDay(to, today)) {
       return TODAY;
     }
-    if (moment(to).isSame(moment().subtract(1, 'days'), 'days')) {
+    if (isSameDay(to, subDays(today, 1))) {
       return YESTERDAY;
     }
-  } else if (moment(to).subtract(6, 'days').isSame(from, 'day')) {
+  } else if (isSameDay(subDays(to, 6), from)) {
     return LAST_7_DAYS;
-  } else if (moment(to).subtract(30, 'days').isSame(from, 'day') && moment(to).isSame(moment(), 'day')) {
+  } else if (isSameDay(subDays(to, 30), from) && isSameDay(to, today)) {
     return LAST_30_DAYS;
-  } else if (moment().startOf('month').isSame(from, 'day') && moment().isSame(to, 'day')) {
+  } else if (isSameDay(startOfMonth(today), from) && isSameDay(today, to)) {
     return THIS_MONTH;
   }
 
-  const todayMinusMonthMoment = moment().subtract(1, 'months');
-  if (todayMinusMonthMoment.startOf('month').isSame(from, 'day') && todayMinusMonthMoment.endOf('month').isSame(to, 'day')) {
+  const prevMonth = subMonths(today, 1);
+  if (isSameDay(startOfMonth(prevMonth), from) && isSameDay(endOfMonth(prevMonth), to)) {
     return LAST_MONTH;
   }
 
@@ -96,66 +99,53 @@ const rangeToPreset = (from, to) => {
 };
 
 const isValidDateRange = (fromValue, toValue) => {
-  const fromMoment = moment(fromValue, format, true);
-  const toMoment   = moment(toValue, format, true);
+  const from = parseLocalDate(fromValue);
+  const to   = parseLocalDate(toValue);
 
-  return fromMoment.isValid()
-    && toMoment.isValid()
-    && fromMoment.isSameOrBefore(toMoment)
-    && toMoment.isSameOrBefore(now());
+  return !!from && !!to && !isAfter(from, to) && !isAfter(to, now());
+};
+
+const toDate = v => {
+  const d = v instanceof Date ? v : new Date(v);
+  return isValid(d) ? d : null;
 };
 
 class DateFilter extends Component {
   static propTypes = {
-    value      : PropTypes.shape({
-      from      : PropTypes.objectOf(Date),
-      to        : PropTypes.objectOf(Date),
+    value        : PropTypes.shape({
+      from      : PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
+      to        : PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
       datePreset: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     }),
-    onCancel   : PropTypes.func,
-    onApply    : PropTypes.func,
-    updateValue: PropTypes.func.isRequired
+    onCancel     : PropTypes.func,
+    onApply      : PropTypes.func,
+    updateValue  : PropTypes.func.isRequired,
+    isUpdateQuery: PropTypes.bool,
   };
 
   static defaultProps = {
-    onCancel: noop,
-    onApply : noop,
-    value   : {
+    onCancel     : noop,
+    onApply      : noop,
+    isUpdateQuery: false,
+    value        : {
       datePreset: TODAY,
       ...presetToRange[TODAY]()
     }
   };
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = this.getUpdatedStateFromValue(this.props.value, {});
+  constructor(props) {
+    super(props);
+    const from = toDate(props.value.from);
+    const to   = toDate(props.value.to);
+    this.state = {
+      from,
+      to,
+      month         : from || new Date(),
+      fromInputValue: formatLocalDate(from),
+      toInputValue  : formatLocalDate(to),
+      datePreset    : rangeToPreset(from, to),
+    };
   }
-
-  componentDidMount() {
-    this.datePicker.showMonth(this.state.from);
-  }
-
-  getUpdatedStateFromValue = (newVal, prevVal) => {
-    const result                   = {};
-    const { from: nFrom, to: nTo } = newVal;
-    const { from, to }             = prevVal;
-
-    if (nFrom !== from) {
-      result.from           = nFrom;
-      result.fromInputValue = moment(nFrom, 'YYYY-MM-DD').format('YYYY-MM-DD');
-    }
-
-    if (nTo !== to) {
-      result.to           = nTo;
-      result.toInputValue = moment(nTo, 'YYYY-MM-DD').format('YYYY-MM-DD');
-    }
-
-    if (nFrom !== from || nTo !== to) {
-      result.datePreset = rangeToPreset(nFrom, nTo);
-    }
-
-    return (Object.keys(result).length !== 0) ? result : null;
-  };
 
   setRange(datePreset, from, to, fromInputValue = '', toInputValue = '') {
     let range = {};
@@ -166,80 +156,50 @@ class DateFilter extends Component {
       range = (presetToRange[datePreset] ? presetToRange[datePreset] : presetToRange[TODAY])();
     }
 
-    // try to show entire range in calendar
-    if (datePreset !== CUSTOM_RANGE || (datePreset === CUSTOM_RANGE && range && range.from)) {
-      this.datePicker.showMonth(range.from);
-    }
-
-    const momentFrom = moment(new Date(range.from));
-    const momentTo   = moment(new Date(range.to));
-
     this.setState({
       ...range,
       datePreset,
-      fromInputValue: fromInputValue || (momentFrom.isValid() ? momentFrom.format(format) : ''),
-      toInputValue  : toInputValue || (momentTo.isValid() ? momentTo.format(format) : '')
+      // try to show the entire range in the calendar
+      month         : range.from || this.state.month,
+      fromInputValue: fromInputValue || formatLocalDate(range.from),
+      toInputValue  : toInputValue || formatLocalDate(range.to),
     });
   }
 
   apply = () => {
-    const from = moment(this.state.from).add(UTC_OFFSET, 'm').toDate();
-    const to   = moment(this.state.to).add(UTC_OFFSET, 'm').toDate();
+    // Keep the calendar day the user picked when the value is later formatted in UTC.
+    const from = localDayAsUTC(this.state.from);
+    const to   = localDayAsUTC(this.state.to);
 
     this.props.updateValue({ from, to, datePreset: this.state.datePreset }, this.props.isUpdateQuery);
     this.props.onApply();
   };
 
-  handleDayClick = (day) => {
-    if (moment(day).isAfter(now())) {
-      return;
-    }
-
-    const { from, to } = this.state;
-    const range        = DateUtils.addDayToRange(day, { from, to });
-
-    this.setRange(CUSTOM_RANGE, range.from, range.to);
+  handleRangeSelect = (range) => {
+    this.setRange(CUSTOM_RANGE, range?.from || null, range?.to || range?.from || null);
   };
 
   handleDatePresetsChange = (event, data) => this.setRange(data.value);
 
   handleFromInputChange = (event) => {
-    const { value }   = event.target;
-    const momentValue = moment(value, format, true);
+    const { value } = event.target;
+    const date      = parseLocalDate(value);
 
-    const isValid = momentValue.isValid();
-    if (isValid && isValidDateRange(value, this.state.toInputValue)) {
-      this.setRange(
-        CUSTOM_RANGE,
-        momentValue.toDate(),
-        moment(this.state.toInputValue, format, true).toDate(),
-        value,
-        this.state.toInputValue
-      );
+    if (date && isValidDateRange(value, this.state.toInputValue)) {
+      this.setRange(CUSTOM_RANGE, date, parseLocalDate(this.state.toInputValue), value, this.state.toInputValue);
     } else {
-      this.setState({
-        fromInputValue: value
-      });
+      this.setState({ fromInputValue: value });
     }
   };
 
   handleToInputChange = (event) => {
-    const { value }   = event.target;
-    const momentValue = moment(value, format, true);
+    const { value } = event.target;
+    const date      = parseLocalDate(value);
 
-    const isValid = momentValue.isValid();
-    if (isValid && isValidDateRange(this.state.fromInputValue, value)) {
-      this.setRange(
-        CUSTOM_RANGE,
-        moment(this.state.fromInputValue, format, true).toDate(),
-        momentValue.toDate(),
-        this.state.fromInputValue,
-        value
-      );
+    if (date && isValidDateRange(this.state.fromInputValue, value)) {
+      this.setRange(CUSTOM_RANGE, parseLocalDate(this.state.fromInputValue), date, this.state.fromInputValue, value);
     } else {
-      this.setState({
-        toInputValue: value
-      });
+      this.setState({ toInputValue: value });
     }
   };
 
@@ -249,24 +209,27 @@ class DateFilter extends Component {
     const { onCancel } = this.props;
 
     const {
-            fromInputValue, toInputValue, from, to, datePreset
-          } = this.state;
+      fromInputValue, toInputValue, from, to, datePreset, month
+    } = this.state;
 
     return (
       <Segment basic compact attached="bottom" floated="left" className="tab active">
         <Grid divided>
           <Grid.Row>
-            <div>
+            <div className="px-3 py-2">
               <DayPicker
+                mode="range"
                 numberOfMonths={2}
-                selectedDays={{ from, to }}
-                onDayClick={this.handleDayClick}
-                toMonth={now()}
-                // eslint-disable-next-line no-return-assign
-                ref={el => this.datePicker = el}
+                style={DAY_PICKER_STYLE}
+                selected={{ from, to }}
+                onSelect={this.handleRangeSelect}
+                month={month}
+                onMonthChange={m => this.setState({ month: m })}
+                endMonth={now()}
+                disabled={{ after: now() }}
               />
             </div>
-            <div>
+            <div className="px-3 py-2">
               <Header textAlign="center">Select a start index</Header>
               <Grid>
                 <Grid.Row>
@@ -303,7 +266,7 @@ class DateFilter extends Component {
                 <Grid.Row>
                   <Grid.Column textAlign="right">
                     <Button type="button" onClick={onCancel}>Cancel</Button>
-                    <Button type="button" primary disabled={!this.canApply()} onClick={this.apply}>Apply</Button>
+                    <Button type="button" primary disabled={!this.canApply()} onClick={this.apply} className="ml-2">Apply</Button>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>

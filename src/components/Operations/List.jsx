@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Table } from '../ui';
 
 import { EMPTY_ARRAY, OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';
+import { formatUTC } from '../../helpers/date';
 
 class OperationsList extends PureComponent {
   static propTypes = {
@@ -56,7 +56,7 @@ class OperationsList extends PureComponent {
           {item.station}
         </Table.Cell>
         <Table.Cell collapsing>
-          {moment.utc(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
+          {formatUTC(item.created_at)}
         </Table.Cell>
       </Table.Row>
     );
