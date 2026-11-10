@@ -13,5 +13,6 @@ export const cleanProperties = properties =>
     } else if (v !== null && typeof v !== 'undefined') {
       acc[k] = v;
     }
+
     return acc;
   }, {});

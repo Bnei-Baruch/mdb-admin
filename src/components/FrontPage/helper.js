@@ -21,6 +21,7 @@ export const getKeycloak = () => {
   if (!keycloak) {
     keycloak = new Keycloak(userManagerConfig);
   }
+
   return keycloak;
 };
 
@@ -34,7 +35,7 @@ const options = {
   onLoad          : 'check-sso'
 };
 
-export const onceInitKC = (dispatch) => {
+export const onceInitKC = dispatch => {
   if (kcWasInited) return;
 
   kcWasInited = true;

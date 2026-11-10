@@ -5,7 +5,7 @@ import * as shapes from '../../../shapes';
 import { fileTypes, physicalFile } from '../../../../helpers/utils';
 import { JWPLAYER_ID } from '../../../../helpers/consts';
 
-const Player = (props) => {
+const Player = props => {
   const { file = null } = props;
 
   const types = fileTypes(file);
@@ -20,6 +20,7 @@ const Player = (props) => {
   if (!file) {
     return null;
   }
+
   return (
     <div>
       {['audio', 'video'].includes(types.type) && <div id={JWPLAYER_ID} />}

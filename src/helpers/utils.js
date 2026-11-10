@@ -4,7 +4,7 @@ import words from 'lodash/words';
 import { I18N_ORDER, LANG_ENGLISH, MEDIA_TYPES, REQUIRED_LANGUAGES } from './consts';
 import * as env from './env';
 
-export const isEmpty = (obj) => {
+export const isEmpty = obj => {
   // null and undefined are "empty"
   if (obj === null) {
     return true;
@@ -15,6 +15,7 @@ export const isEmpty = (obj) => {
   if (obj.length > 0) {
     return false;
   }
+
   if (obj.length === 0) {
     return true;
   }
@@ -45,7 +46,7 @@ export const isValidPattern = pattern => (
  * @param {Map.<int,Object>} nodeMap id => entity
  * @returns {Object} roots and childMap
  */
-export const buildHierarchy = (nodeMap) => {
+export const buildHierarchy = nodeMap => {
   const roots    = [];
   const childMap = new Map();
 
@@ -56,6 +57,7 @@ export const buildHierarchy = (nodeMap) => {
         c = [];
         childMap.set(v.parent_id, c);
       }
+
       c.push(k);
     } else {
       roots.push(k);
@@ -78,6 +80,7 @@ export const extractI18n = (i18ns, fields, defaultLanguage = LANG_ENGLISH, langu
   if (!i18ns) {
     return null;
   }
+
   languages          = [defaultLanguage, ...languages.filter(l => l !== defaultLanguage)];
   // Order i18ns by language
   const orderedI18ns = [];
@@ -90,7 +93,7 @@ export const extractI18n = (i18ns, fields, defaultLanguage = LANG_ENGLISH, langu
   }
 
   // Coalesce values per field
-  return fields.map((x) => {
+  return fields.map(x => {
     let value;
     for (let i = 0; i < orderedI18ns.length; i++) {
       value = orderedI18ns[i][x];
@@ -98,6 +101,7 @@ export const extractI18n = (i18ns, fields, defaultLanguage = LANG_ENGLISH, langu
         break;
       }
     }
+
     return value;
   });
 };
@@ -113,26 +117,30 @@ export const titleize = str => words(str).map(x => capitalize(x)).join(' ');
  * @param error
  * @returns {String}
  */
-export const formatError = (error) => {
+export const formatError = error => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     const msg = error.response.data.error;
     return error.response.statusText + (msg ? `: ${msg}` : '');
   }
+
   if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
     return 'No response from server';
   }
+
   if (error.message) {
     // Something happened in setting up the request that triggered an Error
     return error.message;
   }
+
   if (typeof error.toString === 'function') {
     return error.toString();
   }
+
   return error;
 };
 
@@ -142,11 +150,12 @@ export const formatError = (error) => {
  * @param name {string}
  * @returns {string}
  */
-export const filenameExtension = (name) => {
+export const filenameExtension = name => {
   const lastDot = name.lastIndexOf('.');
   if (lastDot === -1) {
     return '';
   }
+
   return name.substring(lastDot + 1, name.length);
 };
 
@@ -156,7 +165,7 @@ export const filenameExtension = (name) => {
  * @param file
  * @returns {{type: String, sub_type: String, mime_type: String}}
  */
-export const fileTypes = (file) => {
+export const fileTypes = file => {
   let { type, sub_type, mime_type } = file;
 
   // infer from file extension in DB has nothing
@@ -173,7 +182,7 @@ export const fileTypes = (file) => {
  * @param file
  * @returns {string}
  */
-export const fileIcon = (file) => {
+export const fileIcon = file => {
   const { type, mime_type: mime } = fileTypes(file);
 
   switch (type) {
@@ -203,6 +212,7 @@ export const fileIcon = (file) => {
         default:
           return 'file text outline';
       }
+
     case 'sheet':
       return 'file excel outline';
     case 'presentation':
@@ -221,10 +231,12 @@ export const physicalFile = (file, ext = false) => {
   if (file.properties?.video_size === 'HLS') {
     return `${env.LINKER_HLS_URL}${file.uid}.m3u8`;
   }
+
   let suffix = '';
   if (ext) {
     suffix = `.${filenameExtension(file.name)}`;
   }
+
   return `${env.LINKER_URL}${file.uid}${suffix}`;
 };
 
@@ -233,6 +245,7 @@ const recursiveAddChildren = (id, allMap) => {
   if (children && children.length > 0) {
     return { id, children: children.map(i => recursiveAddChildren(i, allMap)) };
   }
+
   return { id };
 };
 

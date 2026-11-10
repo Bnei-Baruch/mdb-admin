@@ -9,7 +9,7 @@ import { selectors } from '../../redux/modules/tags';
 import { selectors as system } from '../../redux/modules/system';
 import * as shapes from '../shapes';
 
-const TagBreadcrumbs = (props) => {
+const TagBreadcrumbs = props => {
   const { path = [], lastIsLink = false, currentLanguage } = props;
 
   // convert path to breadcrumbs
@@ -33,6 +33,7 @@ const TagBreadcrumbs = (props) => {
     crumbs.push(crumb);
     crumbs.push((<Breadcrumb.Divider key={`d${i}`} icon="left angle" />));
   }
+
   crumbs.pop();
 
   return (

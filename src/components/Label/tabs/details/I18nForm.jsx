@@ -49,7 +49,7 @@ class I18nForm extends Component {
     this.setState({ i18n });
   };
 
-  removeLanguage = (language) => {
+  removeLanguage = language => {
     const { i18n } = this.state;
     delete i18n[language];
     this.setState({ i18n });
@@ -72,6 +72,7 @@ class I18nForm extends Component {
     if (keys.length === 0) {
       return <Message size="tiny">No translations found</Message>;
     }
+
     return (
       <Table basic compact>
         <Table.Body>

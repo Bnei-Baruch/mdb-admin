@@ -34,7 +34,7 @@ class FileContentUnit extends ListWithCheckboxBase {
     );
   };
 
-  toggleFilters = (isShow) => {
+  toggleFilters = isShow => {
     const showFilters = (typeof isShow === 'boolean') ? isShow : !this.state.showFilters;
     this.setState({ showFilters });
   };

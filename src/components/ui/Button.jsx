@@ -82,6 +82,7 @@ const Button = React.forwardRef(({
       e.preventDefault();
       return;
     }
+
     if (onClick) {
       onClick(e, { ...rest, content, icon, color, disabled, loading });
     }

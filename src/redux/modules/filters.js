@@ -93,6 +93,7 @@ const setFilterState = (state, namespace, name, newFilterStateReducer) => {
   if (!oldNamespace[name]) {
     oldNamespace[name] = {};
   }
+
   const newFilterState = isFunction(newFilterStateReducer)
     ? newFilterStateReducer(oldNamespace[name])
     : newFilterStateReducer;
@@ -131,7 +132,7 @@ const onCloseActiveFilter = (state, action) => {
 const onEditNewFilter = (state, action) => {
   const { namespace, name } = action.payload;
 
-  const newState                   = setFilterState(state, namespace, name, (filterState) => ({
+  const newState                   = setFilterState(state, namespace, name, filterState => ({
     activeValueIndex    : Array.isArray(filterState.values) && filterState.values.length > 0 ? filterState.length - 1 : 0,
     editingExistingValue: false,
   }));
@@ -153,9 +154,9 @@ const onEditExistingFilter = (state, action) => {
 const onAddFilterValue = (state, action) => {
   const { namespace, name, value } = action.payload;
 
-  return setFilterState(state, namespace, name, (filterState) => {
+  return setFilterState(state, namespace, name, filterState => {
     const values = filterState.values || [];
-    if (value.length === 0 || values.some((v) => isEqual(v, value))) {
+    if (value.length === 0 || values.some(v => isEqual(v, value))) {
       return filterState;
     }
 
@@ -170,7 +171,7 @@ const onAddFilterValue = (state, action) => {
 
 const onSetFilterValue = (state, action) => {
   const { namespace, name, value, index } = action.payload;
-  return setFilterState(state, namespace, name, (filterState) => {
+  return setFilterState(state, namespace, name, filterState => {
     if (typeof index === 'undefined') {
       return { values: [value] };
     }
@@ -186,11 +187,11 @@ const onSetFilterValue = (state, action) => {
 const onRemoveFilterValue = (state, action) => {
   const { namespace, name, value } = action.payload;
 
-  return setFilterState(state, namespace, name, (filterState) => {
+  return setFilterState(state, namespace, name, filterState => {
     const values = filterState.values || [];
     const idx    = values.indexOf(value);
 
-    // eslint-disable-next-line no-bitwise
+
     if (!~idx) {
       return filterState;
     }

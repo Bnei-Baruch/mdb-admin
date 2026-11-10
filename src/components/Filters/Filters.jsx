@@ -6,7 +6,7 @@ import { Form, Segment } from '../ui';
 import { EMPTY_ARRAY } from '../../helpers/consts';
 import { filterConfigShape } from '../shapes';
 
-const Filters = (props) => {
+const Filters = props => {
   const { filters = EMPTY_ARRAY, onFilterApplication, onFilterCancel } = props;
 
   const filterChunks = chunk(filters, 4);

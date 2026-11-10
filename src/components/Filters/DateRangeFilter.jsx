@@ -74,11 +74,13 @@ const rangeToPreset = (from, to) => {
   if (!from || !to) {
     return CUSTOM_RANGE;
   }
+
   const today = new Date();
   if (isSameDay(from, to)) {
     if (isSameDay(to, today)) {
       return TODAY;
     }
+
     if (isSameDay(to, subDays(today, 1))) {
       return YESTERDAY;
     }
@@ -175,13 +177,13 @@ class DateFilter extends Component {
     this.props.onApply();
   };
 
-  handleRangeSelect = (range) => {
+  handleRangeSelect = range => {
     this.setRange(CUSTOM_RANGE, range?.from || null, range?.to || range?.from || null);
   };
 
   handleDatePresetsChange = (event, data) => this.setRange(data.value);
 
-  handleFromInputChange = (event) => {
+  handleFromInputChange = event => {
     const { value } = event.target;
     const date      = parseLocalDate(value);
 
@@ -192,7 +194,7 @@ class DateFilter extends Component {
     }
   };
 
-  handleToInputChange = (event) => {
+  handleToInputChange = event => {
     const { value } = event.target;
     const date      = parseLocalDate(value);
 

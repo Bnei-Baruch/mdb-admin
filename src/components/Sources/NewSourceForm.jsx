@@ -55,11 +55,12 @@ class NewSourceForm extends Component {
     if (errors.labels && value.trim() !== '') {
       delete errors.labels;
     }
+
     i18n[language].name = value;
     this.setState({ errors, i18n });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
 
     if (!this.validate()) {
@@ -73,7 +74,7 @@ class NewSourceForm extends Component {
 
     Object.keys(i18n)
       .filter(x => i18n[x].name !== '')
-      .forEach((x) => {
+      .forEach(x => {
         nI18n[x] = {
           language: x,
           name: i18n[x].name.trim()
@@ -104,15 +105,15 @@ class NewSourceForm extends Component {
 
   render() {
     const {
-            getWIP, getError, source, authors, currentLanguage
-          } = this.props;
+      getWIP, getError, source, authors, currentLanguage
+    } = this.props;
 
     const wip = getWIP('create');
     const err = getError('create');
 
     const {
-            author, type_id: typeID, description, pattern, i18n, submitted, errors
-          } = this.state;
+      author, type_id: typeID, description, pattern, i18n, submitted, errors
+    } = this.state;
 
     const authorsOptions = source ? null : authors.map(x => ({
       text: extractI18n(x.i18n, ['name'], currentLanguage)[0],

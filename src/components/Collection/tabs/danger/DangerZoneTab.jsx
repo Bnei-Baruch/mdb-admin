@@ -25,12 +25,12 @@ class DangerZoneTab extends Component {
   };
 
   state = {
-      changedSecure: null,
-      modals: {
-        confirmChangeSecurityLevel: false,
-        confirmDelete: false,
+    changedSecure: null,
+    modals: {
+      confirmChangeSecurityLevel: false,
+      confirmDelete: false,
     },
-    };
+  };
 
   handleChangeSecure = (e, data) => {
     this.setState({
@@ -199,7 +199,7 @@ class DangerZoneTab extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status = ['changeSecurityLevel', 'delete']
     .reduce((acc, val) => {
       acc[val] = {

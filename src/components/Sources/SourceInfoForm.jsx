@@ -20,6 +20,7 @@ class SourceInfoForm extends Component {
     if (type_id !== state.type_id) {
       return { pattern, description, type_id, position };
     }
+
     return null;
   }
 

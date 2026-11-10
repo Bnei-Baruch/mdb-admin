@@ -6,7 +6,7 @@ import { selectors } from '../../redux/modules/tags';
 
 import DeepListFilter from './DeepListFilter';
 
-const Topics = (props) => {
+const Topics = props => {
   const { onFilterCancel, onFilterApplication } = props;
 
   return (
@@ -24,12 +24,10 @@ Topics.propTypes = {
   onFilterCancel: PropTypes.func.isRequired
 };
 
-const mapState = (state) => {
-  return {
-    emptyLabel: 'No Tags',
-    hierarchy: selectors.getHierarchy(state.tags),
-    getSubItemById: selectors.getTagById(state.tags),
-  };
-};
+const mapState = state => ({
+  emptyLabel: 'No Tags',
+  hierarchy: selectors.getHierarchy(state.tags),
+  getSubItemById: selectors.getTagById(state.tags),
+});
 
 export default connect(mapState)(Topics);

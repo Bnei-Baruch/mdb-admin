@@ -26,7 +26,7 @@ allFiltersByName.set('Topics', { name: 'Topics', element: Topics });
 allFiltersByName.set('Others', { name: 'Others', element: Others });
 allFiltersByName.set('OriginalLanguage', { name: 'Original Language', element: OriginalLanguage });
 
-// eslint-disable-next-line react/require-render-return
+
 class ListWithFiltersBase extends PureComponent {
   static propTypes = {
     total: PropTypes.number,
@@ -62,7 +62,7 @@ class ListWithFiltersBase extends PureComponent {
       contentTypes: n === 'Others' ? this.getContentType() : null
     }));
 
-  handlePageChange = (pageNo) => {
+  handlePageChange = pageNo => {
     const { setPage, fetchList } = this.props;
     setPage(this.getNamespace(), pageNo, this.getIsUpdateQuery());
     fetchList(this.getNamespace(), pageNo);
@@ -91,7 +91,7 @@ class ListWithFiltersBase extends PureComponent {
 
   getPageNo = () => 1;
 
-  toggleFilters = (isShow) => {
+  toggleFilters = isShow => {
     const showFilters = (typeof isShow === 'boolean') ? isShow : !this.state.showFilters;
     this.setState({ showFilters });
   };

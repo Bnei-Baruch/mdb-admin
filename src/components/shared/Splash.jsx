@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Header, Icon } from '../ui';
 
-export const Splash = (props) => {
+export const Splash = props => {
   const { text = '', subtext = null, icon, color = 'black', isLoading = false } = props;
 
   return (

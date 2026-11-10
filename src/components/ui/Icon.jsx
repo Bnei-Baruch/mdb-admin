@@ -105,6 +105,7 @@ const Icon = ({ name, color, size, loading, className, onClick, ...rest }) => {
     if (name && import.meta.env.DEV) {
       console.warn(`ui/Icon: unknown icon "${name}"`);
     }
+
     return null;
   }
 
@@ -138,12 +139,15 @@ export const renderIcon = (icon, props) => {
   if (!icon || icon === true) {
     return null;
   }
+
   if (React.isValidElement(icon)) {
     return icon;
   }
+
   if (typeof icon === 'object') {
     return <Icon {...props} {...icon} />;
   }
+
   return <Icon name={icon} {...props} />;
 };
 

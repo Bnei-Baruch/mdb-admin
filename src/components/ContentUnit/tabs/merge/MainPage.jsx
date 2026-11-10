@@ -46,6 +46,7 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
     if (selectedIds.length === 0) {
       return;
     }
+
     const { unit, mergeUnits } = this.props;
     mergeUnits(unit.id, selectedIds);
     this.setState({ selectedIds: [] });
@@ -86,7 +87,7 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_MERGE_UNITS) || EMPTY_OBJECT;
   const denormIDs = unitsSelectors.denormIDs(state.content_units);
   const wipMerge  = unitsSelectors.getWIP(state.content_units, 'mergeUnits');

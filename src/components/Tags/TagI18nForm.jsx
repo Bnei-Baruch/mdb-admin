@@ -42,7 +42,7 @@ class TagI18nForm extends Component {
     this.setState({ i18n });
   };
 
-  removeLanguage = (language) => {
+  removeLanguage = language => {
     const { i18n } = this.state;
     delete i18n[language];
     this.setState({ i18n });

@@ -186,6 +186,7 @@ export const Loader = ({ active = true, inline, size, content, children, classNa
   if (!active) {
     return null;
   }
+
   const spinner = <Icon name="spinner" size={size === 'large' || size === 'big' ? 'big' : 'large'} className="text-gray-400" />;
   const label   = children ?? content;
   return (

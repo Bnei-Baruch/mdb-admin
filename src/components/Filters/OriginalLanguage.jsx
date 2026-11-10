@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import LanguageFilter from './LanguageFilter';
 
-const OriginalLanguage = (props) => {
+const OriginalLanguage = props => {
   const { namespace, onFilterApplication, isUpdateQuery } = props;
   return (
     <LanguageFilter

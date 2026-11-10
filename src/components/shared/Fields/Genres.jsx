@@ -5,7 +5,7 @@ import { Form } from '../../ui';
 
 import { EMPTY_ARRAY, GENRE_OPTIONS } from '../../../helpers/consts';
 
-const GenresField = (props) => {
+const GenresField = props => {
   const { value = EMPTY_ARRAY, err = false, onChange = noop, ...rest } = props;
 
   return (

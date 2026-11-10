@@ -29,14 +29,14 @@ class Tags extends Component {
     status: EMPTY_OBJECT,
   };
 
-  addTag = (tag) => {
+  addTag = tag => {
     const { unit, tags, addTag } = this.props;
     if (tags.findIndex(x => x.id === tag.id) === -1) {
       addTag(unit.id, tag.id);
     }
   };
 
-  removeTag = (tag) => {
+  removeTag = tag => {
     const { unit, removeTag } = this.props;
     removeTag(unit.id, tag.id);
   };

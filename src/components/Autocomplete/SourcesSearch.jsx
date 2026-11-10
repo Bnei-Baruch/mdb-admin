@@ -59,7 +59,7 @@ class SourcesSearch extends Component {
       }
 
       // search in each collection
-      collections.forEach((cID) => {
+      collections.forEach(cID => {
         results = [];
 
         // DFS (pre-order) this collection
@@ -109,7 +109,7 @@ class SourcesSearch extends Component {
     this.doFilter();
   };
 
-  renderResult = (result) => {
+  renderResult = result => {
     const { query }     = this.state;
     const { id, title } = result;
 

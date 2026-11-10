@@ -17,7 +17,7 @@ class FilterTag extends PureComponent {
 
   handleClick = () => this.props.onClick();
 
-  handleClose = (event) => {
+  handleClose = event => {
     event.stopPropagation();
     this.props.onClose();
   };

@@ -77,6 +77,7 @@ class CollectionModal extends ListWithCheckboxBase {
     if (!isShowAssociateModal) {
       return null;
     }
+
     return (
       <Modal
         closeIcon
@@ -118,7 +119,7 @@ class CollectionModal extends ListWithCheckboxBase {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_UNIT_ASSOCIATION_COLLECTION) || EMPTY_OBJECT;
   const denormIDs = collections.denormIDs(state.collections);
   return {

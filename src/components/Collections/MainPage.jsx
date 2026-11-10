@@ -51,14 +51,12 @@ class CollectionsMainPage extends ListWithFiltersBase {
 
   getIsUpdateQuery = () => true;
 
-  renderHeaderRightSide = () => {
-    return (
-      <Menu.Item onClick={this.toggleNewCollection}>
-        <Icon name="plus" />
+  renderHeaderRightSide = () => (
+    <Menu.Item onClick={this.toggleNewCollection}>
+      <Icon name="plus" />
         New Collection
-      </Menu.Item>
-    );
-  };
+    </Menu.Item>
+  );
 
   renderList = () =>
     <CollectionsList items={this.props.items} withCheckBox={false} />;

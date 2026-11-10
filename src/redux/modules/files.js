@@ -159,6 +159,7 @@ const onSuccess = (state, action) => {
       });
       break;
     }
+
     case FETCH_ITEM_STORAGES_SUCCESS:
       byID = merge(state.byID, {
         id      : action.payload.id,

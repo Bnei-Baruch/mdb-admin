@@ -8,7 +8,7 @@ import { actions, selectors } from '../../../../redux/modules/collections';
 import * as shapes from '../../../shapes';
 import UpdateCollectionPropertiesForm from '../../../shared/Forms/Collection/UpdateCollectionPropertiesForm';
 
-const Properties = (props) => {
+const Properties = props => {
   const {
     collection = null, wip = false, err = null, updateProperties
   } = props;

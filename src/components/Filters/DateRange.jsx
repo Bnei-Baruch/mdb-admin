@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { DateRangeFilter } from './filterComponents';
 
-const DateRange = (props) => {
+const DateRange = props => {
   const {
     namespace, onFilterApplication, isUpdateQuery, onFilterCancel
   } = props;

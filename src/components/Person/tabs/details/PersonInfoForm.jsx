@@ -36,6 +36,7 @@ class PersonInfoForm extends Component {
     if (Object.keys(errors).length > 0) {
       return;
     }
+
     updateInfo(person.id, pattern);
     this.setState({ submitted: true });
   };

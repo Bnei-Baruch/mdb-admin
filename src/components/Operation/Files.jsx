@@ -35,9 +35,11 @@ class Files extends Component {
     if (isEqual(state, nextState)) {
       return null;
     }
+
     if (state.currentFile) {
       delete nextState.currentFile;
     }
+
     return nextState;
   }
 
@@ -54,6 +56,7 @@ class Files extends Component {
     if (a.created_at < b.created_at) {
       return -1;
     }
+
     if (a.created_at > b.created_at) {
       return 1;
     }
@@ -61,17 +64,17 @@ class Files extends Component {
     return 0;
   };
 
-  // eslint-disable-next-line class-methods-use-this
+
   renderFile(file) {
     const {
-            id,
-            name,
-            size,
-            language,
-            secure,
-            published,
-            properties,
-          }               = file;
+      id,
+      name,
+      size,
+      language,
+      secure,
+      published,
+      properties,
+    }               = file;
     const sizeDisplay     = filesize(size);
     const icon            = fileIcon(file);
     const lang            = LANGUAGES[language || LANG_UNKNOWN];

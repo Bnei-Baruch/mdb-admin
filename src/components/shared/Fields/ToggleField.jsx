@@ -5,7 +5,7 @@ import { Checkbox, Form } from '../../ui';
 
 import { titleize } from '../../../helpers/utils';
 
-const ToggleField = (props) => {
+const ToggleField = props => {
   const { name, value = true, err = false, onChange = noop, ...rest } = props;
 
   return (

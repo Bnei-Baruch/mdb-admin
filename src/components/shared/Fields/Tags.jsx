@@ -8,7 +8,7 @@ import { selectors } from '../../../redux/modules/tags';
 import TagBreadcrumbs from '../../Tags/TagBreadcrumbs';
 import TagsSearch from '../../Autocomplete/TagsSearch';
 
-const TagsField = (props) => {
+const TagsField = props => {
   const [tags, setTags] = useState([]);
 
   const getTagById  = useSelector(state => selectors.getTagById(state.tags));
@@ -24,12 +24,13 @@ const TagsField = (props) => {
     }
   }, [tagsUIDs, hierarchy.roots, hierarchy.childMap]);
 
-  const addTag = (d) => {
+  const addTag = d => {
     const uIDs = [...tagsUIDs];
     const tag  = getTagById(d.id);
     if (uIDs.findIndex(uid => uid === tag.uid) !== -1) {
       return;
     }
+
     uIDs.push(tag.uid);
     onChange(uIDs);
   };
@@ -40,29 +41,28 @@ const TagsField = (props) => {
     if (index === -1) {
       return;
     }
+
     uIDs.splice(index, 1);
     onChange(uIDs);
   };
 
-  const renderTag = (t) => {
-    return (
-      <List.Item key={t.uid}>
-        <List.Content>
-          <TagBreadcrumbs tag={t} lastIsLink />
-          <Button
-            onClick={(e) => removeTag(e, t)}
-            circular
-            compact
-            size="mini"
-            icon="remove"
-            color="red"
-            inverted
-            floated="right"
-          />
-        </List.Content>
-      </List.Item>
-    );
-  };
+  const renderTag = t => (
+    <List.Item key={t.uid}>
+      <List.Content>
+        <TagBreadcrumbs tag={t} lastIsLink />
+        <Button
+          onClick={e => removeTag(e, t)}
+          circular
+          compact
+          size="mini"
+          icon="remove"
+          color="red"
+          inverted
+          floated="right"
+        />
+      </List.Content>
+    </List.Item>
+  );
 
   return (
     <Form.Field error={err} {...rest} value={value}>

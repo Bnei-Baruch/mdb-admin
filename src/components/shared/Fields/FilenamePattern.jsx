@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import { Form, Input } from '../../ui';
 
-const FilenamePatternField = (props) => {
+const FilenamePatternField = props => {
   const { value = '', err = false, onChange = noop, ...rest } = props;
 
   return (

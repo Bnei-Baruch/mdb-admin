@@ -7,7 +7,7 @@ import { LANG_MULTI, LANG_UNKNOWN } from '../../../helpers/consts';
 import { titleize } from '../../../helpers/utils';
 import LanguageSelector from '../LanguageSelector';
 
-const LanguageField = (props) => {
+const LanguageField = props => {
   const { name, value = LANG_UNKNOWN, err = false, onChange = noop, ...rest } = props;
 
   return (

@@ -5,7 +5,7 @@ import { Flag, Form, Input } from '../../ui';
 
 import { LANGUAGES } from '../../../helpers/consts';
 
-const NameField = (props) => {
+const NameField = props => {
   const { value = '', language = '', err = false, onChange = noop, ...rest } = props;
   const langData                                    = LANGUAGES[language];
 

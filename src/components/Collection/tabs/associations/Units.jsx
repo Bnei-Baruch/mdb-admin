@@ -57,7 +57,7 @@ class Units extends PureComponent {
     this.props.onSelectionAllChange(checked);
   };
 
-  renderItem = (item) => {
+  renderItem = item => {
     const {
       collection, errUpdateCu, errDeleteCu, selectedCCU, currentLanguage
     } = this.props;
@@ -68,19 +68,22 @@ class Units extends PureComponent {
     let properties = extractI18n(unit.i18n, ['name'], currentLanguage)[0];
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[unit.type_id]) {
-      case CT_SPECIAL_LESSON:
-      case CT_DAILY_LESSON: {
-        const { film_date: filmDate, number } = unit.properties;
-        properties                            = filmDate;
-        if (number) {
-          properties += `, number ${number}`;
+        case CT_SPECIAL_LESSON:
+        case CT_DAILY_LESSON: {
+          const { film_date: filmDate, number } = unit.properties;
+          properties                            = filmDate;
+          if (number) {
+            properties += `, number ${number}`;
+          }
+
+          break;
         }
-        break;
-      }
-      default:
-        properties = unit.properties ? unit.properties.film_date : '';
+
+        default:
+          properties = unit.properties ? unit.properties.film_date : '';
       }
     }
+
     const isChecked = selectedCCU.some(ccu => ccu.content_unit_id === unit.id);
     return (
       <Table.Row
@@ -165,6 +168,7 @@ class Units extends PureComponent {
       if (i === 0 || arr[i - 1].content_unit.type_id !== unit.type_id) {
         acc.push(this.renderSeparator(unit.type_id));
       }
+
       acc.push(this.renderItem(val));
       return acc;
     }, []);

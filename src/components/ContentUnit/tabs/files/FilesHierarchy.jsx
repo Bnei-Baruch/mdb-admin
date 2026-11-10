@@ -20,11 +20,11 @@ import { ErrorSplash, LoadingSplash } from '../../../shared/Splash';
 import './files.css';
 import { formatDuration } from '../../../../helpers/date';
 
-const getStateFromFiles = (files) => {
+const getStateFromFiles = files => {
   const total   = files.length;
   const cuFiles = new Set(files.map(x => x.id));
 
-  const fileMap = new Map(files.map((x) => {
+  const fileMap = new Map(files.map(x => {
     // complement types if they're missing
     const f = { ...x, ...fileTypes(x) };
 
@@ -48,7 +48,8 @@ const getStateFromFiles = (files) => {
 
   return { total, hierarchy, currentFile };
 };
-const bestPlayableFile  = (hierarchy) => {
+
+const bestPlayableFile  = hierarchy => {
   // We DFS the hierarchy tree for the best playable leaf node.
   let best = null;
   let s    = [...hierarchy.roots];
@@ -80,6 +81,7 @@ const cmpFiles = (a, b) => {
   if (a.published && !b.published) {
     return -1;
   }
+
   if (!a.published && b.published) {
     return 1;
   }
@@ -92,6 +94,7 @@ const cmpFiles = (a, b) => {
   if (aLangIdx < bLangIdx) {
     return -1;
   }
+
   if (aLangIdx > bLangIdx) {
     return 1;
   }
@@ -104,6 +107,7 @@ const cmpFiles = (a, b) => {
   if (aTypeIdx < bTypeIdx) {
     return -1;
   }
+
   if (aTypeIdx > bTypeIdx) {
     return 1;
   }
@@ -112,6 +116,7 @@ const cmpFiles = (a, b) => {
   if (a.created_at < b.created_at) {
     return -1;
   }
+
   if (a.created_at > b.created_at) {
     return 1;
   }
@@ -231,17 +236,17 @@ class FilesHierarchy extends Component {
             <Grid.Column width={6} textAlign="center">
               {
                 currentFile ? (
-                    <div>
-                      <div id={JWPLAYER_ID} />
-                      <br />
-                      <Button
-                        content="Download"
-                        icon="download"
-                        color="orange"
-                        onClick={e => this.handleDownload(e, currentFile)}
-                      />
-                    </div>
-                  ) :
+                  <div>
+                    <div id={JWPLAYER_ID} />
+                    <br />
+                    <Button
+                      content="Download"
+                      icon="download"
+                      color="orange"
+                      onClick={e => this.handleDownload(e, currentFile)}
+                    />
+                  </div>
+                ) :
                   null
               }
             </Grid.Column>

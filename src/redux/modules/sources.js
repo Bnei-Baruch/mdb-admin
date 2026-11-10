@@ -192,7 +192,7 @@ export const reducer = handleActions({
 /* Selectors */
 
 const sortHierarchy = (h, getById) => {
-  h.childMap.forEach((v) => {
+  h.childMap.forEach(v => {
     v.sort((a, b) => {
       const sA = getById(a);
       const sB = getById(b);
@@ -206,9 +206,11 @@ const sortHierarchy = (h, getById) => {
       if (aName < bName) {
         return -1;
       }
+
       if (aName > bName) {
         return 1;
       }
+
       return 0;
     });
   });
@@ -228,7 +230,7 @@ const denormIDs = createSelector(getSources, byID =>
   memoize(ids => ids.map(id => byID.get(id))));
 
 const getPathByID = createSelector(getSources, byID =>
-  memoize((id) => {
+  memoize(id => {
     const source = byID.get(id);
     const path   = [source];
 
@@ -243,15 +245,17 @@ const getPathByID = createSelector(getSources, byID =>
     return path;
   }));
 
-const getSourceByUID = state => (uid) => {
+const getSourceByUID = state => uid => {
   const it = state.byID.values();
   let t    = it.next();
   while (!t.done) {
     if (t.value.uid === uid) {
       return t.value;
     }
+
     t = it.next();
   }
+
   return null;
 };
 

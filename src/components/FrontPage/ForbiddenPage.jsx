@@ -9,7 +9,7 @@ const ForbiddenPage = ({ user, updateCurrentLanguage, currentLanguage }) => {
     updateCurrentLanguage(value);
   };
 
-  const handleSignout = (e) => {
+  const handleSignout = e => {
     e.preventDefault();
     userManager.signoutRedirect();
   };

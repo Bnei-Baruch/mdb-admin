@@ -28,6 +28,7 @@ class AssociationsContainer extends Component {
     if (prevProps.units.length > 0 && this.props.units.length > prevProps.units.length) {
       this.state.allTableRef.scrollIntoView(false);
     }
+
     if (this.props.collection
       && !prevProps.collection
       && this.props.collection.id !== prevProps.collection.id) {
@@ -39,7 +40,7 @@ class AssociationsContainer extends Component {
     this.props.fetchItemUnits(id);
   }
 
-  updatePosition = (isUp) => {
+  updatePosition = isUp => {
     const { units }       = this.props;
     const { selectedCCU } = this.state;
     const basePosition    = selectedCCU[0].position;
@@ -58,7 +59,7 @@ class AssociationsContainer extends Component {
     this.saveCUPosition(selectedCCU[0]);
   };
 
-  saveCUPosition = (ccu) => {
+  saveCUPosition = ccu => {
     this.saveProperties(ccu.content_unit_id, { position: ccu.position, name: ccu.name });
   };
 
@@ -77,13 +78,15 @@ class AssociationsContainer extends Component {
           selectedCCU.splice(i, 1);
           return true;
         }
+
         return false;
       });
     }
+
     this.setState({ selectedCCU: [...selectedCCU] });
   };
 
-  handleSelectionAllChange = (checked) => {
+  handleSelectionAllChange = checked => {
     if (checked) {
       this.setState({ selectedCCU: [...this.props.units] });
     } else {

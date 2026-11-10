@@ -7,14 +7,14 @@ const toUTCDay = date => formatUTC(new Date(date), 'yyyy-MM-dd');
 const dateRange = {
   name: 'date-range-filter',
   queryKey: 'dates',
-  valueToQuery: (value) => {
+  valueToQuery: value => {
     if (!value) {
       return null;
     }
 
     return `${toUTCDay(value.from)}_${toUTCDay(value.to)}`;
   },
-  queryToValue: (queryValue) => {
+  queryToValue: queryValue => {
     const parts = queryValue.split('_');
 
     // 'yyyy-MM-dd' -> Date at UTC midnight (same as moment.utc(str, 'YYYY-MM-DD').toDate())
@@ -23,7 +23,7 @@ const dateRange = {
       to: new Date(parseUTC(parts[1]))
     };
   },
-  valueToApiParam: (value) => {
+  valueToApiParam: value => {
     const { from, to } = value;
     return {
       start_date: toUTCDay(from),
@@ -31,7 +31,7 @@ const dateRange = {
     };
   },
   tagIcon: 'calendar',
-  valueToTagLabel: (value) => {
+  valueToTagLabel: value => {
     if (!value) {
       return '';
     }

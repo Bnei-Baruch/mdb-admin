@@ -7,7 +7,7 @@ import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../../../helpers/consts'
 import * as shapes from '../../../shapes';
 import { formatUTC } from '../../../../helpers/date';
 
-const Details = (props) => {
+const Details = props => {
   const { collection = null } = props;
   if (!collection) {
     return null;

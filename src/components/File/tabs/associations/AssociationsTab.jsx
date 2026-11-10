@@ -25,7 +25,7 @@ class AssociationsTab extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_FILE_UNITS) || EMPTY_OBJECT;
   const denormIDs = unitsSelectors.denormIDs(state.content_units);
   return {

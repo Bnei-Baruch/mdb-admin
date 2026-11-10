@@ -46,14 +46,14 @@ class Persons extends Component {
     }
   }
 
-  addPerson = (person) => {
+  addPerson = person => {
     const { unit, persons, addPerson } = this.props;
     if (persons.findIndex(x => x.id === person.id) === -1) {
       addPerson(unit.id, person.id);
     }
   };
 
-  removePerson = (tag) => {
+  removePerson = tag => {
     const { unit, removePerson } = this.props;
     removePerson(unit.id, tag.id);
   };
@@ -107,6 +107,7 @@ class Persons extends Component {
       this.resetComponent();
       return;
     }
+
     this.setState({ query });
     this.doFilter();
   };
@@ -119,6 +120,7 @@ class Persons extends Component {
       if (langHaveResult) {
         acc.push({ id: p.id, title: p.i18n[langHaveResult].name, });
       }
+
       return acc;
     }, []);
 
@@ -127,7 +129,7 @@ class Persons extends Component {
 
   resetComponent = () => this.setState({ searched: [], query: '' });
 
-  renderResult = (item) => {
+  renderResult = item => {
     const { id, title } = item;
     return <div key={id}>{title}</div>;
   };

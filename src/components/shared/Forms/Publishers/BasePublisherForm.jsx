@@ -27,12 +27,12 @@ class BasePublisherForm extends Component {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
+
   cleanI18n() {
     return null;
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     if (!this.isValid()) {
       return;
@@ -43,7 +43,7 @@ class BasePublisherForm extends Component {
     this.setState({ submitted: true });
   };
 
-  // eslint-disable-next-line class-methods-use-this
+
   doSubmit(pattern, i18n) {
     throw new Error('Not Implemented');
   }
@@ -52,6 +52,7 @@ class BasePublisherForm extends Component {
     if (!this.state.pattern || !isValidPattern(this.state.pattern)) {
       return { pattern: true };
     }
+
     return {};
   };
 
@@ -78,7 +79,7 @@ class BasePublisherForm extends Component {
     return true;
   }
 
-  // eslint-disable-next-line class-methods-use-this
+
   renderForm() {
     throw new Error('Not Implemented');
   }

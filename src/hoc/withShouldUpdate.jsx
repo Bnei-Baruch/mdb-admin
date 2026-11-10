@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 import isEqualWith from 'lodash/isEqualWith';
 
-const shouldUpdate = (WrappedComponent) => {
-  return class DataLoader extends Component {
-    shouldComponentUpdate(nextProps) {
-      if (!nextProps.children) {
-        return true;
-      }
-      const nProps = nextProps.children;
-      const props  = this.props.children;
-      if (nextProps.propForUpdate) {
-        return !isEqualWith(nProps[nextProps.propForUpdate], props[nextProps.propForUpdate]);
-      }
-      return !isEqualWith(nProps, props);
+const shouldUpdate = WrappedComponent => class DataLoader extends Component {
+  shouldComponentUpdate(nextProps) {
+    if (!nextProps.children) {
+      return true;
     }
 
-    render() {
-      const { propForUpdate, ...props } = this.props;
-      return (
-        <WrappedComponent {...props} />
-      );
+    const nProps = nextProps.children;
+    const props  = this.props.children;
+    if (nextProps.propForUpdate) {
+      return !isEqualWith(nProps[nextProps.propForUpdate], props[nextProps.propForUpdate]);
     }
-  };
+
+    return !isEqualWith(nProps, props);
+  }
+
+  render() {
+    const { propForUpdate, ...props } = this.props;
+    return (
+      <WrappedComponent {...props} />
+    );
+  }
 };
 
 export default shouldUpdate;

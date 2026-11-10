@@ -13,7 +13,7 @@ const InitKeycloak = () => {
     renewRetry(0);
   };
 
-  const renewRetry = (retry) => {
+  const renewRetry = retry => {
     if (retry > 5) {
       getKeycloak().clearToken();
       dispatch(actions.clearUser());
@@ -21,6 +21,7 @@ const InitKeycloak = () => {
       setTimeout(() => renewToken(retry), 10000);
     }
   };
+
   const renewToken = retry => {
     getKeycloak().updateToken(70).then(refreshed => {
       if (refreshed) {

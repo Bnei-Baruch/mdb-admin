@@ -19,7 +19,7 @@ class Container extends Component {
     this.handlePageChange(1);
   }
 
-  getPageNo = (search) => {
+  getPageNo = search => {
     let page = 0;
     if (search) {
       const match = search.match(/page=(\d+)/);
@@ -31,13 +31,13 @@ class Container extends Component {
     return (Number.isNaN(page) || page <= 0) ? 1 : page;
   };
 
-  handlePageChange = (pageNo) => {
+  handlePageChange = pageNo => {
     const { setPage } = this.props;
     setPage(NS_LABELS, pageNo);
     this.askForData(pageNo);
   };
 
-  askForData = (pageNo) => {
+  askForData = pageNo => {
     this.props.fetchList(NS_LABELS, pageNo);
   };
 
@@ -53,7 +53,7 @@ class Container extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_LABELS) || EMPTY_OBJECT;
   const denormIDs = labels.denormIDs(state.labels);
   const items     = Array.isArray(status.items) && status.items.length > 0 ? denormIDs(status.items) : EMPTY_ARRAY;

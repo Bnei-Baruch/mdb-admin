@@ -17,6 +17,7 @@ const flatten = (results, category) => {
   if (!category) {
     return { groups: [{ name: null, results: results || [] }] };
   }
+
   const groups = Array.isArray(results) ? results : Object.values(results || {});
   return { groups };
 };
@@ -51,7 +52,9 @@ const Search = ({
   const { groups } = flatten(results, category);
   const flat       = groups.flatMap(g => g.results || []);
 
-  React.useEffect(() => { setActive(0); }, [results]);
+  React.useEffect(() => {
+    setActive(0);
+  }, [results]);
 
   React.useEffect(() => {
     const onDocClick = e => {
@@ -59,6 +62,7 @@ const Search = ({
         setOpen(false);
       }
     };
+
     document.addEventListener('mousedown', onDocClick);
     return () => document.removeEventListener('mousedown', onDocClick);
   }, []);
@@ -67,6 +71,7 @@ const Search = ({
     if (!result) {
       return;
     }
+
     setOpen(false);
     if (onResultSelect) {
       onResultSelect(e, { result, results, value });

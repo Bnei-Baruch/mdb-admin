@@ -4,7 +4,7 @@ import { Grid, Header, Segment } from '../ui';
 
 import { ContentTypeFilter, PublishedFilter, SecureFilter } from './filterComponents';
 
-const Others = (props) => {
+const Others = props => {
   const {
     namespace, onFilterApplication, contentTypes, isUpdateQuery
   } = props;

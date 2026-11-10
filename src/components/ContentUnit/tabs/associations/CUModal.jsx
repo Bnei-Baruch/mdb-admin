@@ -64,6 +64,7 @@ class CUModal extends ListWithCheckboxBase {
     if (!isShowAssociateModal) {
       return null;
     }
+
     return (
       <Modal
         closeIcon
@@ -103,7 +104,7 @@ class CUModal extends ListWithCheckboxBase {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_UNIT_ASSOCIATION_CU) || EMPTY_OBJECT;
   const denormIDs = units.denormIDs(state.content_units);
   return {

@@ -67,58 +67,58 @@ class BaseCollectionForm extends Component {
 
     // per type specific properties
     switch (state.type_id) {
-    case COLLECTION_TYPES[CT_DAILY_LESSON].value:
-    case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
-      data.film_date = state.film_date;
-      data.number    = state.number;
-      break;
-    case COLLECTION_TYPES[CT_CONGRESS].value:
-      data.pattern      = state.pattern;
-      data.active       = state.active;
-      data.start_date   = state.start_date;
-      data.end_date     = state.end_date;
-      data.country      = state.country ? countries.find(x => x.value === state.country).text : state.country;
-      data.city         = state.city;
-      data.full_address = state.full_address;
-      break;
-    case COLLECTION_TYPES[CT_HOLIDAY].value:
-      data.holiday_tag = state.holiday_tag;
-      data.start_date  = state.start_date;
-      data.end_date    = state.end_date;
-      break;
-    case COLLECTION_TYPES[CT_PICNIC].value:
-    case COLLECTION_TYPES[CT_UNITY_DAY].value:
-      data.pattern    = state.pattern;
-      data.active     = state.active;
-      data.start_date = state.start_date;
-      data.end_date   = state.end_date;
-      break;
-    case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
-      data.pattern          = state.pattern;
-      data.active           = state.active;
-      data.default_language = state.default_language;
-      data.genres           = state.genres;
-      break;
-    case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
-    case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
-    case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
-    case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
-    case COLLECTION_TYPES[CT_CLIPS].value:
-      data.pattern          = state.pattern;
-      data.active           = state.active;
-      data.default_language = state.default_language;
-      break;
-    case COLLECTION_TYPES[CT_ARTICLES].value:
-      data.pattern = state.pattern;
-      break;
-    case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
-      data.source     = state.source;
-      data.tags       = state.tagsUIDs?.length === 0 ? [] : state.tagsUIDs;
-      data.start_date = state.start_date;
-      data.end_date   = state.end_date;
-      break;
-    default:
-      break;
+      case COLLECTION_TYPES[CT_DAILY_LESSON].value:
+      case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
+        data.film_date = state.film_date;
+        data.number    = state.number;
+        break;
+      case COLLECTION_TYPES[CT_CONGRESS].value:
+        data.pattern      = state.pattern;
+        data.active       = state.active;
+        data.start_date   = state.start_date;
+        data.end_date     = state.end_date;
+        data.country      = state.country ? countries.find(x => x.value === state.country).text : state.country;
+        data.city         = state.city;
+        data.full_address = state.full_address;
+        break;
+      case COLLECTION_TYPES[CT_HOLIDAY].value:
+        data.holiday_tag = state.holiday_tag;
+        data.start_date  = state.start_date;
+        data.end_date    = state.end_date;
+        break;
+      case COLLECTION_TYPES[CT_PICNIC].value:
+      case COLLECTION_TYPES[CT_UNITY_DAY].value:
+        data.pattern    = state.pattern;
+        data.active     = state.active;
+        data.start_date = state.start_date;
+        data.end_date   = state.end_date;
+        break;
+      case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
+        data.pattern          = state.pattern;
+        data.active           = state.active;
+        data.default_language = state.default_language;
+        data.genres           = state.genres;
+        break;
+      case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
+      case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
+      case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
+      case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
+      case COLLECTION_TYPES[CT_CLIPS].value:
+        data.pattern          = state.pattern;
+        data.active           = state.active;
+        data.default_language = state.default_language;
+        break;
+      case COLLECTION_TYPES[CT_ARTICLES].value:
+        data.pattern = state.pattern;
+        break;
+      case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
+        data.source     = state.source;
+        data.tags       = state.tagsUIDs?.length === 0 ? [] : state.tagsUIDs;
+        data.start_date = state.start_date;
+        data.end_date   = state.end_date;
+        break;
+      default:
+        break;
     }
 
     return data;
@@ -143,36 +143,41 @@ class BaseCollectionForm extends Component {
   handleDefaultLanguageChange = (e, data) =>
     this.setState({ default_language: data.value });
 
-  handleDateRangeChange = (range) => {
+  handleDateRangeChange = range => {
     const { start, end } = range;
     const { errors }     = this.state;
     if (start) {
       delete errors.start_date;
     }
+
     if (end) {
       delete errors.end_date;
     }
+
     this.setState({ start_date: start, end_date: end, errors });
   };
 
-  handleFilmDateChange = (date) => {
+  handleFilmDateChange = date => {
     const { errors } = this.state;
     delete errors.film_date;
     this.setState({ film_date: date, errors });
   };
 
-  handleLocationChange = (location) => {
+  handleLocationChange = location => {
     const { country, city, fullAddress } = location;
     const { errors }                     = this.state;
     if (country) {
       delete errors.country;
     }
+
     if (city) {
       delete errors.city;
     }
+
     if (fullAddress) {
       delete errors.full_address;
     }
+
     this.setState({ country, city, full_address: fullAddress, errors });
   };
 
@@ -182,14 +187,14 @@ class BaseCollectionForm extends Component {
     this.setState({ holiday_tag: data.value, errors });
   };
 
-  handleSourceChange = (s) => {
+  handleSourceChange = s => {
     const { errors } = this.state;
     delete errors.sourceOrTag;
     const source = s && s.uid ? s.uid : '';
     this.setState({ source, errors });
   };
 
-  handleTagsChange = (tagsUIDs) => {
+  handleTagsChange = tagsUIDs => {
     const { errors } = this.state;
     delete errors.sourceOrTag;
     this.setState({ tagsUIDs: [...tagsUIDs] });
@@ -205,12 +210,12 @@ class BaseCollectionForm extends Component {
     this.setState({ number, errors });
   };
 
-  // eslint-disable-next-line class-methods-use-this
+
   cleanI18n() {
     return null;
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     if (!this.isValid()) {
       return;
@@ -223,7 +228,7 @@ class BaseCollectionForm extends Component {
     this.setState({ submitted: true });
   };
 
-  // eslint-disable-next-line class-methods-use-this
+
   doSubmit(typeID, properties, i18n) {
     throw new Error('Not Implemented');
   }
@@ -240,6 +245,7 @@ class BaseCollectionForm extends Component {
       if (!v || (typeof v === 'string' && v.trim() === '')) {
         acc[k] = true;
       }
+
       return acc;
     }, this.getI18nErrors());
   }
@@ -453,34 +459,34 @@ class BaseCollectionForm extends Component {
 
   renderProperties = () => {
     switch (this.state.type_id) {
-    case COLLECTION_TYPES[CT_DAILY_LESSON].value:
-    case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
-      return this.renderDailyLesson();
-    case COLLECTION_TYPES[CT_CONGRESS].value:
-      return this.renderCongress();
-    case COLLECTION_TYPES[CT_HOLIDAY].value:
-      return this.renderHoliday();
-    case COLLECTION_TYPES[CT_PICNIC].value:
-    case COLLECTION_TYPES[CT_UNITY_DAY].value:
-      return this.renderPicnic();
-    case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
-      return this.renderVideoProgram();
-    case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
-    case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
-    case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
-    case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
-    case COLLECTION_TYPES[CT_CLIPS].value:
-      return this.renderLesson();
-    case COLLECTION_TYPES[CT_ARTICLES].value:
-      return this.renderArticles();
-    case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
-      return this.renderLessonsSeries();
-    default:
-      return null;
+      case COLLECTION_TYPES[CT_DAILY_LESSON].value:
+      case COLLECTION_TYPES[CT_SPECIAL_LESSON].value:
+        return this.renderDailyLesson();
+      case COLLECTION_TYPES[CT_CONGRESS].value:
+        return this.renderCongress();
+      case COLLECTION_TYPES[CT_HOLIDAY].value:
+        return this.renderHoliday();
+      case COLLECTION_TYPES[CT_PICNIC].value:
+      case COLLECTION_TYPES[CT_UNITY_DAY].value:
+        return this.renderPicnic();
+      case COLLECTION_TYPES[CT_VIDEO_PROGRAM].value:
+        return this.renderVideoProgram();
+      case COLLECTION_TYPES[CT_LECTURE_SERIES].value:
+      case COLLECTION_TYPES[CT_CHILDREN_LESSONS].value:
+      case COLLECTION_TYPES[CT_WOMEN_LESSONS].value:
+      case COLLECTION_TYPES[CT_VIRTUAL_LESSONS].value:
+      case COLLECTION_TYPES[CT_CLIPS].value:
+        return this.renderLesson();
+      case COLLECTION_TYPES[CT_ARTICLES].value:
+        return this.renderArticles();
+      case COLLECTION_TYPES[CT_LESSONS_SERIES].value:
+        return this.renderLessonsSeries();
+      default:
+        return null;
     }
   };
 
-  // eslint-disable-next-line class-methods-use-this
+
   renderForm() {
     throw new Error('Not Implemented');
   }
@@ -497,16 +503,16 @@ class BaseCollectionForm extends Component {
 
         <Segment clearing attached="bottom" size="tiny">
           {submitted && err ? (
-              <Header
-                inverted
-                content={formatError(err)}
-                color="red"
-                icon="warning sign"
-                floated="left"
-                size="tiny"
-                style={{ marginTop: '0.2rem', marginBottom: '0' }}
-              />
-            )
+            <Header
+              inverted
+              content={formatError(err)}
+              color="red"
+              icon="warning sign"
+              floated="left"
+              size="tiny"
+              style={{ marginTop: '0.2rem', marginBottom: '0' }}
+            />
+          )
             : null}
           <Button
             primary

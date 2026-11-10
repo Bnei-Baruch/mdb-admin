@@ -59,6 +59,7 @@ class AssociationsTab extends Component {
         />
       );
     }
+
     return (
       <AssociationsContainer
         setEditMode={this.setEditMode}
@@ -85,9 +86,11 @@ function orderUnits(u1, u2) {
   if (d1 > d2) {
     return 1;
   }
+
   if (d1 === d2) {
     return 0;
   }
+
   return -1;
 }
 

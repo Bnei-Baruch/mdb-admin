@@ -45,7 +45,9 @@ const optionLabel = o => (
 const useMaybeControlled = (value, defaultValue, multiple) => {
   const isControlled = value !== undefined;
   const [inner, setInner] = React.useState(defaultValue ?? (multiple ? [] : null));
-  return [isControlled ? value : inner, v => { if (!isControlled) setInner(v); }];
+  return [isControlled ? value : inner, v => {
+    if (!isControlled) setInner(v);
+  }];
 };
 
 const Dropdown = props => {

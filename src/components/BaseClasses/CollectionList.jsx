@@ -25,7 +25,7 @@ class CollectionList extends ListBase {
     currentLanguage: PropTypes.string.isRequired
   };
 
-  renderItem = (item) => {
+  renderItem = item => {
     const {
       selectedIds, currentLanguage, associatedIds, withCheckBox
     } = this.props;
@@ -34,25 +34,29 @@ class CollectionList extends ListBase {
 
     if (!properties) {
       switch (CONTENT_TYPE_BY_ID[item.type_id]) {
-      case CT_SPECIAL_LESSON:
-      case CT_DAILY_LESSON: {
-        const { film_date: filmDate, number } = item.properties;
-        properties                            = filmDate;
-        if (number) {
-          properties += `, number ${number}`;
+        case CT_SPECIAL_LESSON:
+        case CT_DAILY_LESSON: {
+          const { film_date: filmDate, number } = item.properties;
+          properties                            = filmDate;
+          if (number) {
+            properties += `, number ${number}`;
+          }
+
+          break;
         }
-        break;
-      }
-      case CT_HOLIDAY: {
-        const tag  = this.props.getTagByUID(item.properties.holiday_tag);
-        properties = tag ? extractI18n(tag.i18n, ['label'], currentLanguage)[0] : tag;
-        if (item.properties.start_date) {
-          properties += `  ${item.properties.start_date.substring(0, 4)}`;
+
+        case CT_HOLIDAY: {
+          const tag  = this.props.getTagByUID(item.properties.holiday_tag);
+          properties = tag ? extractI18n(tag.i18n, ['label'], currentLanguage)[0] : tag;
+          if (item.properties.start_date) {
+            properties += `  ${item.properties.start_date.substring(0, 4)}`;
+          }
+
+          break;
         }
-        break;
-      }
-      default:
-        properties = item.properties ? item.properties.film_date : '';
+
+        default:
+          properties = item.properties ? item.properties.film_date : '';
       }
     }
 

@@ -5,7 +5,7 @@ import noop from 'lodash/noop';
 import { DateInput, Form } from '../../ui';
 
 // value / onChange: 'yyyy-MM-dd' string (null when cleared)
-const FilmDateField = (props) => {
+const FilmDateField = props => {
   const { value = null, err = false, onChange = noop, ...rest } = props;
 
   return (

@@ -20,6 +20,7 @@ class TabsMenu extends Component {
     if (items.length > 0) {
       return items[0].name;
     }
+
     return '';
   }
 
@@ -36,7 +37,7 @@ class TabsMenu extends Component {
       <div>
         <Menu secondary pointing color="blue">
           {
-            items.map((item) => {
+            items.map(item => {
               const { name } = item;
               return (
                 <Menu.Item

@@ -37,6 +37,7 @@ class ListWithCheckboxBase extends ListWithFiltersBase {
     } else {
       selectedIds.splice(selectedIds.findIndex(x => id === x), 1);
     }
+
     this.setState({ selectedIds: [...selectedIds] });
   };
 
@@ -45,10 +46,11 @@ class ListWithCheckboxBase extends ListWithFiltersBase {
       this.setState({ selectedIds: [id] });
       return;
     }
+
     this.setState({ selectedIds: [] });
   };
 
-  selectAllItems = (checked) => {
+  selectAllItems = checked => {
     const { items, associatedIds } = this.props;
     const { selectedIds }          = this.state;
     if (checked) {

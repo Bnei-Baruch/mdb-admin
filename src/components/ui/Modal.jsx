@@ -45,7 +45,9 @@ const Modal = ({
   return (
     <Dialog open={open} onClose={handleDialogClose} className="relative z-50">
       <DialogBackdrop transition className="fixed inset-0 bg-gray-900/50 transition-opacity data-closed:opacity-0 data-enter:duration-200 data-leave:duration-150" />
-      <div className="fixed inset-0 z-50 w-screen overflow-y-auto" onKeyDownCapture={e => { lastKeyRef.current = e.key; }}>
+      <div className="fixed inset-0 z-50 w-screen overflow-y-auto" onKeyDownCapture={e => {
+        lastKeyRef.current = e.key;
+      }}>
         <div className="flex min-h-full items-center justify-center p-4">
           <DialogPanel
             transition

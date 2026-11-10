@@ -15,7 +15,7 @@ class FilesList extends ListBase {
     items: PropTypes.arrayOf(shapes.File),
   };
 
-  renderItem = (item) => {
+  renderItem = item => {
     const { selectedIds, associatedIds, withCheckBox } = this.props;
     return (
       <Table.Row key={item.id} disabled={!item || associatedIds.includes(item.id)}>

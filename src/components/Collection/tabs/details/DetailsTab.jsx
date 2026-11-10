@@ -24,7 +24,7 @@ const editableProperties = [
   'number',
 ];
 
-const DetailsTab = (props) => {
+const DetailsTab = props => {
   const { collection = null } = props;
   if (!collection) {
     return null;

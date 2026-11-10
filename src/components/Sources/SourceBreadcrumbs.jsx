@@ -10,7 +10,7 @@ import { selectors as system } from '../../redux/modules/system';
 import { extractI18n } from '../../helpers/utils';
 import * as shapes from '../shapes';
 
-const SourceBreadcrumbs = (props) => {
+const SourceBreadcrumbs = props => {
   const { path = [], author = null, lastIsLink = false, currentLanguage } = props;
 
   // convert path to breadcrumbs
@@ -44,6 +44,7 @@ const SourceBreadcrumbs = (props) => {
       </Breadcrumb.Section>
     ));
   }
+
   return (
     <Breadcrumb className="rtl-dir">{crumbs.reverse()}</Breadcrumb>
   );

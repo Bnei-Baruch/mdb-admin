@@ -47,6 +47,7 @@ class I18nForm extends Component {
     if (REQUIRED_LANGUAGES.includes(langKey)) {
       errors[langKey] = !value;
     }
+
     i18n[langKey].name = value;
     this.setState({ i18n, errors });
   };
@@ -63,7 +64,7 @@ class I18nForm extends Component {
     this.setState({ i18n });
   };
 
-  removeLanguage = (language) => {
+  removeLanguage = language => {
     const { i18n } = this.state;
     delete i18n[language];
     this.setState({ i18n });

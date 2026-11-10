@@ -130,9 +130,11 @@ export const Checkbox = ({
     if (readOnly) {
       return;
     }
+
     if (!isControlled) {
       setInner(next);
     }
+
     if (onChange) {
       onChange({ preventDefault() {}, stopPropagation() {}, target: { checked: next, name, value } }, { checked: next, name, value, id, label });
     }
@@ -207,6 +209,7 @@ const Form = ({ onSubmit, action, loading, error, success, warning, size, classN
       if (!action) {
         e.preventDefault();
       }
+
       if (onSubmit) {
         onSubmit(e, rest);
       }
@@ -244,6 +247,8 @@ const FormField = ({
           'min-w-0',
           '[&>label]:flex [&>label]:items-center [&>label]:text-sm [&>label]:font-medium [&>label]:text-gray-800',
           hasError && '[&>label]:text-red-700',
+          // Double quotes on purpose: Tailwind scans the source text and would not match an escaped \'.
+          // eslint-disable-next-line quotes
           required && "[&>label]:after:ml-0.5 [&>label]:after:text-red-600 [&>label]:after:content-['*']",
           disabled && 'pointer-events-none opacity-50',
           WIDTH[width],

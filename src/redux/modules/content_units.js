@@ -459,7 +459,7 @@ const onSuccess = (state, action) => {
   const key        = keys.get(action.type);
   let byID;
   let autonameI18n = [];
-  let lastCreated  = state.lastCreated;
+  let { lastCreated } = state;
   switch (action.type) {
     case FETCH_ITEM_SUCCESS:
     case CREATE:
@@ -496,6 +496,7 @@ const onSuccess = (state, action) => {
         x => ({ ...x, origins: [...x.origins || [], { name: '', content_unit_id: aId }] }));
       break;
     }
+
     case UPDATE_ITEM_DERIVATIVES_SUCCESS: {
       const { id: uId, duID: uDuID, params } = action.payload;
 
@@ -515,6 +516,7 @@ const onSuccess = (state, action) => {
         }));
       break;
     }
+
     case REMOVE_ITEM_DERIVATIVES_SUCCESS: {
       const { id: dId, duID: dDuID } = action.payload;
 
@@ -524,6 +526,7 @@ const onSuccess = (state, action) => {
         x => ({ ...x, origins: x.origins ? x.origins.filter(d => d.content_unit_id !== dId) : [] }));
       break;
     }
+
     case FETCH_ITEM_ORIGINS_SUCCESS:
       byID = merge(state.byID, {
         id     : action.payload.id,

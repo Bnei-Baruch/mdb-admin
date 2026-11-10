@@ -35,9 +35,11 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     if (errOfCreate || wipOfCreate) {
       return { wip: true };
     }
+
     if (state.wip && !wipOfCreate && !errOfCreate) {
       return { showNewCU: !state.showNewCU, wip: false, associateLastOpen: true };
     }
+
     return null;
   }
 
@@ -55,14 +57,12 @@ class ContentUnitMainPage extends ListWithFiltersBase {
 
   getIsUpdateQuery = () => true;
 
-  renderHeaderRightSide = () => {
-    return (
-      <Menu.Item onClick={this.openNewCU}>
-        <Icon name="plus" />
+  renderHeaderRightSide = () => (
+    <Menu.Item onClick={this.openNewCU}>
+      <Icon name="plus" />
         New Content Unit
-      </Menu.Item>
-    );
-  };
+    </Menu.Item>
+  );
 
   renderList = () => {
     const { items, currentLanguage, associatedIds } = this.props;
@@ -84,6 +84,7 @@ class ContentUnitMainPage extends ListWithFiltersBase {
     if (!lastCreated || !associateLastOpen) {
       return null;
     }
+
     return <ContentUnitFormAssociates unit={lastCreated} onClose={this.closeAssociateLast} />;
   };
 

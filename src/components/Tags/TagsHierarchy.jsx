@@ -129,7 +129,7 @@ class TagsHierarchy extends Component {
           <Grid.Column width={4}>
             <Menu fluid vertical tabular="right">
               {
-                hierarchy.roots.map((x) => {
+                hierarchy.roots.map(x => {
                   const node        = getTagById(x);
                   const children    = hierarchy.childMap.get(x);
                   const hasChildren = Array.isArray(children) && children.length > 0;

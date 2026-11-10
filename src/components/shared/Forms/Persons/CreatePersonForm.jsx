@@ -30,11 +30,12 @@ class CreatePersonForm extends BasePersonForm {
     };
   }
 
-  handleI18nChange = (i18n) => {
+  handleI18nChange = i18n => {
     const { errors } = this.state;
     if (!MAJOR_LANGUAGES.every(x => i18n[x] && i18n[x].name.trim() === '')) {
       delete errors.i18n;
     }
+
     this.setState({ errors, i18n });
   };
 
@@ -44,6 +45,7 @@ class CreatePersonForm extends BasePersonForm {
       if (i18n[val].name.trim() !== '') {
         acc[val] = { ...i18n[val], language: val };
       }
+
       return acc;
     }, {});
   }

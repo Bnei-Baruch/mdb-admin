@@ -19,11 +19,12 @@ const byTypeMimeTypeOptions = Object.values(MEDIA_TYPES).reduce((acc, { mime_typ
   if (!byT.find(x => x.value === mime_type)) {
     byT.push({ text: mime_type, value: mime_type });
   }
+
   acc[type] = byT;
   return acc;
 }, {});
 
-const Details = (props) => {
+const Details = props => {
   const { file = null } = props;
   const errLang  = useSelector(state => selectors.getError(state.files, 'updateProperties'));
 

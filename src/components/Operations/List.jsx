@@ -16,24 +16,29 @@ class OperationsList extends PureComponent {
     items: EMPTY_ARRAY,
   };
 
-  renderItem = (item) => {
+  renderItem = item => {
     let type = OPERATION_TYPE_BY_ID[item.type_id];
     if (item.properties) {
       if (item.properties.capture_source) {
         type += ` - ${item.properties.capture_source}`;
       }
+
       if (item.properties.final_name) {
         type += ` - ${item.properties.final_name}`;
       }
+
       if (item.properties.insert_type) {
         type += ` - ${item.properties.insert_type}`;
       }
+
       if (item.properties.mode) {
         type += ` (${item.properties.mode})`;
       }
+
       if (item.properties.workflow_id) {
         type += ` [${item.properties.workflow_id}]`;
       }
+
       if (item.properties.message) {
         type += ` [${item.properties.message}]`;
       }

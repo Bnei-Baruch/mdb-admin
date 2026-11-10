@@ -37,7 +37,7 @@ export default class HierarchyUnitsView extends Component {
     this.setState({ isShowAssociateModal: !this.state.isShowAssociateModal });
   };
 
-  handleUnAssociate = (id) => {
+  handleUnAssociate = id => {
     const { unit, removeAssociate } = this.props;
     removeAssociate(unit.id, id);
   };
@@ -47,7 +47,7 @@ export default class HierarchyUnitsView extends Component {
     updateAssociation(unit.id, cuId, { name });
   };
 
-  renderRow = (item) => {
+  renderRow = item => {
     const {
       id, uid, i18n, type_id, properties
     } = item.content_unit;

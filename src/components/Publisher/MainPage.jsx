@@ -14,7 +14,7 @@ const tabs = [
   { name: 'Danger Zone', element: DangerZoneTab },
 ];
 
-const MainPage = (props) => {
+const MainPage = props => {
   const { publisher = null, wip = false, err = null } = props;
 
   if (err) {

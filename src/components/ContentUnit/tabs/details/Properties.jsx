@@ -8,7 +8,7 @@ import { actions, selectors } from '../../../../redux/modules/content_units';
 import * as shapes from '../../../shapes';
 import UpdateContentUnitPropertiesForm from '../../../shared/Forms/ContentUnit/UpdateContentUnitPropertiesForm';
 
-const Properties = (props) => {
+const Properties = props => {
   const {
     unit = null, wip = false, err = null, updateProperties
   } = props;

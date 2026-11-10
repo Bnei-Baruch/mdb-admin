@@ -53,6 +53,7 @@ class NewAssociations extends ListWithCheckboxBase {
     if (selectedIds.length === 0) {
       return;
     }
+
     const unitsData = orderBy(selectedIds).map(id => ({
       content_unit_id: id,
       name: '',
@@ -113,7 +114,7 @@ class NewAssociations extends ListWithCheckboxBase {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_COLLECTION_UNITS) || EMPTY_OBJECT;
   const denormIDs = unitsSelectors.denormIDs(state.content_units);
   return {

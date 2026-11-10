@@ -40,7 +40,7 @@ class ContentUnitsContainer extends Component {
     }
   }
 
-  getPageNo = (search) => {
+  getPageNo = search => {
     let page = 0;
     if (search) {
       const match = search.match(/page=(\d+)/);
@@ -65,7 +65,7 @@ class ContentUnitsContainer extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_UNITS) || EMPTY_OBJECT;
   const sByUid    = sourcesSelectors.getSourceByUID(state.sources);
   const denormIDs = units.denormIDs(state.content_units);

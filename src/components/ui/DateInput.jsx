@@ -45,6 +45,7 @@ const DateInput = ({
       emit(null);
       return;
     }
+
     const d = parseLocalDate(next);
     if (d) {
       setMonth(d);

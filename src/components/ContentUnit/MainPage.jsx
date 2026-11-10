@@ -20,7 +20,7 @@ const items = [
   { name: 'Danger Zone', element: DangerZoneTab },
 ];
 
-const MainPage = (props) => {
+const MainPage = props => {
   const { unit = null, wip = false, err = null } = props;
 
   if (err) {

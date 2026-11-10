@@ -109,6 +109,7 @@ const MenuItem = ({
       e.preventDefault();
       return;
     }
+
     if (onClick) {
       onClick(e, { ...rest, name, active, disabled, content });
     }

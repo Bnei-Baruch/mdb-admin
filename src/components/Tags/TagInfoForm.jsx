@@ -55,9 +55,7 @@ class TagInfoForm extends Component {
 
     const { pattern, description, parent_id, submitted, errors } = this.state;
 
-    const options = Array.from(getTags.values()).map(t => {
-      return { text: extractI18n(t.i18n, ['label'], currentLanguage)[0], value: t.id };
-    });
+    const options = Array.from(getTags.values()).map(t => ({ text: extractI18n(t.i18n, ['label'], currentLanguage)[0], value: t.id }));
 
     return (
       <div>

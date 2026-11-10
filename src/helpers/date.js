@@ -16,12 +16,15 @@ export const parseUTC = value => {
   if (value === null || value === undefined || value === '') {
     return null;
   }
+
   if (value instanceof Date) {
     return new UTCDate(value.getTime());
   }
+
   if (typeof value === 'number') {
     return new UTCDate(value);
   }
+
   const s = String(value).trim();
   let d;
   if (DATE_ONLY.test(s) || HAS_TZ.test(s)) {
@@ -29,6 +32,7 @@ export const parseUTC = value => {
   } else {
     d = new Date(`${s.replace(' ', 'T')}Z`);
   }
+
   return isValid(d) ? new UTCDate(d.getTime()) : null;
 };
 
@@ -65,6 +69,7 @@ export const parseLocalDate = str => {
   if (!str || !DATE_ONLY.test(str.trim())) {
     return null;
   }
+
   const d = parse(str.trim(), DATE_FNS_FORMAT, new Date());
   return isValid(d) ? d : null;
 };

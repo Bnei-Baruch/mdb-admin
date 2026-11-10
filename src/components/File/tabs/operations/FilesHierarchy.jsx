@@ -51,17 +51,19 @@ class FilesHierarchy extends Component {
     if (isEqual(state, nextState)) {
       return null;
     }
+
     if (state.currentFile) {
       delete nextState.currentFile;
     }
+
     return nextState;
   }
 
-  static getStateFromFiles = (files) => {
+  static getStateFromFiles = files => {
     const total   = files.length;
     const cuFiles = new Set(files.map(x => x.id));
 
-    const fileMap = new Map(files.map((x) => {
+    const fileMap = new Map(files.map(x => {
       // complement types if they're missing
       const f = { ...x, ...fileTypes(x) };
 
@@ -92,6 +94,7 @@ class FilesHierarchy extends Component {
     if (a.published && !b.published) {
       return -1;
     }
+
     if (!a.published && b.published) {
       return 1;
     }
@@ -104,6 +107,7 @@ class FilesHierarchy extends Component {
     if (aLangIdx < bLangIdx) {
       return -1;
     }
+
     if (aLangIdx > bLangIdx) {
       return 1;
     }
@@ -116,6 +120,7 @@ class FilesHierarchy extends Component {
     if (aTypeIdx < bTypeIdx) {
       return -1;
     }
+
     if (aTypeIdx > bTypeIdx) {
       return 1;
     }
@@ -124,6 +129,7 @@ class FilesHierarchy extends Component {
     if (a.created_at < b.created_at) {
       return -1;
     }
+
     if (a.created_at > b.created_at) {
       return 1;
     }
@@ -131,7 +137,7 @@ class FilesHierarchy extends Component {
     return 0;
   };
 
-  static bestPlayableFile = (hierarchy) => {
+  static bestPlayableFile = hierarchy => {
     // We DFS the hierarchy tree for the best playable leaf node.
     let best = null;
     let s    = [...hierarchy.roots];
@@ -200,9 +206,12 @@ class FilesHierarchy extends Component {
     operations.sort((a, b) => {
       if (a.created_at < b.created_at) {
         return -1;
-      } if (a.created_at > b.created_at) {
+      }
+
+      if (a.created_at > b.created_at) {
         return 1;
       }
+
       return 0;
     });
 

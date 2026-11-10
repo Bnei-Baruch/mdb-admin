@@ -6,7 +6,7 @@ import ReadonlyProperties from '../../../shared/Properties';
 import PersonInfoForm from './PersonInfoForm';
 import I18nForm from './I18nForm';
 
-const DetailsTab = (props) => {
+const DetailsTab = props => {
   const { person = null } = props;
   if (!person) {
     return null;

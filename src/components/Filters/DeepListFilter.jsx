@@ -8,9 +8,7 @@ import {
 import { hierarchyToTree, hierarchyNodeToTreeNode, extractI18n } from '../../helpers/utils';
 import connectFilter from './connectFilter';
 
-const listToNumbersIfCan = (list) => {
-  return list.map(x => (Number.isNaN(parseFloat(x)) ? x : parseFloat(x)));
-};
+const listToNumbersIfCan = list => list.map(x => (Number.isNaN(parseFloat(x)) ? x : parseFloat(x)));
 
 class DeepListFilter extends React.Component {
   static propTypes = {
@@ -75,13 +73,14 @@ class DeepListFilter extends React.Component {
     if (Array.isArray(selection) && selection.length === 0) {
       return;
     }
+
     updateValue(selection, isUpdateQuery);
     onApply();
   };
 
   canApply = () => this.state.selection && this.state.selection.length > 0;
 
-  scrollToSelections = (selections) => {
+  scrollToSelections = selections => {
     if (this.menus[0]) {
       selections.forEach((selection, depth) => {
         const selectedItems = this.menus[depth].getElementsByClassName('active');
@@ -103,6 +102,7 @@ class DeepListFilter extends React.Component {
     if (selection.length === 0) {
       return [this.createList(depth, items, '', otherSelected.map(s => s[0]))];
     }
+
     const { getSubItemById, hierarchy } = this.props;
 
     const selected = hierarchyNodeToTreeNode(hierarchy, getSubItemById(selection[0]));

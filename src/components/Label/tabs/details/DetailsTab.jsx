@@ -5,7 +5,7 @@ import ReadonlyProperties from '../../../shared/Properties';
 import LabelInfoForm from './LabelInfoForm';
 import I18nForm from './I18nForm';
 
-const DetailsTab = (props) => {
+const DetailsTab = props => {
   const { label = null } = props;
   if (!label) {
     return null;

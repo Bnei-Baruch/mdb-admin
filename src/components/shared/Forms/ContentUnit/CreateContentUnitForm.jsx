@@ -36,6 +36,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
         const name = autonameI18n.find(x => x.language === k)?.name;
         nI18n[k]   = { name };
       }
+
       return { autonameLoaded: true, i18n: nI18n };
     }
 
@@ -69,11 +70,12 @@ class CreateContentUnitForm extends BaseContentUnitForm {
     this.setState({ type_id });
   };
 
-  handleI18nChange = (dataI18n) => {
+  handleI18nChange = dataI18n => {
     const { errors, i18n } = this.state;
     if (!MAJOR_LANGUAGES.every(x => dataI18n[x] && dataI18n[x].name.trim() === '')) {
       delete errors.i18n;
     }
+
     const nI18n = {};
     for (const k of Object.keys(i18n)) {
       //dont take from i18n on delete letters
@@ -82,6 +84,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
       else if (i18n[k].name?.length > 1) nI18n[k] = i18n[k];
       else nI18n[k] = { name: '' };
     }
+
     this.setState({ errors, i18n: nI18n });
   };
 
@@ -91,6 +94,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
       if (i18n[val].name.trim() !== '') {
         acc[val] = { ...i18n[val], language: val };
       }
+
       return acc;
     }, {});
   }
@@ -191,7 +195,7 @@ class CreateContentUnitForm extends BaseContentUnitForm {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const cols      = selectors.getCollections(state.search);
   const denormIDs = collections.denormIDs(state.collections);
   return {

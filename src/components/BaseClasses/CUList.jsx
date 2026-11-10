@@ -18,10 +18,10 @@ class CUList extends ListBase {
     withCollections: PropTypes.bool,
   };
 
-  renderItem = (item) => {
+  renderItem = item => {
     const {
-            selectedIds, currentLanguage, associatedIds, withCheckBox, ownerId, withCollections
-          } = this.props;
+      selectedIds, currentLanguage, associatedIds, withCheckBox, ownerId, withCollections
+    } = this.props;
 
     const properties  = extractI18n(item.i18n, ['name'], currentLanguage)[0];
     const collections = item.collections?.map(c => extractI18n(c.i18n, ['name'], currentLanguage)?.[0]).filter(c => !!c) || [];

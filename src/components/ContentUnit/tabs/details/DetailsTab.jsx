@@ -16,7 +16,7 @@ import {
 
 const editableProperties = ['film_date', 'original_language'];
 
-const DetailsTab = (props) => {
+const DetailsTab = props => {
   const { unit = null } = props;
   if (!unit) {
     return null;

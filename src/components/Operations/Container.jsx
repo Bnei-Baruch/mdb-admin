@@ -9,7 +9,7 @@ import * as shapes from '../shapes';
 import MainPage from './MainPage';
 
 class OperationsContainer extends Component {
-  getPageNo = (search) => {
+  getPageNo = search => {
     let page = 0;
     if (search) {
       const match = search.match(/page=(\d+)/);
@@ -26,7 +26,7 @@ class OperationsContainer extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_OPERATIONS) || EMPTY_OBJECT;
   const denormIDs = operations.denormIDs(state.operations);
   return {

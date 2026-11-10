@@ -29,14 +29,14 @@ class Sources extends Component {
     status: EMPTY_OBJECT,
   };
 
-  addSource = (source) => {
+  addSource = source => {
     const { unit, sources, addSource } = this.props;
     if (sources.findIndex(x => x.id === source.id) === -1) {
       addSource(unit.id, source.id);
     }
   };
 
-  removeSource = (source) => {
+  removeSource = source => {
     const { unit, removeSource } = this.props;
     removeSource(unit.id, source.id);
   };

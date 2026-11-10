@@ -7,7 +7,7 @@ import Details from './Details';
 import Player from './Player';
 import Storages from './Storages';
 
-const DetailsTab = (props) => {
+const DetailsTab = props => {
   const { file = null } = props;
   if (!file) {
     return null;

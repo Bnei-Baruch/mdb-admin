@@ -39,6 +39,7 @@ class AddNewFiles extends ListWithCheckboxBase {
     if (selectedIds.length === 0) {
       return;
     }
+
     addFiles(unit.id, selectedIds);
   };
 
@@ -94,7 +95,7 @@ class AddNewFiles extends ListWithCheckboxBase {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_UNIT_FILE_UNITS) || EMPTY_OBJECT;
   const denormIDs = filesSelectors.denormIDs(state.files);
   return {

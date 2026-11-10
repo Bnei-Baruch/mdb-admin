@@ -47,12 +47,12 @@ class Collections extends Component {
     this.setState({ isShowAssociateModal: !this.state.isShowAssociateModal });
   };
 
-  handleUnAssociate = (collection) => {
+  handleUnAssociate = collection => {
     const { deleteItemUnit, unit } = this.props;
     deleteItemUnit(collection.id, unit.id);
   };
 
-  getProperties = (item) => {
+  getProperties = item => {
     const { getTagByUID, currentLanguage } = this.props;
 
     let properties = extractI18n(item.i18n, ['name'], currentLanguage)[0];
@@ -66,24 +66,29 @@ class Collections extends Component {
           if (number) {
             properties += `, number ${number}`;
           }
+
           break;
         }
+
         case CT_HOLIDAY: {
           const tag  = getTagByUID(item.properties.holiday_tag);
           properties = tag ? extractI18n(tag.i18n, ['label'], currentLanguage)[0] : tag;
           if (item.properties.start_date) {
             properties += `  ${item.properties.start_date.substring(0, 4)}`;
           }
+
           break;
         }
+
         default:
           properties = item.properties ? item.properties.film_date : '';
       }
     }
+
     return properties;
   };
 
-  renderRow = (item) => {
+  renderRow = item => {
     const { id, uid, type_id, created_at } = item;
 
     const type = CONTENT_TYPE_BY_ID[type_id];

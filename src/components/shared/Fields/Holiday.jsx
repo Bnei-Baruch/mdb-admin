@@ -47,7 +47,7 @@ class HolidayField extends PureComponent {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const holidaysRoot    = selectors.getTagByUID(state.tags)('1nyptSIo') || {};
   const hierarchy       = selectors.getHierarchy(state.tags);
   const childs          = hierarchy.childMap.get(holidaysRoot.id) || EMPTY_ARRAY;

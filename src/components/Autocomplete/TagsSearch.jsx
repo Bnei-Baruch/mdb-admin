@@ -53,6 +53,7 @@ class TagsSearch extends Component {
             break;
           }
         }
+
         if (title) {
           results.push({ id: nodeID, title, key: nodeID });
         }
@@ -81,7 +82,7 @@ class TagsSearch extends Component {
     this.doFilter();
   };
 
-  renderResult = (result) => {
+  renderResult = result => {
     const { query }     = this.state;
     const { id, title } = result;
 

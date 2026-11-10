@@ -8,7 +8,7 @@ import { selectors as authors } from '../../redux/modules/authors';
 
 import DeepListFilter from './DeepListFilter';
 
-const Sources = (props) => {
+const Sources = props => {
   const { onFilterCancel, onFilterApplication } = props;
   return (
     <DeepListFilter
@@ -28,7 +28,7 @@ Sources.propTypes = {
 const insertAuthorsToHierarchy = (hierarchy, items) => {
   const { childMap } = hierarchy;
   const roots        = [];
-  items.forEach((a) => {
+  items.forEach(a => {
     childMap.set(a.code, a.sources);
     roots.push(a.code);
   });
@@ -37,7 +37,7 @@ const insertAuthorsToHierarchy = (hierarchy, items) => {
 
 const modifyAuthorData = author => ({ ...author, id: author.code });
 
-const mapState = (state) => {
+const mapState = state => {
   const getSources = selectors.getSourceById(state.sources);
   const getAuthors = authors.getAuthorByCode(state.authors);
 

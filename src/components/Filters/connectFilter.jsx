@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { selectors as filterSelectors, actions as filterActions } from '../../redux/modules/filters';
 import { selectors as system } from '../../redux/modules/system';
 
-const connectFilter = (options = {}) => (WrappedComponent) => {
+const connectFilter = (options = {}) => WrappedComponent => {
   const { isMultiple } = options;
 
   class ConnectFilterHOC extends Component {

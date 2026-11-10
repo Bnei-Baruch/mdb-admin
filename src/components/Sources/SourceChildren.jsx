@@ -31,6 +31,7 @@ class SourceChildren extends Component {
     if (wip && !nWip && !nErr) {
       return { modalOpen: false, wip: false };
     }
+
     return null;
   }
 

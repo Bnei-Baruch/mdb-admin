@@ -66,7 +66,7 @@ class NewTagForm extends Component {
     this.setState({ errors, labels: { ...this.state.labels, [language]: value } });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
 
     if (!this.validate()) {
@@ -80,7 +80,7 @@ class NewTagForm extends Component {
     Object.keys(labels)
       .map(x => ({ language: x, label: labels[x].trim() }))
       .filter(x => x.label !== '')
-      .forEach((x) => {
+      .forEach(x => {
         i18n[x.language] = x;
       });
 
@@ -112,8 +112,8 @@ class NewTagForm extends Component {
     const err                  = getError('create');
 
     const {
-            description, pattern, labels, submitted, errors
-          } = this.state;
+      description, pattern, labels, submitted, errors
+    } = this.state;
 
     return (
       <Segment.Group>

@@ -27,7 +27,7 @@ class FilterTags extends Component {
 
   static contextType = ReactReduxContext;
 
-  renderTag = (tag) => {
+  renderTag = tag => {
     const { namespace } = this.props;
     const {
       name, value, index, isActive

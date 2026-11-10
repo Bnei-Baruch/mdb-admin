@@ -9,7 +9,7 @@ import { EMPTY_ARRAY } from '../../../../helpers/consts';
 import { selectors as storagesSelectors } from '../../../../redux/modules/storages';
 import * as shapes from '../../../shapes';
 
-const Storages = (props) => {
+const Storages = props => {
   const { items = EMPTY_ARRAY } = props;
 
   items.sort((a, b) => {
@@ -20,18 +20,23 @@ const Storages = (props) => {
             if (a.name === b.name) {
               return 0;
             }
+
             return (a.name < b.name) ? -1 : 1;
           }
+
           return (a.access < b.access) ? -1 : 1;
         }
+
         return (a.status < b.status) ? -1 : 1;
       }
+
       return (a.location < b.location) ? -1 : 1;
     }
+
     return (a.country < b.country) ? -1 : 1;
   });
 
-  const rows = items.map((x) => {
+  const rows = items.map(x => {
     const {
       country, location, access, status, name, id
     } = x;
@@ -80,7 +85,7 @@ const Storages = (props) => {
 };
 
 Storages.propTypes = {
-  file: shapes.File,  // eslint-disable-line react/no-unused-prop-types
+  file: shapes.File,
   items: PropTypes.arrayOf(shapes.Storage),
 };
 

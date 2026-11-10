@@ -4,7 +4,7 @@ import { Dropdown } from '../ui';
 
 import { ALL_LANGUAGES, LANG_MULTI, LANG_UNKNOWN, LANGUAGE_OPTIONS } from '../../helpers/consts';
 
-const LanguageSelector = (props) => {
+const LanguageSelector = props => {
   const { include = ALL_LANGUAGES, exclude = [LANG_MULTI, LANG_UNKNOWN], ...rest } = props;
 
   const options = LANGUAGE_OPTIONS

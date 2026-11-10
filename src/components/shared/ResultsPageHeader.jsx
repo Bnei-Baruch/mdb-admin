@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { PAGE_SIZE } from '../../helpers/consts';
 
-const ResultsPageHeader = (props) => {
+const ResultsPageHeader = props => {
   const { pageNo = 1, pageSize = PAGE_SIZE, total = 0 } = props;
   let content                       = '';
   if (total === 0) {
@@ -18,6 +18,7 @@ const ResultsPageHeader = (props) => {
       </span>
     );
   }
+
   return <span style={{ padding: '0 10px' }}>{content}</span>;
 };
 

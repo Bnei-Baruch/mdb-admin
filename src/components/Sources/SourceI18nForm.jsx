@@ -26,6 +26,7 @@ class SourceI18nForm extends Component {
     if (type_id && type_id !== state.type_id) {
       return { i18n: cloneDeep(i18n), type_id, submitted: false };
     }
+
     return null;
   }
 
@@ -48,7 +49,7 @@ class SourceI18nForm extends Component {
     this.setState({ i18n });
   };
 
-  removeLanguage = (language) => {
+  removeLanguage = language => {
     const { i18n } = this.state;
     delete i18n[language];
     this.setState({ i18n });

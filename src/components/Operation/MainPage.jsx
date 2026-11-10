@@ -10,7 +10,7 @@ import Properties from '../shared/Properties';
 import Details from './Details';
 import Files from './Files';
 
-const MainPage = (props) => {
+const MainPage = props => {
   const { operation = null, wip = false, err = null } = props;
 
   if (err) {

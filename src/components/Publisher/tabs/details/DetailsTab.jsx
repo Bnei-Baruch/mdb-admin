@@ -6,7 +6,7 @@ import ReadonlyProperties from '../../../shared/Properties';
 import PublisherInfoForm from './PublisherInfoForm';
 import I18nForm from './I18nForm';
 
-const DetailsTab = (props) => {
+const DetailsTab = props => {
   const { publisher = null } = props;
   if (!publisher) {
     return null;

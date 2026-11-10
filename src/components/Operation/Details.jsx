@@ -7,7 +7,7 @@ import { OPERATION_TYPE_BY_ID } from '../../helpers/consts';
 import * as shapes from '../shapes';
 import { formatUTC } from '../../helpers/date';
 
-const Details = (props) => {
+const Details = props => {
   const { operation = null } = props;
   if (!operation) {
     return null;

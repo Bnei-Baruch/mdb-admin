@@ -29,7 +29,7 @@ class CollectionsContainer extends Component {
 
   askForData = pageNo => this.props.fetchList(NS_COLLECTIONS, pageNo);
 
-  getPageNo = (notUseLocation) => {
+  getPageNo = notUseLocation => {
     let page = 0;
     if (!notUseLocation) {
       const match = window.location.search.match(/page=(\d+)/);
@@ -51,7 +51,7 @@ class CollectionsContainer extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   const status    = selectors.getNamespaceState(state.lists, NS_COLLECTIONS) || EMPTY_OBJECT;
   const denormIDs = collections.denormIDs(state.collections);
   return {

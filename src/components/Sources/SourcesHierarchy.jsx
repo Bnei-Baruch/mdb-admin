@@ -86,7 +86,7 @@ class SourcesHierarchy extends Component {
 
     return (
       <List relaxed divided className="rtl-dir">
-        {sources.map((x) => {
+        {sources.map(x => {
           const source = getSourceById(x);
           const i18n   = extractI18n(source.i18n, ['name', 'description'], currentLanguage);
 
@@ -110,8 +110,8 @@ class SourcesHierarchy extends Component {
 
   renderHierarchy() {
     const {
-            authors, hierarchy, getWIP, currentLanguage
-          } = this.props;
+      authors, hierarchy, getWIP, currentLanguage
+    } = this.props;
 
     const wip     = getWIP('fetchAll');
     const isEmpty = hierarchy.roots.length === 0 && hierarchy.childMap.size === 0;
@@ -136,7 +136,7 @@ class SourcesHierarchy extends Component {
           <Grid.Column width={4}>
             <Menu fluid vertical tabular="right">
               {
-                authors.map((x) => {
+                authors.map(x => {
                   const name = extractI18n(x.i18n, ['name'], currentLanguage)[0];
 
                   return (

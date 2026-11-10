@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 import { Form } from '../../ui';
 
-const LessonNumber = (props) => {
+const LessonNumber = props => {
   const { value, err = false, onChange = noop, ...rest } = props;
 
   return (

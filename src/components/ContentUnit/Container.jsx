@@ -53,6 +53,7 @@ const mapState = (state, props) => {
       unit           = { ...unit, i18n };
     }
   }
+
   return {
     unit,
     wip: selectors.getWIP(state.content_units, 'fetchItem'),

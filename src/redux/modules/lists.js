@@ -98,6 +98,7 @@ const onRemoveItem  = (state, action) => {
       })),
   };
 };
+
 const onRemoveItems = (state, action) => {
   const { namespace, ids } = action.payload;
 
