@@ -61,9 +61,9 @@ class MergeContentUnitTab extends ListWithCheckboxBase {
           Select content units for merge with current
         </Segment>
 
-        <Segment clearing vertical>
+        <Segment vertical className="flex flex-wrap items-center gap-2">
           <Button
-            inverted
+            basic
             color="blue"
             onClick={this.toggleFilters}
           >

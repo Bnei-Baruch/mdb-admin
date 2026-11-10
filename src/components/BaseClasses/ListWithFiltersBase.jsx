@@ -172,21 +172,18 @@ class ListWithFiltersBase extends PureComponent {
               <FilterTags namespace={this.getNamespace()} changeFilterFromTag={this.handleChangeFilterFromTag} />
             </Grid.Column>
           </Grid.Row>
-          {
-            usePagination
-              ? (
-                <Grid.Row>
-                  <Grid.Column>
-                    <Sticky className="stickyMenu" context={paginationContextRef}>
-                      {this.renderPagination()}
-                    </Sticky>
-                  </Grid.Column>
-                </Grid.Row>
-              )
-              : null
-          }
           <Grid.Row>
             <Grid.Column>
+              {/* Sticky must share a parent with the list: CSS sticky only moves within its parent. */}
+              {
+                usePagination
+                  ? (
+                    <Sticky className="stickyMenu py-2" context={paginationContextRef}>
+                      {this.renderPagination()}
+                    </Sticky>
+                  )
+                  : null
+              }
               {this.renderList()}
             </Grid.Column>
           </Grid.Row>

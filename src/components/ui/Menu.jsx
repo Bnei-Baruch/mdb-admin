@@ -31,16 +31,23 @@ const MENU_CLASSES = {
 const ITEM_CLASSES = {
   'bar'          : 'px-4 py-2',
   'nav'          : 'px-4 py-3 border-b-2 border-transparent [&.active]:border-blue-600 [&.active]:text-blue-700 [&.active]:font-semibold',
-  'tabs'         : '-mb-px px-4 py-2 border-b-2 border-transparent',
+  'tabs'         : '-mb-px px-4 py-2 border-b-2',
   'vertical'     : 'px-4 py-2.5',
-  'vertical-tabs': '-mr-px px-4 py-2.5 border-r-2 border-transparent',
+  'vertical-tabs': '-mr-px px-4 py-2.5 border-r-2',
   'pagination'   : 'px-3 py-1.5 justify-center min-w-9',
+};
+
+// Applied only when the item is NOT active, so they never compete with ITEM_ACTIVE
+// (with conflicting utilities Tailwind's stylesheet order wins, not the order in cx()).
+const ITEM_INACTIVE = {
+  'tabs'         : 'border-transparent',
+  'vertical-tabs': 'border-transparent',
 };
 
 const ITEM_ACTIVE = {
   'bar'          : 'bg-gray-100 font-semibold',
   'nav'          : 'border-blue-600 text-blue-700 font-semibold',
-  'tabs'         : 'border-blue-600 text-blue-700 font-semibold',
+  'tabs'         : 'border-blue-600 text-blue-700 font-semibold hover:text-blue-700',
   'vertical'     : 'bg-blue-50 text-blue-700 font-semibold',
   'vertical-tabs': 'border-blue-600 bg-blue-50 text-blue-700 font-semibold',
   'pagination'   : 'bg-blue-50 text-blue-700 font-semibold',
@@ -120,11 +127,12 @@ const MenuItem = ({
         ITEM_CLASSES[variant],
         {
           'font-bold text-gray-900': header,
-          'cursor-pointer text-gray-700 hover:bg-gray-50 hover:text-gray-900': clickable && !disabled,
+          'cursor-pointer hover:bg-gray-50': clickable && !disabled,
+          'text-gray-700 hover:text-gray-900': clickable && !disabled && !active,
           'pointer-events-none opacity-40': disabled,
           'ml-auto': position === 'right',
         },
-        active && ITEM_ACTIVE[variant],
+        active ? ITEM_ACTIVE[variant] : ITEM_INACTIVE[variant],
         className
       )}
       {...rest}

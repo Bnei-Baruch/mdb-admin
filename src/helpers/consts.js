@@ -270,9 +270,9 @@ export const SEC_SENSITIVE = 1;
 export const SEC_PRIVATE   = 2;
 
 export const SECURITY_LEVELS = {
-  [SEC_PUBLIC]   : { text: 'Public', value: SEC_PUBLIC, color: 'green' },
-  [SEC_SENSITIVE]: { text: 'Sensitive', value: SEC_SENSITIVE, color: 'yellow' },
-  [SEC_PRIVATE]  : { text: 'Private', value: SEC_PRIVATE, color: 'red' },
+  [SEC_PUBLIC]   : { text: 'Public', value: SEC_PUBLIC, color: 'green', icon: 'world' },
+  [SEC_SENSITIVE]: { text: 'Sensitive', value: SEC_SENSITIVE, color: 'yellow', icon: 'shield exclamation' },
+  [SEC_PRIVATE]  : { text: 'Private', value: SEC_PRIVATE, color: 'red', icon: 'privacy' },
 };
 
 // Languages

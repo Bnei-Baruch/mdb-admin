@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from '../ui';
+import { Grid, Sticky } from '../ui';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
 import * as shapes from '../shapes';
@@ -43,18 +43,20 @@ class LabelsMainPage extends Component {
 
     return (
       <div>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
-                <ErrWip err={err} wip={wip} />
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
-              </div>
-              <LabelList items={items} currentLanguage={currentLanguage} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        <div style={{ clear: 'both', marginTop: '5px' }}>
+          <Grid>
+            <Grid.Row className="pt-4">
+              <Grid.Column>
+                <Sticky className="py-2 text-right">
+                  <ErrWip err={err} wip={wip} />
+                  <ResultsPageHeader pageNo={pageNo} total={total} />
+                  <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
+                </Sticky>
+                <LabelList items={items} currentLanguage={currentLanguage} />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </div>
       </div>
     );
   }

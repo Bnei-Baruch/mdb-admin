@@ -83,9 +83,9 @@ class NewAssociations extends ListWithCheckboxBase {
           Associate content units to this collection
         </Segment>
 
-        <Segment clearing vertical>
+        <Segment vertical className="flex flex-wrap items-center gap-2">
           <Button
-            inverted
+            basic
             color="blue"
             onClick={this.toggleFilters}
           >

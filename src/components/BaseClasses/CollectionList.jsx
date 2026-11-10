@@ -85,7 +85,7 @@ class CollectionList extends ListBase {
           {formatUTC(item.created_at)}
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
-          <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />
+          <Icon name={SECURITY_LEVELS[item.secure].icon} color={SECURITY_LEVELS[item.secure].color} title={SECURITY_LEVELS[item.secure].text} />
         </Table.Cell>
         <Table.Cell collapsing textAlign="center">
           {

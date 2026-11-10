@@ -72,7 +72,7 @@ class CUList extends ListBase {
           }
         </Table.Cell>
         <Table.Cell textAlign="center">
-          <Icon name="privacy" color={SECURITY_LEVELS[item.secure].color} />
+          <Icon name={SECURITY_LEVELS[item.secure].icon} color={SECURITY_LEVELS[item.secure].color} title={SECURITY_LEVELS[item.secure].text} />
         </Table.Cell>
         <Table.Cell textAlign="center">
           {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Grid, Header, Icon, Menu, Modal
+  Grid, Header, Icon, Menu, Modal, Sticky
 } from '../ui';
 
 import { EMPTY_ARRAY } from '../../helpers/consts';
@@ -88,19 +88,20 @@ class PersonsMainPage extends Component {
           </Menu.Menu>
         </Menu>
 
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              <div style={{ textAlign: 'right' }}>
-
-                <ErrWip err={err} wip={wip} />
-                <ResultsPageHeader pageNo={pageNo} total={total} />
-                <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
-              </div>
-              <PersonsList items={items} currentLanguage={currentLanguage} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        <div style={{ clear: 'both', marginTop: '5px' }}>
+          <Grid>
+            <Grid.Row className="pt-4">
+              <Grid.Column>
+                <Sticky className="py-2 text-right">
+                  <ErrWip err={err} wip={wip} />
+                  <ResultsPageHeader pageNo={pageNo} total={total} />
+                  <Pagination pageNo={pageNo} total={total} onChange={onPageChange} />
+                </Sticky>
+                <PersonsList items={items} currentLanguage={currentLanguage} />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </div>
         <Modal
           closeIcon
           centered={false}

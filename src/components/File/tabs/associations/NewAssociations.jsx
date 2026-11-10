@@ -59,21 +59,21 @@ class FileContentUnit extends ListWithCheckboxBase {
           </div>
         </Segment>
 
-        <Segment clearing vertical>
+        <Segment vertical className="flex flex-wrap items-center gap-2">
           <Button
-            content="Associate content unit to this file"
-            color="blue"
-            disabled={selectedIds.length === 0}
-            onClick={this.associate}
-          />
-          <Button
-            inverted
+            basic
             color="blue"
             onClick={this.toggleFilters}
           >
             <Icon name="filter" />
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
+          <Button
+            content="Associate content unit to this file"
+            color="blue"
+            disabled={selectedIds.length === 0}
+            onClick={this.associate}
+          />
         </Segment>
 
         {this.renderFiltersHydrator()}

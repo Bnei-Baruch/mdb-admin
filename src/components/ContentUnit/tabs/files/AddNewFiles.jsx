@@ -64,9 +64,9 @@ class AddNewFiles extends ListWithCheckboxBase {
         <Segment clearing secondary size="large">
           Add Files To Content Unit
         </Segment>
-        <Segment clearing vertical>
+        <Segment vertical className="flex flex-wrap items-center gap-2">
           <Button
-            inverted
+            basic
             color="blue"
             onClick={this.toggleFilters}
           >

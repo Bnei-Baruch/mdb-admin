@@ -124,7 +124,7 @@ class Units extends PureComponent {
           }
         </Cell>
         <Cell textAlign="center" collapsing>
-          <Icon name="privacy" color={SECURITY_LEVELS[unit.secure].color} />
+          <Icon name={SECURITY_LEVELS[unit.secure].icon} color={SECURITY_LEVELS[unit.secure].color} title={SECURITY_LEVELS[unit.secure].text} />
         </Cell>
         <Cell textAlign="center" collapsing>
           {
