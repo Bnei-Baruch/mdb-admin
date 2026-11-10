@@ -104,7 +104,16 @@ moment ──► date-fns ──► react-day-picker v9+
    - ⚠️ `eslint-plugin-react` 7.37.5 (последняя) официально поддерживает ESLint до `^9.7`: yarn предупреждает о peer, но на ESLint 10 плагин работает. Если сломается — замена на `@eslint-react/eslint-plugin` (`@eslint-react/jsx-uses-vars`).
    - ⚠️ `yarn audit`: 2 moderate в `minimatch` (через `eslint`). Исправлено только в `minimatch` 11, а ESLint 10 требует `^10`. Это dev-зависимость, паттерны задаём мы сами — риск минимальный. Ждём обновления ESLint.
    - `axios` 1.21.0 → 1.21.1.
+   - 2026-11-10: `eslint --fix` по всему `src` (коммит `5ea578a`, только форматирование). Предупреждений ~620 → **38**: `no-unused-vars` (26), `prefer-destructuring` (11), `react-hooks/exhaustive-deps` (1) — их нужно разбирать вручную.
 7. *(Опционально)* Redux Toolkit вместо `redux-actions` + `createStore`.
+   - Оценка (2026-11-10): 16 модулей, ~3400 строк, ~275 `createAction`/`handleActions`. Главный риск: state хранит замороженные `Map` (`freezeMap`), поэтому в `configureStore` надо отключить `serializableCheck`/`immutableCheck` либо переходить на объекты/`createEntityAdapter` (дорого). Саги подписаны на строки типов (`'Tags/FETCH_ITEM'`) — при переходе на `createSlice` их нужно сохранить. Минимальный безопасный шаг: только `createStore` → `configureStore`.
+
+## Найдено при ручной проверке (2026-11-10)
+
+- **«Server Error» в блоках до загрузки** (Collections, Sources, Tags на странице Content Unit). Две причины:
+  - Редьюсеры в `onRequest` не сбрасывали ошибку прошлого запроса, а компоненты проверяют `err` раньше `wip`. Исправлено во всех модулях (`894e4f9`).
+  - Локально приложение и API на разных origin, поэтому перед каждым запросом с `Authorization` идёт CORS preflight. nginx у `kabbalahmedia.info/mdb-api` режет всплески `OPTIONS` с **503** (rate limit). На проде админка на том же домене, preflight нет. Исправлено dev-прокси в Vite: в dev `API_BACKEND = '/mdb-api-proxy'` → `REACT_APP_MDB_URL` (`6576cf3`). Production-сборка не затронута.
+  - ⚠️ На сервере стоит не применять `limit_req` к `OPTIONS` или увеличить `burst`: любой клиент с другого origin упрётся в тот же лимит.
 
 ## Критерии готовности
 
