@@ -119,10 +119,15 @@ const initialState = {
   errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
-const onRequest = (state, action) => ({
-  ...state,
-  wip: setMap(state.wip, keys.get(action.type), true)
-});
+// A new request clears the previous error, otherwise a stale error is shown while it loads.
+const onRequest = (state, action) => {
+  const key = keys.get(action.type);
+  return {
+    ...state,
+    wip   : setMap(state.wip, key, true),
+    errors: setMap(state.errors, key, null),
+  };
+};
 
 const onFailure = (state, action) => {
   const key = keys.get(action.type);

@@ -55,7 +55,7 @@ const onSetPage = (state, action) => ({
 
 const onRequest = (state, action) => ({
   ...state,
-  byNS: update(state.byNS, action.payload.namespace, x => ({ ...x, wip: true })),
+  byNS: update(state.byNS, action.payload.namespace, x => ({ ...x, wip: true, err: null })),
 });
 
 const onFailure = (state, action) => ({
