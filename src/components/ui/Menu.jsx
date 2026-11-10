@@ -47,7 +47,7 @@ const ITEM_ACTIVE = {
 };
 
 const Menu = ({
-  attached, borderless, size, fluid, vertical, pointing, secondary, tabular, pagination, compact, color, // eslint-disable-line no-unused-vars
+  attached, borderless, size, fluid, vertical, pointing, secondary, tabular, pagination, compact, color,
   className, children, ...rest
 }) => {
   const variant = variantOf({ vertical, pagination, secondary, pointing, tabular });

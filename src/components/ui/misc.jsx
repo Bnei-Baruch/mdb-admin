@@ -60,7 +60,7 @@ const MESSAGE_VARIANTS = {
 
 export const Message = ({
   negative, error, warning, positive, success, info,
-  header, content, list, children, size, icon, onDismiss, compact, hidden, visible, attached, className, ...rest // eslint-disable-line no-unused-vars
+  header, content, list, children, size, icon, onDismiss, compact, hidden, visible, attached, className, ...rest
 }) => {
   if (hidden || visible === false) {
     return null;
@@ -207,7 +207,7 @@ Loader.propTypes = {
 
 /* ---------------------------------- Image ----------------------------------- */
 
-export const Image = ({ centered, spaced, inline, size, className, alt = '', ...rest }) => ( // eslint-disable-line no-unused-vars
+export const Image = ({ centered, spaced, inline, size, className, alt = '', ...rest }) => (
   <img
     alt={alt}
     className={cx(
@@ -240,7 +240,7 @@ Container.propTypes = { fluid: PropTypes.bool, className: PropTypes.string, chil
 /* --------------------------------- Sticky ----------------------------------- */
 
 // Semantic's Sticky needed a `context` ref; CSS sticky positioning does the same job.
-export const Sticky = ({ context, offset = 0, className, children, ...rest }) => ( // eslint-disable-line no-unused-vars
+export const Sticky = ({ context, offset = 0, className, children, ...rest }) => (
   <div className={cx('sticky z-10 bg-white', className)} style={{ top: offset }} {...rest}>{children}</div>
 );
 
@@ -253,7 +253,7 @@ Sticky.propTypes = {
 
 /* -------------------------------- Statistic --------------------------------- */
 
-export const Statistic = ({ label, value, horizontal, size, className }) => ( // eslint-disable-line no-unused-vars
+export const Statistic = ({ label, value, horizontal, size, className }) => (
   <div className={cx('inline-flex', horizontal ? 'items-baseline gap-2' : 'flex-col items-center', className)}>
     <span className="text-2xl font-semibold text-gray-900">{value}</span>
     <span className="text-sm font-medium uppercase text-gray-500">{label}</span>

@@ -74,7 +74,7 @@ ListItem.propTypes = {
   active   : PropTypes.bool,
 };
 
-const ListContent = ({ floated, verticalAlign, className, children, content, ...rest }) => ( // eslint-disable-line no-unused-vars
+const ListContent = ({ floated, verticalAlign, className, children, content, ...rest }) => (
   <div
     className={cx(
       { 'float-right ml-4': floated === 'right', 'float-left mr-4': floated === 'left' },

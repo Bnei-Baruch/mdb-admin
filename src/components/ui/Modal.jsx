@@ -21,7 +21,7 @@ const Modal = ({
   closeIcon,
   closeOnDimmerClick = true,
   closeOnEscape = true,
-  centered, basic, dimmer, // eslint-disable-line no-unused-vars
+  centered, basic, dimmer,
   className,
   children,
 }) => {

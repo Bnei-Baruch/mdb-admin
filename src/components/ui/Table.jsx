@@ -27,7 +27,7 @@ const WIDTH = {
 };
 
 const Table = ({
-  compact, basic, celled, selectable, striped, sortable, fixed, size, unstackable, collapsing, className, children, ...rest // eslint-disable-line no-unused-vars
+  compact, basic, celled, selectable, striped, sortable, fixed, size, unstackable, collapsing, className, children, ...rest
 }) => (
   <TableContext.Provider value={{ compact, celled, selectable, striped, sortable }}>
     <div className={cx('overflow-x-auto', !basic && 'rounded-md border border-gray-200 bg-white')}>
@@ -167,7 +167,7 @@ TableHeaderCell.propTypes = {
 };
 
 const TableCell = ({
-  collapsing, textAlign, width, singleLine, verticalAlign, error, negative, positive, warning, disabled, selectable, // eslint-disable-line no-unused-vars
+  collapsing, textAlign, width, singleLine, verticalAlign, error, negative, positive, warning, disabled, selectable,
   className, children, content, ...rest
 }) => {
   const ctx = React.useContext(TableContext);

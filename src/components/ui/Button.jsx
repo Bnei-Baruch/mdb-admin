@@ -70,7 +70,7 @@ const Button = React.forwardRef(({
   floated,
   active,
   className,
-  labelPosition, // eslint-disable-line no-unused-vars
+  labelPosition,
   ...rest
 }, ref) => {
   const group = React.useContext(ButtonGroupContext) || {};
@@ -140,7 +140,7 @@ Button.propTypes = {
   className: PropTypes.string,
 };
 
-const ButtonGroup = ({ color, basic, size, className, children, labeled, ...rest }) => ( // eslint-disable-line no-unused-vars
+const ButtonGroup = ({ color, basic, size, className, children, labeled, ...rest }) => (
   <ButtonGroupContext.Provider value={{ color, basic, size, inGroup: true }}>
     <span className={cx('isolate inline-flex rounded-md shadow-xs [&>*:not(:first-child)]:-ml-px', className)} {...rest}>
       {children}

@@ -41,7 +41,7 @@ export const inputClasses = (error = false) => cx(CONTROL, controlRing(error));
 /* ---------------------------------- Input ----------------------------------- */
 
 export const Input = React.forwardRef(({
-  value, defaultValue, onChange, icon, loading, fluid, transparent, error, size, label, action, // eslint-disable-line no-unused-vars
+  value, defaultValue, onChange, icon, loading, fluid, transparent, error, size, label, action,
   className, style, type = 'text', children, ...rest
 }, ref) => {
   const field    = React.useContext(FieldContext);
@@ -119,7 +119,7 @@ TextArea.propTypes = {
 /* --------------------------------- Checkbox --------------------------------- */
 
 export const Checkbox = ({
-  checked, defaultChecked, onChange, label, toggle, slider, disabled, indeterminate, id, name, value, className, type, // eslint-disable-line no-unused-vars
+  checked, defaultChecked, onChange, label, toggle, slider, disabled, indeterminate, id, name, value, className, type,
   readOnly,
 }) => {
   const isControlled      = checked !== undefined;
@@ -198,7 +198,7 @@ Checkbox.propTypes = {
 
 /* ----------------------------------- Form ----------------------------------- */
 
-const Form = ({ onSubmit, action, loading, error, success, warning, size, className, children, ...rest }) => ( // eslint-disable-line no-unused-vars
+const Form = ({ onSubmit, action, loading, error, success, warning, size, className, children, ...rest }) => (
   <form
     noValidate
     action={action}
@@ -271,7 +271,7 @@ FormField.propTypes = {
   id       : PropTypes.string,
 };
 
-const FormGroup = ({ widths, inline, grouped, unstackable, className, children }) => ( // eslint-disable-line no-unused-vars
+const FormGroup = ({ widths, inline, grouped, unstackable, className, children }) => (
   <div
     className={cx(
       'flex flex-col gap-4 md:flex-row',
@@ -318,7 +318,7 @@ Form.Input    = withField(Input, { fluid: true });
 Form.TextArea = withField(TextArea);
 Form.Dropdown = withField(Dropdown, { fluid: true });
 Form.Select   = withField(Dropdown, { selection: true, fluid: true });
-Form.Checkbox = ({ label, ...rest }) => <FormField><Checkbox label={label} {...rest} /></FormField>; // eslint-disable-line react/prop-types
+Form.Checkbox = ({ label, ...rest }) => <FormField><Checkbox label={label} {...rest} /></FormField>;
 
 export { FieldContext };
 export default Form;

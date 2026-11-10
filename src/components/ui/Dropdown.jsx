@@ -52,7 +52,7 @@ const Dropdown = props => {
   const {
     options, value, defaultValue, onChange, multiple, search, selection, button, item, fluid, upward, compact,
     text, placeholder, icon, disabled, loading, error, name, id, className, children, noResultsMessage = 'No results found.',
-    selectOnBlur, scrolling, floating, labeled, inline, basic, clearable, // eslint-disable-line no-unused-vars
+    selectOnBlur, scrolling, floating, labeled, inline, basic, clearable,
     ...rest
   } = props;
 

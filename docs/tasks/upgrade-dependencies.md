@@ -56,9 +56,9 @@ moment ──► date-fns ──► react-day-picker v9+
 |---|---|---|
 | ✅ `react`, `react-dom` | 18.3.1 → 19.3 | После удаления Semantic. 100 class-компонентов, но `findDOMNode`, string refs, legacy context и `componentWill*` не найдены. Нужно проверить `defaultProps` в function-компонентах (в 19 игнорируются). `propTypes` в 19 не проверяются; пакет `prop-types` (149 файлов) можно оставить или постепенно убрать |
 | ✅ `react-router` | 7.18 → 8.5 | После React 19. Проверить совместимость `@lagunovsky/redux-react-router` (peer: `react-router ^6–8`, ок) |
-| `eslint` | 9 → 10 | Проверить плагины `react`, `import`, `react-hooks` на поддержку v10 |
-| `@babel/*` | 7 → 8 | После перехода на Vite `@babel/core`/`preset-react` нужны только для `@babel/eslint-parser`. Как вариант, перейти на стандартный парсер ESLint (JSX поддерживается через `ecmaFeatures`) и убрать Babel совсем |
-| `eslint-plugin-import`, `eslint-plugin-react-hooks` | — | Перенести из `dependencies` в `devDependencies` |
+| ✅ `eslint` | 9 → 10 | сделано (этап 6) |
+| ✅ ~~`@babel/*`~~ | удалены | ESLint работает на стандартном парсере (этап 6) |
+| ✅ `eslint-plugin-react-hooks` | — | перенесён в devDependencies (этап 1); `eslint-plugin-import` удалён (этап 6) |
 
 ### 🟢 Безопасные минорные/патч-обновления
 
@@ -97,7 +97,13 @@ moment ──► date-fns ──► react-day-picker v9+
    - Импорты `react-router-dom` → `react-router` (36 файлов), пакет `react-router-dom` удалён (в v8 его больше нет).
    - `react-router` 7.18 → 8.5. Из breaking changes v8 нас касаются только удаление `react-router-dom` и Node ≥ 22.22 (Dockerfile: `node:24`). Остальное относится к data/framework mode, которые проект не использует.
    - Проверено: сборка, lint, страница логина без ошибок в консоли. Внутренние страницы — в общей ручной проверке.
-6. **Линтинг-тулчейн**: ESLint 10, решить вопрос с Babel 8 или убрать Babel.
+6. ✅ **Линтинг-тулчейн** (сделано 2026-11-10)
+   - ESLint 9.39 → 10.14. Babel убран полностью (`@babel/core`, `@babel/eslint-parser`, `@babel/preset-react`): стандартный парсер (espree, `ecmaVersion: 'latest'`) понимает JSX и class fields.
+   - `eslint-plugin-import` удалён: ни одно его правило не было включено. `.eslintignore` перенесён в `ignores` конфига.
+   - Включены `react/jsx-uses-vars` и `react/jsx-uses-react`, а у `no-unused-vars` — `ignoreRestSiblings`. Раньше ESLint считал каждый импортированный JSX-компонент неиспользуемым. Предупреждений: 1655 → 659, ошибок 0. Оставшиеся относятся к старому коду (форматирование `indent`/`arrow-parens`/`padding-line…`, 17 устаревших `eslint-disable`).
+   - ⚠️ `eslint-plugin-react` 7.37.5 (последняя) официально поддерживает ESLint до `^9.7`: yarn предупреждает о peer, но на ESLint 10 плагин работает. Если сломается — замена на `@eslint-react/eslint-plugin` (`@eslint-react/jsx-uses-vars`).
+   - ⚠️ `yarn audit`: 2 moderate в `minimatch` (через `eslint`). Исправлено только в `minimatch` 11, а ESLint 10 требует `^10`. Это dev-зависимость, паттерны задаём мы сами — риск минимальный. Ждём обновления ESLint.
+   - `axios` 1.21.0 → 1.21.1.
 7. *(Опционально)* Redux Toolkit вместо `redux-actions` + `createStore`.
 
 ## Критерии готовности

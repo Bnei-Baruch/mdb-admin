@@ -1,24 +1,18 @@
-const babelParser = require('@babel/eslint-parser');
 const globals = require('globals');
 const reactPlugin = require('eslint-plugin-react');
-const importPlugin = require('eslint-plugin-import');
 const reactHooksPlugin = require('eslint-plugin-react-hooks');
 
 module.exports = [
   {
-    ignores: ['build/**', 'coverage/**', 'node_modules/**'],
+    ignores: ['build/**', 'coverage/**', 'node_modules/**', '**/sagaMonitor.js'],
   },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
-      parser: babelParser,
-      ecmaVersion: 2021,
+      // Default parser (espree): JSX + class fields need no Babel.
+      ecmaVersion: 'latest',
       sourceType: 'module',
       parserOptions: {
-        requireConfigFile: false,
-        babelOptions: {
-          presets: ['@babel/preset-react'],
-        },
         ecmaFeatures: {
           jsx: true,
         },
@@ -31,12 +25,10 @@ module.exports = [
     },
     plugins: {
       react: reactPlugin,
-      import: importPlugin,
       'react-hooks': reactHooksPlugin,
     },
     settings: {
-      'import/parser': '@babel/eslint-parser',
-      'import/resolve': {},
+      react: { version: 'detect' },
     },
     rules: {
       'arrow-body-style': 'warn',
@@ -64,7 +56,7 @@ module.exports = [
       'no-trailing-spaces': 'warn',
       'no-unneeded-ternary': ['warn', { defaultAssignment: false }],
       'no-unreachable': 'warn',
-      'no-unused-vars': 'warn',
+      'no-unused-vars': ['warn', { ignoreRestSiblings: true }],
       'no-useless-concat': 'warn',
       'object-shorthand': 'warn',
       'object-curly-spacing': ['warn', 'always'],
@@ -78,6 +70,9 @@ module.exports = [
       'prefer-object-spread': 'warn',
       'prefer-template': 'warn',
       quotes: ['warn', 'single', { allowTemplateLiterals: true }],
+      // Mark JSX identifiers as used (otherwise every imported component is reported by no-unused-vars).
+      'react/jsx-uses-vars': 'warn',
+      'react/jsx-uses-react': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'rest-spread-spacing': 'warn',
