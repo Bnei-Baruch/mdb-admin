@@ -14,7 +14,8 @@ export const AUTH_URL = import.meta.env.REACT_APP_AUTH_URL;
 export const KC_CLIENT = import.meta.env.REACT_APP_KC_CLIENT;
 
 // Base url of our beloved backend API
-export const API_BACKEND = import.meta.env.REACT_APP_MDB_URL;
+// In dev it goes through the Vite proxy (see DEV_API_PROXY in vite.config.mjs) to avoid CORS preflights.
+export const API_BACKEND = import.meta.env.DEV ? '/mdb-api-proxy' : import.meta.env.REACT_APP_MDB_URL;
 
 // Physical files links service url
 export const LINKER_URL = import.meta.env.REACT_APP_LINKER_URL;
