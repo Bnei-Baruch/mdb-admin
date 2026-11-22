@@ -13,7 +13,7 @@ export const types = {
 
 /* Actions */
 
-const searchCollections        = createAction(SEARCH_COLLECTIONS, (query) => ({ query }));
+const searchCollections        = createAction(SEARCH_COLLECTIONS, query => ({ query }));
 const searchCollectionsSuccess = createAction(SEARCH_COLLECTIONS_SUCCESS);
 const searchCollectionsFailure = createAction(SEARCH_COLLECTIONS_FAILURE);
 
@@ -31,24 +31,20 @@ const initialState = {
   error      : null,
 };
 
-const onRequest = (state) => ({ ...state, wip: true });
+const onRequest = state => ({ ...state, wip: true });
 
-const onFailure = (state, action) => {
-  return {
-    ...state,
-    wip  : false,
-    error: action.payload,
-  };
-};
+const onFailure = (state, action) => ({
+  ...state,
+  wip  : false,
+  error: action.payload,
+});
 
-const onSuccess = (state, action) => {
-  return {
-    ...state,
-    collections: action.payload.map(c => c.id),
-    wip        : false,
-    error      : null,
-  };
-};
+const onSuccess = (state, action) => ({
+  ...state,
+  collections: action.payload.map(c => c.id),
+  wip        : false,
+  error      : null,
+});
 
 export const reducer = handleActions({
   [SEARCH_COLLECTIONS]        : onRequest,

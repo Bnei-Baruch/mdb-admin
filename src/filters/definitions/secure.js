@@ -5,11 +5,12 @@ const secure = {
   name: 'secure',
   tagIcon: 'privacy',
   valueToQuery: value => SECURITY_LEVELS[value].text,
-  queryToValue: (value) => {
+  queryToValue: value => {
     const sl = Array.from(Object.values(SECURITY_LEVELS)).find(x => x.text === value);
     if (sl) {
       return sl.value;
     }
+
     return null;
   },
   valueToTagLabel: value => SECURITY_LEVELS[value].text,

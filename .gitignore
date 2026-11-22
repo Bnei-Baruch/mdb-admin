@@ -25,9 +25,7 @@ yarn-error.log*
 .editorconfig
 *.swp
 .vcode/
-/src/stylesheets/Kmedia.css
 /.eslintcache
-/src/stylesheets/Kmedia.css.map
 
 #yarn
 .pnp.*

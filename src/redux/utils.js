@@ -18,7 +18,7 @@ export const update = (m, k, updater) => {
 
 export const updateList = (m, l, updater) => {
   const nm = new Map(m);
-  l.forEach((k) => {
+  l.forEach(k => {
     const old = m.get(k) || {};
     nm.set(k, updater(old, k));
   });
@@ -27,7 +27,7 @@ export const updateList = (m, l, updater) => {
 
 export const bulkMerge = (m, a) => {
   const nm = new Map(m);
-  a.forEach((x) => {
+  a.forEach(x => {
     const old = m.get(x.id) || {};
     nm.set(x.id, { ...old, ...x });
   });

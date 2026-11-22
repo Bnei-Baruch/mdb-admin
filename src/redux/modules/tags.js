@@ -116,10 +116,15 @@ const initialState = {
   errors: new Map(Array.from(keys.values(), x => [x, null])),
 };
 
-const onRequest = (state, action) => ({
-  ...state,
-  wip: setMap(state.wip, keys.get(action.type), true)
-});
+// A new request clears the previous error, otherwise a stale error is shown while it loads.
+const onRequest = (state, action) => {
+  const key = keys.get(action.type);
+  return {
+    ...state,
+    wip   : setMap(state.wip, key, true),
+    errors: setMap(state.errors, key, null),
+  };
+};
 
 const onFailure = (state, action) => {
   const key = keys.get(action.type);
@@ -179,16 +184,18 @@ export const reducer = handleActions({
 /* Selectors */
 
 const sortHierarchy = (h, getById) => {
-  h.childMap.forEach((v) => {
+  h.childMap.forEach(v => {
     v.sort((a, b) => {
       const aLabel = extractI18n(getById(a).i18n, ['label'])[0];
       const bLabel = extractI18n(getById(b).i18n, ['label'])[0];
       if (aLabel < bLabel) {
         return -1;
       }
+
       if (aLabel > bLabel) {
         return 1;
       }
+
       return 0;
     });
   });
@@ -208,7 +215,7 @@ const denormIDs = createSelector(getTags, byID =>
   memoize(ids => ids.map(id => byID.get(id))));
 
 const getPathByID = createSelector(getTags, byID =>
-  memoize((id) => {
+  memoize(id => {
     const tag  = byID.get(id);
     const path = [tag];
 
@@ -223,15 +230,17 @@ const getPathByID = createSelector(getTags, byID =>
     return path;
   }));
 
-const getTagByUID = state => (uid) => {
+const getTagByUID = state => uid => {
   const it = state.byID.values();
   let t    = it.next();
   while (!t.done) {
     if (t.value.uid === uid) {
       return t.value;
     }
+
     t = it.next();
   }
+
   return null;
 };
 

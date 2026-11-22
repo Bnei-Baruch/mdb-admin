@@ -1,0 +1,35 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import noop from 'lodash/noop';
+import { Flag, Form, Input } from '../../ui';
+
+import { LANGUAGES } from '../../../helpers/consts';
+
+const NameField = props => {
+  const { value = '', language = '', err = false, onChange = noop, ...rest } = props;
+  const langData                                    = LANGUAGES[language];
+
+  return (
+    <Form.Field error={err} {...rest}>
+      <label htmlFor={`${language}.name`}>
+        <Flag name={langData.flag} />
+        {langData.text}
+      </label>
+      <Input
+        id={`${language}.name`}
+        placeholder={`Name in ${langData.text}`}
+        value={value}
+        onChange={onChange}
+      />
+    </Form.Field>
+  );
+};
+
+NameField.propTypes = {
+  language: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  err: PropTypes.bool,
+  onChange: PropTypes.func,
+};
+
+export default NameField;

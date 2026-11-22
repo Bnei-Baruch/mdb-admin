@@ -1,0 +1,37 @@
+import React from 'react';
+import { Divider, Grid } from '../../../ui';
+
+import * as shapes from '../../../shapes';
+import ReadonlyProperties from '../../../shared/Properties';
+import PersonInfoForm from './PersonInfoForm';
+import I18nForm from './I18nForm';
+
+const DetailsTab = props => {
+  const { person = null } = props;
+  if (!person) {
+    return null;
+  }
+
+  const readonlyProperties = { ...person.properties };
+
+  return (
+    <Grid stackable>
+      <Grid.Row>
+        <Grid.Column width={8}>
+          <PersonInfoForm {...props} />
+          <Divider horizontal hidden />
+          <ReadonlyProperties properties={readonlyProperties} />
+        </Grid.Column>
+        <Grid.Column width={8}>
+          <I18nForm person={person} />
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  );
+};
+
+DetailsTab.propTypes = {
+  person: shapes.Person,
+};
+
+export default DetailsTab;

@@ -129,6 +129,7 @@ function* create(action) {
       const properties = { content_unit_id: resp.data.id, name: '', position: null };
       yield call(api.post, `/collections/${cId}/content_units/`, [properties]);
     }
+
     yield put(actions.createSuccess(resp.data));
   } catch (err) {
     yield put(actions.createFailure(err));

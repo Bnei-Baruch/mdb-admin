@@ -1,0 +1,30 @@
+/* Hierarchical filter (DeepListFilter): columns of nested lists. */
+.filter-steps {
+  display: flex;
+  height: 400px;
+  margin-top: -1em;
+  overflow: hidden;
+}
+
+.filter-steps__column-wrapper {
+  border-right: 1px solid rgba(34, 36, 38, .15);
+  max-width: 100%;
+  overflow-y: scroll;
+}
+
+.filter-steps__column-wrapper:first-child {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.filter-steps__column-wrapper:last-child {
+  border: 0;
+  flex: 1 1 auto;
+}
+
+.login-form {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}

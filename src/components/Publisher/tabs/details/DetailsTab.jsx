@@ -1,0 +1,37 @@
+import React from 'react';
+import { Divider, Grid } from '../../../ui';
+
+import * as shapes from '../../../shapes';
+import ReadonlyProperties from '../../../shared/Properties';
+import PublisherInfoForm from './PublisherInfoForm';
+import I18nForm from './I18nForm';
+
+const DetailsTab = props => {
+  const { publisher = null } = props;
+  if (!publisher) {
+    return null;
+  }
+
+  const readonlyProperties = { ...publisher.properties };
+
+  return (
+    <Grid stackable>
+      <Grid.Row>
+        <Grid.Column width={8}>
+          <PublisherInfoForm {...props} />
+          <Divider horizontal hidden />
+          <ReadonlyProperties properties={readonlyProperties} />
+        </Grid.Column>
+        <Grid.Column width={8}>
+          <I18nForm publisher={publisher} />
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  );
+};
+
+DetailsTab.propTypes = {
+  publisher: shapes.Publisher,
+};
+
+export default DetailsTab;

@@ -28,10 +28,18 @@ $ cp .env.sample .env
 Open `.env` in your favorite editor and set all variables to their appropriate values.
 
 
-4. Run dev server
+4. Run dev server (Vite) — the app is served at http://localhost:3000/admin/
 ```shell
 $ yarn start
 ```
+
+5. Build
+```shell
+$ yarn build                    # uses .env (+ process env)
+$ yarn build:production         # also loads .env.production (same for staging, external, suitcase)
+$ yarn preview                  # serve the build locally
+```
+Environment variables keep the `REACT_APP_` prefix and are read via `import.meta.env`.
 
 
 ## License

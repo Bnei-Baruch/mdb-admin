@@ -270,9 +270,9 @@ export const SEC_SENSITIVE = 1;
 export const SEC_PRIVATE   = 2;
 
 export const SECURITY_LEVELS = {
-  [SEC_PUBLIC]   : { text: 'Public', value: SEC_PUBLIC, color: 'green' },
-  [SEC_SENSITIVE]: { text: 'Sensitive', value: SEC_SENSITIVE, color: 'yellow' },
-  [SEC_PRIVATE]  : { text: 'Private', value: SEC_PRIVATE, color: 'red' },
+  [SEC_PUBLIC]   : { text: 'Public', value: SEC_PUBLIC, color: 'green', icon: 'world' },
+  [SEC_SENSITIVE]: { text: 'Sensitive', value: SEC_SENSITIVE, color: 'yellow', icon: 'shield exclamation' },
+  [SEC_PRIVATE]  : { text: 'Private', value: SEC_PRIVATE, color: 'red', icon: 'privacy' },
 };
 
 // Languages
@@ -355,10 +355,10 @@ export const LANGUAGES = {
   [LANG_AMHARIC]    : { text: 'Amharic', value: LANG_AMHARIC, flag: 'et' },
   [LANG_INDONESIAN] : { text: 'Indonesian', value: LANG_INDONESIAN, flag: 'id' },
   [LANG_ARMENIAN]   : { text: 'Armenian', value: LANG_ARMENIAN, flag: 'am' },
-  [LANG_DANISH]     : { text: 'Danish', value: LANG_DANISH, flag: 'da' },
-  [LANG_ESTONIAN]   : { text: 'Estonian', value: LANG_ESTONIAN, flag: 'et' },
-  [LANG_GREEK]      : { text: 'Greek', value: LANG_GREEK, flag: 'el' },
-  [LANG_TAGALOG]    : { text: 'Tagalog', value: LANG_TAGALOG, flag: 'tl' },
+  [LANG_DANISH]     : { text: 'Danish', value: LANG_DANISH, flag: 'dk' },
+  [LANG_ESTONIAN]   : { text: 'Estonian', value: LANG_ESTONIAN, flag: 'ee' },
+  [LANG_GREEK]      : { text: 'Greek', value: LANG_GREEK, flag: 'gr' },
+  [LANG_TAGALOG]    : { text: 'Tagalog', value: LANG_TAGALOG, flag: 'ph' },
   [LANG_AZERBAIJANI]: { text: 'Azerbaijani', value: LANG_AZERBAIJANI, flag: 'az' },
   [LANG_MULTI]      : { text: 'Multi', value: LANG_MULTI },
   [LANG_UNKNOWN]    : { text: 'Unknown', value: LANG_UNKNOWN },
@@ -514,7 +514,6 @@ export const ALL_FILE_TYPES = [
   MT_SUBTITLES,
 ];
 
-export const DATE_FORMAT = 'YYYY-MM-DD';
 
 // Genres
 export const GR_DOCUMENTARY = 'documentary';

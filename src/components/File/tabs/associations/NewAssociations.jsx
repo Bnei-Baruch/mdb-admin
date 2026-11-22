@@ -1,0 +1,86 @@
+import React from 'react';
+import { Link } from 'react-router';
+import { Button, Icon, Segment } from '../../../ui';
+
+import { NS_FILE_UNITS, CONTENT_UNIT_TYPES } from '../../../../helpers/consts';
+import * as shapes from '../../../shapes';
+import CUList from '../../../BaseClasses/CUList';
+import ListWithCheckboxBase from '../../../BaseClasses/ListWithCheckboxBase';
+
+class FileContentUnit extends ListWithCheckboxBase {
+  static propTypes = {
+    ...ListWithCheckboxBase.propTypes,
+    file: shapes.File.isRequired,
+  };
+
+  isSingleSelect = true;
+
+  usedFiltersNames = ['FreeText', 'DateRange', 'Sources', 'Topics', 'Others'];
+
+  getNamespace = () => NS_FILE_UNITS;
+
+  getContentType = () => CONTENT_UNIT_TYPES;
+
+  renderList = () => {
+    const { currentLanguage, items, file } = this.props;
+    return (
+      <CUList
+        {...this.getSelectListProps()}
+        items={items}
+        associatedIds={[file.content_unit_id]}
+        hasSelectAll={false}
+        currentLanguage={currentLanguage}
+      />
+    );
+  };
+
+  toggleFilters = isShow => {
+    const showFilters = (typeof isShow === 'boolean') ? isShow : !this.state.showFilters;
+    this.setState({ showFilters });
+  };
+
+  associate = () => {
+    const { file, updateProperties } = this.props;
+    updateProperties(file.id, { content_unit_id: this.state.selectedIds[0] });
+    this.selectItem({});
+  };
+
+  render() {
+    const { file }                     = this.props;
+    const { showFilters, selectedIds } = this.state;
+
+    return (
+      <div>
+        <Segment clearing secondary size="large">
+          <div>
+            <Link to={`/content_units/${file.content_unit_id}`}>
+              Content unit currently associated with this file. Id: {file.content_unit_id}.
+            </Link>
+          </div>
+        </Segment>
+
+        <Segment vertical className="flex flex-wrap items-center gap-2">
+          <Button
+            basic
+            color="blue"
+            onClick={this.toggleFilters}
+          >
+            <Icon name="filter" />
+            {showFilters ? 'Hide' : 'Show'} Filters
+          </Button>
+          <Button
+            content="Associate content unit to this file"
+            color="blue"
+            disabled={selectedIds.length === 0}
+            onClick={this.associate}
+          />
+        </Segment>
+
+        {this.renderFiltersHydrator()}
+        {this.renderContent()}
+      </div>
+    );
+  }
+}
+
+export default FileContentUnit;

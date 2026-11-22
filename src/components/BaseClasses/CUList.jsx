@@ -1,0 +1,123 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { Icon, Table, Checkbox } from '../ui';
+
+import { CONTENT_TYPE_BY_ID, SECURITY_LEVELS } from '../../helpers/consts';
+import { extractI18n } from '../../helpers/utils';
+import * as shapes from '../shapes';
+import ListBase from './ListBase';
+import { formatDuration, formatUTC } from '../../helpers/date';
+
+class CUList extends ListBase {
+  static propTypes = {
+    ...ListBase.propTypes,
+    items: PropTypes.arrayOf(shapes.ContentUnit),
+    currentLanguage: PropTypes.string.isRequired,
+    ownerId: PropTypes.number,
+    withCollections: PropTypes.bool,
+  };
+
+  renderItem = item => {
+    const {
+      selectedIds, currentLanguage, associatedIds, withCheckBox, ownerId, withCollections
+    } = this.props;
+
+    const properties  = extractI18n(item.i18n, ['name'], currentLanguage)[0];
+    const collections = item.collections?.map(c => extractI18n(c.i18n, ['name'], currentLanguage)?.[0]).filter(c => !!c) || [];
+
+    return (
+      <Table.Row key={item.id} disabled={!item || associatedIds.includes(item.id) || ownerId === item.id}>
+        {withCheckBox ? (
+          <Table.Cell>
+            <Checkbox
+              type="checkbox"
+              onChange={(event, data) => this.selectHandler(item, data.checked)}
+              checked={selectedIds.includes(item.id)}
+            />
+          </Table.Cell>
+        ) : null}
+        <Table.Cell>
+          <Link to={`/content_units/${item.id}`}>
+            {item.id}
+          </Link>
+        </Table.Cell>
+        <Table.Cell>
+          {item.uid}
+        </Table.Cell>
+        <Table.Cell>
+          {properties}
+        </Table.Cell>
+        {
+          withCollections && (
+            <Table.Cell>
+              {CONTENT_TYPE_BY_ID[item.type_id]}
+            </Table.Cell>
+          )
+        }
+        <Table.Cell>
+          {collections.join(' | ')}
+        </Table.Cell>
+        <Table.Cell>
+          {formatUTC(item.created_at)}
+        </Table.Cell>
+        <Table.Cell collapsing>
+          {item.properties && item.properties.film_date ? formatUTC(item.properties.film_date, 'yyyy-MM-dd') : null}
+        </Table.Cell>
+        <Table.Cell>
+          {
+            item.properties && item.properties.duration
+              ? formatDuration(item.properties.duration)
+              : '??'
+          }
+        </Table.Cell>
+        <Table.Cell textAlign="center">
+          <Icon name={SECURITY_LEVELS[item.secure].icon} color={SECURITY_LEVELS[item.secure].color} title={SECURITY_LEVELS[item.secure].text} />
+        </Table.Cell>
+        <Table.Cell textAlign="center">
+          {
+            item.published
+              ? <Icon name="checkmark" color="green" />
+              : <Icon name="ban" color="red" />
+          }
+        </Table.Cell>
+      </Table.Row>
+    );
+  };
+
+  render() {
+    const { items, withCheckBox, hasSelectAll, withCollections } = this.props;
+    return (
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            {withCheckBox && hasSelectAll ? (
+              <Table.HeaderCell width="1">
+                <Checkbox
+                  type="checkbox"
+                  onChange={this.selectAllHandler}
+                  checked={this.isAllSelected()}
+                />
+              </Table.HeaderCell>
+            ) : null}
+            <Table.HeaderCell>ID</Table.HeaderCell>
+            <Table.HeaderCell>UID</Table.HeaderCell>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Type</Table.HeaderCell>
+            {withCollections && <Table.HeaderCell>Collections</Table.HeaderCell>}
+            <Table.HeaderCell>Created At</Table.HeaderCell>
+            <Table.HeaderCell>Film Date</Table.HeaderCell>
+            <Table.HeaderCell>Duration</Table.HeaderCell>
+            <Table.HeaderCell>Secure</Table.HeaderCell>
+            <Table.HeaderCell>Published</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {items.filter(x => x).map(this.renderItem)}
+        </Table.Body>
+      </Table>
+    );
+  }
+}
+
+export default CUList;
